@@ -26,18 +26,18 @@ const Courses = () => {
 
 
     return (
-        <div className="">
+        <div className="px-3 md:px-0">
             <div className="container mx-auto">
                 {/* Trending Courses Section */}
                 <div className="mb-12">
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-6">
+                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
                         Trending Courses
                     </h2>
                     <div className="relative group">
                         {/* Left Arrow */}
                         <button
                             onClick={() => scroll(trendingRef, "left")}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronLeft className="w-6 h-6 text-gray-700" />
                         </button>
@@ -48,7 +48,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {trendingCourses.map((course) => (
-                                <div key={course.id} className="w-72 shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -57,7 +57,7 @@ const Courses = () => {
                         {/* Right Arrow */}
                         <button
                             onClick={() => scroll(trendingRef, "right")}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden  items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronRight className="w-6 h-6 text-gray-700" />
                         </button>
@@ -66,14 +66,14 @@ const Courses = () => {
 
                 {/* Featured Courses Section */}
                 <div className="mb-12">
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-6">
+                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
                         Featured Courses
                     </h2>
                     <div className="relative group">
                         {/* Left Arrow */}
                         <button
                             onClick={() => scroll(featuredRef, "left")}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden  items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronLeft className="w-6 h-6 text-gray-700" />
                         </button>
@@ -84,7 +84,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {featuredCourses.map((course) => (
-                                <div key={course.id} className="w-72 shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -93,7 +93,7 @@ const Courses = () => {
                         {/* Right Arrow */}
                         <button
                             onClick={() => scroll(featuredRef, "right")}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden  items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronRight className="w-6 h-6 text-gray-700" />
                         </button>
@@ -102,14 +102,14 @@ const Courses = () => {
 
                 {/* Most Requested Courses Section */}
                 <div>
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-6">
+                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
                         Most Requested Courses
                     </h2>
                     <div className="relative group">
                         {/* Left Arrow */}
                         <button
                             onClick={() => scroll(mostRequestedRef, "left")}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden  items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronLeft className="w-6 h-6 text-gray-700" />
                         </button>
@@ -120,7 +120,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {mostRequestedCourses.map((course) => (
-                                <div key={course.id} className="w-72 shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -129,7 +129,7 @@ const Courses = () => {
                         {/* Right Arrow */}
                         <button
                             onClick={() => scroll(mostRequestedRef, "right")}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg md:flex hidden  items-center justify-center hover:bg-gray-100 transition-colors"
                         >
                             <ChevronRight className="w-6 h-6 text-gray-700" />
                         </button>

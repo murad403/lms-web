@@ -387,7 +387,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Search Bar */}
-                <div className="lg:hidden mt-3 flex items-center gap-2">
+                <div className="lg:hidden px-2 mt-3 flex items-center gap-2">
                     {/* Browse Dropdown for Mobile */}
                     <div className="relative" ref={mobileBrowseRef}>
                         <button

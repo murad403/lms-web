@@ -54,6 +54,24 @@ export const trendingCourses: TCourse[] = [
         price: 199.99,
         image: "/courses/Course Images (4).png",
     },
+    {
+        id: 6,
+        title: "Web Development Bootcamp",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "2k+ Reviews",
+        price: 199.99,
+        image: "/courses/Course Images (4).png",
+    },
+    {
+        id: 7,
+        title: "Web Development Bootcamp",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "2k+ Reviews",
+        price: 199.99,
+        image: "/courses/Course Images (4).png",
+    },
 ];
 
 export const featuredCourses: TCourse[] = [
@@ -102,6 +120,24 @@ export const featuredCourses: TCourse[] = [
         price: 249.99,
         image: "/courses/Course Images (9).png",
     },
+    {
+        id: 11,
+        title: "Data Science Masterclass",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "3k+ Reviews",
+        price: 249.99,
+        image: "/courses/Course Images (9).png",
+    },
+    {
+        id: 12,
+        title: "Data Science Masterclass",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "3k+ Reviews",
+        price: 249.99,
+        image: "/courses/Course Images (9).png",
+    },
 ];
 
 export const mostRequestedCourses: TCourse[] = [
@@ -143,6 +179,24 @@ export const mostRequestedCourses: TCourse[] = [
     },
     {
         id: 15,
+        title: "UI/UX Design Complete Course",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "5k+ Reviews",
+        price: 179.99,
+        image: "/courses/Course Images (3).png",
+    },
+    {
+        id: 16,
+        title: "UI/UX Design Complete Course",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "5k+ Reviews",
+        price: 179.99,
+        image: "/courses/Course Images (3).png",
+    },
+    {
+        id: 17,
         title: "UI/UX Design Complete Course",
         category: "CATEGORY",
         rating: 5.0,
