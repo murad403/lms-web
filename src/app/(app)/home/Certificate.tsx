@@ -22,7 +22,7 @@ const Certificate = () => {
 
                     {/* Right Image */}
                     <div className="flex-1 w-full">
-                        <div className="relative w-138 h-64 sm:h-72 md:h-80 lg:h-96">
+                        <div className="relative md:w-138 h-64 sm:h-72 md:h-80 lg:h-96">
                             <Image
                                 src="/home/certificate.jpg"
                                 alt="Certificate"
