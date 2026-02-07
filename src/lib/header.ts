@@ -22,51 +22,68 @@ export type TNotification = {
 }
 export const notifications: TNotification[] = [
     {
-      id: 1,
-      icon: "bell",
-      iconBg: "bg-blue-100",
-      title: "New Class lesson updated",
-      description: "Check out the new lesson on conditional formatting",
-      time: "5 minutes ago",
+        id: 1,
+        icon: "bell",
+        iconBg: "bg-blue-100",
+        title: "New Class lesson updated",
+        description: "Check out the new lesson on conditional formatting",
+        time: "5 minutes ago",
     },
     {
-      id: 2,
-      icon: "bell",
-      iconBg: "bg-blue-100",
-      title: "New Class lesson updated",
-      description: "Check out the new lesson on conditional formatting",
-      time: "5 minutes ago",
+        id: 2,
+        icon: "bell",
+        iconBg: "bg-blue-100",
+        title: "New Class lesson updated",
+        description: "Check out the new lesson on conditional formatting",
+        time: "5 minutes ago",
     },
     {
-      id: 3,
-      icon: "bell",
-      iconBg: "bg-blue-100",
-      title: "New Class lesson updated",
-      description: "Check out the new lesson on conditional formatting",
-      time: "5 minutes ago",
+        id: 3,
+        icon: "bell",
+        iconBg: "bg-blue-100",
+        title: "New Class lesson updated",
+        description: "Check out the new lesson on conditional formatting",
+        time: "5 minutes ago",
     },
     {
-      id: 4,
-      icon: "bell",
-      iconBg: "bg-blue-100",
-      title: "New Class lesson updated",
-      description: "Check out the new lesson on conditional formatting",
-      time: "5 minutes ago",
+        id: 4,
+        icon: "bell",
+        iconBg: "bg-blue-100",
+        title: "New Class lesson updated",
+        description: "Check out the new lesson on conditional formatting",
+        time: "5 minutes ago",
     },
     {
-      id: 5,
-      icon: "bell",
-      iconBg: "bg-blue-100",
-      title: "New Class lesson updated",
-      description: "Check out the new lesson on conditional formatting",
-      time: "5 minutes ago",
+        id: 5,
+        icon: "bell",
+        iconBg: "bg-blue-100",
+        title: "New Class lesson updated",
+        description: "Check out the new lesson on conditional formatting",
+        time: "5 minutes ago",
     },
     {
-      id: 6,
-      icon: "credit",
-      iconBg: "bg-green-100",
-      title: "New course purchased $169.69",
-      description: "Check out the new health care course you just purchased",
-      time: "5 minutes ago",
+        id: 6,
+        icon: "credit",
+        iconBg: "bg-green-100",
+        title: "New course purchased $169.69",
+        description: "Check out the new health care course you just purchased",
+        time: "5 minutes ago",
     },
-  ];
+];
+
+
+export type TCategory = {
+    name: string;
+    count: string;
+}
+
+export const categories: TCategory[] = [
+    { name: "HEALTHCARE & MEDICAL CERTIFICATIONS", count: "20,126 Courses" },
+    { name: "SCHOOL & ACADEMIC CERTIFICATIONS", count: "20,126 Courses" },
+    { name: "CFU – University Educational Credits", count: "20,126 Courses" },
+    { name: "MIUR-Recognized Language Certifications", count: "20,126 Courses" },
+    {
+        name: "Certifications for Teachers & Educators",
+        count: "20,126 Courses",
+    },
+];

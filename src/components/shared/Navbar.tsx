@@ -19,7 +19,7 @@ import {
     Check,
     Globe,
 } from "lucide-react";
-import { menuItems, notifications, TMenuItem, TNotification } from "@/lib/header";
+import { categories, menuItems, notifications, TCategory, TMenuItem, TNotification } from "@/lib/header";
 import { usePathname } from "next/navigation";
 import { PiGraduationCap } from "react-icons/pi";
 
@@ -36,6 +36,7 @@ const Navbar = () => {
     const notificationRef = useRef<HTMLDivElement>(null);
     const cartRef = useRef<HTMLDivElement>(null);
     const browseRef = useRef<HTMLDivElement>(null);
+    const mobileBrowseRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
@@ -57,8 +58,8 @@ const Navbar = () => {
                 setShowCart(false);
             }
             if (
-                browseRef.current &&
-                !browseRef.current.contains(event.target as Node)
+                (!browseRef.current || !browseRef.current.contains(event.target as Node)) &&
+                (!mobileBrowseRef.current || !mobileBrowseRef.current.contains(event.target as Node))
             ) {
                 setShowBrowse(false);
             }
@@ -76,20 +77,10 @@ const Navbar = () => {
 
 
 
-    const categories = [
-        { name: "HEALTHCARE & MEDICAL CERTIFICATIONS", count: "20,126 Courses" },
-        { name: "SCHOOL & ACADEMIC CERTIFICATIONS", count: "20,126 Courses" },
-        { name: "CFU – University Educational Credits", count: "20,126 Courses" },
-        { name: "MIUR-Recognized Language Certifications", count: "20,126 Courses" },
-        {
-            name: "Certifications for Teachers & Educators",
-            count: "20,126 Courses",
-        },
-    ];
 
     return (
         <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-            <div className="container mx-auto px-4 py-3 md:py-4">
+            <div className="container mx-auto py-3 md:py-4">
                 <div className="flex items-center justify-between gap-2 md:gap-4">
                     {/* Mobile Menu Button */}
                     <button
@@ -108,7 +99,7 @@ const Navbar = () => {
 
                         <PiGraduationCap className="size-8 text-main" />
 
-                        <span className="text-lg md:text-2xl font-bold text-main hidden sm:block">
+                        <span className="text-lg md:text-2xl font-bold text-main">
                             From-Cert
                         </span>
                     </Link>
@@ -130,13 +121,13 @@ const Navbar = () => {
 
                             {/* Browse Category Popup */}
                             {showBrowse && (
-                                <div className="absolute left-0 top-full mt-2 w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-6 z-50">
+                                <div className="absolute left-0 top-full mt-2 w-[90vw] sm:w-96 md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-6 z-50 max-h-[80vh] overflow-y-auto">
                                     <h3 className="text-xl font-bold text-header mb-6">
                                         Browse Category
                                     </h3>
 
                                     <div className="space-y-4">
-                                        {categories.map((category, index) => (
+                                        {categories.map((category: TCategory, index) => (
                                             <div
                                                 key={index}
                                                 className="pb-4 border-b border-gray-100"
@@ -171,15 +162,10 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Mobile Search Button */}
-                    <button className="lg:hidden py-3 hover:bg-gray-100 rounded-lg">
-                        <Search className="w-5 h-5 text-gray-700" />
-                    </button>
-
                     {/* Right Section - Icons and Auth */}
                     <div className="flex items-center gap-2 md:gap-3">
                         {/* Notification Icon */}
-                        <div className="relative hidden md:block" ref={notificationRef}>
+                        <div className="static sm:relative" ref={notificationRef}>
                             <button
                                 onClick={() => setShowNotifications(!showNotifications)}
                                 className="p-2 hover:bg-gray-100 rounded-lg relative"
@@ -189,7 +175,7 @@ const Navbar = () => {
 
                             {/* Notification Popup */}
                             {showNotifications && (
-                                <div className="absolute right-0 top-full mt-2 w-112.5 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[90vh] overflow-hidden">
+                                <div className="absolute left-0 right-0 mx-4 sm:left-auto sm:mx-0 sm:right-0 top-full mt-2 sm:w-96 md:w-112.5 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[80vh] overflow-hidden">
                                     {/* Header */}
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                                         <h3 className="text-xl font-bold text-header">
@@ -241,12 +227,12 @@ const Navbar = () => {
                         </div>
 
                         {/* Wishlist Icon */}
-                        <button className="p-2 hover:bg-gray-100 rounded-lg hidden md:block">
+                        <button className="p-2 hover:bg-gray-100 rounded-lg">
                             <Heart className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
                         </button>
 
                         {/* Cart Icon */}
-                        <div className="relative" ref={cartRef}>
+                        <div className="static sm:relative" ref={cartRef}>
                             <button
                                 onClick={() => setShowCart(!showCart)}
                                 className="p-2 hover:bg-gray-100 rounded-lg"
@@ -256,7 +242,7 @@ const Navbar = () => {
 
                             {/* Cart Popup */}
                             {showCart && (
-                                <div className="absolute right-0 top-full mt-2 w-[90vw] md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-6 z-50">
+                                <div className="absolute left-0 right-0 mx-4 sm:left-auto sm:mx-0 sm:right-0 top-full mt-2 sm:w-96 md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-4 sm:p-6 z-50">
                                     <h3 className="text-2xl font-bold text-header mb-6">Cart</h3>
 
                                     {/* Cart Item */}
@@ -382,16 +368,16 @@ const Navbar = () => {
                                 )}
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 md:gap-3">
+                            <div className="hidden sm:flex items-center gap-2 md:gap-3">
                                 <Link
                                     href="/login"
-                                    className="px-3 md:px-6 py-2 md:py-2.5 text-main font-semibold hover:bg-gray-100 rounded-lg transition-colors text-sm md:text-base"
+                                    className="px-3 md:px-6 py-2 md:py-3 text-main font-semibold hover:bg-gray-100  transition-colors text-sm md:text-base bg-[#E9EBF3]"
                                 >
                                     Log In
                                 </Link>
                                 <Link
                                     href="/signup"
-                                    className="px-3 md:px-6 py-2 md:py-2.5 bg-main text-white font-semibold rounded-lg hover:bg-main/90 transition-colors text-sm md:text-base"
+                                    className="px-3 md:px-6 py-2 md:py-3 bg-main text-white font-semibold  hover:bg-main/90 transition-colors text-sm md:text-base"
                                 >
                                     Sign Up
                                 </Link>
@@ -401,8 +387,53 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Search Bar */}
-                <div className="lg:hidden mt-3">
-                    <div className="relative">
+                <div className="lg:hidden mt-3 flex items-center gap-2">
+                    {/* Browse Dropdown for Mobile */}
+                    <div className="relative" ref={mobileBrowseRef}>
+                        <button
+                            onClick={() => setShowBrowse(!showBrowse)}
+                            className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                        >
+                            Browse
+                            <ChevronDown
+                                className={`w-4 h-4 transition-transform ${
+                                    showBrowse ? "rotate-180" : ""
+                                }`}
+                            />
+                        </button>
+
+                        {/* Browse Category Popup for Mobile */}
+                        {showBrowse && (
+                            <div className="absolute left-0 top-full mt-2 w-[85vw] sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl p-5 z-50 max-h-[70vh] overflow-y-auto">
+                                <h3 className="text-lg font-bold text-header mb-4">
+                                    Browse Category
+                                </h3>
+
+                                <div className="space-y-3">
+                                    {categories.map((category: TCategory, index) => (
+                                        <div
+                                            key={index}
+                                            className="pb-3 border-b border-gray-100"
+                                        >
+                                            <h4 className="font-semibold text-title text-sm mb-1">
+                                                {category.name}
+                                            </h4>
+                                            <p className="text-sm text-description">
+                                                {category.count}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button className="w-full mt-4 py-3 bg-main text-white rounded-lg font-semibold hover:bg-main/90 transition-colors">
+                                    Browse All Categories
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Search Input for Mobile */}
+                    <div className="flex-1 relative">
                         <input
                             type="text"
                             value={searchQuery}
@@ -427,8 +458,8 @@ const Navbar = () => {
                                         key={item.label}
                                         href={item.href}
                                         className={`block px-4 py-2 text-sm hover:bg-gray-100 rounded-lg ${isActive
-                                                ? "bg-main/10 text-main font-semibold border-l-4 border-main"
-                                                : "text-gray-700"
+                                            ? "bg-main/10 text-main font-semibold border-l-4 border-main"
+                                            : "text-gray-700"
                                             }`}
                                         onClick={() => setShowMobileMenu(false)}
                                     >
@@ -473,6 +504,26 @@ const Navbar = () => {
                                     </div>
                                 )}
                             </div>
+
+                            {/* Auth Buttons in Mobile Menu */}
+                            {!isLoggedIn && (
+                                <div className="sm:hidden border-t border-gray-200 pt-4 mt-4 flex gap-3">
+                                    <Link
+                                        href="/login"
+                                        className="flex-1 text-center px-4 py-2.5 text-main font-semibold bg-[#E9EBF3] rounded-lg text-sm"
+                                        onClick={() => setShowMobileMenu(false)}
+                                    >
+                                        Log In
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        className="flex-1 text-center px-4 py-2.5 bg-main text-white font-semibold rounded-lg text-sm"
+                                        onClick={() => setShowMobileMenu(false)}
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </div>
+                            )}
                         </nav>
                     </div>
                 </div>

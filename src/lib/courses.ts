@@ -1,0 +1,153 @@
+export type TCourse = {
+    id: number;
+    title: string;
+    category: string;
+    rating: number;
+    reviews: string;
+    price: number;
+    image: string;
+};
+
+export const trendingCourses: TCourse[] = [
+    {
+        id: 1,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 149.99,
+        image: "/courses/Course Images.png",
+    },
+    {
+        id: 2,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 132.99,
+        image: "/courses/Course Images (1).png",
+    },
+    {
+        id: 3,
+        title: "Advance Digital Marketing Course",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 99.99,
+        image: "/courses/Course Images (2).png",
+    },
+    {
+        id: 4,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 491.99,
+        image: "/courses/Course Images (3).png",
+    },
+    {
+        id: 5,
+        title: "Web Development Bootcamp",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "2k+ Reviews",
+        price: 199.99,
+        image: "/courses/Course Images (4).png",
+    },
+];
+
+export const featuredCourses: TCourse[] = [
+    {
+        id: 6,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 132.99,
+        image: "/courses/Course Images (5).png",
+    },
+    {
+        id: 7,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 132.99,
+        image: "/courses/Course Images (6).png",
+    },
+    {
+        id: 8,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 99.99,
+        image: "/courses/Course Images (7).png",
+    },
+    {
+        id: 9,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 491.99,
+        image: "/courses/Course Images (8).png",
+    },
+    {
+        id: 10,
+        title: "Data Science Masterclass",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "3k+ Reviews",
+        price: 249.99,
+        image: "/courses/Course Images (9).png",
+    },
+];
+
+export const mostRequestedCourses: TCourse[] = [
+    {
+        id: 11,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 132.99,
+        image: "/courses/Course Images (10).png",
+    },
+    {
+        id: 12,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 132.99,
+        image: "/courses/Course Images.png",
+    },
+    {
+        id: 13,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 99.99,
+        image: "/courses/Course Images (1).png",
+    },
+    {
+        id: 14,
+        title: "Project Management Professional",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "1k+ Reviews",
+        price: 491.99,
+        image: "/courses/Course Images (2).png",
+    },
+    {
+        id: 15,
+        title: "UI/UX Design Complete Course",
+        category: "CATEGORY",
+        rating: 5.0,
+        reviews: "5k+ Reviews",
+        price: 179.99,
+        image: "/courses/Course Images (3).png",
+    },
+];
