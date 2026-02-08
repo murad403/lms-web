@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { PiGraduationCap, PiUsersThree, PiBuildingOffice } from 'react-icons/pi';
-import authImage from '@/assets/auth/auth.png';
+import AuthBanner from '@/components/auth/AuthBanner';
 
 const accountTypes = [
     {
@@ -70,16 +69,7 @@ const SignUp = () => {
             </div>
 
             {/* Right Side - Image */}
-            <div className="hidden lg:flex w-1/2 bg-main items-center justify-center p-12">
-                <Image
-                    src={authImage}
-                    width={500}
-                    height={500}
-                    alt="Learning illustration"
-                    className="max-w-full h-auto object-contain"
-                    priority
-                />
-            </div>
+            <AuthBanner/>
         </div>
     );
 };

@@ -56,3 +56,31 @@ export const organizationSignUpSchema = organizationFields.refine(
 );
 
 export type OrganizationSignUpFormData = z.infer<typeof organizationFields>;
+
+// Forgot Password Schema
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+
+// Verify OTP Schema
+export const verifyOtpSchema = z.object({
+  otp: z.string().length(6, "OTP must be 6 digits"),
+});
+
+export type VerifyOtpFormData = z.infer<typeof verifyOtpSchema>;
+
+// Reset Password Schema
+const resetPasswordFields = z.object({
+  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(1, "Please confirm your password"),
+  terms: z.boolean(),
+});
+
+export const resetPasswordSchema = resetPasswordFields.refine(
+  (data) => data.newPassword === data.confirmPassword,
+  { message: "Passwords do not match", path: ["confirmPassword"] }
+);
+
+export type ResetPasswordFormData = z.infer<typeof resetPasswordFields>;

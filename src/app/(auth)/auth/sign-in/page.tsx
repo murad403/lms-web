@@ -8,6 +8,7 @@ import { signInSchema, type SignInFormData } from '@/validation/auth.validation'
 import { PiGraduationCap } from 'react-icons/pi';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import authImage from '@/assets/auth/auth.png';
+import AuthBanner from '@/components/auth/AuthBanner';
 
 const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -95,7 +96,7 @@ const SignIn = () => {
                                 <span className="text-sm text-description">Remember me</span>
                             </label>
                             <Link
-                                href="#"
+                                href="/auth/forgot-password"
                                 className="text-sm text-main font-semibold hover:underline"
                             >
                                 Forgot password?
@@ -130,16 +131,7 @@ const SignIn = () => {
             </div>
 
             {/* Right Side - Image */}
-            <div className="hidden lg:flex w-1/2 bg-main items-center justify-center p-12">
-                <Image
-                    src={authImage}
-                    alt="Learning illustration"
-                    width={500}
-                    height={500}
-                    className="max-w-full h-auto object-contain"
-                    priority
-                />
-            </div>
+            <AuthBanner/>
         </div>
     );
 };

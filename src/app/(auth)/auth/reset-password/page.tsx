@@ -1,0 +1,139 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { resetPasswordSchema, type ResetPasswordFormData } from '@/validation/auth.validation';
+import { PiGraduationCap } from 'react-icons/pi';
+import { Lock, Eye, EyeOff } from 'lucide-react';
+import AuthBanner from '@/components/auth/AuthBanner';
+
+const ResetPassword = () => {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        setError,
+    } = useForm<ResetPasswordFormData>({
+        resolver: zodResolver(resetPasswordSchema),
+        defaultValues: { terms: false },
+    });
+
+    const onSubmit = async (data: ResetPasswordFormData) => {
+        if (!data.terms) {
+            setError('terms', { message: 'You must agree to the terms' });
+            return;
+        }
+        console.log('Reset password:', data);
+        // Navigate to sign-in page after successful reset
+    };
+
+    return (
+        <div className="min-h-screen flex">
+            {/* Left Side - Form */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center">
+                <div className="w-full md:w-1/2 px-5 md:px-0">
+                    <Link href="/" className="flex items-center gap-2 mb-10">
+                        <PiGraduationCap className="size-10 text-main" />
+                        <span className="text-3xl font-bold text-main">Form-Cert</span>
+                    </Link>
+
+                    <h1 className="text-3xl font-bold text-header mb-2">Reset Password</h1>
+                    <p className="text-description mb-8">Type a new password</p>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                        {/* New Password */}
+                        <div>
+                            <label className="block text-sm font-semibold text-header mb-2">
+                                New Password
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Minimum 8 characters"
+                                    {...register('newPassword')}
+                                    className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                                >
+                                    {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                                </button>
+                            </div>
+                            {errors.newPassword && (
+                                <p className="text-red-500 text-xs mt-1">{errors.newPassword.message}</p>
+                            )}
+                        </div>
+
+                        {/* Confirm New Password */}
+                        <div>
+                            <label className="block text-sm font-semibold text-header mb-2">
+                                Confirm New Password
+                            </label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    placeholder="Re-enter your password"
+                                    {...register('confirmPassword')}
+                                    className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                                >
+                                    {showConfirmPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                                </button>
+                            </div>
+                            {errors.confirmPassword && (
+                                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                            )}
+                        </div>
+
+                        {/* Terms */}
+                        <label className="flex items-start gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                {...register('terms')}
+                                className="size-4 rounded border-gray-300 accent-main mt-0.5"
+                            />
+                            <span className="text-sm text-description">
+                                I agree to the{' '}
+                                <Link href="#" className="text-main hover:underline">
+                                    Terms of Service
+                                </Link>
+                                <span> and </span>
+                                <Link href="#" className="text-main hover:underline">
+                                    Privacy Policy
+                                </Link>
+                            </span>
+                        </label>
+                        {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms.message}</p>}
+
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
+                        >
+                            Reset Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {/* Right Side - Image */}
+            <AuthBanner/>
+        </div>
+    );
+};
+
+export default ResetPassword;
