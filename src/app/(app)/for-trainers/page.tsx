@@ -17,7 +17,6 @@ const page = () => {
                 <TrainersHowItsWorks/>
                 <TrainersOpportunity/>
                 <TrainersOngoingSupport/>
-
             </div>
         </div>
     )
