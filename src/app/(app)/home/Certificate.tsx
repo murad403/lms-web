@@ -1,10 +1,11 @@
 import Image from "next/image";
+import certificate from "../../../../public/home/certificate.png";
 
 const Certificate = () => {
     return (
         <div className="py-16 md:py-28 bg-gray-50">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 max-w-5xl mx-auto">
+                <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-16 max-w-5xl mx-auto">
                     {/* Left Content */}
                     <div className="flex-1">
                         <h2 className="text-2xl md:text-4xl font-bold text-header leading-tight mb-4">
@@ -24,10 +25,10 @@ const Certificate = () => {
                     <div className="flex-1 w-full">
                         <div className="relative md:w-138 h-64 sm:h-72 md:h-80 lg:h-96">
                             <Image
-                                src="/home/certificate.jpg"
+                                src={certificate}
                                 alt="Certificate"
                                 fill
-                                className="object-contain"
+                                className="object-cover"
                             />
                         </div>
                     </div>

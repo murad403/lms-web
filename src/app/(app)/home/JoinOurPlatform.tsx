@@ -27,7 +27,7 @@ const JoinOurPlatform = () => {
                             src={cover1}
                             alt="Become a Trainer"
                             fill
-                            className="object-cover brightness-90 group-hover:scale-105 transition-transform duration-300 rounded-2xl"
+                            className="object-cover brightness-100 group-hover:scale-105 transition-transform duration-300 rounded-2xl"
                         />
                         <Image src={user} alt="User" className='md:block hidden absolute right-0 bottom-2 scale-102' width={400}
                          height={390}/>
@@ -50,7 +50,7 @@ const JoinOurPlatform = () => {
                             src={cover2}
                             alt="Are you a school"
                             fill
-                            className="object-cover brightness-90 group-hover:scale-105 transition-transform duration-300 rounded-2xl"
+                            className="object-cover brightness-100 group-hover:scale-105 transition-transform duration-300 rounded-2xl"
                         />
 
                         <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
