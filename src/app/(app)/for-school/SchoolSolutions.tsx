@@ -20,23 +20,23 @@ const SchoolSolutions = () => {
 
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Accredited training providers</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Professional academies</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Training schools and institutes</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Public and private educational institutions</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Certified training organizations</span>
                                 </div>
                             </div>
@@ -60,19 +60,19 @@ const SchoolSolutions = () => {
 
                             <div className="space-y-3 text-[17px]">
                                 <div className="flex items-start gap-3">
-                                    <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                                    <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                                     <span className="text-description">Build or manage a website</span>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                                    <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                                     <span className="text-description">Handle payments and invoicing</span>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                                    <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                                     <span className="text-description">Run advertising campaigns</span>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                                    <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                                     <span className="text-description">Deal with technical infrastructure</span>
                                 </div>
                             </div>
@@ -94,19 +94,19 @@ const SchoolSolutions = () => {
 
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Onboarding and setup</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Course upload and optimization</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Certification process</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                                    <Check className="text-green-500 w-5 h-5 shrink-0" />
                                     <span className="text-description">Platform usage and reporting</span>
                                 </div>
                             </div>

@@ -8,10 +8,10 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
         <main>
             <Menu />
             <Navbar />
-            <div className=''>
+            <div>
                 {children}
             </div>
-            <Footer/>
+            <Footer />
         </main>
     )
 }

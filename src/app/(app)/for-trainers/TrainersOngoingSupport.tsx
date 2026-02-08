@@ -21,23 +21,23 @@ const TrainersOngoingSupport = () => {
               
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                  <Check className="text-green-500 w-5 h-5 shrink-0" />
                   <span className="text-description">24/7 instructor support portal</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                  <Check className="text-green-500 w-5 h-5 shrink-0" />
                   <span className="text-description">Course creation</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                  <Check className="text-green-500 w-5 h-5 shrink-0" />
                   <span className="text-description">Certification</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                  <Check className="text-green-500 w-5 h-5 shrink-0" />
                   <span className="text-description">Publication</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="text-green-500 w-5 h-5 flex-shrink-0" />
+                  <Check className="text-green-500 w-5 h-5 shrink-0" />
                   <span className="text-description">Content improvement</span>
                 </div>
               </div>

@@ -32,7 +32,7 @@ const LearnerSignUpFlow = () => {
         <div className="space-y-5">
           {features.map((feature) => (
             <div key={feature.title} className="flex items-start gap-3">
-              <div className="size-6 rounded-full bg-green-500 flex items-center justify-center shrink-0 mt-0.5">
+              <div className="size-6 rounded-full bg-slate-500 flex items-center justify-center shrink-0 mt-0.5">
                 <Check className="size-4 text-white" strokeWidth={3} />
               </div>
               <div>

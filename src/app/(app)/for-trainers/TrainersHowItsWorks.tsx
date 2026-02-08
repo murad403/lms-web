@@ -15,7 +15,7 @@ const TrainersHowItsWorks = () => {
                         {/* Step 1 */}
                         <div className="border border-gray-100 rounded-md p-5 md:p-6 shadow-sm">
                             <div className="flex flex-col gap-4">
-                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shrink-0">
                                     1
                                 </div>
                                 <div>
@@ -32,7 +32,7 @@ const TrainersHowItsWorks = () => {
                         {/* Step 2 */}
                         <div className="border border-gray-100 rounded-md p-5 md:p-6 shadow-sm md:col-span-2">
                             <div className="flex flex-col gap-4">
-                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shrink-0">
                                     2
                                 </div>
                                 <div>
@@ -55,7 +55,7 @@ const TrainersHowItsWorks = () => {
                         {/* Step 3 */}
                         <div className="border border-gray-100 rounded-md p-5 md:p-6 shadow-sm">
                             <div className="flex flex-col gap-4">
-                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shrink-0">
                                     3
                                 </div>
                                 <div>
@@ -75,7 +75,7 @@ const TrainersHowItsWorks = () => {
                         {/* Step 4 */}
                         <div className="border border-gray-100 rounded-md p-5 md:p-6 shadow-sm">
                             <div className="flex flex-col gap-4">
-                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <div className="bg-main text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shrink-0">
                                     4
                                 </div>
                                 <div>

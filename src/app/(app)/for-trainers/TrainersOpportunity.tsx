@@ -51,19 +51,19 @@ const TrainersOpportunity = () => {
 
               <div className="space-y-3 text-[17px]">
                 <div className="flex items-start gap-3">
-                  <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                  <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                   <span className="text-description">You don&apos;t need to create a website</span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                  <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                   <span className="text-description">You don&apos;t need to manage payments</span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                  <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                   <span className="text-description">You don&apos;t need to run advertising</span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <X className="text-red-500 w-5 h-5 flex-shrink-0 mt-1" />
+                  <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                   <span className="text-description">You don&apos;t need to handle technical aspects</span>
                 </div>
               </div>

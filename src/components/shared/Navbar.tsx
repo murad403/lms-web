@@ -370,13 +370,13 @@ const Navbar = () => {
                         ) : (
                             <div className="hidden sm:flex items-center gap-2 md:gap-3">
                                 <Link
-                                    href="/login"
+                                    href="/auth/sign-in"
                                     className="px-3 md:px-6 py-2 md:py-3 text-main font-semibold hover:bg-gray-100  transition-colors text-sm md:text-base bg-[#E9EBF3]"
                                 >
                                     Log In
                                 </Link>
                                 <Link
-                                    href="/signup"
+                                    href="/auth/sign-up"
                                     className="px-3 md:px-6 py-2 md:py-3 bg-main text-white font-semibold  hover:bg-main/90 transition-colors text-sm md:text-base"
                                 >
                                     Sign Up
@@ -509,14 +509,14 @@ const Navbar = () => {
                             {!isLoggedIn && (
                                 <div className="sm:hidden border-t border-gray-200 pt-4 mt-4 flex gap-3">
                                     <Link
-                                        href="/login"
+                                        href="/auth/sign-in"
                                         className="flex-1 text-center px-4 py-2.5 text-main font-semibold bg-[#E9EBF3] rounded-lg text-sm"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
                                         Log In
                                     </Link>
                                     <Link
-                                        href="/signup"
+                                        href="/auth/sign-up"
                                         className="flex-1 text-center px-4 py-2.5 bg-main text-white font-semibold rounded-lg text-sm"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
