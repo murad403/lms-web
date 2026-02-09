@@ -1,4 +1,5 @@
 import { Monitor, Building2, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const learningModes = [
     {
@@ -43,9 +44,9 @@ const LearningMode = () => {
                             <h3 className="text-xl md:text-2xl font-bold text-header mb-5">
                                 {mode.title}
                             </h3>
-                            <button className="px-5 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                            <Link href={`/categories/${mode?.title}`} className="px-5 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
                                 {mode.buttonText}
-                            </button>
+                            </Link>
                         </div>
                     ))}
                 </div>

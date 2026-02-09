@@ -34,7 +34,7 @@ const page = () => {
             <div className="px-3 md:px-0 container mx-auto">
                 {
                     categories.map((category: TCategory) =>
-                        <Link className="mb-5 block" key={category.id} href={"/"}>
+                        <Link className="mb-5 block" key={category.id} href={`/categories/${category.title}`}>
                             <h3 className={`md:text-lg text-[16px] font-bold text-white ${category?.description ? "rounded-t-lg" : "rounded-lg"} p-5 ${category.headingColor}`}>{category.title}</h3>
                             <p className={`${category?.description ? "p-5" : "p-0"} rounded-b-lg text-sm md:text-[16px] ${category.descriptionColor}`}>{category?.description}</p>
                         </Link>
