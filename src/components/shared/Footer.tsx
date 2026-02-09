@@ -15,16 +15,16 @@ const footerLinks = {
     courses: {
         title: "Courses",
         links: [
-            { label: "Online Courses", href: "/courses/online" },
-            { label: "In-Person Courses", href: "/courses/in-person" },
+            { label: "Online Courses", href: "/categories/Online%20Courses" },
+            { label: "In-Person Courses", href: "/categories/In-Person%20Courses" },
             { label: "Certifications", href: "/certifications" },
         ],
     },
     collaborations: {
         title: "Collaborations",
         links: [
-            { label: "Become a Trainer", href: "/trainer" },
-            { label: "Schools & Institutions", href: "/schools" },
+            { label: "Become a Trainer", href: "/for-trainers" },
+            { label: "Schools & Institutions", href: "/for-school" },
             { label: "Partnerships", href: "/partnerships" },
         ],
     },
@@ -32,7 +32,7 @@ const footerLinks = {
         title: "Legal & Contacts",
         links: [
             { label: "Contacts", href: "/contacts" },
-            { label: "Privacy Policy", href: "/privacy" },
+            { label: "Privacy Policy", href: "/privacy-policy" },
             { label: "Cookie Policy", href: "/cookie-policy" },
         ],
     },

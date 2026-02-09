@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { UseFormRegister, UseFormWatch, UseFormSetValue } from 'react-hook-form';
 import { ChevronDown } from 'lucide-react';
-import { CourseFilterFormData } from '../../../types/courseFilterTypes';
 
 const sortOptions = [
     { label: 'Relevance', value: 'relevance' },
@@ -13,17 +11,16 @@ const sortOptions = [
 ];
 
 interface CourseSortDropdownProps {
-    register: UseFormRegister<CourseFilterFormData>;
-    watch: UseFormWatch<CourseFilterFormData>;
-    setValue: UseFormSetValue<CourseFilterFormData>;
+    sortBy: string;
+    onSortChange: (value: string) => void;
 }
 
-const CourseSortDropdown = ({ watch, setValue }: CourseSortDropdownProps) => {
+const CourseSortDropdown = ({ sortBy, onSortChange }: CourseSortDropdownProps) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const sortBy = watch('sortBy');
 
-    const currentLabel = sortOptions.find((o) => o.value === sortBy)?.label || 'Trending';
+    const currentLabel = sortOptions.find((o) => o.value === sortBy)?.label;
+    // console.log(currentLabel)
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -53,7 +50,7 @@ const CourseSortDropdown = ({ watch, setValue }: CourseSortDropdownProps) => {
                             key={opt.value}
                             type="button"
                             onClick={() => {
-                                setValue('sortBy', opt.value);
+                                onSortChange(opt.value);
                                 setIsOpen(false);
                             }}
                             className={`w-full text-left px-4 py-2.5 text-sm transition ${sortBy === opt.value ? 'text-main font-semibold bg-main/5' : 'text-description hover:bg-gray-50 hover:text-header'}`}
@@ -67,4 +64,4 @@ const CourseSortDropdown = ({ watch, setValue }: CourseSortDropdownProps) => {
     );
 };
 
-export default CourseSortDropdown;
+export default CourseSortDropdown

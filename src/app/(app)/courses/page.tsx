@@ -1,14 +1,11 @@
-/* eslint-disable react-hooks/incompatible-library */
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import CourseCard from '@/components/card/CourseCard';
 import Pagination from '@/components/reusable/Pagination';
 import { trendingCourses } from '@/lib/courses';
 import CourseSortDropdown from './CourseSortDropdown';
-import { CourseFilterFormData, defaultFilterValues } from '../../../types/courseFilterTypes';
 import CourseFilterSidebar, { type FilterState } from './CourseFilterSidebar';
 
 const COURSES_PER_PAGE = 12;
@@ -27,13 +24,8 @@ const CoursesPage = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [filters, setFilters] = useState<FilterState>(defaultFilters);
-
-    // React Hook Form only for search + sort
-    const { register, watch, setValue } = useForm<CourseFilterFormData>({
-        defaultValues: defaultFilterValues,
-    });
-
-    const searchValue = watch('search');
+    const [searchValue, setSearchValue] = useState('');
+    const [sortBy, setSortBy] = useState('relevance');
 
     const handleFilterChange = useCallback((field: keyof FilterState, value: string) => {
         setFilters((prev) => ({ ...prev, [field]: value }));
@@ -46,8 +38,8 @@ const CoursesPage = () => {
     const handleApplyFilters = () => {
         const allData = {
             ...filters,
-            search: watch('search'),
-            sortBy: watch('sortBy'),
+            search: searchValue,
+            sortBy: sortBy,
         };
         console.log('Applied Filters:', allData);
     };
@@ -93,13 +85,14 @@ const CoursesPage = () => {
                         <input
                             type="text"
                             placeholder="UI/UX Design"
-                            {...register('search')}
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
                             className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                         />
                         {searchValue && (
                             <button
                                 type="button"
-                                onClick={() => setValue('search', '')}
+                                onClick={() => setSearchValue('')}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
                                 <X className="size-4" />
@@ -109,7 +102,7 @@ const CoursesPage = () => {
 
                     <div className="flex items-center gap-3 ml-auto">
                         <span className="text-sm text-description">Sort by:</span>
-                        <CourseSortDropdown register={register} watch={watch} setValue={setValue} />
+                        <CourseSortDropdown sortBy={sortBy} onSortChange={setSortBy} />
                     </div>
                 </div>
             </div>
