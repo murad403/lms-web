@@ -2,12 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { verifyOtpSchema, type VerifyOtpFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
-import authImage from '@/assets/auth/auth.png';
 import AuthBanner from '@/components/auth/AuthBanner';
 
 const VerifyOtp = () => {

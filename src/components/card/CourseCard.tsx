@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Heart, Star } from "lucide-react";
 import { TCourse } from "@/lib/courses";
+import Link from "next/link";
 
 type CourseCardProps = {
     course: TCourse;
@@ -51,9 +52,9 @@ const CourseCard = ({ course }: CourseCardProps) => {
                     <span className="text-xl font-bold text-[#042F54]">
                         ${course.price}
                     </span>
-                    <button className="px-8 py-2 bg-main text-white rounded text-sm font-semibold hover:bg-main/90 transition-colors">
+                    <Link href={`/course/${2}`} className="px-8 py-2 bg-main text-white rounded text-sm font-semibold hover:bg-main/90 transition-colors">
                         Info
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
