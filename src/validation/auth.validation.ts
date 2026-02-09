@@ -57,6 +57,23 @@ export const organizationSignUpSchema = organizationFields.refine(
 
 export type OrganizationSignUpFormData = z.infer<typeof organizationFields>;
 
+// Partner Sign Up Schema
+const partnerFields = z.object({
+  contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
+  organizationName: z.string().min(2, "Organization name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(1, "Please confirm your password"),
+  terms: z.boolean(),
+});
+
+export const partnerSignUpSchema = partnerFields.refine(
+  (data) => data.password === data.confirmPassword,
+  { message: "Passwords do not match", path: ["confirmPassword"] }
+);
+
+export type PartnerSignUpFormData = z.infer<typeof partnerFields>;
+
 // Forgot Password Schema
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),

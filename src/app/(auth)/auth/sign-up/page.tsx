@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PiGraduationCap, PiUsersThree, PiBuildingOffice } from 'react-icons/pi';
 import AuthBanner from '@/components/auth/AuthBanner';
+import { Handshake } from 'lucide-react';
 
 const accountTypes = [
     {
@@ -20,6 +21,12 @@ const accountTypes = [
         description: 'Offer courses, manage training programs, and expand your reach',
         icon: PiBuildingOffice,
         href: '/auth/organization-sign-up',
+    },
+    {
+        title: "Become a Partner",
+        description: 'Be the reference point and earn by providing guidance, collaborating with institutions and trainers',
+        icon: Handshake,
+        href: '/auth/partner-sign-up',
     },
 ];
 
