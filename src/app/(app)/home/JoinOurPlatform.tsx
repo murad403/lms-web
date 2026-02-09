@@ -8,14 +8,14 @@ import Link from 'next/link'
 
 const JoinOurPlatform = () => {
     return (
-        <section className="py-16 px-4">
+        <section className="py-16 px-3 sm:px-4 md:px-6 lg:px-0">
             <div className="container mx-auto">
                 {/* Header */}
                 <div className="text-center md:mb-28 mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-3">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
                         Join Our Platform
                     </h2>
-                    <p className="text-gray-600 text-lg">
+                    <p className="text-gray-600 text-sm sm:text-base md:text-lg">
                         Opportunities for trainers, schools, and partners
                     </p>
                 </div>
@@ -34,11 +34,11 @@ const JoinOurPlatform = () => {
                          height={390}/>
                         <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                             <div>
-                                <h3 className="text-2xl font-bold mb-2">Become a Trainer</h3>
-                                <p className="text-gray-200 mb-4">
+                                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">Become a Trainer</h3>
+                                <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
                                     Create, publish, and sell online
                                 </p>
-                                <Link href={"/for-trainers"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-trainers"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                     Start Teaching
                                 </Link>
                             </div>
@@ -56,11 +56,11 @@ const JoinOurPlatform = () => {
 
                         <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                             <div>
-                                <h3 className="text-2xl font-bold mb-2">Are you a school?</h3>
-                                <p className="text-gray-200 mb-4">
+                                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">Are you a school?</h3>
+                                <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
                                     Publish your catalog and sell online.
                                 </p>
-                                <Link href={"/for-school"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-school"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                     Get Accredited Now
                                 </Link>
                             </div>
@@ -79,13 +79,13 @@ const JoinOurPlatform = () => {
 
                     <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                         <div>
-                            <h3 className="text-2xl font-bold mb-2">
+                            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">
                                 Become a territorial orientation center
                             </h3>
-                            <p className="text-gray-200 mb-4">
+                            <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
                                 Be the reference point in your area by collaborating with institutions and trainers
                             </p>
-                            <Link href={"/partners"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                            <Link href={"/partnerships"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                 Become a Partner
                             </Link>
                         </div>

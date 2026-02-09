@@ -104,7 +104,7 @@ const CourseDetails = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-0 mt-4 sm:mt-6 lg:mt-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0 mt-4 sm:mt-6 lg:mt-8">
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
                 {/* Main Content */}
                 <div className="flex-1">

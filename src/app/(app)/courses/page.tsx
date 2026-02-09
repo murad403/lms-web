@@ -58,7 +58,7 @@ const CoursesPage = () => {
     };
 
     return (
-        <section className="pt-10 container mx-auto">
+        <section className="pt-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
             {/* Page Header */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-header mb-6">Courses</h1>

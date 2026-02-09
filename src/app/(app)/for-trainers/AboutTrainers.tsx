@@ -43,24 +43,24 @@ const AboutTrainers = () => {
 
             {/* Do You Want to Teach */}
             <div className="border border-gray-100 rounded-md p-5 md:p-12 mb-8">
-                <h2 className="text-xl md:text-3xl font-semibold text-main mb-4">
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-main mb-4">
                     Do You Want to Teach with Us?
                 </h2>
-                <p className="text-description md:text-xl text-lg leading-relaxed mb-4">
+                <p className="text-description text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-4">
                     Turn your experience into a successful course, Become an instructor and start earning by selling courses with full autonomy. You create the content, we support you with everything else
                 </p>
-                <p className="text-main md:text-xl text-lg font-semibold">
+                <p className="text-main text-base sm:text-lg md:text-xl font-semibold">
                     You create the course, we certify it, publish it, promote it, and sell it.
                 </p>
             </div>
 
             {/* Why Become an Instructor */}
             <div className="border border-gray-100 rounded-md p-5 md:p-12 mb-8">
-                <h2 className="text-2xl md:text-3xl font-semibold text-main mb-6">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-main mb-6">
                     Why Become an Instructor with us
                 </h2>
 
-                <ul className="text-description space-y-1 mb-8">
+                <ul className="text-description text-xs sm:text-sm md:text-base space-y-1 mb-8">
                     <li>• No upfront costs</li>
                     <li>• No technical skills required</li>
                     <li>• Full control over your content</li>
@@ -74,10 +74,10 @@ const AboutTrainers = () => {
                     {
                         features.map((feature: TFeature, index: number) => (
                             <div key={index} className="border border-gray-100 rounded-md p-5">
-                                <h3 className="text-lg font-bold text-title mb-3">
+                                <h3 className="text-base sm:text-lg md:text-xl font-bold text-title mb-3">
                                     {feature.title}
                                 </h3>
-                                <p className="text-description text-sm">
+                                <p className="text-description text-xs sm:text-sm">
                                     {feature.description}
                                 </p>
                             </div>

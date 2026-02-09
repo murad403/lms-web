@@ -15,7 +15,7 @@ const SchoolBanner = () => {
             />
 
             {/* Content */}
-            <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 md:px-0">
+            <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
                     Are You a School or a <br /> Training Provider?
                 </h1>

@@ -18,7 +18,7 @@ const page = () => {
                 />
 
                 {/* Content */}
-                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 md:px-0">
+                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
                         Browse All Categories
                     </h1>
@@ -31,12 +31,12 @@ const page = () => {
 
 
             {/* categories */}
-            <div className="px-3 md:px-0 container mx-auto">
+            <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto">
                 {
                     categories.map((category: TCategory) =>
                         <Link className="mb-5 block" key={category.id} href={`/categories/${category.title}`}>
-                            <h3 className={`md:text-lg text-[16px] font-bold text-white ${category?.description ? "rounded-t-lg" : "rounded-lg"} p-5 ${category.headingColor}`}>{category.title}</h3>
-                            <p className={`${category?.description ? "p-5" : "p-0"} rounded-b-lg text-sm md:text-[16px] ${category.descriptionColor}`}>{category?.description}</p>
+                            <h3 className={`text-sm sm:text-base md:text-lg font-bold text-white ${category?.description ? "rounded-t-lg" : "rounded-lg"} p-5 ${category.headingColor}`}>{category.title}</h3>
+                            <p className={`${category?.description ? "p-5" : "p-0"} rounded-b-lg text-xs sm:text-sm md:text-base ${category.descriptionColor}`}>{category?.description}</p>
                         </Link>
                     )
                 }

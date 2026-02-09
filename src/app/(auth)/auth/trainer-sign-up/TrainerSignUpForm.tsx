@@ -132,9 +132,9 @@ const TrainerSignUpForm = () => {
                         />
                         <span className="text-sm text-description">
                             I agree to the{' '}
-                            <Link href="#" className="text-main hover:underline">Terms of Service</Link>
+                            <Link href="/terms-of-service" className="text-main hover:underline">Terms of Service</Link>
                             <span> and </span>
-                            <Link href="#" className="text-main hover:underline">Privacy Policy</Link>
+                            <Link href="/privacy-policy" className="text-main hover:underline">Privacy Policy</Link>
                         </span>
                     </label>
                     {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms.message}</p>}

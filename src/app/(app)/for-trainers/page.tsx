@@ -13,7 +13,7 @@ const page = () => {
             <TrainersBanner />
 
             {/* certifications */}
-            <div className="px-3 md:px-0 container mx-auto space-y-20">
+            <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto space-y-20">
                 <AboutTrainers />
                 <TrainersHowItsWorks />
                 <TrainersOpportunity />

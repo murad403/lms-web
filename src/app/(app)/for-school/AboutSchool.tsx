@@ -9,13 +9,13 @@ const AboutSchool = () => {
 
             {/* Do You Want to Teach */}
             <div className="border border-gray-100 rounded-md p-5 md:p-12 mb-8">
-                <h2 className="text-xl md:text-3xl font-semibold text-main mb-4">
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-main mb-4">
                     The White-Label Solution for Quality Training Institutions
                 </h2>
-                <p className="text-description md:text-xl text-lg leading-relaxed mb-4">
+                <p className="text-description text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-4">
                     A complete platform designed for schools, training centers, academies, and certified institutions that want to sell courses online with full autonomy.
                 </p>
-                <p className="text-main md:text-xl text-lg font-semibold">
+                <p className="text-main text-base sm:text-lg md:text-xl font-semibold">
                     You create the courses. We certify them, publish them, promote them, and sell them.
                 </p>
             </div>
@@ -26,38 +26,38 @@ const AboutSchool = () => {
 
                     {/* Left Content */}
                     <div>
-                        <h2 className="text-2xl md:text-4xl font-bold text-main mb-6">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-main mb-6">
                             Why Choose Our Platform
                         </h2>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Dedicated solution for schools and training institutions</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">Dedicated solution for schools and training institutions</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">White-label platform with your logo and brand identity</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">White-label platform with your logo and brand identity</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">No technical skills required</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">No technical skills required</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">No upfront costs</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">No upfront costs</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Full autonomy in course management</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">Full autonomy in course management</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Official certifications and training credits</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">Official certifications and training credits</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Visibility on a structured and professional marketplace</span>
+                                <span className="text-description text-xs sm:text-sm md:text-base">Visibility on a structured and professional marketplace</span>
                             </div>
                         </div>
                     </div>

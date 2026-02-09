@@ -79,8 +79,8 @@ const HowItWorksPage = () => {
             />
 
             {/* For Learners Section */}
-            <section className="py-16 container max-w-7xl mx-auto">
-                <h2 className="text-3xl font-bold text-header text-center mb-12">For Learners</h2>
+            <section className="py-16 container max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">For Learners</h2>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                     {learnerSteps.map((item, index) => {
@@ -90,9 +90,9 @@ const HowItWorksPage = () => {
                                 <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                     <Icon className="size-8 text-main" />
                                 </div>
-                                <h3 className="text-lg font-medium text-main mb-2">Step {index + 1}</h3>
-                                <h4 className="text-xl font-semibold text-header mb-3">{item.step}</h4>
-                                <p className="text-description text-[16px] leading-relaxed">{item.description}</p>
+                                <h3 className="text-sm sm:text-base md:text-lg font-medium text-main mb-2">Step {index + 1}</h3>
+                                <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
+                                <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
                             </div>
                         );
                     })}
@@ -100,9 +100,9 @@ const HowItWorksPage = () => {
             </section>
 
             {/* For Trainers Section */}
-            <section className=" max-w-7xl mx-auto">
+            <section className=" max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
                 <div className="container py-16 mx-auto bg-[#F9FAFB] rounded-md">
-                    <h2 className="text-3xl font-bold text-header text-center mb-12">For Trainers</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">For Trainers</h2>
 
                     <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {trainerSteps.map((item, index) => {
@@ -112,9 +112,9 @@ const HowItWorksPage = () => {
                                     <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                         <Icon className="size-8 text-main" />
                                     </div>
-                                    <h3 className="text-lg font-bold text-main mb-2">Step {index + 1}</h3>
-                                    <h4 className="text-xl font-semibold text-header mb-3">{item.step}</h4>
-                                    <p className="text-description text-[16px] leading-relaxed">{item.description}</p>
+                                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-main mb-2">Step {index + 1}</h3>
+                                    <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
+                                    <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
                                 </div>
                             );
                         })}
@@ -123,8 +123,8 @@ const HowItWorksPage = () => {
             </section>
 
             {/* For Schools & Institutions Section */}
-            <section className="py-16 container mx-auto">
-                <h2 className="text-3xl font-bold text-header text-center mb-12">For Schools & Institutions</h2>
+            <section className="py-16 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">For Schools & Institutions</h2>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {schoolSteps.map((item, index) => {
@@ -134,9 +134,9 @@ const HowItWorksPage = () => {
                                 <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                     <Icon className="size-8 text-main" />
                                 </div>
-                                <h3 className="text-lg font-bold text-main mb-2">Step {index + 1}</h3>
-                                <h4 className="text-xl font-semibold text-header mb-3">{item.step}</h4>
-                                <p className="text-description text-[17px] leading-relaxed">{item.description}</p>
+                                <h3 className="text-sm sm:text-base md:text-lg font-bold text-main mb-2">Step {index + 1}</h3>
+                                <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
+                                <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
                             </div>
                         );
                     })}

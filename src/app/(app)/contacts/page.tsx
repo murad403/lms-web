@@ -34,11 +34,11 @@ const ContactPage = () => {
                 }
             />
 
-            <section className="py-16 max-w-7xl container mx-auto">
+            <section className="py-16 max-w-7xl container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
                 <div className="grid lg:grid-cols-2 gap-12">
                     {/* Contact Information */}
                     <div>
-                        <h2 className="text-4xl font-bold text-header mb-8">Contact Information</h2>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-header mb-8">Contact Information</h2>
 
                         <div className="space-y-6">
                             {/* Email */}
@@ -47,9 +47,9 @@ const ContactPage = () => {
                                     <Mail className="size-6 text-main" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg text-header mb-1">Email</h3>
-                                    <p className="text-description text-[16px]">info@form-cert.eu</p>
-                                    <p className="text-description text-[16px]">support@form-cert.eu</p>
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl text-header mb-1">Email</h3>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">info@form-cert.eu</p>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">support@form-cert.eu</p>
                                 </div>
                             </div>
 
@@ -59,9 +59,9 @@ const ContactPage = () => {
                                     <Phone className="size-6 text-main" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg text-header mb-1">Phone</h3>
-                                    <p className="text-description text-[16px]">+39 02 1234 5678</p>
-                                    <p className="text-description text-[16px]">Monday - Friday, 9:00 - 18:00 CET</p>
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl text-header mb-1">Phone</h3>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">+39 02 1234 5678</p>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">Monday - Friday, 9:00 - 18:00 CET</p>
                                 </div>
                             </div>
 
@@ -71,10 +71,10 @@ const ContactPage = () => {
                                     <MapPin className="size-6 text-main" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg text-header mb-1">Address</h3>
-                                    <p className="text-description text-[16px]">Form-Cert SRL</p>
-                                    <p className="text-description text-[16px]">Via Roma 123</p>
-                                    <p className="text-description text-[16px]">20121 Milano, Italy</p>
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl text-header mb-1">Address</h3>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">Form-Cert SRL</p>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">Via Roma 123</p>
+                                    <p className="text-description text-xs sm:text-sm md:text-base">20121 Milano, Italy</p>
                                 </div>
                             </div>
                         </div>
@@ -82,12 +82,12 @@ const ContactPage = () => {
 
                     {/* Contact Form */}
                     <div>
-                        <h2 className="text-4xl font-bold text-header mb-8">Send us a message</h2>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-header mb-8">Send us a message</h2>
 
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                             {/* Full Name */}
                             <div>
-                                <label htmlFor="fullName" className="block text-sm font-medium text-header mb-2">
+                                <label htmlFor="fullName" className="block text-xs sm:text-sm font-medium text-header mb-2">
                                     Full Name <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -105,7 +105,7 @@ const ContactPage = () => {
 
                             {/* Email Address */}
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-header mb-2">
+                                <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-header mb-2">
                                     Email Address <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -121,7 +121,7 @@ const ContactPage = () => {
 
                             {/* Subject */}
                             <div>
-                                <label htmlFor="subject" className="block text-sm font-medium text-header mb-2">
+                                <label htmlFor="subject" className="block text-xs sm:text-sm font-medium text-header mb-2">
                                     Subject <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -139,7 +139,7 @@ const ContactPage = () => {
 
                             {/* Message */}
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-header mb-2">
+                                <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-header mb-2">
                                     Message <span className="text-red-500">*</span>
                                 </label>
                                 <textarea

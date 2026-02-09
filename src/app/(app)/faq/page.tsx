@@ -65,7 +65,7 @@ const FAQPage = () => {
                 }
             />
 
-            <section className="pt-16 container mx-auto">
+            <section className="pt-16 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
                 <div className="max-w-4xl mx-auto">
                     <div className="space-y-4">
                         {faqData.map((faq, index) => (
@@ -75,7 +75,7 @@ const FAQPage = () => {
                                     onClick={() => toggleAccordion(index)}
                                     className="w-full flex items-center justify-between px-6 py-4 text-left bg-white hover:bg-gray-50 transition"
                                 >
-                                    <span className="font-semibold text-header text-lg">{faq.question}</span>
+                                    <span className="font-semibold text-header text-base sm:text-lg md:text-xl">{faq.question}</span>
                                     <ChevronDown
                                         className={`size-5 text-main transition-transform shrink-0 ml-4 ${
                                             openIndex === index ? 'rotate-180' : ''
@@ -84,7 +84,7 @@ const FAQPage = () => {
                                 </button>
                                 {openIndex === index && (
                                     <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                                        <p className="text-[#364153] text-[16px] leading-relaxed">{faq.answer}</p>
+                                        <p className="text-[#364153] text-xs sm:text-sm md:text-base leading-relaxed">{faq.answer}</p>
                                     </div>
                                 )}
                             </div>

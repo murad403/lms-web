@@ -27,18 +27,18 @@ const CourseCard = ({ course }: CourseCardProps) => {
             {/* Content Section */}
             <div className="p-4">
                 {/* Title */}
-                <h3 className="text-base font-semibold text-title mb-2 line-clamp-2">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-title mb-2 line-clamp-2">
                     {course.title}
                 </h3>
 
                 {/* Category and Rating on same line */}
                 <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs text-description uppercase">
+                    <p className="text-[10px] sm:text-xs text-description uppercase">
                         {course.category}
                     </p>
                     <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm font-semibold text-title">
+                        <span className="text-xs sm:text-sm font-semibold text-title">
                             {course.rating}{" "}
                             <span className="text-gray-400 font-normal">
                                 ({course.reviews})
@@ -49,10 +49,10 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
                 {/* Price and Button */}
                 <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-[#042F54]">
+                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-[#042F54]">
                         ${course.price}
                     </span>
-                    <Link href={`/course/${2}`} className="px-8 py-2 bg-main text-white rounded text-sm font-semibold hover:bg-main/90 transition-colors">
+                    <Link href={`/course/${2}`} className="px-8 py-2 bg-main text-white rounded text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors">
                         Info
                     </Link>
                 </div>

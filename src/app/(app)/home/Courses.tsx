@@ -26,11 +26,11 @@ const Courses = () => {
 
 
     return (
-        <div className="px-3 md:px-0">
+        <div className="px-3 sm:px-4 md:px-6 lg:px-0">
             <div className="container mx-auto">
                 {/* Trending Courses Section */}
                 <div className="mb-12">
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header mb-4 md:mb-6">
                         Trending Courses
                     </h2>
                     <div className="relative group">
@@ -66,7 +66,7 @@ const Courses = () => {
 
                 {/* Featured Courses Section */}
                 <div className="mb-12">
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header mb-4 md:mb-6">
                         Featured Courses
                     </h2>
                     <div className="relative group">
@@ -102,7 +102,7 @@ const Courses = () => {
 
                 {/* Most Requested Courses Section */}
                 <div>
-                    <h2 className="text-2xl md:text-[36px] font-bold text-header mb-4 md:mb-6">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header mb-4 md:mb-6">
                         Most Requested Courses
                     </h2>
                     <div className="relative group">

@@ -22,7 +22,7 @@ const learningModes = [
 const LearningMode = () => {
     return (
         <div>
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
                 {/* Heading */}
                 <div className="text-center mb-10 md:mb-14">
                     <h2 className="text-2xl md:text-4xl font-bold text-header mb-3">
@@ -44,7 +44,7 @@ const LearningMode = () => {
                             <h3 className="text-xl md:text-2xl font-bold text-header mb-5">
                                 {mode.title}
                             </h3>
-                            <Link href={`/categories/${mode?.title}`} className="px-5 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                            <Link href={`/categories/${mode?.title}`} className="px-5 py-2.5 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                 {mode.buttonText}
                             </Link>
                         </div>

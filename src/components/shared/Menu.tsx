@@ -32,7 +32,7 @@ const Menu = () => {
 
   return (
     <div className="bg-main text-white hidden md:block">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center px-3 sm:px-4 md:px-6 lg:px-0">
         {/* Menu Items */}
         <div className="flex items-center gap-3 md:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide">
           {menuItems.map((item: TMenuItem) => {

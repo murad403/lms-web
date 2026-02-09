@@ -4,7 +4,7 @@ import user from "../../../../public/home/user2.png";
 const TrainingMeetsQuality = () => {
     return (
         <div className="relative w-full md:py-10 pt-10 bg-main">
-            <div className="container mx-auto px-4 md:px-32">
+            <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-32">
                 {/* Desktop: Image positioned absolutely */}
                 <Image
                     src={user}
@@ -27,7 +27,7 @@ const TrainingMeetsQuality = () => {
                         on a single platform.
                     </p>
                     <div>
-                        <button className="px-12 py-3 bg-white text-main rounded-md text-[15px] font-semibold hover:bg-gray-100 transition-colors">
+                        <button className="px-12 py-3 bg-white text-main rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-gray-100 transition-colors">
                             Join Us
                         </button>
                     </div>
