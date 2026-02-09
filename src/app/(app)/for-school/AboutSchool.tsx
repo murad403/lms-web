@@ -21,7 +21,7 @@ const AboutSchool = () => {
             </div>
 
 
-            <div className=" rounded-lg mb-8 md:mb-12">
+            <div className="mb-8 md:mb-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center rounded-md p-4 md:p-10">
 
                     {/* Left Content */}

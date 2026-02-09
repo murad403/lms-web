@@ -1,5 +1,6 @@
 import Image from "next/image";
 import certificate from "../../../../public/home/certificate.png";
+import Link from "next/link";
 
 const Certificate = () => {
     return (
@@ -16,9 +17,9 @@ const Certificate = () => {
                         <p className="text-description text-base md:text-lg mb-8">
                             Choose the right certifications for you.
                         </p>
-                        <button className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                        <Link href={'/certifications'} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
                             Explore Certifications
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Right Image */}

@@ -1,0 +1,28 @@
+import Link from 'next/link'
+
+type TProps = {
+    title: string;
+    description: string;
+    buttonText: string;
+    route: string;
+}
+
+const CTABanner = ({ title, description, buttonText, route }: TProps) => {
+    return (
+        <div className='container mx-auto max-w-7xl'>
+            <div className="bg-linear-to-t to-main from-[#1E40AF] rounded-md py-10 md:py-24 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    {title}
+                </h2>
+                <p className="text-white text-lg mb-6">
+                    {description}
+                </p>
+                <Link href={route} className="bg-white text-main px-8 py-3 rounded-md font-semibold text-sm hover:bg-gray-100 transition-colors">
+                    {buttonText}
+                </Link>
+            </div>
+        </div>
+    )
+}
+
+export default CTABanner

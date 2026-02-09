@@ -24,7 +24,7 @@ const SchoolBanner = () => {
                     Publish your course catalog and earn by selling online independently
                 </p>
                 <div className=" mt-4 flex items-center">
-                    <Link href={"/"} className="py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
+                    <Link href={"/auth/organization-sign-up"} className="py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
                         GET STARTED
                     </Link>
                 </div>

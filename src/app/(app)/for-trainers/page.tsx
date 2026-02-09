@@ -1,3 +1,4 @@
+import CTABanner from '@/components/reusable/CTABanner';
 import AboutTrainers from './AboutTrainers';
 import TrainersBanner from './TrainersBanner';
 import TrainersHowItsWorks from './TrainersHowItsWorks';
@@ -13,10 +14,11 @@ const page = () => {
 
             {/* certifications */}
             <div className="px-3 md:px-0 container mx-auto space-y-20">
-                <AboutTrainers/>
-                <TrainersHowItsWorks/>
-                <TrainersOpportunity/>
-                <TrainersOngoingSupport/>
+                <AboutTrainers />
+                <TrainersHowItsWorks />
+                <TrainersOpportunity />
+                <TrainersOngoingSupport />
+                <CTABanner title='Become an Instructor' description='Create, publish, and sell online.' buttonText='Start Teaching' route='/auth/trainer-sign-up' />
             </div>
         </div>
     )

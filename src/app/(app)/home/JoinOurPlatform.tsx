@@ -3,6 +3,7 @@ import cover1 from "../../../../public/home/cover1.png"
 import cover2 from "../../../../public/home/cover2.png"
 import cover3 from "../../../../public/home/cover3.png"
 import user from "../../../../public/home/user1.png"
+import Link from 'next/link'
 
 
 const JoinOurPlatform = () => {
@@ -37,9 +38,9 @@ const JoinOurPlatform = () => {
                                 <p className="text-gray-200 mb-4">
                                     Create, publish, and sell online
                                 </p>
-                                <button className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-trainers"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
                                     Start Teaching
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -59,9 +60,9 @@ const JoinOurPlatform = () => {
                                 <p className="text-gray-200 mb-4">
                                     Publish your catalog and sell online.
                                 </p>
-                                <button className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-school"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
                                     Get Accredited Now
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -84,9 +85,9 @@ const JoinOurPlatform = () => {
                             <p className="text-gray-200 mb-4">
                                 Be the reference point in your area by collaborating with institutions and trainers
                             </p>
-                            <button className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
+                            <Link href={"/partners"} className="px-8 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors">
                                 Become a Partner
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

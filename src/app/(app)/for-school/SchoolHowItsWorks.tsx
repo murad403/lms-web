@@ -2,7 +2,7 @@ import React from 'react'
 
 const SchoolHowItsWorks = () => {
     return (
-        <section>
+  
             <div className="container mx-auto max-w-7xl">
                 {/* Header */}
                 <h2 className="text-xl md:text-3xl font-bold text-center text-main ">
@@ -96,7 +96,7 @@ const SchoolHowItsWorks = () => {
 
                 </div>
             </div>
-        </section>
+     
     )
 }
 

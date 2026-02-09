@@ -6,36 +6,36 @@ type TCanDo = {
 }
 
 const whatYouCanDo: TCanDo[] = [
-  {
-    id: 1,
-    title: "Publish Your Entire Course Catalog",
-    description:
-      "Upload and manage all your courses from a single dashboard."
-  },
-  {
-    id: 2,
-    title: "Sell Courses Online 24/7",
-    description:
-      "Automate sales and reach learners anywhere, anytime."
-  },
-  {
-    id: 3,
-    title: "Issue Certificates and Training Credits",
-    description:
-      "Offer officially recognized certificates and learning credits (where applicable)."
-  },
-  {
-    id: 4,
-    title: "Manage Students and Enrollments",
-    description:
-      "Track participants, progress, and course completion easily."
-  },
-  {
-    id: 5,
-    title: "Monitor Sales and Earnings",
-    description:
-      "View real-time sales data and receive automated payments."
-  }
+    {
+        id: 1,
+        title: "Publish Your Entire Course Catalog",
+        description:
+            "Upload and manage all your courses from a single dashboard."
+    },
+    {
+        id: 2,
+        title: "Sell Courses Online 24/7",
+        description:
+            "Automate sales and reach learners anywhere, anytime."
+    },
+    {
+        id: 3,
+        title: "Issue Certificates and Training Credits",
+        description:
+            "Offer officially recognized certificates and learning credits (where applicable)."
+    },
+    {
+        id: 4,
+        title: "Manage Students and Enrollments",
+        description:
+            "Track participants, progress, and course completion easily."
+    },
+    {
+        id: 5,
+        title: "Monitor Sales and Earnings",
+        description:
+            "View real-time sales data and receive automated payments."
+    }
 ];
 
 
