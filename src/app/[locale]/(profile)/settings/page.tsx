@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Upload, Trash2, X } from "lucide-react";
 import { userProfile } from "@/lib/profile";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 type ProfileFormData = {
     firstName: string;

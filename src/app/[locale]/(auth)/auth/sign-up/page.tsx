@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { PiGraduationCap, PiUsersThree, PiBuildingOffice } from 'react-icons/pi';
 import AuthBanner from '@/components/auth/AuthBanner';
 import { Handshake } from 'lucide-react';

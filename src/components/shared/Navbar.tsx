@@ -2,7 +2,8 @@
 import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard, Grid3x3, Check, Globe,
+import {
+    Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard, Grid3x3,
 } from "lucide-react";
 import { categories, notifications, TCategory, TNotification } from "@/lib/header";
 import { PiGraduationCap } from "react-icons/pi";
@@ -166,8 +167,8 @@ const Navbar = () => {
                                     {/* Header */}
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-header">
-                                        {t("recentNotifications")}
-                                    </h3>
+                                            {t("recentNotifications")}
+                                        </h3>
                                         <div className="flex gap-2">
                                             <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
                                                 {t("all")}
@@ -386,9 +387,8 @@ const Navbar = () => {
                         >
                             {t("browse")}
                             <ChevronDown
-                                className={`w-4 h-4 transition-transform ${
-                                    showBrowse ? "rotate-180" : ""
-                                }`}
+                                className={`w-4 h-4 transition-transform ${showBrowse ? "rotate-180" : ""
+                                    }`}
                             />
                         </button>
 
