@@ -1,13 +1,16 @@
+"use client";
 import Image from "next/image";
 import { Heart, Star } from "lucide-react";
 import { TCourse } from "@/lib/courses";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 type CourseCardProps = {
     course: TCourse;
 };
 
 const CourseCard = ({ course }: CourseCardProps) => {
+    const t = useTranslations("CourseCard");
     return (
         <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
             {/* Image Section */}
@@ -53,7 +56,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
                         ${course.price}
                     </span>
                     <Link href={`/course/${2}`} className="px-8 py-2 bg-main text-white rounded text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors">
-                        Info
+                        {("info")}
                     </Link>
                 </div>
             </div>

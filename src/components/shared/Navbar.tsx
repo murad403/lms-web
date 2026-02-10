@@ -1,22 +1,23 @@
 "use client";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard, Grid3x3, Check, Globe,
 } from "lucide-react";
-import { categories, menuItems, notifications, TCategory, TMenuItem, TNotification } from "@/lib/header";
-import { usePathname } from "next/navigation";
+import { categories, notifications, TCategory, TNotification } from "@/lib/header";
 import { PiGraduationCap } from "react-icons/pi";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar = () => {
+    const t = useTranslations("Navbar");
+    const tMenu = useTranslations("Menu");
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const [showBrowse, setShowBrowse] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-    const [showMobileLanguage, setShowMobileLanguage] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [language, setLanguage] = useState("English");
 
     const notificationRef = useRef<HTMLDivElement>(null);
     const cartRef = useRef<HTMLDivElement>(null);
@@ -25,10 +26,17 @@ const Navbar = () => {
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
-    const languages = ["English", "Italiano", "Español", "Deutsch", "Francais"];
+    const menuItems = [
+        { label: tMenu("home"), href: "/" as const },
+        { label: tMenu("courses"), href: "/courses" as const },
+        { label: tMenu("certifications"), href: "/certifications" as const },
+        { label: tMenu("forTrainers"), href: "/for-trainers" as const },
+        { label: tMenu("forSchool"), href: "/for-school" as const },
+        { label: tMenu("partnerships"), href: "/partnerships" as const },
+    ];
 
     // Change this to true if user is logged in
-    const isLoggedIn = false;
+    const isLoggedIn = true;
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -95,7 +103,7 @@ const Navbar = () => {
                                 onClick={() => setShowBrowse(!showBrowse)}
                                 className="flex items-center gap-8 px-6 py-3 border border-gray-300 rounded-lg text-sm sm:text-[15px] md:text-base text-gray-700 hover:bg-gray-50 whitespace-nowrap"
                             >
-                                Browse
+                                {t("browse")}
                                 <ChevronDown
                                     className={`w-4 h-4 transition-transform ${showBrowse ? "rotate-180" : ""
                                         }`}
@@ -106,7 +114,7 @@ const Navbar = () => {
                             {showBrowse && (
                                 <div className="absolute left-0 top-full mt-2 w-[90vw] sm:w-96 md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-6 z-50 max-h-[80vh] overflow-y-auto">
                                     <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-header mb-6">
-                                        Browse Category
+                                        {t("browseCategory")}
                                     </h3>
 
                                     <div className="space-y-4">
@@ -134,7 +142,7 @@ const Navbar = () => {
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="What do you want learn..."
+                                placeholder={t("searchPlaceholder")}
                                 className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg text-sm sm:text-[15px] md:text-base focus:outline-none focus:border-main"
                             />
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -158,17 +166,17 @@ const Navbar = () => {
                                     {/* Header */}
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-header">
-                                            Recent Notifications
-                                        </h3>
+                                        {t("recentNotifications")}
+                                    </h3>
                                         <div className="flex gap-2">
                                             <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                All
+                                                {t("all")}
                                             </button>
                                             <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                Unread
+                                                {t("unread")}
                                             </button>
                                             <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                Read
+                                                {t("read")}
                                             </button>
                                         </div>
                                     </div>
@@ -222,7 +230,7 @@ const Navbar = () => {
                             {/* Cart Popup */}
                             {showCart && (
                                 <div className="absolute left-0 right-0 mx-4 sm:left-auto sm:mx-0 sm:right-0 top-full mt-2 sm:w-96 md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-4 sm:p-6 z-50">
-                                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-6">Cart</h3>
+                                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-6">{t("cart")}</h3>
 
                                     {/* Cart Item */}
                                     <div className="flex gap-4 pb-6 border-b border-gray-200">
@@ -256,14 +264,14 @@ const Navbar = () => {
                                     <div className="mt-6 mb-4">
                                         <div className="flex justify-between items-center mb-4">
                                             <span className="text-base sm:text-lg md:text-xl font-bold text-header">
-                                                Total:
+                                                {t("total")}:
                                             </span>
                                             <span className="text-base sm:text-lg md:text-xl font-bold text-header">
                                                 $37.00
                                             </span>
                                         </div>
                                         <button className="w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
-                                            Go To Cart
+                                            {t("goToCart")}
                                         </button>
                                     </div>
                                 </div>
@@ -317,7 +325,7 @@ const Navbar = () => {
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
                                             >
                                                 <User className="w-5 h-5" />
-                                                <span className="font-medium text-xs sm:text-sm md:text-base">My Profile</span>
+                                                <span className="font-medium text-xs sm:text-sm md:text-base">{t("myProfile")}</span>
                                             </Link>
 
                                             <Link
@@ -325,7 +333,7 @@ const Navbar = () => {
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
                                             >
                                                 <Grid3x3 className="w-5 h-5" />
-                                                <span className="font-medium text-xs sm:text-sm md:text-base">Courses</span>
+                                                <span className="font-medium text-xs sm:text-sm md:text-base">{t("courses")}</span>
                                             </Link>
 
                                             <Link
@@ -333,14 +341,14 @@ const Navbar = () => {
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
                                             >
                                                 <LayoutDashboard className="w-5 h-5" />
-                                                <span className="font-medium text-xs sm:text-sm md:text-base">Go to Dashboard</span>
+                                                <span className="font-medium text-xs sm:text-sm md:text-base">{t("goToDashboard")}</span>
                                             </Link>
                                         </div>
 
                                         <div className="border-t border-gray-200 pt-2">
                                             <button className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-red-600 w-full">
                                                 <LogOut className="w-5 h-5" />
-                                                <span className="font-medium text-xs sm:text-sm md:text-base">Log out</span>
+                                                <span className="font-medium text-xs sm:text-sm md:text-base">{t("logOut")}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -352,13 +360,13 @@ const Navbar = () => {
                                     href="/auth/sign-in"
                                     className="px-3 md:px-6 py-2 md:py-3 text-main font-semibold hover:bg-gray-100  transition-colors text-sm md:text-base bg-[#E9EBF3]"
                                 >
-                                    Log In
+                                    {t("logIn")}
                                 </Link>
                                 <Link
                                     href="/auth/sign-up"
                                     className="px-3 md:px-6 py-2 md:py-3 bg-main text-white font-semibold  hover:bg-main/90 transition-colors text-sm md:text-base"
                                 >
-                                    Sign Up
+                                    {t("signUp")}
                                 </Link>
                             </div>
                         )}
@@ -373,7 +381,7 @@ const Navbar = () => {
                             onClick={() => setShowBrowse(!showBrowse)}
                             className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 whitespace-nowrap"
                         >
-                            Browse
+                            {t("browse")}
                             <ChevronDown
                                 className={`w-4 h-4 transition-transform ${
                                     showBrowse ? "rotate-180" : ""
@@ -385,7 +393,7 @@ const Navbar = () => {
                         {showBrowse && (
                             <div className="absolute left-0 top-full mt-2 w-[85vw] sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl p-5 z-50 max-h-[70vh] overflow-y-auto">
                                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-header mb-4">
-                                    Browse Category
+                                    {t("browseCategory")}
                                 </h3>
 
                                 <div className="space-y-3">
@@ -405,7 +413,7 @@ const Navbar = () => {
                                 </div>
 
                                 <button className="w-full mt-4 py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
-                                    Browse All Categories
+                                    {t("browseAllCategories")}
                                 </button>
                             </div>
                         )}
@@ -417,7 +425,7 @@ const Navbar = () => {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="What do you want learn..."
+                            placeholder={t("searchPlaceholder")}
                             className="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
                         />
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -430,11 +438,11 @@ const Navbar = () => {
                 <div className="md:hidden border-t border-gray-200 bg-white">
                     <div className="container mx-auto px-4 py-4">
                         <nav className="space-y-2">
-                            {menuItems.map((item: TMenuItem) => {
+                            {menuItems.map((item) => {
                                 const isActive = pathname === item.href;
                                 return (
                                     <Link
-                                        key={item.label}
+                                        key={item.href}
                                         href={item.href}
                                         className={`block px-4 py-2 text-xs sm:text-sm hover:bg-gray-100 rounded-lg ${isActive
                                             ? "bg-main/10 text-main font-semibold border-l-4 border-main"
@@ -449,39 +457,7 @@ const Navbar = () => {
 
                             {/* Language Selector in Mobile Menu */}
                             <div className="border-t border-gray-200 pt-4 mt-4">
-                                <button
-                                    onClick={() => setShowMobileLanguage(!showMobileLanguage)}
-                                    className="w-full flex items-center justify-between px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <Globe className="w-5 h-5" />
-                                        <span>Language: {language}</span>
-                                    </div>
-                                    <ChevronDown
-                                        className={`w-4 h-4 transition-transform ${showMobileLanguage ? "rotate-180" : ""
-                                            }`}
-                                    />
-                                </button>
-
-                                {showMobileLanguage && (
-                                    <div className="mt-2 ml-4 space-y-1">
-                                        {languages.map((lang) => (
-                                            <button
-                                                key={lang}
-                                                onClick={() => {
-                                                    setLanguage(lang);
-                                                    setShowMobileLanguage(false);
-                                                }}
-                                                className="w-full flex items-center justify-between px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
-                                            >
-                                                {lang}
-                                                {language === lang && (
-                                                    <Check className="w-4 h-4 text-main" />
-                                                )}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                                <LanguageSwitcher variant="mobile" />
                             </div>
 
                             {/* Auth Buttons in Mobile Menu */}
@@ -492,14 +468,14 @@ const Navbar = () => {
                                         className="flex-1 text-center px-4 py-2.5 text-main font-semibold bg-[#E9EBF3] rounded-lg text-xs sm:text-sm"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
-                                        Log In
+                                        {t("logIn")}
                                     </Link>
                                     <Link
                                         href="/auth/sign-up"
                                         className="flex-1 text-center px-4 py-2.5 bg-main text-white font-semibold rounded-lg text-xs sm:text-sm"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
-                                        Sign Up
+                                        {t("signUp")}
                                     </Link>
                                 </div>
                             )}

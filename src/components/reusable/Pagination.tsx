@@ -1,5 +1,7 @@
+'use client';
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PaginationProps {
     currentPage: number;
@@ -14,6 +16,8 @@ const Pagination: React.FC<PaginationProps> = ({
     onPageChange,
     maxVisiblePages = 5,
 }) => {
+    const t = useTranslations("Common");
+
     // Generate page numbers to display
     const getPageNumbers = () => {
         const pages: (number | string)[] = [];
@@ -101,7 +105,7 @@ const Pagination: React.FC<PaginationProps> = ({
                         : 'bg-gray-100 text-gray-700 hover:bg-main hover:text-white'
                     }
         `}
-                aria-label="Previous page"
+                aria-label={t("previous")}
             >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -161,7 +165,7 @@ const Pagination: React.FC<PaginationProps> = ({
                         : 'bg-gray-100 text-gray-700 hover:bg-main hover:text-white'
                     }
         `}
-                aria-label="Next page"
+                aria-label={t("next")}
             >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
