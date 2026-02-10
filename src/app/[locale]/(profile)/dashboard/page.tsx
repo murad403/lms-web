@@ -129,7 +129,7 @@ const DashboardPage = () => {
                                 </div>
                                 <div className="shrink-0 ml-3">
                                     <div
-                                        className={`size-12 sm:w-12 sm:h-12 rounded-full border-[4px] flex items-center justify-center ${quiz.percentage >= 70
+                                        className={`size-12 sm:w-12 sm:h-12 rounded-full border-4 flex items-center justify-center ${quiz.percentage >= 70
                                                 ? "border-green-500"
                                                 : quiz.percentage >= 50
                                                     ? "border-yellow-500"
