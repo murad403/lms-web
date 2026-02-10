@@ -23,7 +23,7 @@ const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent className="max-w-sm">
-        <AlertDialogHeader className="items-center">
+        <AlertDialogHeader className="items-center flex flex-col justify-center">
           <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mb-2">
             <LogOut className="w-6 h-6 text-red-500" />
           </div>

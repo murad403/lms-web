@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Search, Send, Paperclip } from "lucide-react";
@@ -6,236 +7,225 @@ import { useForm } from "react-hook-form";
 import { chatUsers, chatMessages, TChatUser, TChatMessage } from "@/lib/profile";
 
 type MessageForm = {
-  message: string;
+    message: string;
 };
 
 const MessagesPage = () => {
-  const [selectedUser, setSelectedUser] = useState<TChatUser>(chatUsers[0]);
-  const [messages, setMessages] = useState<TChatMessage[]>(chatMessages);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showUserList, setShowUserList] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [selectedUser, setSelectedUser] = useState<TChatUser>(chatUsers[0]);
+    const [messages, setMessages] = useState<TChatMessage[]>(chatMessages);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showUserList, setShowUserList] = useState(true);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { register, handleSubmit, reset } = useForm<MessageForm>();
+    const { register, handleSubmit, reset } = useForm<MessageForm>();
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const filteredUsers = chatUsers.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const onSubmit = (data: MessageForm) => {
-    if (!data.message.trim()) return;
-
-    const newMsg: TChatMessage = {
-      id: Date.now().toString(),
-      senderId: "user",
-      text: data.message,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      isOwn: true,
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-    setMessages((prev) => [...prev, newMsg]);
-    reset();
-  };
 
-  const handleUserSelect = (user: TChatUser) => {
-    setSelectedUser(user);
-    setShowUserList(false);
-  };
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
-  return (
-    <div>
-      <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
-        Chat Messages
-      </h2>
+    const filteredUsers = chatUsers.filter((user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-      <div className="bg-white rounded-xl border border-border-light flex flex-col md:flex-row h-[calc(100vh-320px)] min-h-[500px] overflow-hidden">
-        {/* User List */}
-        <div
-          className={`${
-            showUserList ? "flex" : "hidden md:flex"
-          } flex-col w-full md:w-72 lg:w-80 border-r border-border-light`}
-        >
-          {/* Search */}
-          <div className="p-3 border-b border-border-light">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search"
-                className="w-full pl-9 pr-3 py-2 bg-gray-50 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-main"
-              />
-            </div>
-          </div>
+    const onSubmit = (data: MessageForm) => {
+        if (!data.message.trim()) return;
 
-          {/* User List */}
-          <div className="flex-1 overflow-y-auto">
-            {filteredUsers.map((user) => (
-              <button
-                key={user.id}
-                onClick={() => handleUserSelect(user)}
-                className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 transition-colors text-left ${
-                  selectedUser.id === user.id ? "bg-blue-50" : ""
-                }`}
-              >
-                <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                  <Image
-                    src={user.avatar}
-                    alt={user.name}
-                    fill
-                    className="object-cover"
-                  />
-                  {user.online && (
-                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-semibold text-title truncate">
-                      {user.name}
-                    </h4>
-                    <span className="text-[10px] text-description shrink-0 ml-2">
-                      {user.time}
-                    </span>
-                  </div>
-                  <p className="text-xs text-description truncate mt-0.5">
-                    {user.lastMessage}
-                  </p>
-                </div>
-                {user.unread && (
-                  <span className="w-5 h-5 bg-main text-white rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">
-                    {user.unread}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+        const newMsg: TChatMessage = {
+            id: Date.now().toString(),
+            senderId: "user",
+            text: data.message,
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            isOwn: true,
+        };
+        setMessages((prev) => [...prev, newMsg]);
+        reset();
+    };
 
-        {/* Chat Area */}
-        <div
-          className={`${
-            showUserList ? "hidden md:flex" : "flex"
-          } flex-col flex-1`}
-        >
-          {/* Chat Header */}
-          <div className="p-3 sm:p-4 border-b border-border-light flex items-center gap-3">
-            <button
-              onClick={() => setShowUserList(true)}
-              className="md:hidden p-1 text-description hover:text-title"
-            >
-              ←
-            </button>
-            <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-              <Image
-                src={selectedUser.avatar}
-                alt={selectedUser.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-title">{selectedUser.name}</h4>
-              <p className="text-[10px] text-description">Active Now</p>
-            </div>
-          </div>
+    const handleUserSelect = (user: TChatUser) => {
+        setSelectedUser(user);
+        setShowUserList(false);
+    };
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            <div className="text-center">
-              <span className="text-[10px] text-description bg-gray-100 px-3 py-1 rounded-full">
-                Today
-              </span>
-            </div>
+    return (
+        <div>
+            <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
+                Chat Messages
+            </h2>
 
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
-              >
+            <div className="bg-white rounded-md border border-border-light flex flex-col md:flex-row h-[calc(100vh-320px)] min-h-125 overflow-hidden">
+                {/* User List */}
                 <div
-                  className={`flex items-end gap-2 max-w-[80%] sm:max-w-[70%] ${
-                    msg.isOwn ? "flex-row-reverse" : ""
-                  }`}
+                    className={`${showUserList ? "flex" : "hidden md:flex"
+                        } flex-col w-full md:w-72 lg:w-80 border-r border-border-light`}
                 >
-                  {!msg.isOwn && (
-                    <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0">
-                      <Image
-                        src={selectedUser.avatar}
-                        alt={selectedUser.name}
-                        fill
-                        className="object-cover"
-                      />
+                    {/* Search */}
+                    <div className="p-3 border-b border-border-light">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search"
+                                className="w-full pl-9 pr-3 py-2.5 bg-gray-50 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                            />
+                        </div>
                     </div>
-                  )}
-                  <div>
-                    {!msg.isOwn && (
-                      <p className="text-[10px] text-description mb-1 ml-1">
-                        {selectedUser.name}
-                      </p>
-                    )}
-                    <div
-                      className={`px-3 py-2 rounded-xl text-sm ${
-                        msg.isOwn
-                          ? "bg-main text-white rounded-br-none"
-                          : "bg-gray-100 text-title rounded-bl-none"
-                      }`}
-                    >
-                      {msg.text}
-                    </div>
-                    {msg.time && (
-                      <p
-                        className={`text-[10px] text-description mt-1 ${
-                          msg.isOwn ? "text-right mr-1" : "ml-1"
-                        }`}
-                      >
-                        {msg.time}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
 
-          {/* Input */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="p-3 sm:p-4 border-t border-border-light flex items-center gap-2 sm:gap-3"
-          >
-            <button
-              type="button"
-              className="p-2 text-description hover:text-title transition-colors shrink-0"
-            >
-              <Paperclip className="w-5 h-5" />
-            </button>
-            <input
-              {...register("message")}
-              placeholder="Type your message"
-              className="flex-1 bg-gray-50 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-              autoComplete="off"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors flex items-center gap-1.5 shrink-0"
-            >
-              Send
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
+                    {/* User List */}
+                    <div className="flex-1 overflow-y-auto">
+                        {filteredUsers.map((user) => (
+                            <button
+                                key={user.id}
+                                onClick={() => handleUserSelect(user)}
+                                className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 transition-colors text-left ${selectedUser.id === user.id ? "bg-blue-50" : ""
+                                    }`}
+                            >
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
+                                    <Image
+                                        src={user.avatar}
+                                        alt={user.name}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    {user.online && (
+                                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between">
+                                        <h4 className="text-sm font-semibold text-title truncate">
+                                            {user.name}
+                                        </h4>
+                                        <span className="text-xs text-description shrink-0 ml-2">
+                                            {user.time}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-description truncate mt-0.5">
+                                        {user.lastMessage}
+                                    </p>
+                                </div>
+                                {user.unread && (
+                                    <span className="w-5 h-5 bg-main text-white rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">
+                                        {user.unread}
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Chat Area */}
+                <div
+                    className={`${showUserList ? "hidden md:flex" : "flex"
+                        } flex-col flex-1`}
+                >
+                    {/* Chat Header */}
+                    <div className="p-3 sm:p-4 border-b border-border-light flex items-center gap-3">
+                        <button
+                            onClick={() => setShowUserList(true)}
+                            className="md:hidden p-1 text-description hover:text-title"
+                        >
+                            ←
+                        </button>
+                        <div className="relative size-12 rounded-full overflow-hidden shrink-0">
+                            <Image
+                                src={selectedUser.avatar}
+                                alt={selectedUser.name}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                        <div>
+                            <h4 className="text-base font-bold text-title">{selectedUser.name}</h4>
+                            <p className="text-xs text-description">Active Now</p>
+                        </div>
+                    </div>
+
+                    {/* Messages */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                        <div className="text-center">
+                            <span className="text-xs text-description bg-gray-100 px-3 py-2 rounded-md">
+                                Today
+                            </span>
+                        </div>
+
+                        {messages.map((msg) => (
+                            <div
+                                key={msg.id}
+                                className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
+                            >
+                                <div
+                                    className={`flex items-end gap-2 max-w-[80%] sm:max-w-[70%] ${msg.isOwn ? "flex-row-reverse" : ""
+                                        }`}
+                                >
+                                    {!msg.isOwn && (
+                                        <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0">
+                                            <Image
+                                                src={selectedUser.avatar}
+                                                alt={selectedUser.name}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                    <div>
+                                        {!msg.isOwn && (
+                                            <p className="text-[10px] text-description mb-1 ml-1">
+                                                {selectedUser.name}
+                                            </p>
+                                        )}
+                                        <div
+                                            className={`px-3 py-2 rounded-xl text-sm ${msg.isOwn
+                                                ? "bg-main text-white rounded-br-none"
+                                                : "bg-gray-100 text-title rounded-bl-none"
+                                                }`}
+                                        >
+                                            {msg.text}
+                                        </div>
+                                        {msg.time && (
+                                            <p
+                                                className={`text-[10px] text-description mt-1 ${msg.isOwn ? "text-right mr-1" : "ml-1"
+                                                    }`}
+                                            >
+                                                {msg.time}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input */}
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="p-3 sm:p-4 border-t border-border-light flex items-center gap-2 sm:gap-3"
+                    >
+                        
+                        <input
+                            {...register("message")}
+                            placeholder="Type your message"
+                            className="flex-1 bg-gray-50 rounded-lg px-4 py-3 border border-border-light text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                            autoComplete="off"
+                        />
+                        <button
+                            type="submit"
+                            className="px-4 py-3 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors flex items-center gap-1.5 shrink-0"
+                        >
+                            Send
+                            <Send className="w-4 h-4" />
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default MessagesPage;

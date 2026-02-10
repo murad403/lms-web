@@ -7,7 +7,7 @@ const ReviewsPage = () => {
     <div>
       <h2 className="text-lg sm:text-xl font-bold text-title mb-6">Reviews</h2>
 
-      <div className="bg-white rounded-xl border border-border-light p-4 sm:p-6">
+      <div className="bg-white space-y-4">
         {reviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
         ))}
