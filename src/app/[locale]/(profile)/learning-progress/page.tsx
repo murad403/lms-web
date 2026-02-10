@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Clock, CheckCircle, FileText, Award, TrendingUp } from "lucide-react";
+import { Clock  , FileText, Award, TrendingUp } from "lucide-react";
 import { examAssessments, lessonTracking } from "@/lib/profile";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
