@@ -7,6 +7,13 @@
     --color-header: #101828;
     --color-title: #1D2026;
     --color-description: #4A5565;
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+    --color-info: #3B82F6;
+    --color-light-bg: #F5F7FA;
+    --color-border-light: #E5E7EB;
+    --color-sidebar-hover: #F0F4FF;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

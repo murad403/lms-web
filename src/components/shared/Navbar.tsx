@@ -214,9 +214,9 @@ const Navbar = () => {
                         </div>
 
                         {/* Wishlist Icon */}
-                        <button className="p-2 hover:bg-gray-100 rounded-lg">
+                        <Link href="/wishlist" className="p-2 hover:bg-gray-100 rounded-lg">
                             <Heart className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
-                        </button>
+                        </Link>
 
                         {/* Cart Icon */}
                         <div className="static sm:relative" ref={cartRef}>
@@ -323,14 +323,16 @@ const Navbar = () => {
                                             <Link
                                                 href="/profile"
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
+                                                onClick={() => setShowProfile(false)}
                                             >
                                                 <User className="w-5 h-5" />
                                                 <span className="font-medium text-xs sm:text-sm md:text-base">{t("myProfile")}</span>
                                             </Link>
 
                                             <Link
-                                                href="/courses"
+                                                href="/enrolled-courses"
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
+                                                onClick={() => setShowProfile(false)}
                                             >
                                                 <Grid3x3 className="w-5 h-5" />
                                                 <span className="font-medium text-xs sm:text-sm md:text-base">{t("courses")}</span>
@@ -339,6 +341,7 @@ const Navbar = () => {
                                             <Link
                                                 href="/dashboard"
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
+                                                onClick={() => setShowProfile(false)}
                                             >
                                                 <LayoutDashboard className="w-5 h-5" />
                                                 <span className="font-medium text-xs sm:text-sm md:text-base">{t("goToDashboard")}</span>
