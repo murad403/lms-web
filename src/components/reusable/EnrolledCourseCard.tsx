@@ -62,7 +62,7 @@ const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
                 <div className="flex items-center justify-between mb-3">
                     <span className="text-xl font-bold text-[#042F54]">${course.price}</span>
                     <Link
-                        href={`/course/${course.id}`}
+                        href={`/course-player/${course.id}`}
                         className="px-4 py-2 bg-main text-white rounded text-sm font-semibold hover:bg-main/90 transition-colors flex items-center gap-1"
                     >
                         View Course

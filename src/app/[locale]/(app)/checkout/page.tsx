@@ -67,16 +67,16 @@ const CheckoutPage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Payment Form */}
         <div className="flex-1">
-          <h2 className="text-base sm:text-lg font-bold text-title mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-title mb-4">
             Payment Method
           </h2>
 
           {/* Stripe Badge */}
           <div className="flex items-center gap-2 mb-4">
-            <span className="px-3 py-1 bg-blue-100 text-main text-xs font-bold rounded">
+            <span className="px-5 py-2 bg-blue-100 text-main text-sm font-bold rounded">
               stripe
             </span>
-            <span className="text-xs text-description">Select Stripe</span>
+            <span className="text-sm text-description">Select Stripe</span>
           </div>
 
           {/* New Payment Card */}
@@ -98,7 +98,7 @@ const CheckoutPage = () => {
               <input
                 {...register("nameOnCard")}
                 placeholder="Name on card"
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
               />
             </div>
 
@@ -109,7 +109,7 @@ const CheckoutPage = () => {
               <input
                 {...register("cardNumber")}
                 placeholder="Label"
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
               />
             </div>
 
@@ -121,7 +121,7 @@ const CheckoutPage = () => {
                 <input
                   {...register("expiryDate")}
                   placeholder="MM / YY"
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
+                  className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                 />
               </div>
               <div>
@@ -131,7 +131,7 @@ const CheckoutPage = () => {
                 <input
                   {...register("cvc")}
                   placeholder="Security Code"
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
+                  className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                 />
               </div>
             </div>
@@ -156,11 +156,11 @@ const CheckoutPage = () => {
                 <input
                   {...register("couponCode")}
                   placeholder="COUPON CODE"
-                  className="flex-1 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main uppercase"
+                  className="flex-1 px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main uppercase"
                 />
                 <button
                   type="button"
-                  className="px-5 py-2.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap"
+                  className="px-5 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap"
                 >
                   Apply Code
                 </button>
@@ -171,8 +171,8 @@ const CheckoutPage = () => {
 
         {/* Order Summary */}
         <div className="w-full lg:w-80 xl:w-96">
-          <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 sticky top-24">
-            <h3 className="text-base font-bold text-title mb-4">
+          <div className="bg-white rounded-md border border-border-light p-4 sm:p-5 sticky top-24">
+            <h3 className="text-base font-medium text-title mb-4">
               Courses {String(cartItems.length).padStart(2, "0")}
             </h3>
 
@@ -195,7 +195,7 @@ const CheckoutPage = () => {
                       {item.title}
                     </h4>
                     <div className="flex items-center gap-1 mt-0.5">
-                      <span className="text-xs font-bold text-main">
+                      <span className="text-sm font-bold text-main">
                         ${item.price.toFixed(2)}
                       </span>
                       {item.originalPrice && (
@@ -214,7 +214,7 @@ const CheckoutPage = () => {
               <h4 className="text-sm font-bold text-title mb-3">
                 Order Summery
               </h4>
-              <div className="flex justify-between text-xs text-description">
+              <div className="flex justify-between text-sm text-description">
                 <span>Subtotal:</span>
                 <span className="font-medium text-title">
                   ${subtotal.toFixed(2)}
@@ -224,9 +224,9 @@ const CheckoutPage = () => {
                 <span>Coupon Discount:</span>
                 <span>{couponDiscount}%</span>
               </div>
-              <div className="flex justify-between text-sm font-bold text-title pt-2 border-t border-gray-100">
+              <div className="flex justify-between text-xl font-bold text-title pt-2 border-t border-gray-100">
                 <span>Total:</span>
-                <span>${total.toFixed(2)} USD</span>
+                <span className="text-xl">${total.toFixed(2)} USD</span>
               </div>
             </div>
 

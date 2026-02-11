@@ -34,7 +34,7 @@ const DashboardCourseCard = ({ course }: DashboardCourseCardProps) => {
                 </p>
                 <div className="flex items-center justify-between">
                     <Link
-                        href={`/course/${course.id}`}
+                        href={`/course-player/${course.id}`}
                         className={`block text-center py-3 px-5 rounded text-xs sm:text-sm font-semibold transition-colors ${course.progress && course.progress > 0
                             ? "bg-white border border-main text-main hover:bg-main/5"
                             : "bg-main text-white hover:bg-main/90"

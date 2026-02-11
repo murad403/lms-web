@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 const Banner = async () => {
     const t = await getTranslations("Home");
-    return (
 
+    return (
         <div className="relative w-full h-60 sm:h-80 md:h-96 lg:h-200 xl:h-240 overflow-hidden">
             {/* Background Image */}
             <Image
@@ -32,7 +32,7 @@ const Banner = async () => {
                 </p>
 
                 <div className="mt-5 md:mt-8 md:border border-white rounded-md w-54 h-15 flex justify-center items-center">
-                    <Link href={"/categories"} className=" m-1 py-3 px-6 border-2 rounded-md text-xs sm:text-sm font-medium text-main bg-white hover:text-blue-600 transition-colors cursor-pointer">
+                    <Link href="/categories" className="m-1 py-3 px-6 border-2 rounded-md text-xs sm:text-sm font-medium text-main bg-white hover:text-blue-600 transition-colors cursor-pointer inline-block">
                         {t("browseMainCategories")}
                     </Link>
                 </div>

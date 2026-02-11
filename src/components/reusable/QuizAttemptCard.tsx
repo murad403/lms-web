@@ -1,13 +1,13 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import { TQuizAttempt } from "@/lib/profile";
-import { Link } from "@/i18n/navigation";
 
 type QuizAttemptCardProps = {
     quizAttempt: TQuizAttempt;
+    onStartQuiz?: (quizId: string) => void;
 };
 
-const QuizAttemptCard = ({ quizAttempt }: QuizAttemptCardProps) => {
+const QuizAttemptCard = ({ quizAttempt, onStartQuiz }: QuizAttemptCardProps) => {
     return (
         <div className="flex items-center justify-between py-4 border border-border-light rounded-md p-4">
             <div className="min-w-0 flex-1">
@@ -18,12 +18,12 @@ const QuizAttemptCard = ({ quizAttempt }: QuizAttemptCardProps) => {
                     Number of Questions : {String(quizAttempt.numberOfQuestions).padStart(2, "0")}
                 </p>
             </div>
-            <Link
-                href={`/quiz-attempts/${quizAttempt.id}`}
+            <button
+                onClick={() => onStartQuiz?.(quizAttempt.id)}
                 className="p-2 bg-main text-white rounded-full hover:bg-main/90 transition-colors shrink-0 ml-3"
             >
                 <ArrowRight className="size-5"/>
-            </Link>
+            </button>
         </div>
     );
 };

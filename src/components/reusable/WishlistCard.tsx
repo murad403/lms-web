@@ -48,7 +48,7 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
             {/* Actions */}
             <div className="flex items-center gap-2 shrink-0">
                 <Link
-                    href={`/course/${course.id}`}
+                    href="/checkout"
                     className="px-4 py-2.5 border border-gray-300 rounded text-xs sm:text-sm font-medium text-title hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
                     Buy Now

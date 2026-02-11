@@ -271,9 +271,9 @@ const Navbar = () => {
                                                 $37.00
                                             </span>
                                         </div>
-                                        <button className="w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
-                                            {t("goToCart")}
-                                        </button>
+                                        <Link href="/checkout" className="block w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors text-center">
+                                            {t("goToCheckout")}
+                                        </Link>
                                     </div>
                                 </div>
                             )}

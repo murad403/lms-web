@@ -157,6 +157,49 @@ export type TExamAssessment = {
   status?: "Completed" | "Exam Eligible" | "Certificate Ready";
 };
 
+export type TQuizQuestion = {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number; // index of correct option
+};
+
+export type TQuizData = {
+  id: string;
+  title: string;
+  questions: TQuizQuestion[];
+};
+
+export type TCourseSection = {
+  id: string;
+  title: string;
+  lectureCount: number;
+  totalDuration: string;
+  completionPercent?: number;
+  lectures: TCourseLecture[];
+  hasQuiz?: boolean;
+};
+
+export type TCourseLecture = {
+  id: string;
+  title: string;
+  duration: string;
+  completed: boolean;
+  videoUrl: string;
+  isPlaying?: boolean;
+};
+
+export type TCheckoutCourse = {
+  id: number;
+  title: string;
+  image: string;
+  instructor: string;
+  rating: number;
+  reviews: string;
+  price: number;
+  originalPrice?: number;
+};
+
 // Mock Data
 export const userProfile: TUserProfile = {
   id: "1",
@@ -407,4 +450,228 @@ export const lessonTracking: TLessonTracking[] = [
   { id: "5", module: "Advanced React", lesson: "Context API", watchTime: "0min", status: "Not Started", date: "2024-01-10" },
   { id: "6", module: "Python Basics", lesson: "Variables & Types", watchTime: "22min", status: "Completed", date: "2024-01-10" },
   { id: "7", module: "Python Basics", lesson: "Control Flow", watchTime: "32min", status: "Completed", date: "2024-01-10" },
+];
+
+// Quiz questions data for quiz modal
+export const quizQuestionsData: TQuizData[] = [
+  {
+    id: "1",
+    title: "Information About UI/UX Design Degree",
+    questions: [
+      {
+        id: "q1",
+        question: "What is the primary goal of user experience (UX) design?",
+        options: [
+          "Making the interface look beautiful",
+          "Ensuring the product is easy and enjoyable to use",
+          "Writing clean code",
+          "Increasing the number of features",
+        ],
+        correctAnswer: 1,
+      },
+      {
+        id: "q2",
+        question: "Which of the following is a key principle of UI design?",
+        options: [
+          "Complexity",
+          "Consistency",
+          "Redundancy",
+          "Obscurity",
+        ],
+        correctAnswer: 1,
+      },
+      {
+        id: "q3",
+        question: "What does wireframing help designers with?",
+        options: [
+          "Writing backend code",
+          "Planning the layout and structure of a page",
+          "Testing server performance",
+          "Creating marketing campaigns",
+        ],
+        correctAnswer: 1,
+      },
+    ],
+  },
+  {
+    id: "2",
+    title: "Learn JavaScript and Express to become a Expert",
+    questions: [
+      {
+        id: "q1",
+        question: "What is a closure in JavaScript?",
+        options: [
+          "A way to close the browser window",
+          "A function that has access to its outer scope variables",
+          "A method to end a loop",
+          "A type of error handling",
+        ],
+        correctAnswer: 1,
+      },
+      {
+        id: "q2",
+        question: "What does Express.js primarily help with?",
+        options: [
+          "Database management",
+          "Frontend rendering",
+          "Building web server applications",
+          "CSS styling",
+        ],
+        correctAnswer: 2,
+      },
+      {
+        id: "q3",
+        question: "Which HTTP method is typically used to create a new resource?",
+        options: ["GET", "PUT", "POST", "DELETE"],
+        correctAnswer: 2,
+      },
+    ],
+  },
+  {
+    id: "3",
+    title: "Introduction to Python Programming",
+    questions: [
+      {
+        id: "q1",
+        question: "What is Python primarily known for?",
+        options: [
+          "Complex syntax",
+          "Readability and simplicity",
+          "Only web development",
+          "Hardware programming",
+        ],
+        correctAnswer: 1,
+      },
+      {
+        id: "q2",
+        question: "Which data structure uses key-value pairs in Python?",
+        options: ["List", "Tuple", "Dictionary", "Set"],
+        correctAnswer: 2,
+      },
+      {
+        id: "q3",
+        question: "What keyword is used to define a function in Python?",
+        options: ["function", "func", "def", "define"],
+        correctAnswer: 2,
+      },
+    ],
+  },
+];
+
+// Course player data
+export const coursePlayerInfo = {
+  title: "Complete Website Responsive Design: from Figma to Webflow to Website Design",
+  sections: 8,
+  totalLectures: 202,
+  totalDuration: "19h 37m",
+  studentsWatching: 512,
+  lastUpdated: "Oct 26, 2020",
+  comments: 154,
+};
+
+export const courseSections: TCourseSection[] = [
+  {
+    id: "s1",
+    title: "Getting Started",
+    lectureCount: 4,
+    totalDuration: "51m",
+    completionPercent: 25,
+    lectures: [
+      { id: "l1", title: "What is Webflow?", duration: "07:31", completed: true, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l2", title: "Sign up in Webflow", duration: "07:31", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l3", title: "Teaser of Webflow", duration: "07:31", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l4", title: "Figma Introduction", duration: "07:31", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+    hasQuiz: true,
+  },
+  {
+    id: "s2",
+    title: "Secret of Good Design",
+    lectureCount: 52,
+    totalDuration: "5m 49m",
+    lectures: [
+      { id: "l5", title: "Understanding Color Theory", duration: "22:10", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l6", title: "Typography Basics", duration: "15:30", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l7", title: "Layout & Composition", duration: "20:45", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+  {
+    id: "s3",
+    title: "Practice Design Like an Artist",
+    lectureCount: 43,
+    totalDuration: "51m",
+    lectures: [
+      { id: "l8", title: "Sketching Fundamentals", duration: "25:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l9", title: "Creating Mood Boards", duration: "18:15", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l10", title: "Design Iteration Process", duration: "21:30", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+  {
+    id: "s4",
+    title: "Web Development (webflow)",
+    lectureCount: 137,
+    totalDuration: "10h 6m",
+    lectures: [
+      { id: "l11", title: "Webflow Interface Overview", duration: "16:40", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l12", title: "Building Your First Page", duration: "19:55", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l13", title: "Responsive Layouts", duration: "30:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+  {
+    id: "s5",
+    title: "Secrets of Making Money Freelancing",
+    lectureCount: 21,
+    totalDuration: "38m",
+    lectures: [
+      { id: "l14", title: "Finding Clients", duration: "12:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l15", title: "Pricing Your Work", duration: "14:30", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l16", title: "Building a Portfolio", duration: "11:30", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+  {
+    id: "s6",
+    title: "Advanced",
+    lectureCount: 39,
+    totalDuration: "1h 31m",
+    lectures: [
+      { id: "l17", title: "CMS Collections", duration: "22:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l18", title: "Dynamic Content", duration: "18:45", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l19", title: "Custom Code Integration", duration: "25:15", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+  {
+    id: "s7",
+    title: "What's Next",
+    lectureCount: 7,
+    totalDuration: "1h 17m",
+    lectures: [
+      { id: "l20", title: "Career Paths in Design", duration: "20:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l21", title: "Continuing Education", duration: "15:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+      { id: "l22", title: "Final Thoughts & Resources", duration: "22:00", completed: false, videoUrl: "/videos/course-intro.mp4" },
+    ],
+  },
+];
+
+// Checkout data
+export const checkoutCourses: TCheckoutCourse[] = [
+  {
+    id: 1,
+    title: "The Ultimate Drawing Course - Beginner to Advanced",
+    image: "/courses/Course Images.png",
+    instructor: "Harry Potter",
+    rating: 4.8,
+    reviews: "451,444",
+    price: 37.0,
+    originalPrice: 49.0,
+  },
+  {
+    id: 2,
+    title: "Digital Marketing Masterclass - 23 Courses in 1",
+    image: "/courses/Course Images (1).png",
+    instructor: "Nobody",
+    rating: 4.6,
+    reviews: "320,120",
+    price: 24.0,
+    originalPrice: 40.0,
+  },
 ];

@@ -130,7 +130,7 @@ const CourseDetails = () => {
                         </h1>
                         <div className='flex items-center shrink-0'>
                             <h2 className='bg-[#E7E9EB] text-title py-2 sm:py-2.5 px-3 sm:px-5 font-semibold text-base sm:text-xl'>${courseData.price}</h2>
-                            <button className='bg-main text-white py-2 sm:py-2.5 px-3 sm:px-5 hover:bg-main/90 cursor-pointer font-semibold text-base sm:text-xl'>${courseData.price}</button>
+                            <button className='bg-main text-white py-2 sm:py-2.5 px-3 sm:px-5 hover:bg-main/90 cursor-pointer font-semibold text-base sm:text-xl'>Buy Now</button>
                         </div>
                     </div>
 
