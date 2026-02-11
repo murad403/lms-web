@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Pencil } from "lucide-react";
 import { userProfile } from "@/lib/profile";
+import { Link } from "@/i18n/navigation";
 
 const ProfileHeader = () => {
     return (
@@ -20,9 +21,9 @@ const ProfileHeader = () => {
                         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-title truncate">
                             {userProfile.firstName} {userProfile.lastName}
                         </h2>
-                        <button className="p-1 hover:bg-gray-100 rounded-full transition-colors shrink-0">
+                        <Link href={"/settings"} className="p-1 hover:bg-gray-100 rounded-full transition-colors shrink-0">
                             <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-description" />
-                        </button>
+                        </Link>
                     </div>
                     <p className="text-xs sm:text-sm text-description mt-0.5">
                         {userProfile.title}

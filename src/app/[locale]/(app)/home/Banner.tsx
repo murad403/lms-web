@@ -21,7 +21,7 @@ const Banner = async () => {
 
             {/* Content */}
             <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
-                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight ">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                     {t("bannerTitle1")}
                     <br />
                     {t("bannerTitle2")}
@@ -31,10 +31,16 @@ const Banner = async () => {
                     {t("bannerDescription")}
                 </p>
 
-                <div className="mt-5 md:mt-8 md:border border-white rounded-md w-54 h-15 flex justify-center items-center">
-                    <Link href="/categories" className="m-1 py-3 px-6 border-2 rounded-md text-xs sm:text-sm font-medium text-main bg-white hover:text-blue-600 transition-colors cursor-pointer inline-block">
-                        {t("browseMainCategories")}
-                    </Link>
+                {/* Button with double border effect */}
+                <div className="mt-6 sm:mt-7 inline-block max-w-fit">
+                    <div className="p-1 border-2 border-white rounded-md">
+                        <Link 
+                            href="/categories" 
+                            className="block px-6 sm:px-8 py-3 sm:py-4 bg-white text-main border-2 border-white rounded-md text-sm sm:text-base font-semibold hover:bg-white/95 transition-colors"
+                        >
+                            {t("browseMainCategories")}
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

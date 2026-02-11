@@ -41,7 +41,7 @@ const ContactPage = () => {
                         <div className="space-y-6">
                             {/* Email */}
                             <div className="flex items-start gap-4">
-                                <div className="bg-[#DBEAFE] p-3 rounded-full shrink-0">
+                                <div className="bg-blue-light p-3 rounded-full shrink-0">
                                     <Mail className="size-6 text-main" />
                                 </div>
                                 <div>
@@ -53,7 +53,7 @@ const ContactPage = () => {
 
                             {/* Phone */}
                             <div className="flex items-start gap-4">
-                                <div className="bg-[#DBEAFE] p-3 rounded-full shrink-0">
+                                <div className="bg-blue-light p-3 rounded-full shrink-0">
                                     <Phone className="size-6 text-main" />
                                 </div>
                                 <div>
@@ -65,7 +65,7 @@ const ContactPage = () => {
 
                             {/* Address */}
                             <div className="flex items-start gap-4">
-                                <div className="bg-[#DBEAFE] p-3 rounded-full shrink-0">
+                                <div className="bg-blue-light p-3 rounded-full shrink-0">
                                     <MapPin className="size-6 text-main" />
                                 </div>
                                 <div>
