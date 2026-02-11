@@ -14,7 +14,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
     return (
         <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
             {/* Image Section */}
-            <div className="relative h-72 w-full">
+            <div className="relative md:h-70 h-60 w-full">
                 <Image
                     src={course.image}
                     alt={course.title}

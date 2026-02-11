@@ -6,13 +6,13 @@ const Banner = async () => {
     const t = await getTranslations("Home");
 
     return (
-        <div className="relative w-full h-60 sm:h-80 md:h-96 lg:h-200 xl:h-240 overflow-hidden">
+        <div className="relative w-full h-63 sm:h-80 md:h-96 lg:h-200 xl:h-240 overflow-hidden">
             {/* Background Image */}
             <Image
                 src="/home/banner.jpg"
                 alt="Banner"
                 fill
-                className="object-center"
+                className="object-cover"
                 priority
             />
 
@@ -21,7 +21,7 @@ const Banner = async () => {
 
             {/* Content */}
             <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
-                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                <h1 className="text-4xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                     {t("bannerTitle1")}
                     <br />
                     {t("bannerTitle2")}

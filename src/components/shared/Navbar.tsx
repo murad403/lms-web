@@ -9,6 +9,8 @@ import { categories, notifications, TCategory, TNotification } from "@/lib/heade
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import LogoutModal from "./LogoutModal";
+import user from "@/assets/partnership/user2.png"
 
 const Navbar = () => {
     const t = useTranslations("Navbar");
@@ -26,6 +28,7 @@ const Navbar = () => {
     const mobileBrowseRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+    const [showLogout, setShowLogout] = useState(false);
 
     const menuItems = [
         { label: tMenu("home"), href: "/" as const },
@@ -287,7 +290,7 @@ const Navbar = () => {
                                     className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors"
                                 >
                                     <Image
-                                        src="/home/banner.jpg"
+                                        src={user}
                                         alt="User"
                                         width={40}
                                         height={40}
@@ -302,7 +305,7 @@ const Navbar = () => {
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full overflow-hidden">
                                                     <Image
-                                                        src="/home/banner.jpg"
+                                                        src={user}
                                                         alt="User"
                                                         width={40}
                                                         height={40}
@@ -350,7 +353,7 @@ const Navbar = () => {
                                         </div>
 
                                         <div className="border-t border-gray-200 pt-2">
-                                            <button className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-red-600 w-full">
+                                            <button onClick={() => setShowLogout(true)} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-red-600 w-full">
                                                 <LogOut className="w-5 h-5" />
                                                 <span className="font-medium text-xs sm:text-sm md:text-base">{t("logOut")}</span>
                                             </button>
@@ -486,6 +489,7 @@ const Navbar = () => {
                     </div>
                 </div>
             )}
+            <LogoutModal open={showLogout} onClose={() => setShowLogout(false)} />
         </div>
     );
 };
