@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 import { X, ChevronRight, ArrowRight, ArrowLeft } from "lucide-react";
 import { TQuizData } from "@/lib/profile";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import Image from "next/image";
+
 
 type QuizModalProps = {
     isOpen: boolean;
@@ -160,7 +160,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                         {/* Score Circle */}
                         <div className="flex justify-center mb-8">
                             <div className="relative w-48 h-48 bg-white rounded-full shadow-lg flex items-center justify-center">
-                                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full opacity-50" />
+                                <div className="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 rounded-full opacity-50" />
                                 <div className="relative text-center">
                                     <p className="text-sm text-main font-medium mb-1">your Score</p>
                                     <div className="flex items-baseline justify-center gap-1">
@@ -195,7 +195,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                             <div className="text-center">
                                 <div className="flex items-center justify-center gap-2 mb-1">
                                     <div className="w-3 h-3 rounded-full bg-success" />
-                                    <span className="text-2xl font-bold text-title">{correctCount}</span>
+                                    <span className="text-2xl font-bold text-success">{correctCount}</span>
                                 </div>
                                 <p className="text-sm text-description">Correct</p>
                             </div>
@@ -204,7 +204,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                             <div className="text-center">
                                 <div className="flex items-center justify-center gap-2 mb-1">
                                     <div className="w-3 h-3 rounded-full bg-red-500" />
-                                    <span className="text-2xl font-bold text-title">{wrongCount < 10 ? `0${wrongCount}` : wrongCount}</span>
+                                    <span className="text-2xl font-bold text-red-500">{wrongCount < 10 ? `0${wrongCount}` : wrongCount}</span>
                                 </div>
                                 <p className="text-sm text-description">Wrong</p>
                             </div>

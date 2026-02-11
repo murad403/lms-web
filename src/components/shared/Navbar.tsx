@@ -362,7 +362,7 @@ const Navbar = () => {
                             <div className="hidden sm:flex items-center gap-2 md:gap-3">
                                 <Link
                                     href="/auth/sign-in"
-                                    className="px-3 md:px-6 py-2 md:py-3 text-main font-semibold hover:bg-gray-100  transition-colors text-sm md:text-base bg-[#E9EBF3]"
+                                    className="px-3 md:px-6 py-2 md:py-3 text-main font-semibold hover:bg-gray-100  transition-colors text-sm md:text-base bg-main-light"
                                 >
                                     {t("logIn")}
                                 </Link>
@@ -468,7 +468,7 @@ const Navbar = () => {
                                 <div className="sm:hidden border-t border-gray-200 pt-4 mt-4 flex gap-3">
                                     <Link
                                         href="/auth/sign-in"
-                                        className="flex-1 text-center px-4 py-2.5 text-main font-semibold bg-[#E9EBF3] rounded-lg text-xs sm:text-sm"
+                                        className="flex-1 text-center px-4 py-2.5 text-main font-semibold bg-main-light rounded-lg text-xs sm:text-sm"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
                                         {t("logIn")}

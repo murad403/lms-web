@@ -50,7 +50,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bg-[#E5E7EB] border-t md:mt-28 mt-20 border-gray-200">
+        <footer className="bg-border-light border-t md:mt-28 mt-20 border-gray-200">
             <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-12 md:py-16">
                 {/* Links Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">

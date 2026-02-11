@@ -56,7 +56,7 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                 <button className="px-4 py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap">
                     Add To Cart
                 </button>
-                <button className="p-3 text-main bg-[#E9EBF3] rounded transition-colors">
+                <button className="p-3 text-main bg-main-light rounded transition-colors">
                     <Heart className="w-4 h-4 fill-main" />
                 </button>
             </div>
