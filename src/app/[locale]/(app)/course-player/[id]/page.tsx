@@ -1,29 +1,9 @@
 "use client";
 import { useState, useRef, useMemo } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Play,
-  Pause,
-  CheckSquare,
-  Square,
-  ArrowLeft,
-  Clock,
-  BookOpen,
-  Layers,
-  MessageCircle,
-  Users,
-  CalendarDays,
-  SkipBack,
-  SkipForward,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, Clock, BookOpen, Layers, MessageCircle, CalendarDays, Menu} from "lucide-react";
 import Image from "next/image";
-import {
-  courseSections,
-  coursePlayerInfo,
-  quizQuestionsData,
-} from "@/lib/profile";
-import { Link, useRouter } from "@/i18n/navigation";
+import {courseSections,coursePlayerInfo,quizQuestionsData,} from "@/lib/profile";
+import { useRouter } from "@/i18n/navigation";
 import QuizModal from "@/components/modal/QuizModal";
 import WriteReviewModal from "@/components/modal/WriteReviewModal";
 
@@ -36,6 +16,7 @@ const CoursePlayerPage = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Calculate overall progress
@@ -73,6 +54,7 @@ const CoursePlayerPage = () => {
   ) => {
     setCurrentLecture(lecture);
     setIsPlaying(true);
+    setShowMobileSidebar(false);
     setTimeout(() => {
       videoRef.current?.play();
     }, 100);
@@ -102,54 +84,77 @@ const CoursePlayerPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Top Header Bar */}
+    <div className="sm:min-h-screen bg-white">
+      {/* Top Header Bar - Fully Responsive */}
       <div className="border-b border-border-light bg-white sticky top-0 z-30">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
-          <div className="flex items-center justify-between py-3 sm:py-4 gap-4">
+          <div className="flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-4">
             {/* Left: Back + Course Info */}
-            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0 flex-1">
               <button
                 onClick={() => router.back()}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors shrink-0"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors shrink-0"
               >
-                <ArrowLeft className="w-5 h-5 text-title" />
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-title" />
               </button>
-              <div className="min-w-0">
-                <h1 className="text-sm sm:text-base font-bold text-title truncate">
+              
+              <div className="min-w-0 flex-1">
+                <h1 className="text-sm sm:text-base md:text-lg font-medium text-title truncate">
                   {coursePlayerInfo.title}
                 </h1>
-                <div className="flex items-center gap-3 sm:gap-4 mt-1 text-xs text-description">
+                
+                {/* Desktop Stats - Hidden on mobile */}
+                <div className="hidden md:flex items-center gap-3 lg:gap-4 mt-1 text-xs md:text-sm text-description">
                   <span className="flex items-center gap-1">
-                    <Layers className="w-3.5 h-3.5" />
+                    <Layers className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#4F9BEF]" />
                     {coursePlayerInfo.sections} Sections
                   </span>
                   <span className="flex items-center gap-1">
-                    <BookOpen className="w-3.5 h-3.5" />
+                    <BookOpen className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#564FFD]" />
                     {coursePlayerInfo.totalLectures} lectures
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" />
+                    <Clock className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#FD8E1F]" />
                     {coursePlayerInfo.totalDuration}
                   </span>
+                </div>
+
+                {/* Mobile Stats - Simplified */}
+                <div className="flex md:hidden items-center gap-2 mt-1 text-xs text-description">
+                  <span>{coursePlayerInfo.sections} Sections</span>
+                  <span>•</span>
+                  <span>{coursePlayerInfo.totalLectures} lectures</span>
                 </div>
               </div>
             </div>
 
             {/* Right: Actions */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 shrink-0">
+              {/* Mobile Menu Button - Shows sidebar */}
+              <button
+                onClick={() => setShowMobileSidebar(true)}
+                className="lg:hidden p-1.5 sm:p-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-title" />
+              </button>
+
+              {/* Write Review - Hidden on small mobile */}
               <button
                 onClick={() => setIsReviewOpen(true)}
-                className="hidden sm:flex items-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 border border-border-light rounded-md text-xs sm:text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
               >
-                Write A Review
+                <span className="hidden md:inline">Write A Review</span>
+                <span className="md:hidden">Review</span>
               </button>
+
+              {/* Next Lecture */}
               <button
                 onClick={handleNextLecture}
                 disabled={currentIndex >= allLectures.length - 1}
-                className="flex items-center gap-2 px-4 py-2.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 bg-main text-white rounded-md text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next Lecture
+                <span className="hidden sm:inline">Next Lecture</span>
+                <span className="sm:hidden">Next</span>
               </button>
             </div>
           </div>
@@ -157,8 +162,8 @@ const CoursePlayerPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-4 sm:py-6">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Video Player Column */}
           <div className="flex-1 min-w-0">
             {/* Video */}
@@ -173,70 +178,24 @@ const CoursePlayerPage = () => {
               />
             </div>
 
-            {/* Lecture Info Below Video */}
-            <div className="mt-5">
-              <h2 className="text-lg sm:text-xl font-bold text-title">
-                {getCurrentLectureNumber()}. {currentLecture.title}
-              </h2>
-
-              <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-3">
-                {/* Student Avatars */}
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="relative w-7 h-7 rounded-full border-2 border-white overflow-hidden"
-                      >
-                        <Image
-                          src="/home/banner.jpg"
-                          alt="Student"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm">
-                    <span className="font-bold text-title">
-                      {coursePlayerInfo.studentsWatching}
-                    </span>{" "}
-                    <span className="text-description">students watching</span>
-                  </div>
-                </div>
-
-                {/* Last Updated */}
-                <div className="flex items-center gap-1.5 text-sm text-description">
-                  <CalendarDays className="w-4 h-4" />
-                  Last updated: {coursePlayerInfo.lastUpdated}
-                </div>
-
-                {/* Comments */}
-                <div className="flex items-center gap-1.5 text-sm text-description">
-                  <MessageCircle className="w-4 h-4" />
-                  Comments: {coursePlayerInfo.comments}
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Write Review Button */}
+            {/* Mobile Review Button - Below Video */}
             <button
               onClick={() => setIsReviewOpen(true)}
-              className="sm:hidden w-full mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
+              className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
             >
               Write A Review
             </button>
           </div>
 
-          {/* Course Contents Sidebar */}
-          <div className="w-full lg:w-[380px] shrink-0">
+          {/* Desktop Course Contents Sidebar */}
+          <div className="hidden lg:block w-full lg:w-110 shrink-0">
             <div className="border border-border-light rounded-lg overflow-hidden lg:sticky lg:top-20">
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
-                <h3 className="text-base font-bold text-title">
+                <h3 className="text-lg xl:text-xl font-medium text-title">
                   Course Contents
                 </h3>
-                <span className="text-sm font-semibold text-success">
+                <span className="text-sm font-medium text-success">
                   {progressPercent}% Completed
                 </span>
               </div>
@@ -261,26 +220,26 @@ const CoursePlayerPage = () => {
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           {isExpanded ? (
-                            <ChevronUp className="w-4 h-4 text-description shrink-0" />
+                            <ChevronUp className="size-3 text-description shrink-0" />
                           ) : (
-                            <ChevronDown className="w-4 h-4 text-description shrink-0" />
+                            <ChevronDown className="size-3 text-description shrink-0" />
                           )}
-                          <span className="text-sm font-semibold text-title text-left truncate">
+                          <span className="text-sm lg:text-base font-semibold text-title text-left truncate">
                             {section.title}
                           </span>
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-description shrink-0 ml-2">
+                        <div className="flex items-center gap-2 xl:gap-3 text-xs text-description shrink-0 ml-2">
                           <span className="flex items-center gap-1">
-                            <BookOpen className="w-3 h-3 text-main" />
-                            {section.lectureCount} lectures
+                            <BookOpen className="size-3.5 text-main" />
+                            {section.lectureCount}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-main" />
+                            <Clock className="size-3.5 text-main" />
                             {section.totalDuration}
                           </span>
                           {section.completionPercent !== undefined && (
                             <span className="flex items-center gap-1 text-success">
-                              🌱 {section.completionPercent}% finish ({sectionCompleted}/{section.lectures.length})
+                              {section.completionPercent}%
                             </span>
                           )}
                         </div>
@@ -290,8 +249,7 @@ const CoursePlayerPage = () => {
                       {isExpanded && (
                         <div className="bg-white">
                           {section.lectures.map((lecture, idx) => {
-                            const isActive =
-                              currentLecture.id === lecture.id;
+                            const isActive = currentLecture.id === lecture.id;
 
                             return (
                               <button
@@ -301,16 +259,14 @@ const CoursePlayerPage = () => {
                                   isActive ? "bg-main/10" : ""
                                 }`}
                               >
-                                {/* Checkbox */}
                                 <div className="shrink-0">
                                   {lecture.completed ? (
-                                    <CheckSquare className="w-[18px] h-[18px] text-main fill-main" />
+                                    <CheckSquare className="size-4 text-main fill-main" />
                                   ) : (
-                                    <Square className="w-[18px] h-[18px] text-gray-300" />
+                                    <Square className="size-4 text-gray-300" />
                                   )}
                                 </div>
 
-                                {/* Lecture Title */}
                                 <span
                                   className={`flex-1 text-sm truncate ${
                                     isActive
@@ -321,12 +277,11 @@ const CoursePlayerPage = () => {
                                   {idx + 1}. {lecture.title}
                                 </span>
 
-                                {/* Play/Pause + Duration */}
                                 <div className="flex items-center gap-2 shrink-0">
                                   {isActive && isPlaying ? (
-                                    <Pause className="w-4 h-4 text-main" />
+                                    <Pause className="w-3.5 h-3.5 text-main" />
                                   ) : (
-                                    <Play className="w-4 h-4 text-description" />
+                                    <Play className="w-3.5 h-3.5 text-description" />
                                   )}
                                   <span className="text-xs text-description">
                                     {lecture.duration}
@@ -336,16 +291,15 @@ const CoursePlayerPage = () => {
                             );
                           })}
 
-                          {/* Quiz Row (if section has quiz) */}
                           {section.hasQuiz && (
                             <div className="flex items-center gap-3 px-4 py-2.5">
-                              <Square className="w-[18px] h-[18px] text-gray-300 shrink-0" />
+                              <Square className="size-4 text-gray-300 shrink-0" />
                               <span className="flex-1 text-sm text-title">
                                 {section.lectures.length + 1}. Start Quiz
                               </span>
                               <button
                                 onClick={() => setIsQuizOpen(true)}
-                                className="px-4 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors"
+                                className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors"
                               >
                                 Start
                               </button>
@@ -361,6 +315,130 @@ const CoursePlayerPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {showMobileSidebar && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowMobileSidebar(false)}
+          />
+
+          {/* Sidebar */}
+          <div className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white shadow-xl overflow-hidden flex flex-col">
+            {/* Sidebar Header */}
+            <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
+              <h3 className="text-lg font-medium text-title">
+                Course Contents
+              </h3>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-success">
+                  {progressPercent}%
+                </span>
+                <button
+                  onClick={() => setShowMobileSidebar(false)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5 text-title" />
+                </button>
+              </div>
+            </div>
+
+            {/* Sections List */}
+            <div className="flex-1 overflow-y-auto">
+              {courseSections.map((section) => {
+                const isExpanded = expandedSections.includes(section.id);
+                const sectionCompleted = section.lectures.filter(
+                  (l) => l.completed
+                ).length;
+
+                return (
+                  <div
+                    key={section.id}
+                    className="border-b border-border-light last:border-b-0"
+                  >
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        {isExpanded ? (
+                          <ChevronUp className="size-3 text-description shrink-0" />
+                        ) : (
+                          <ChevronDown className="size-3 text-description shrink-0" />
+                        )}
+                        <span className="text-sm font-semibold text-title text-left truncate">
+                          {section.title}
+                        </span>
+                      </div>
+                      <span className="text-xs text-success shrink-0 ml-2">
+                        {sectionCompleted}/{section.lectures.length}
+                      </span>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="bg-white">
+                        {section.lectures.map((lecture, idx) => {
+                          const isActive = currentLecture.id === lecture.id;
+
+                          return (
+                            <button
+                              key={lecture.id}
+                              onClick={() => handlePlayLecture(lecture)}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${
+                                isActive ? "bg-main/10" : ""
+                              }`}
+                            >
+                              <div className="shrink-0">
+                                {lecture.completed ? (
+                                  <CheckSquare className="size-4 text-main fill-main" />
+                                ) : (
+                                  <Square className="size-4 text-gray-300" />
+                                )}
+                              </div>
+
+                              <span
+                                className={`flex-1 text-sm truncate ${
+                                  isActive ? "text-main font-medium" : "text-title"
+                                }`}
+                              >
+                                {idx + 1}. {lecture.title}
+                              </span>
+
+                              <span className="text-xs text-description shrink-0">
+                                {lecture.duration}
+                              </span>
+                            </button>
+                          );
+                        })}
+
+                        {section.hasQuiz && (
+                          <div className="flex items-center gap-3 px-4 py-2.5">
+                            <Square className="size-4 text-gray-300 shrink-0" />
+                            <span className="flex-1 text-sm text-title">
+                              {section.lectures.length + 1}. Start Quiz
+                            </span>
+                            <button
+                              onClick={() => {
+                                setIsQuizOpen(true);
+                                setShowMobileSidebar(false);
+                              }}
+                              className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold"
+                            >
+                              Start
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quiz Modal */}
       <QuizModal
