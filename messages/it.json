@@ -217,7 +217,10 @@
     "showing": "Mostra",
     "of": "di",
     "results": "risultati",
-    "coursesFound": "corsi trovati"
+    "coursesFound": "corsi trovati",
+    "clearAll": "Cancella tutto",
+    "applyFilters": "Applica filtri",
+    "price": "Prezzo"
   },
   "Categories": {
     "title": "Tutte le Categorie",

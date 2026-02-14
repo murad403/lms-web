@@ -217,7 +217,10 @@
     "showing": "Mostrando",
     "of": "de",
     "results": "resultados",
-    "coursesFound": "cursos encontrados"
+    "coursesFound": "cursos encontrados",
+    "clearAll": "Limpiar todo",
+    "applyFilters": "Aplicar filtros",
+    "price": "Precio"
   },
   "Categories": {
     "title": "Todas las Categorías",

@@ -217,7 +217,10 @@
     "showing": "Anzeigen",
     "of": "von",
     "results": "Ergebnisse",
-    "coursesFound": "Kurse gefunden"
+    "coursesFound": "Kurse gefunden",
+    "clearAll": "Alles löschen",
+    "applyFilters": "Filter anwenden",
+    "price": "Preis"
   },
   "Categories": {
     "title": "Alle Kategorien",

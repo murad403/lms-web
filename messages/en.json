@@ -217,7 +217,10 @@
     "showing": "Showing",
     "of": "of",
     "results": "results",
-    "coursesFound": "courses found"
+    "coursesFound": "courses found",
+    "clearAll": "Clear All",
+    "applyFilters": "Apply Filters",
+    "price": "Price"
   },
   "Categories": {
     "title": "All Categories",
