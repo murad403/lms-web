@@ -430,5 +430,248 @@
     "loading": "Loading...",
     "search": "Search",
     "close": "Close"
+  },
+  "ProfileSidebar": {
+    "mainMenu": "Main Menu",
+    "accountSettings": "Account Settings",
+    "myDashboard": "My Dashboard",
+    "myProfile": "My Profile",
+    "enrolledCourses": "Enrolled Courses",
+    "learningProgress": "Learning Progress",
+    "liveClasses": "Live Classes",
+    "aiTutor": "AI Tutor",
+    "myCertificates": "My Certificates",
+    "wishlist": "Wishlist",
+    "reviews": "Reviews",
+    "myQuizAttempts": "My Quiz Attempts",
+    "purchaseHistory": "Purchase History",
+    "messages": "Messages",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "Dashboard": {
+    "quizTitle": "Quiz : Build Responsive Real World",
+    "answered": "Answered : 15/22",
+    "continueQuiz": "Continue Quiz",
+    "enrolledCourses": "Enrolled Courses",
+    "activeCourses": "Active Courses",
+    "completedCourses": "Completed Courses",
+    "recentlyEnrolledCourses": "Recently Enrolled Courses",
+    "recentInvoices": "Recent Invoices",
+    "amount": "Amount",
+    "latestQuizzes": "Latest Quizzes",
+    "correctAnswer": "Correct Answer",
+    "date": "Date"
+  },
+  "EnrolledCoursesPage": {
+    "title": "Enrolled Courses",
+    "enrolled": "Enrolled",
+    "active": "Active",
+    "completed": "Completed"
+  },
+  "LearningProgress": {
+    "title": "Learning Progress",
+    "description": "Track your detailed learning journey and achievements",
+    "totalHours": "Total Hours",
+    "completion": "Completion",
+    "examEligible": "Exam Eligible",
+    "courses": "Courses",
+    "certificateReady": "Certificate Ready",
+    "examsAssessments": "Exams & Assessments",
+    "completed": "Completed",
+    "lessons": "lessons",
+    "lessonTracking": "Lesson Tracking",
+    "allCategories": "All Categories",
+    "module": "Module",
+    "lesson": "Lesson",
+    "watchTime": "Watch Time",
+    "status": "Status",
+    "date": "Date"
+  },
+  "LiveClasses": {
+    "title": "Live Classes",
+    "description": "Attend live sessions and access recordings",
+    "upcomingLiveClasses": "Upcoming Live Classes",
+    "joinNow": "Join Now",
+    "pastSessions": "Past Sessions"
+  },
+  "MessagesPage": {
+    "title": "Chat Messages",
+    "searchPlaceholder": "Search",
+    "activeNow": "Active Now",
+    "today": "Today",
+    "typePlaceholder": "Type your message",
+    "send": "Send"
+  },
+  "CertificatesPage": {
+    "title": "My Certificates",
+    "id": "ID",
+    "courseName": "Course Name",
+    "date": "Date",
+    "marks": "Marks",
+    "outOf": "Out of",
+    "actions": "Actions",
+    "viewCertificate": "View Certificate",
+    "downloadCertificate": "Download Certificate",
+    "certificatePreview": "Certificate Preview",
+    "certificateOfCompletion": "Certificate of Completion",
+    "thisCertifiesThat": "This certifies that",
+    "hasSuccessfullyCompleted": "has successfully completed the course",
+    "certifiesUserCompleted": "This certifies that Kevin Gilbert has successfully completed",
+    "score": "Score",
+    "downloadPDF": "Download PDF",
+    "certificateId": "Certificate ID",
+    "instructorSignature": "Instructor Signature",
+    "directorSignature": "Director Signature"
+  },
+  "ProfilePage": {
+    "title": "My Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "registrationDate": "Registration Date",
+    "userName": "User Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "gender": "Gender",
+    "dateOfBirth": "Date of Birth",
+    "age": "Age",
+    "bio": "Bio"
+  },
+  "PurchaseHistoryPage": {
+    "title": "Purchase History",
+    "courses": "Courses",
+    "usd": "USD"
+  },
+  "QuizAttemptsPage": {
+    "title": "My Quiz Attempts"
+  },
+  "ReviewsPage": {
+    "title": "Reviews",
+    "writeReview": "Write a Review"
+  },
+  "SettingsPage": {
+    "title": "Settings",
+    "imageSizeError": "Image size must be under 1MB",
+    "invalidImageError": "Please select a valid image file",
+    "imageRatioError": "Image should have 1:1 ratio (square)",
+    "changePhoto": "Change Photo",
+    "uploadPhoto": "Upload Photo",
+    "imageSizeHint": "Image size should be under 1MB and image ratio needs to be 1:1",
+    "imageReady": "✓ Image ready to save",
+    "fullName": "Full name",
+    "firstNamePlaceholder": "First name",
+    "lastNamePlaceholder": "Last name",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "email": "Email",
+    "emailPlaceholder": "Email address",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Your title, profession or short biography",
+    "saveChanges": "Save Changes",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "confirmNewPassword": "Confirm new password",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDesc": "Permanently delete your account and all associated data",
+    "deleteAccountWarning": "Warning: This action is irreversible. All your data will be permanently deleted.",
+    "delete": "Delete",
+    "deleteAccountConfirm": "Are you sure you want to delete your account? This action cannot be undone.",
+    "cancel": "Cancel",
+    "yesDelete": "Yes, Delete"
+  },
+  "WishlistPage": {
+    "title": "Wishlist",
+    "course": "Course",
+    "prices": "Prices",
+    "action": "Action"
+  },
+  "AITutor": {
+    "title": "AI Tutor",
+    "aiIsHere": "AI is Here",
+    "initialMessage": "Hello! I'm your AI-powered tutor. I can help you understand concepts from your courses, answer questions, and provide explanations. Select a course to get context-aware help, or just ask me anything!",
+    "mockResponse": "Yeah sure, thanks",
+    "you": "You",
+    "today": "Today",
+    "typePlaceholder": "Type your message",
+    "send": "Send"
+  },
+  "LogoutModal": {
+    "title": "Logout",
+    "description": "Are you sure you want to logout?",
+    "cancel": "Cancel",
+    "confirm": "Yes, Logout"
+  },
+  "DashboardCourseCard": {
+    "watchLecture": "Watch Lecture",
+    "completed": "Completed"
+  },
+  "EnrolledCourseCard": {
+    "viewCourse": "View Course",
+    "completed": "Completed"
+  },
+  "WishlistCard": {
+    "courseBy": "Course by",
+    "buyNow": "Buy Now",
+    "addToCart": "Add To Cart"
+  },
+  "PurchaseItemCard": {
+    "courseBy": "Course by:"
+  },
+  "QuizAttemptCard": {
+    "numberOfQuestions": "Number of Questions"
+  },
+  "ReviewCard": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "WriteReviewModal": {
+    "title": "Write a Review",
+    "rating": "Rating",
+    "featured": "Featured",
+    "feedback": "Feedback",
+    "placeholder": "Write your review here...",
+    "cancel": "Cancel",
+    "submitting": "Submitting...",
+    "submit": "Submit Review",
+    "ratingRequired": "Please select a rating",
+    "reviewRequired": "Review is required",
+    "reviewTooLong": "Review is too long"
+  },
+  "EditReviewModal": {
+    "title": "Edit Review",
+    "rating": "Rating",
+    "comment": "Comment",
+    "placeholder": "Share your experience...",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "save": "Save Changes",
+    "commentRequired": "Comment is required",
+    "commentTooLong": "Comment is too long"
+  },
+  "DeleteReviewModal": {
+    "title": "Delete Review",
+    "description": "Are you sure you want to delete this review? This action cannot be undone.",
+    "cancel": "Cancel",
+    "deleting": "Deleting...",
+    "delete": "Delete"
+  },
+  "QuizModal": {
+    "title": "Quiz",
+    "nextQuestion": "Next Question",
+    "submitQuiz": "Submit Quiz",
+    "quizResult": "Quiz Result",
+    "yourScore": "your Score",
+    "pt": "pt",
+    "completion": "Completion",
+    "totalQuestion": "Total Question",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "numberOfQuestions": "Number of Questions",
+    "retake": "Retake",
+    "continue": "Continue"
   }
 }

@@ -5,22 +5,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Star, X } from "lucide-react";
 import { TReview } from "@/lib/profile";
-
-const reviewSchema = z.object({
-    rating: z.number().min(1).max(5),
-    comment: z.string().min(1, "Comment is required").max(500, "Comment is too long"),
-});
-
-type ReviewFormData = z.infer<typeof reviewSchema>;
+import { useTranslations } from "next-intl";
 
 type EditReviewModalProps = {
     review: TReview;
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: ReviewFormData) => void;
+    onSubmit: (data: { rating: number; comment: string }) => void;
 };
 
 const EditReviewModal = ({ review, isOpen, onClose, onSubmit }: EditReviewModalProps) => {
+    const t = useTranslations("EditReviewModal");
+
+    const reviewSchema = z.object({
+        rating: z.number().min(1).max(5),
+        comment: z.string().min(1, t("commentRequired")).max(500, t("commentTooLong")),
+    });
+
+    type ReviewFormData = z.infer<typeof reviewSchema>;
+
     const {
         register,
         handleSubmit,
@@ -51,7 +54,7 @@ const EditReviewModal = ({ review, isOpen, onClose, onSubmit }: EditReviewModalP
             <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-title">Edit Review</h2>
+                    <h2 className="text-xl font-semibold text-title">{t("title")}</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -65,7 +68,7 @@ const EditReviewModal = ({ review, isOpen, onClose, onSubmit }: EditReviewModalP
                     {/* Rating */}
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-title mb-2">
-                            Rating
+                            {t("rating")}
                         </label>
                         <div className="flex items-center gap-1">
                             {Array.from({ length: 5 }).map((_, i) => (
@@ -92,13 +95,13 @@ const EditReviewModal = ({ review, isOpen, onClose, onSubmit }: EditReviewModalP
                     {/* Comment */}
                     <div className="mb-6">
                         <label className="block text-sm font-medium text-title mb-2">
-                            Comment
+                            {t("comment")}
                         </label>
                         <textarea
                             {...register("comment")}
                             rows={4}
                             className="w-full px-3 py-2 border border-border-light rounded-md focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main text-sm resize-none"
-                            placeholder="Share your experience..."
+                            placeholder={t("placeholder")}
                         />
                         {errors.comment && (
                             <p className="text-red-500 text-xs mt-1">{errors.comment.message}</p>
@@ -112,14 +115,14 @@ const EditReviewModal = ({ review, isOpen, onClose, onSubmit }: EditReviewModalP
                             onClick={onClose}
                             className="flex-1 px-4 py-2 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
                             className="flex-1 px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {isSubmitting ? "Saving..." : "Save Changes"}
+                            {isSubmitting ? t("saving") : t("save")}
                         </button>
                     </div>
                 </form>

@@ -1,5 +1,6 @@
 "use client";
 import { LogOut } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -15,6 +16,7 @@ type LogoutModalProps = {
 };
 
 const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
+  const t = useTranslations("LogoutModal");
   const handleLogout = () => {
     // TODO: API call for logout
     onClose();
@@ -28,10 +30,10 @@ const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
             <LogOut className="w-6 h-6 text-red-500" />
           </div>
           <AlertDialogTitle className="text-lg font-bold text-title">
-            Logout
+            {t("title")}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-sm text-description text-center">
-            Are you sure you want to logout?
+            {t("description")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-row gap-3 sm:justify-center">
@@ -39,13 +41,13 @@ const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
             onClick={onClose}
             className="flex-1 px-6 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-title hover:bg-gray-50 transition-colors"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             onClick={handleLogout}
             className="flex-1 px-6 py-2.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
           >
-            Yes, Logout
+            {t("confirm")}
           </button>
         </AlertDialogFooter>
       </AlertDialogContent>

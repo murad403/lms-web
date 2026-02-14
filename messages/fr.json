@@ -430,5 +430,248 @@
     "loading": "Chargement...",
     "search": "Rechercher",
     "close": "Fermer"
+  },
+  "ProfileSidebar": {
+    "mainMenu": "Menu Principal",
+    "accountSettings": "Paramètres du Compte",
+    "myDashboard": "Mon Tableau de Bord",
+    "myProfile": "Mon Profil",
+    "enrolledCourses": "Cours Inscrits",
+    "learningProgress": "Progrès d'Apprentissage",
+    "liveClasses": "Cours en Direct",
+    "aiTutor": "Tuteur IA",
+    "myCertificates": "Mes Certificats",
+    "wishlist": "Liste de Souhaits",
+    "reviews": "Avis",
+    "myQuizAttempts": "Mes Tentatives de Quiz",
+    "purchaseHistory": "Historique d'Achats",
+    "messages": "Messages",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "Dashboard": {
+    "quizTitle": "Quiz : Créer des Sites Web Responsifs",
+    "answered": "Répondu : 15/22",
+    "continueQuiz": "Continuer le Quiz",
+    "enrolledCourses": "Cours Inscrits",
+    "activeCourses": "Cours Actifs",
+    "completedCourses": "Cours Terminés",
+    "recentlyEnrolledCourses": "Cours Récemment Inscrits",
+    "recentInvoices": "Factures Récentes",
+    "amount": "Montant",
+    "latestQuizzes": "Derniers Quiz",
+    "correctAnswer": "Réponse Correcte",
+    "date": "Date"
+  },
+  "EnrolledCoursesPage": {
+    "title": "Cours Inscrits",
+    "enrolled": "Inscrits",
+    "active": "Actifs",
+    "completed": "Terminés"
+  },
+  "LearningProgress": {
+    "title": "Progrès d'Apprentissage",
+    "description": "Suivez votre parcours d'apprentissage détaillé et vos réalisations",
+    "totalHours": "Heures Totales",
+    "completion": "Achèvement",
+    "examEligible": "Éligible à l'Examen",
+    "courses": "Cours",
+    "certificateReady": "Certificat Prêt",
+    "examsAssessments": "Examens et Évaluations",
+    "completed": "Terminé",
+    "lessons": "leçons",
+    "lessonTracking": "Suivi des Leçons",
+    "allCategories": "Toutes les Catégories",
+    "module": "Module",
+    "lesson": "Leçon",
+    "watchTime": "Temps de Visionnage",
+    "status": "Statut",
+    "date": "Date"
+  },
+  "LiveClasses": {
+    "title": "Cours en Direct",
+    "description": "Participez aux sessions en direct et accédez aux enregistrements",
+    "upcomingLiveClasses": "Prochains Cours en Direct",
+    "joinNow": "Rejoindre Maintenant",
+    "pastSessions": "Sessions Passées"
+  },
+  "MessagesPage": {
+    "title": "Messages de Chat",
+    "searchPlaceholder": "Rechercher",
+    "activeNow": "Actif Maintenant",
+    "today": "Aujourd'hui",
+    "typePlaceholder": "Tapez votre message",
+    "send": "Envoyer"
+  },
+  "CertificatesPage": {
+    "title": "Mes Certificats",
+    "id": "ID",
+    "courseName": "Nom du Cours",
+    "date": "Date",
+    "marks": "Notes",
+    "outOf": "Sur",
+    "actions": "Actions",
+    "viewCertificate": "Voir le Certificat",
+    "downloadCertificate": "Télécharger le Certificat",
+    "certificatePreview": "Aperçu du Certificat",
+    "certificateOfCompletion": "Certificat d'Achèvement",
+    "thisCertifiesThat": "Ceci certifie que",
+    "hasSuccessfullyCompleted": "a complété avec succès le cours",
+    "certifiesUserCompleted": "Ceci certifie que Kevin Gilbert a complété avec succès",
+    "score": "Score",
+    "downloadPDF": "Télécharger PDF",
+    "certificateId": "ID du Certificat",
+    "instructorSignature": "Signature de l'Instructeur",
+    "directorSignature": "Signature du Directeur"
+  },
+  "ProfilePage": {
+    "title": "Mon Profil",
+    "firstName": "Prénom",
+    "lastName": "Nom de Famille",
+    "registrationDate": "Date d'Inscription",
+    "userName": "Nom d'Utilisateur",
+    "phoneNumber": "Numéro de Téléphone",
+    "email": "E-mail",
+    "gender": "Genre",
+    "dateOfBirth": "Date de Naissance",
+    "age": "Âge",
+    "bio": "Biographie"
+  },
+  "PurchaseHistoryPage": {
+    "title": "Historique d'Achats",
+    "courses": "Cours",
+    "usd": "USD"
+  },
+  "QuizAttemptsPage": {
+    "title": "Mes Tentatives de Quiz"
+  },
+  "ReviewsPage": {
+    "title": "Avis",
+    "writeReview": "Écrire un Avis"
+  },
+  "SettingsPage": {
+    "title": "Paramètres",
+    "imageSizeError": "La taille de l'image doit être inférieure à 1 Mo",
+    "invalidImageError": "Veuillez sélectionner un fichier image valide",
+    "imageRatioError": "L'image doit avoir un ratio 1:1 (carré)",
+    "changePhoto": "Changer la Photo",
+    "uploadPhoto": "Télécharger la Photo",
+    "imageSizeHint": "La taille de l'image doit être inférieure à 1 Mo et le ratio doit être 1:1",
+    "imageReady": "✓ Image prête à enregistrer",
+    "fullName": "Nom complet",
+    "firstNamePlaceholder": "Prénom",
+    "lastNamePlaceholder": "Nom de famille",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Entrez votre nom d'utilisateur",
+    "email": "E-mail",
+    "emailPlaceholder": "Adresse e-mail",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Votre titre, profession ou courte biographie",
+    "saveChanges": "Enregistrer les Modifications",
+    "changePassword": "Changer le Mot de Passe",
+    "currentPassword": "Mot de Passe Actuel",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "newPassword": "Nouveau Mot de Passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "deleteAccount": "Supprimer le Compte",
+    "deleteAccountDesc": "Supprimer définitivement votre compte et toutes les données associées",
+    "deleteAccountWarning": "Avertissement : Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
+    "delete": "Supprimer",
+    "deleteAccountConfirm": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action ne peut pas être annulée.",
+    "cancel": "Annuler",
+    "yesDelete": "Oui, Supprimer"
+  },
+  "WishlistPage": {
+    "title": "Liste de Souhaits",
+    "course": "Cours",
+    "prices": "Prix",
+    "action": "Action"
+  },
+  "AITutor": {
+    "title": "Tuteur IA",
+    "aiIsHere": "L'IA est Là",
+    "initialMessage": "Bonjour ! Je suis votre tuteur alimenté par l'IA. Je peux vous aider à comprendre les concepts de vos cours, répondre à vos questions et fournir des explications. Sélectionnez un cours pour une aide contextuelle ou posez-moi simplement n'importe quelle question !",
+    "mockResponse": "Oui bien sûr, merci",
+    "you": "Vous",
+    "today": "Aujourd'hui",
+    "typePlaceholder": "Tapez votre message",
+    "send": "Envoyer"
+  },
+  "LogoutModal": {
+    "title": "Déconnexion",
+    "description": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "cancel": "Annuler",
+    "confirm": "Oui, Déconnexion"
+  },
+  "DashboardCourseCard": {
+    "watchLecture": "Voir le Cours",
+    "completed": "Terminé"
+  },
+  "EnrolledCourseCard": {
+    "viewCourse": "Voir le Cours",
+    "completed": "Terminé"
+  },
+  "WishlistCard": {
+    "courseBy": "Cours par",
+    "buyNow": "Acheter Maintenant",
+    "addToCart": "Ajouter au Panier"
+  },
+  "PurchaseItemCard": {
+    "courseBy": "Cours par :"
+  },
+  "QuizAttemptCard": {
+    "numberOfQuestions": "Nombre de Questions"
+  },
+  "ReviewCard": {
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "WriteReviewModal": {
+    "title": "Écrire un Avis",
+    "rating": "Note",
+    "featured": "En vedette",
+    "feedback": "Commentaires",
+    "placeholder": "Écrivez votre avis ici...",
+    "cancel": "Annuler",
+    "submitting": "Envoi en cours...",
+    "submit": "Soumettre l'Avis",
+    "ratingRequired": "Veuillez sélectionner une note",
+    "reviewRequired": "L'avis est obligatoire",
+    "reviewTooLong": "L'avis est trop long"
+  },
+  "EditReviewModal": {
+    "title": "Modifier l'Avis",
+    "rating": "Note",
+    "comment": "Commentaire",
+    "placeholder": "Partagez votre expérience...",
+    "cancel": "Annuler",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer les Modifications",
+    "commentRequired": "Le commentaire est obligatoire",
+    "commentTooLong": "Le commentaire est trop long"
+  },
+  "DeleteReviewModal": {
+    "title": "Supprimer l'Avis",
+    "description": "Êtes-vous sûr de vouloir supprimer cet avis ? Cette action ne peut pas être annulée.",
+    "cancel": "Annuler",
+    "deleting": "Suppression...",
+    "delete": "Supprimer"
+  },
+  "QuizModal": {
+    "title": "Quiz",
+    "nextQuestion": "Question Suivante",
+    "submitQuiz": "Soumettre le Quiz",
+    "quizResult": "Résultat du Quiz",
+    "yourScore": "Votre Score",
+    "pt": "pt",
+    "completion": "Achèvement",
+    "totalQuestion": "Total de Questions",
+    "correct": "Correct",
+    "wrong": "Incorrect",
+    "numberOfQuestions": "Nombre de Questions",
+    "retake": "Repasser",
+    "continue": "Continuer"
   }
 }

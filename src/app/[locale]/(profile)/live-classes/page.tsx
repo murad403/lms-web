@@ -4,16 +4,18 @@ import { Video, Calendar as CalendarIcon, Clock, User, ExternalLink } from "luci
 import { Calendar } from "@/components/ui/calendar";
 import { upcomingLiveClasses, pastSessions } from "@/lib/profile";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 
 const LiveClassesPage = () => {
     const [date, setDate] = useState<Date | undefined>(new Date());
+    const t = useTranslations("LiveClasses");
 
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-lg sm:text-xl font-bold text-title">Live Classes</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
                 <p className="text-xs sm:text-sm text-description mt-1">
-                    Attend live sessions and access recordings
+                    {t("description")}
                 </p>
             </div>
 
@@ -21,7 +23,7 @@ const LiveClassesPage = () => {
             <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
                 <h3 className="text-base font-bold text-title mb-4 flex items-center gap-2">
                     <Video className="w-5 h-5 text-main" />
-                    Upcoming Live Classes
+                    {t("upcomingLiveClasses")}
                 </h3>
                 <div className="space-y-3">
                     {upcomingLiveClasses.map((cls) => (
@@ -54,7 +56,7 @@ const LiveClassesPage = () => {
                                 className="px-4 py-3 bg-[#1B2E5A] text-white rounded-md text-xs sm:text-sm font-medium hover:bg-[#1B2E5A]/90 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
                             >
                                 <ExternalLink className="size-4" />
-                                Join Now
+                                {t("joinNow")}
                             </a>
                         </div>
                     ))}
@@ -63,7 +65,7 @@ const LiveClassesPage = () => {
 
             {/* Calendar */}
             <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
-                <h3 className="text-lg font-bold text-title mb-4">Live Classes</h3>
+                <h3 className="text-lg font-bold text-title mb-4">{t("title")}</h3>
                 <div className="flex justify-start">
                     <Calendar
                         mode="single"
@@ -78,7 +80,7 @@ const LiveClassesPage = () => {
             <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
                 <h3 className="text-lg font-bold text-title mb-4 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-description" />
-                    Past Sessions
+                    {t("pastSessions")}
                 </h3>
                 <div className="space-y-3">
                     {pastSessions.map((session) => (

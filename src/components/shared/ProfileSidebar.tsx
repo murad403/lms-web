@@ -4,38 +4,40 @@ import {
     LayoutDashboard, User, BookOpen, TrendingUp, Video, Bot, Award, Heart, Star, HelpCircle, History, MessageSquare, Settings, LogOut,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import LogoutModal from "./LogoutModal";
 
 
 type SidebarItem = {
-    label: string;
+    labelKey: string;
     href: string;
     icon: React.ElementType;
     color?: string;
 };
 
 const mainMenuItems: SidebarItem[] = [
-    { label: "My Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "My Profile", href: "/profile", icon: User },
-    { label: "Enrolled Courses", href: "/enrolled-courses", icon: BookOpen },
-    { label: "Learning Progress", href: "/learning-progress", icon: TrendingUp },
-    { label: "Live Classes", href: "/live-classes", icon: Video },
-    { label: "AI Tutor", href: "/ai-tutor", icon: Bot },
-    { label: "My Certificates", href: "/my-certificates", icon: Award },
-    { label: "Wishlist", href: "/wishlist", icon: Heart},
-    { label: "Reviews", href: "/reviews", icon: Star },
-    { label: "My Quiz Attempts", href: "/quiz-attempts", icon: HelpCircle },
-    { label: "Purchase History", href: "/purchase-history", icon: History },
-    { label: "Messages", href: "/messages", icon: MessageSquare },
+    { labelKey: "myDashboard", href: "/dashboard", icon: LayoutDashboard },
+    { labelKey: "myProfile", href: "/profile", icon: User },
+    { labelKey: "enrolledCourses", href: "/enrolled-courses", icon: BookOpen },
+    { labelKey: "learningProgress", href: "/learning-progress", icon: TrendingUp },
+    { labelKey: "liveClasses", href: "/live-classes", icon: Video },
+    { labelKey: "aiTutor", href: "/ai-tutor", icon: Bot },
+    { labelKey: "myCertificates", href: "/my-certificates", icon: Award },
+    { labelKey: "wishlist", href: "/wishlist", icon: Heart},
+    { labelKey: "reviews", href: "/reviews", icon: Star },
+    { labelKey: "myQuizAttempts", href: "/quiz-attempts", icon: HelpCircle },
+    { labelKey: "purchaseHistory", href: "/purchase-history", icon: History },
+    { labelKey: "messages", href: "/messages", icon: MessageSquare },
 ];
 
 const accountSettingsItems: SidebarItem[] = [
-    { label: "Settings", href: "/settings", icon: Settings },
+    { labelKey: "settings", href: "/settings", icon: Settings },
 ];
 
 const ProfileSidebar = () => {
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
+    const t = useTranslations("ProfileSidebar");
 
     const isActive = (href: string) => {
         return pathname === href || pathname.startsWith(href + "/");
@@ -54,7 +56,7 @@ const ProfileSidebar = () => {
                     }`}
             >
                 <Icon className={`w-4 h-4 shrink-0 ${active ? "text-main" : item.color || "text-description"}`} />
-                <span className="truncate">{item.label}</span>
+                <span className="truncate">{t(item.labelKey)}</span>
             </Link>
         );
     };
@@ -66,7 +68,7 @@ const ProfileSidebar = () => {
                     {/* Main Menu */}
                     <div className="mb-4">
                         <h3 className="text-[16px] font-bold text-title uppercase tracking-wider mb-2 px-3">
-                            Main Menu
+                            {t("mainMenu")}
                         </h3>
                         <nav className="space-y-0.5">
                             {mainMenuItems.map(renderItem)}
@@ -76,7 +78,7 @@ const ProfileSidebar = () => {
                     {/* Account Settings */}
                     <div className="border-t border-border-light pt-4">
                         <h3 className="text-xs font-bold text-title uppercase tracking-wider mb-2 px-3">
-                            Account Settings
+                            {t("accountSettings")}
                         </h3>
                         <nav className="space-y-0.5">
                             {accountSettingsItems.map(renderItem)}
@@ -85,7 +87,7 @@ const ProfileSidebar = () => {
                                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-description hover:bg-gray-50 hover:text-title transition-colors w-full"
                             >
                                 <LogOut className="w-4 h-4 shrink-0 text-description" />
-                                <span className="truncate">Logout</span>
+                                <span className="truncate">{t("logout")}</span>
                             </button>
                         </nav>
                     </div>

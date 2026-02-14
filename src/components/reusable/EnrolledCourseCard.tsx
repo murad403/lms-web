@@ -3,12 +3,14 @@ import Image from "next/image";
 import { Star, Heart, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { TEnrolledCourse } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 type EnrolledCourseCardProps = {
     course: TEnrolledCourse;
 };
 
 const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
+    const t = useTranslations("EnrolledCourseCard");
     return (
         <div className="bg-white rounded-md overflow-hidden border border-border-light hover:shadow-lg transition-shadow w-full">
             {/* Image */}
@@ -65,7 +67,7 @@ const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
                         href={`/course-player/${course.id}`}
                         className="px-4 py-2 bg-main text-white rounded text-sm font-semibold hover:bg-main/90 transition-colors flex items-center gap-1"
                     >
-                        View Course
+                        {t("viewCourse")}
                         <ChevronRight />
                     </Link>
                 </div>
@@ -78,7 +80,7 @@ const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
                             style={{ width: `${course.progress}%` }}
                         />
                     </div>
-                    <p className="text-sm text-success font-medium text-nowrap">{course.progress}% Completed</p>
+                    <p className="text-sm text-success font-medium text-nowrap">{course.progress}% {t("completed")}</p>
                 </div>
             </div>
         </div>

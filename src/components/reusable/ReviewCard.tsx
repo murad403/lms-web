@@ -6,6 +6,7 @@ import { Star, Pencil, Trash2 } from "lucide-react";
 import { TReview } from "@/lib/profile";
 import EditReviewModal from "../modal/EditReviewModal";
 import DeleteReviewModal from "../modal/DeleteReviewModal";
+import { useTranslations } from "next-intl";
 
 type ReviewCardProps = {
     review: TReview;
@@ -17,6 +18,7 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const t = useTranslations("ReviewCard");
 
     const handleEdit = async (data: { rating: number; comment: string }) => {
         try {
@@ -79,14 +81,14 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
                                     className="flex items-center gap-1.5 text-xs text-main hover:text-main/80 transition-colors font-medium"
                                 >
                                     <Pencil className="w-3.5 h-3.5" />
-                                    Edit
+                                    {t("edit")}
                                 </button>
                                 <button
                                     onClick={() => setIsDeleteModalOpen(true)}
                                     className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-600 transition-colors font-medium"
                                 >
                                     <Trash2 className="w-3.5 h-3.5" />
-                                    Delete
+                                    {t("delete")}
                                 </button>
                             </div>
                         )}

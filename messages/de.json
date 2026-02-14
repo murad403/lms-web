@@ -430,5 +430,248 @@
     "loading": "Laden...",
     "search": "Suchen",
     "close": "Schließen"
+  },
+  "ProfileSidebar": {
+    "mainMenu": "Hauptmenü",
+    "accountSettings": "Kontoeinstellungen",
+    "myDashboard": "Mein Dashboard",
+    "myProfile": "Mein Profil",
+    "enrolledCourses": "Eingeschriebene Kurse",
+    "learningProgress": "Lernfortschritt",
+    "liveClasses": "Live-Kurse",
+    "aiTutor": "KI-Tutor",
+    "myCertificates": "Meine Zertifikate",
+    "wishlist": "Wunschliste",
+    "reviews": "Bewertungen",
+    "myQuizAttempts": "Meine Quizversuche",
+    "purchaseHistory": "Kaufhistorie",
+    "messages": "Nachrichten",
+    "settings": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "Dashboard": {
+    "quizTitle": "Quiz : Responsive Webseiten erstellen",
+    "answered": "Beantwortet : 15/22",
+    "continueQuiz": "Quiz Fortsetzen",
+    "enrolledCourses": "Eingeschriebene Kurse",
+    "activeCourses": "Aktive Kurse",
+    "completedCourses": "Abgeschlossene Kurse",
+    "recentlyEnrolledCourses": "Kürzlich Eingeschriebene Kurse",
+    "recentInvoices": "Letzte Rechnungen",
+    "amount": "Betrag",
+    "latestQuizzes": "Neueste Quizze",
+    "correctAnswer": "Richtige Antwort",
+    "date": "Datum"
+  },
+  "EnrolledCoursesPage": {
+    "title": "Eingeschriebene Kurse",
+    "enrolled": "Eingeschrieben",
+    "active": "Aktiv",
+    "completed": "Abgeschlossen"
+  },
+  "LearningProgress": {
+    "title": "Lernfortschritt",
+    "description": "Verfolgen Sie Ihre detaillierte Lernreise und Erfolge",
+    "totalHours": "Gesamtstunden",
+    "completion": "Abschluss",
+    "examEligible": "Prüfungsberechtigt",
+    "courses": "Kurse",
+    "certificateReady": "Zertifikat Bereit",
+    "examsAssessments": "Prüfungen & Bewertungen",
+    "completed": "Abgeschlossen",
+    "lessons": "Lektionen",
+    "lessonTracking": "Lektionsverfolgung",
+    "allCategories": "Alle Kategorien",
+    "module": "Modul",
+    "lesson": "Lektion",
+    "watchTime": "Wiedergabezeit",
+    "status": "Status",
+    "date": "Datum"
+  },
+  "LiveClasses": {
+    "title": "Live-Kurse",
+    "description": "Nehmen Sie an Live-Sitzungen teil und greifen Sie auf Aufzeichnungen zu",
+    "upcomingLiveClasses": "Kommende Live-Kurse",
+    "joinNow": "Jetzt Beitreten",
+    "pastSessions": "Vergangene Sitzungen"
+  },
+  "MessagesPage": {
+    "title": "Chat-Nachrichten",
+    "searchPlaceholder": "Suchen",
+    "activeNow": "Jetzt Aktiv",
+    "today": "Heute",
+    "typePlaceholder": "Nachricht eingeben",
+    "send": "Senden"
+  },
+  "CertificatesPage": {
+    "title": "Meine Zertifikate",
+    "id": "ID",
+    "courseName": "Kursname",
+    "date": "Datum",
+    "marks": "Noten",
+    "outOf": "Von",
+    "actions": "Aktionen",
+    "viewCertificate": "Zertifikat Anzeigen",
+    "downloadCertificate": "Zertifikat Herunterladen",
+    "certificatePreview": "Zertifikatsvorschau",
+    "certificateOfCompletion": "Abschlusszertifikat",
+    "thisCertifiesThat": "Dies bescheinigt, dass",
+    "hasSuccessfullyCompleted": "den Kurs erfolgreich abgeschlossen hat",
+    "certifiesUserCompleted": "Dies bescheinigt, dass Kevin Gilbert erfolgreich abgeschlossen hat",
+    "score": "Punktzahl",
+    "downloadPDF": "PDF Herunterladen",
+    "certificateId": "Zertifikats-ID",
+    "instructorSignature": "Unterschrift des Dozenten",
+    "directorSignature": "Unterschrift des Direktors"
+  },
+  "ProfilePage": {
+    "title": "Mein Profil",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "registrationDate": "Registrierungsdatum",
+    "userName": "Benutzername",
+    "phoneNumber": "Telefonnummer",
+    "email": "E-Mail",
+    "gender": "Geschlecht",
+    "dateOfBirth": "Geburtsdatum",
+    "age": "Alter",
+    "bio": "Biografie"
+  },
+  "PurchaseHistoryPage": {
+    "title": "Kaufhistorie",
+    "courses": "Kurse",
+    "usd": "USD"
+  },
+  "QuizAttemptsPage": {
+    "title": "Meine Quizversuche"
+  },
+  "ReviewsPage": {
+    "title": "Bewertungen",
+    "writeReview": "Bewertung Schreiben"
+  },
+  "SettingsPage": {
+    "title": "Einstellungen",
+    "imageSizeError": "Bildgröße muss unter 1MB sein",
+    "invalidImageError": "Bitte wählen Sie eine gültige Bilddatei",
+    "imageRatioError": "Bild sollte ein 1:1-Verhältnis (quadratisch) haben",
+    "changePhoto": "Foto Ändern",
+    "uploadPhoto": "Foto Hochladen",
+    "imageSizeHint": "Bildgröße sollte unter 1MB sein und das Bildverhältnis muss 1:1 sein",
+    "imageReady": "✓ Bild bereit zum Speichern",
+    "fullName": "Vollständiger Name",
+    "firstNamePlaceholder": "Vorname",
+    "lastNamePlaceholder": "Nachname",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Geben Sie Ihren Benutzernamen ein",
+    "email": "E-Mail",
+    "emailPlaceholder": "E-Mail-Adresse",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "Ihr Titel, Beruf oder kurze Biografie",
+    "saveChanges": "Änderungen Speichern",
+    "changePassword": "Passwort Ändern",
+    "currentPassword": "Aktuelles Passwort",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort Bestätigen",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "deleteAccount": "Konto Löschen",
+    "deleteAccountDesc": "Ihr Konto und alle zugehörigen Daten dauerhaft löschen",
+    "deleteAccountWarning": "Warnung: Diese Aktion ist unwiderruflich. Alle Ihre Daten werden dauerhaft gelöscht.",
+    "delete": "Löschen",
+    "deleteAccountConfirm": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "yesDelete": "Ja, Löschen"
+  },
+  "WishlistPage": {
+    "title": "Wunschliste",
+    "course": "Kurs",
+    "prices": "Preise",
+    "action": "Aktion"
+  },
+  "AITutor": {
+    "title": "KI-Tutor",
+    "aiIsHere": "KI ist Hier",
+    "initialMessage": "Hallo! Ich bin Ihr KI-gestützter Tutor. Ich kann Ihnen helfen, Konzepte aus Ihren Kursen zu verstehen, Fragen zu beantworten und Erklärungen zu geben. Wählen Sie einen Kurs für kontextbezogene Hilfe oder fragen Sie mich einfach!",
+    "mockResponse": "Ja sicher, danke",
+    "you": "Sie",
+    "today": "Heute",
+    "typePlaceholder": "Nachricht eingeben",
+    "send": "Senden"
+  },
+  "LogoutModal": {
+    "title": "Abmelden",
+    "description": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+    "cancel": "Abbrechen",
+    "confirm": "Ja, Abmelden"
+  },
+  "DashboardCourseCard": {
+    "watchLecture": "Vorlesung Ansehen",
+    "completed": "Abgeschlossen"
+  },
+  "EnrolledCourseCard": {
+    "viewCourse": "Kurs Ansehen",
+    "completed": "Abgeschlossen"
+  },
+  "WishlistCard": {
+    "courseBy": "Kurs von",
+    "buyNow": "Jetzt Kaufen",
+    "addToCart": "In den Warenkorb"
+  },
+  "PurchaseItemCard": {
+    "courseBy": "Kurs von:"
+  },
+  "QuizAttemptCard": {
+    "numberOfQuestions": "Anzahl der Fragen"
+  },
+  "ReviewCard": {
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "WriteReviewModal": {
+    "title": "Bewertung Schreiben",
+    "rating": "Bewertung",
+    "featured": "Empfohlen",
+    "feedback": "Feedback",
+    "placeholder": "Schreiben Sie Ihre Bewertung hier...",
+    "cancel": "Abbrechen",
+    "submitting": "Wird gesendet...",
+    "submit": "Bewertung Absenden",
+    "ratingRequired": "Bitte wählen Sie eine Bewertung",
+    "reviewRequired": "Bewertung ist erforderlich",
+    "reviewTooLong": "Bewertung ist zu lang"
+  },
+  "EditReviewModal": {
+    "title": "Bewertung Bearbeiten",
+    "rating": "Bewertung",
+    "comment": "Kommentar",
+    "placeholder": "Teilen Sie Ihre Erfahrung...",
+    "cancel": "Abbrechen",
+    "saving": "Wird gespeichert...",
+    "save": "Änderungen Speichern",
+    "commentRequired": "Kommentar ist erforderlich",
+    "commentTooLong": "Kommentar ist zu lang"
+  },
+  "DeleteReviewModal": {
+    "title": "Bewertung Löschen",
+    "description": "Sind Sie sicher, dass Sie diese Bewertung löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "deleting": "Wird gelöscht...",
+    "delete": "Löschen"
+  },
+  "QuizModal": {
+    "title": "Quiz",
+    "nextQuestion": "Nächste Frage",
+    "submitQuiz": "Quiz Abgeben",
+    "quizResult": "Quizergebnis",
+    "yourScore": "Ihre Punktzahl",
+    "pt": "Pkt",
+    "completion": "Abschluss",
+    "totalQuestion": "Gesamtfragen",
+    "correct": "Richtig",
+    "wrong": "Falsch",
+    "numberOfQuestions": "Anzahl der Fragen",
+    "retake": "Wiederholen",
+    "continue": "Weiter"
   }
 }

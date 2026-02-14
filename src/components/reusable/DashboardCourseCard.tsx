@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 type DashboardCourseCardProps = {
     course: {
@@ -15,6 +16,7 @@ type DashboardCourseCardProps = {
 };
 
 const DashboardCourseCard = ({ course }: DashboardCourseCardProps) => {
+    const t = useTranslations("DashboardCourseCard");
     return (
         <div className="bg-white rounded-md overflow-hidden border border-border-light hover:shadow-md transition-shadow">
             <div className="relative h-40 sm:h-60 w-full">
@@ -40,11 +42,11 @@ const DashboardCourseCard = ({ course }: DashboardCourseCardProps) => {
                             : "bg-main text-white hover:bg-main/90"
                             }`}
                     >
-                        Watch Lecture
+                        {t("watchLecture")}
                     </Link>
                     {course.progress !== undefined && course.progress > 0 && (
                         <p className="text-sm text-green-500 mt-2 text-center font-medium">
-                            {course.progress}% Completed
+                            {course.progress}% {t("completed")}
                         </p>
                     )}
                 </div>

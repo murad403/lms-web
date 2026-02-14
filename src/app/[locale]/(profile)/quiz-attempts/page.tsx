@@ -3,10 +3,12 @@ import { useState } from "react";
 import QuizAttemptCard from "@/components/reusable/QuizAttemptCard";
 import QuizModal from "@/components/modal/QuizModal";
 import { quizAttempts, quizQuestionsData, TQuizData } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 const QuizAttemptsPage = () => {
     const [isQuizOpen, setIsQuizOpen] = useState(false);
     const [activeQuiz, setActiveQuiz] = useState<TQuizData | null>(null);
+    const t = useTranslations("QuizAttemptsPage");
 
     const handleOpenQuiz = (quizId: string) => {
         const quizData = quizQuestionsData.find((q) => q.id === quizId);
@@ -19,7 +21,7 @@ const QuizAttemptsPage = () => {
     return (
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
-                My Quiz Attempts
+                {t("title")}
             </h2>
 
             <div className="bg-white space-y-4">

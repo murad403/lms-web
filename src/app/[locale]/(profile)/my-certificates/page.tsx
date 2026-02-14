@@ -5,12 +5,14 @@ import Pagination from "@/components/reusable/Pagination";
 import { certificates } from "@/lib/profile";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import jsPDF from "jspdf";
+import { useTranslations } from "next-intl";
 
 const ITEMS_PER_PAGE = 6;
 
 const MyCertificatesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [viewCert, setViewCert] = useState<string | null>(null);
+    const t = useTranslations("CertificatesPage");
 
     const totalPages = Math.ceil(certificates.length / ITEMS_PER_PAGE);
     const paginated = certificates.slice(
@@ -116,7 +118,7 @@ const MyCertificatesPage = () => {
     return (
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
-                My Certificates
+                {t("title")}
             </h2>
 
             <div className="bg-white rounded-md border border-border-light overflow-hidden">
@@ -126,22 +128,22 @@ const MyCertificatesPage = () => {
                         <thead>
                             <tr className="border-b border-gray-200 bg-gray-50">
                                 <th className="text-left py-3 px-4 font-semibold text-main text-base">
-                                    ID
+                                    {t("id")}
                                 </th>
                                 <th className="text-left py-3 px-4 font-semibold text-main text-base">
-                                    Course Name
+                                    {t("courseName")}
                                 </th>
                                 <th className="text-left py-3 px-4 font-semibold text-main text-base">
-                                    Date
+                                    {t("date")}
                                 </th>
                                 <th className="text-left py-3 px-4 font-semibold text-main text-base">
-                                    Marks
+                                    {t("marks")}
                                 </th>
                                 <th className="text-left py-3 px-4 font-semibold text-main text-base">
-                                    Out of
+                                    {t("outOf")}
                                 </th>
                                 <th className="text-right py-3 px-4 font-semibold text-main text-base">
-                                    Actions
+                                    {t("actions")}
                                 </th>
                             </tr>
                         </thead>
@@ -160,14 +162,14 @@ const MyCertificatesPage = () => {
                                             <button
                                                 onClick={() => setViewCert(cert.id)}
                                                 className="p-1.5 text-description hover:text-main hover:bg-blue-50 rounded transition-colors"
-                                                title="View Certificate"
+                                                title={t("viewCertificate")}
                                             >
                                                 <Eye className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDownloadCertificate(cert)}
                                                 className="p-1.5 text-description hover:text-main hover:bg-blue-50 rounded transition-colors"
-                                                title="Download Certificate"
+                                                title={t("downloadCertificate")}
                                             >
                                                 <Download className="w-4 h-4" />
                                             </button>
@@ -191,7 +193,7 @@ const MyCertificatesPage = () => {
                 <DialogContent className="max-w-lg">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-title">
-                            Certificate Preview
+                            {t("certificatePreview")}
                         </DialogTitle>
                     </DialogHeader>
                     {selectedCert && (
@@ -212,23 +214,23 @@ const MyCertificatesPage = () => {
                                 </svg>
                             </div>
                             <h3 className="text-lg font-bold text-title">
-                                Certificate of Completion
+                                {t("certificateOfCompletion")}
                             </h3>
                             <p className="text-sm text-description">
-                                This certifies that Kevin Gilbert has successfully completed
+                                {t("certifiesUserCompleted")}
                             </p>
                             <p className="text-base font-bold text-main">
                                 {selectedCert.courseName}
                             </p>
                             <p className="text-sm text-description">
-                                Score: {selectedCert.marks}/{selectedCert.outOf} • Date:{" "}
+                                {t("score")}: {selectedCert.marks}/{selectedCert.outOf} • {t("date")}:{" "}
                                 {selectedCert.date}
                             </p>
                             <button 
                                 onClick={() => handleDownloadCertificate(selectedCert)}
                                 className="mt-4 px-6 py-2 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
                             >
-                                Download PDF
+                                {t("downloadPDF")}
                             </button>
                         </div>
                     )}

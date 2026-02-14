@@ -6,6 +6,7 @@ import { Eye, EyeOff, Upload, Trash2, X } from "lucide-react";
 import { userProfile } from "@/lib/profile";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 type ProfileFormData = {
     firstName: string;
@@ -30,6 +31,7 @@ const SettingsPage = () => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploadError, setUploadError] = useState<string>("");
+    const t = useTranslations("SettingsPage");
 
     const {
         register: registerProfile,
@@ -58,13 +60,13 @@ const SettingsPage = () => {
 
         // Validate file size (1MB = 1048576 bytes)
         if (file.size > 1048576) {
-            setUploadError("Image size must be under 1MB");
+            setUploadError(t("imageSizeError"));
             return;
         }
 
         // Validate file type
         if (!file.type.startsWith("image/")) {
-            setUploadError("Please select a valid image file");
+            setUploadError(t("invalidImageError"));
             return;
         }
 
@@ -79,7 +81,7 @@ const SettingsPage = () => {
                 // Optional: Check if image is square (1:1 ratio)
                 const aspectRatio = img.width / img.height;
                 if (Math.abs(aspectRatio - 1) > 0.1) {
-                    setUploadError("Image should have 1:1 ratio (square)");
+                    setUploadError(t("imageRatioError"));
                     return;
                 }
 
@@ -146,7 +148,7 @@ const SettingsPage = () => {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-lg sm:text-xl font-bold text-title">Settings</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
 
             {/* Profile Settings */}
             <form
@@ -187,11 +189,11 @@ const SettingsPage = () => {
                             className="flex items-center gap-1.5 text-xs text-main font-medium hover:text-main/80 transition-colors cursor-pointer"
                         >
                             <Upload className="w-3.5 h-3.5" />
-                            {previewImage ? "Change Photo" : "Upload Photo"}
+                            {previewImage ? t("changePhoto") : t("uploadPhoto")}
                         </label>
 
                         <p className="text-[10px] text-description text-center max-w-35">
-                            Image size should be under 1MB and image ratio needs to be 1:1
+                            {t("imageSizeHint")}
                         </p>
 
                         {uploadError && (
@@ -202,7 +204,7 @@ const SettingsPage = () => {
 
                         {selectedFile && !uploadError && (
                             <p className="text-[10px] text-green-600 text-center max-w-35">
-                                ✓ Image ready to save
+                                {t("imageReady")}
                             </p>
                         )}
                     </div>
@@ -211,17 +213,17 @@ const SettingsPage = () => {
                     <div className="flex-1 space-y-4">
                         <div>
                             <label className="text-xs font-medium text-title mb-1 block">
-                                Full name
+                                {t("fullName")}
                             </label>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <input
                                     {...registerProfile("firstName")}
-                                    placeholder="First name"
+                                    placeholder={t("firstNamePlaceholder")}
                                     className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                                 />
                                 <input
                                     {...registerProfile("lastName")}
-                                    placeholder="Last name"
+                                    placeholder={t("lastNamePlaceholder")}
                                     className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                                 />
                             </div>
@@ -229,22 +231,22 @@ const SettingsPage = () => {
 
                         <div>
                             <label className="text-xs font-medium text-title mb-1 block">
-                                Username
+                                {t("username")}
                             </label>
                             <input
                                 {...registerProfile("username")}
-                                placeholder="Enter your username"
+                                placeholder={t("usernamePlaceholder")}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                             />
                         </div>
 
                         <div>
                             <label className="text-xs font-medium text-title mb-1 block">
-                                Email
+                                {t("email")}
                             </label>
                             <input
                                 {...registerProfile("email")}
-                                placeholder="Email address"
+                                placeholder={t("emailPlaceholder")}
                                 readOnly
                                 className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm bg-gray-50 text-description cursor-not-allowed"
                             />
@@ -252,11 +254,11 @@ const SettingsPage = () => {
 
                         <div>
                             <label className="text-xs font-medium text-title mb-1 block">
-                                Title
+                                {t("titleLabel")}
                             </label>
                             <input
                                 {...registerProfile("title")}
-                                placeholder="Your title, profession or short biography"
+                                placeholder={t("titlePlaceholder")}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
                             />
                         </div>
@@ -265,7 +267,7 @@ const SettingsPage = () => {
                             type="submit"
                             className="px-6 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
                         >
-                            Save Changes
+                            {t("saveChanges")}
                         </button>
                     </div>
                 </div>
@@ -276,18 +278,18 @@ const SettingsPage = () => {
                 onSubmit={handlePasswordSubmit(onPasswordSubmit)}
                 className="bg-white rounded-xl border border-border-light p-4 sm:p-6"
             >
-                <h3 className="text-base font-bold text-title mb-4">Change Password</h3>
+                <h3 className="text-base font-bold text-title mb-4">{t("changePassword")}</h3>
 
                 <div className="space-y-4 max-w-md">
                     <div>
                         <label className="text-xs font-medium text-title mb-1 block">
-                            Current Password
+                            {t("currentPassword")}
                         </label>
                         <div className="relative">
                             <input
                                 {...registerPassword("currentPassword")}
                                 type={showCurrentPassword ? "text" : "password"}
-                                placeholder="Password"
+                                placeholder={t("password")}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
                             />
                             <button
@@ -306,20 +308,20 @@ const SettingsPage = () => {
                             <Link href={"/auth/forgot-password"}
                                 className="text-xs text-red-500 hover:text-red-600 font-medium"
                             >
-                                Forgot password?
+                                {t("forgotPassword")}
                             </Link>
                         </div>
                     </div>
 
                     <div>
                         <label className="text-xs font-medium text-title mb-1 block">
-                            New Password
+                            {t("newPassword")}
                         </label>
                         <div className="relative">
                             <input
                                 {...registerPassword("newPassword")}
                                 type={showNewPassword ? "text" : "password"}
-                                placeholder="Password"
+                                placeholder={t("password")}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
                             />
                             <button
@@ -338,13 +340,13 @@ const SettingsPage = () => {
 
                     <div>
                         <label className="text-xs font-medium text-title mb-1 block">
-                            Confirm Password
+                            {t("confirmPassword")}
                         </label>
                         <div className="relative">
                             <input
                                 {...registerPassword("confirmPassword")}
                                 type={showConfirmPassword ? "text" : "password"}
-                                placeholder="Confirm new password"
+                                placeholder={t("confirmNewPassword")}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
                             />
                             <button
@@ -365,7 +367,7 @@ const SettingsPage = () => {
                         type="submit"
                         className="px-6 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
                     >
-                        Change Password
+                        {t("changePassword")}
                     </button>
                 </div>
             </form>
@@ -374,12 +376,12 @@ const SettingsPage = () => {
             <div className="bg-red-50 rounded-xl border border-red-200 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 className="text-base font-bold text-red-700">Delete Account</h3>
+                        <h3 className="text-base font-bold text-red-700">{t("deleteAccount")}</h3>
                         <p className="text-sm text-red-600 mt-1">
-                            Permanently delete your account and all associated data
+                            {t("deleteAccountDesc")}
                         </p>
                         <p className="text-xs text-red-500 mt-1 font-medium">
-                            Warning: This action is irreversible. All your data will be permanently deleted.
+                            {t("deleteAccountWarning")}
                         </p>
                     </div>
                     <button
@@ -387,7 +389,7 @@ const SettingsPage = () => {
                         className="px-5 py-2.5 bg-red-500 text-white rounded-md text-sm font-semibold hover:bg-red-600 transition-colors flex items-center gap-1.5 shrink-0"
                     >
                         <Trash2 className="w-4 h-4" />
-                        Delete
+                        {t("delete")}
                     </button>
                 </div>
             </div>
@@ -400,10 +402,10 @@ const SettingsPage = () => {
                             <Trash2 className="w-6 h-6 text-red-500" />
                         </div>
                         <AlertDialogTitle className="text-lg font-bold text-title">
-                            Delete Account
+                            {t("deleteAccount")}
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-sm text-description text-center">
-                            Are you sure you want to delete your account? This action cannot be undone.
+                            {t("deleteAccountConfirm")}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="flex-row gap-3 sm:justify-center">
@@ -411,13 +413,13 @@ const SettingsPage = () => {
                             onClick={() => setShowDeleteModal(false)}
                             className="flex-1 px-6 py-2.5 border border-gray-300 rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             onClick={handleDeleteAccount}
                             className="flex-1 px-6 py-2.5 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 transition-colors"
                         >
-                            Yes, Delete
+                            {t("yesDelete")}
                         </button>
                     </AlertDialogFooter>
                 </AlertDialogContent>

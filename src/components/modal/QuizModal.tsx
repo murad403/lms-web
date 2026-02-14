@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 import { X, ChevronRight, ArrowRight, ArrowLeft } from "lucide-react";
 import { TQuizData } from "@/lib/profile";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useTranslations } from "next-intl";
 
 
 type QuizModalProps = {
@@ -17,6 +18,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
     const [quizState, setQuizState] = useState<QuizState>("taking");
+    const t = useTranslations("QuizModal");
 
     const totalQuestions = quizData.questions.length;
     const currentQ = quizData.questions[currentQuestion];
@@ -61,13 +63,13 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
             <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden [&>button]:hidden">
-                <DialogTitle className="sr-only">Quiz</DialogTitle>
+                <DialogTitle className="sr-only">{t("title")}</DialogTitle>
                 {quizState === "taking" ? (
                     /* Quiz Taking View */
                     <div className="p-6">
                         {/* Header */}
                         <div className="flex items-center justify-between mb-5">
-                            <h2 className="text-lg font-bold text-title">Quiz</h2>
+                            <h2 className="text-lg font-bold text-title">{t("title")}</h2>
                             <button
                                 onClick={handleClose}
                                 className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -135,11 +137,11 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                         >
                             {currentQuestion < totalQuestions - 1 ? (
                                 <>
-                                    Next Question
+                                    {t("nextQuestion")}
                                     <ChevronRight className="w-4 h-4" />
                                 </>
                             ) : (
-                                "Submit Quiz"
+                                t("submitQuiz")
                             )}
                         </button>
                     </div>
@@ -154,7 +156,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                             >
                                 <ArrowLeft className="w-5 h-5" />
                             </button>
-                            <h2 className="text-lg font-bold text-title">Quiz Result</h2>
+                            <h2 className="text-lg font-bold text-title">{t("quizResult")}</h2>
                         </div>
 
                         {/* Score Circle */}
@@ -162,10 +164,10 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                             <div className="relative w-48 h-48 bg-white rounded-full shadow-lg flex items-center justify-center">
                                 <div className="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 rounded-full opacity-50" />
                                 <div className="relative text-center">
-                                    <p className="text-sm text-main font-medium mb-1">your Score</p>
+                                    <p className="text-sm text-main font-medium mb-1">{t("yourScore")}</p>
                                     <div className="flex items-baseline justify-center gap-1">
                                         <span className="text-5xl font-bold text-main">{scorePoints}</span>
-                                        <span className="text-xl text-main font-medium">pt</span>
+                                        <span className="text-xl text-main font-medium">{t("pt")}</span>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +181,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                     <div className="w-3 h-3 rounded-full bg-main" />
                                     <span className="text-2xl font-bold text-title">{scorePercentage}%</span>
                                 </div>
-                                <p className="text-sm text-description">Completion</p>
+                                <p className="text-sm text-description">{t("completion")}</p>
                             </div>
 
                             {/* Total Questions */}
@@ -188,7 +190,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                     <div className="w-3 h-3 rounded-full bg-main" />
                                     <span className="text-2xl font-bold text-title">{totalQuestions}</span>
                                 </div>
-                                <p className="text-sm text-description">Total Question</p>
+                                <p className="text-sm text-description">{t("totalQuestion")}</p>
                             </div>
 
                             {/* Correct */}
@@ -197,7 +199,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                     <div className="w-3 h-3 rounded-full bg-success" />
                                     <span className="text-2xl font-bold text-success">{correctCount}</span>
                                 </div>
-                                <p className="text-sm text-description">Correct</p>
+                                <p className="text-sm text-description">{t("correct")}</p>
                             </div>
 
                             {/* Wrong */}
@@ -206,7 +208,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                     <div className="w-3 h-3 rounded-full bg-red-500" />
                                     <span className="text-2xl font-bold text-red-500">{wrongCount < 10 ? `0${wrongCount}` : wrongCount}</span>
                                 </div>
-                                <p className="text-sm text-description">Wrong</p>
+                                <p className="text-sm text-description">{t("wrong")}</p>
                             </div>
                         </div>
 
@@ -218,14 +220,14 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                         {quizData.title}
                                     </h4>
                                     <p className="text-xs text-description">
-                                        Number of Questions : {totalQuestions}
+                                        {t("numberOfQuestions")} : {totalQuestions}
                                     </p>
                                 </div>
                                 <button
                                     onClick={handleRetake}
                                     className="flex items-center gap-2 px-4 py-2 bg-main text-white rounded-full text-sm font-medium hover:bg-main/90 transition-colors"
                                 >
-                                    Retake
+                                    {t("retake")}
                                     <ArrowRight className="w-4 h-4" />
                                 </button>
                             </div>
@@ -236,7 +238,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                             onClick={handleClose}
                             className="w-full py-3.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
                         >
-                            Continue
+                            {t("continue")}
                         </button>
                     </div>
                 )}

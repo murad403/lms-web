@@ -3,6 +3,7 @@ import { BookOpen, MonitorPlay, CheckCircle, Download } from "lucide-react";
 import DashboardCourseCard from "@/components/reusable/DashboardCourseCard";
 import { invoices, quizResults } from "@/lib/profile";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 const recentCourses = [
     { id: 1, title: "Reiki Level I, II and MasterTeacher Program", image: "/courses/Course Images (3).png", lessonNumber: 1, lessonTitle: "Introductions", progress: 0 },
@@ -11,21 +12,22 @@ const recentCourses = [
 ];
 
 const DashboardPage = () => {
+    const t = useTranslations("Dashboard");
     return (
         <div className="space-y-6">
             {/* Quiz Banner */}
             <div className="bg-[#F4F6F9] rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                     <h3 className="text-title font-bold text-sm sm:text-base">
-                        Quiz : Build Responsive Real World
+                        {t("quizTitle")}
                     </h3>
-                    <p className="text-description text-xs sm:text-sm mt-1">Answered : 15/22</p>
+                    <p className="text-description text-xs sm:text-sm mt-1">{t("answered")}</p>
                 </div>
                 <Link
                     href="/quiz-attempts"
                     className="px-5 py-3 bg-main text-white rounded-2xl text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap"
                 >
-                    Continue Quiz
+                    {t("continueQuiz")}
                 </Link>
             </div>
 
@@ -36,7 +38,7 @@ const DashboardPage = () => {
                         <BookOpen className="w-6 h-6 text-main" />
                     </div>
                     <div>
-                        <p className="text-base text-description">Enrolled Courses</p>
+                        <p className="text-base text-description">{t("enrolledCourses")}</p>
                         <p className="text-xl sm:text-2xl font-bold text-title">12</p>
                     </div>
                 </div>
@@ -45,7 +47,7 @@ const DashboardPage = () => {
                         <MonitorPlay className="w-6 h-6 text-green-600" />
                     </div>
                     <div>
-                        <p className="text-base text-description">Active Courses</p>
+                        <p className="text-base text-description">{t("activeCourses")}</p>
                         <p className="text-xl sm:text-2xl font-bold text-title">03</p>
                     </div>
                 </div>
@@ -54,7 +56,7 @@ const DashboardPage = () => {
                         <CheckCircle className="w-6 h-6 text-purple-600" />
                     </div>
                     <div>
-                        <p className="text-base text-description">Completed Courses</p>
+                        <p className="text-base text-description">{t("completedCourses")}</p>
                         <p className="text-xl sm:text-2xl font-bold text-title">10</p>
                     </div>
                 </div>
@@ -63,7 +65,7 @@ const DashboardPage = () => {
             {/* Recently Enrolled Courses */}
             <div>
                 <h3 className="text-base sm:text-lg font-bold text-title mb-4">
-                    Recently Enrolled Courses
+                    {t("recentlyEnrolledCourses")}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {recentCourses.map((course) => (
@@ -77,7 +79,7 @@ const DashboardPage = () => {
                 {/* Recent Invoices */}
                 <div className="rounded-md border border-border-light p-4 sm:p-5">
                     <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">
-                        Recent Invoices
+                        {t("recentInvoices")}
                     </h3>
                     <div className="space-y-3">
                         {invoices.map((invoice) => (
@@ -90,7 +92,7 @@ const DashboardPage = () => {
                                         {invoice.title}
                                     </h4>
                                     <p className="text-sm text-description">
-                                        {invoice.invoiceNo} • Amount :{" "}
+                                        {invoice.invoiceNo} • {t("amount")} :{" "}
                                         <span className=" text-[#5625E8]">${invoice.amount}</span>
                                     </p>
                                 </div>
@@ -110,7 +112,7 @@ const DashboardPage = () => {
                 {/* Latest Quizzes */}
                 <div className="rounded-md border border-border-light p-4 sm:p-5">
                     <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">
-                        Latest Quizzes
+                        {t("latestQuizzes")}
                     </h3>
                     <div className="space-y-3">
                         {quizResults.map((quiz) => (
@@ -123,8 +125,8 @@ const DashboardPage = () => {
                                         {quiz.title}
                                     </h4>
                                     <p className="text-sm text-description">
-                                        Correct Answer : {quiz.correctAnswer}/{quiz.totalQuestions} •
-                                        Date : {quiz.date}
+                                        {t("correctAnswer")} : {quiz.correctAnswer}/{quiz.totalQuestions} •
+                                        {t("date")} : {quiz.date}
                                     </p>
                                 </div>
                                 <div className="shrink-0 ml-3">

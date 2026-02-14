@@ -1,6 +1,7 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import { TQuizAttempt } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 type QuizAttemptCardProps = {
     quizAttempt: TQuizAttempt;
@@ -8,6 +9,7 @@ type QuizAttemptCardProps = {
 };
 
 const QuizAttemptCard = ({ quizAttempt, onStartQuiz }: QuizAttemptCardProps) => {
+    const t = useTranslations("QuizAttemptCard");
     return (
         <div className="flex items-center justify-between py-4 border border-border-light rounded-md p-4">
             <div className="min-w-0 flex-1">
@@ -15,7 +17,7 @@ const QuizAttemptCard = ({ quizAttempt, onStartQuiz }: QuizAttemptCardProps) => 
                     {quizAttempt.title}
                 </h4>
                 <p className="text-xs text-description">
-                    Number of Questions : {String(quizAttempt.numberOfQuestions).padStart(2, "0")}
+                    {t("numberOfQuestions")} : {String(quizAttempt.numberOfQuestions).padStart(2, "0")}
                 </p>
             </div>
             <button

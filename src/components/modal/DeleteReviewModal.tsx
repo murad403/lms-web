@@ -1,6 +1,7 @@
 // components/modals/DeleteReviewModal.tsx
 "use client";
 import { X, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type DeleteReviewModalProps = {
     isOpen: boolean;
@@ -10,6 +11,7 @@ type DeleteReviewModalProps = {
 };
 
 const DeleteReviewModal = ({ isOpen, onClose, onConfirm, isDeleting = false }: DeleteReviewModalProps) => {
+    const t = useTranslations("DeleteReviewModal");
     if (!isOpen) return null;
 
     return (
@@ -28,7 +30,7 @@ const DeleteReviewModal = ({ isOpen, onClose, onConfirm, isDeleting = false }: D
                         <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
                             <AlertTriangle className="w-5 h-5 text-red-600" />
                         </div>
-                        <h2 className="text-xl font-semibold text-title">Delete Review</h2>
+                        <h2 className="text-xl font-semibold text-title">{t("title")}</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -40,7 +42,7 @@ const DeleteReviewModal = ({ isOpen, onClose, onConfirm, isDeleting = false }: D
 
                 {/* Content */}
                 <p className="text-sm text-description mb-6">
-                    Are you sure you want to delete this review? This action cannot be undone.
+                    {t("description")}
                 </p>
 
                 {/* Actions */}
@@ -51,7 +53,7 @@ const DeleteReviewModal = ({ isOpen, onClose, onConfirm, isDeleting = false }: D
                         disabled={isDeleting}
                         className="flex-1 px-4 py-2 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Cancel
+                        {t("cancel")}
                     </button>
                     <button
                         type="button"
@@ -59,7 +61,7 @@ const DeleteReviewModal = ({ isOpen, onClose, onConfirm, isDeleting = false }: D
                         disabled={isDeleting}
                         className="flex-1 px-4 py-2 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isDeleting ? "Deleting..." : "Delete"}
+                        {isDeleting ? t("deleting") : t("delete")}
                     </button>
                 </div>
             </div>

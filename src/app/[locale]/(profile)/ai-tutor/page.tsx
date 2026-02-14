@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Bot, Send, Paperclip } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 
 type ChatForm = {
@@ -17,17 +18,19 @@ type Message = {
     sender: string;
 };
 
-const initialMessages: Message[] = [
-    {
-        id: "1",
-        sender: "AI Tutor",
-        text: "Hello! I'm your AI-powered tutor. I can help you understand concepts from your courses, answer questions, and provide explanations. Select a course to get context-aware help, or just ask me anything!",
-        time: "08:30 Pm",
-        isOwn: false,
-    },
-];
-
 const AITutorPage = () => {
+    const t = useTranslations("AITutor");
+
+    const initialMessages: Message[] = [
+        {
+            id: "1",
+            sender: t("title"),
+            text: t("initialMessage"),
+            time: "08:30 Pm",
+            isOwn: false,
+        },
+    ];
+
     const [messages, setMessages] = useState<Message[]>(initialMessages);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -58,10 +61,10 @@ const AITutorPage = () => {
         setTimeout(() => {
             const aiMsg: Message = {
                 id: (Date.now() + 1).toString(),
-                text: "Yeah sure, thanks",
+                text: t("mockResponse"),
                 isOwn: false,
                 time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-                sender: "AI Tutor",
+                sender: t("title"),
             };
             setMessages((prev) => [...prev, aiMsg]);
         }, 1000);
@@ -75,10 +78,10 @@ const AITutorPage = () => {
                     <Bot className="size-6 text-main" />
                 </div>
                 <div>
-                    <h3 className="text-lg font-bold text-title">AI Tutor</h3>
+                    <h3 className="text-lg font-bold text-title">{t("title")}</h3>
                     <p className="text-xs text-green-500 flex items-center gap-1">
                         <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                        AI is Here
+                        {t("aiIsHere")}
                     </p>
                 </div>
             </div>
@@ -87,7 +90,7 @@ const AITutorPage = () => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div className="text-center">
                     <span className="text-xs text-description bg-gray-100 px-3 py-2 rounded-md">
-                        Today
+                        {t("today")}
                     </span>
                 </div>
 
@@ -140,7 +143,7 @@ const AITutorPage = () => {
             >
                 <input
                     {...register("message")}
-                    placeholder="Type your message"
+                    placeholder={t("typePlaceholder")}
                     className="flex-1 bg-gray-50 rounded-md border border-border-light px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     autoComplete="off"
                 />
@@ -148,7 +151,7 @@ const AITutorPage = () => {
                     type="submit"
                     className="px-4 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors flex items-center gap-1.5 shrink-0"
                 >
-                    Send
+                    {t("send")}
                     <Send className="w-4 h-4" />
                 </button>
             </form>

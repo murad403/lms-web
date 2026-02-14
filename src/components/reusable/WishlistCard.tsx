@@ -4,12 +4,14 @@ import { Star } from "lucide-react";
 import { TWishlistCourse } from "@/lib/profile";
 import { Link } from "@/i18n/navigation";
 import { Heart } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type WishlistCardProps = {
     course: TWishlistCourse;
 };
 
 const WishlistCard = ({ course }: WishlistCardProps) => {
+    const t = useTranslations("WishlistCard");
     return (
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4 border-b border-gray-100 last:border-b-0">
             {/* Course Info */}
@@ -31,7 +33,7 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                     <h4 className="text-sm font-semibold text-title line-clamp-2 mb-0.5">
                         {course.title}
                     </h4>
-                    <p className="text-xs text-description">Course by {course.instructor}</p>
+                    <p className="text-xs text-description">{t("courseBy")} {course.instructor}</p>
                 </div>
             </div>
 
@@ -51,10 +53,10 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                     href="/checkout"
                     className="px-4 py-2.5 border border-gray-300 rounded text-xs sm:text-sm font-medium text-title hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
-                    Buy Now
+                    {t("buyNow")}
                 </Link>
                 <button className="px-4 py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap">
-                    Add To Cart
+                    {t("addToCart")}
                 </button>
                 <button className="p-3 text-main bg-main-light rounded transition-colors">
                     <Heart className="w-4 h-4 fill-main" />

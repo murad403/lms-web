@@ -4,12 +4,14 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EnrolledCourseCard from "@/components/reusable/EnrolledCourseCard";
 import Pagination from "@/components/reusable/Pagination";
 import { enrolledCourses } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 const ITEMS_PER_PAGE = 6;
 
 const EnrolledCoursesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [activeTab, setActiveTab] = useState("enrolled");
+    const t = useTranslations("EnrolledCoursesPage");
 
     const filteredCourses = enrolledCourses; // TODO: filter by tab when API is integrated
     const totalPages = Math.ceil(filteredCourses.length / ITEMS_PER_PAGE);
@@ -21,7 +23,7 @@ const EnrolledCoursesPage = () => {
     return (
         <div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <h2 className="text-lg sm:text-xl font-bold text-title">Enrolled Courses</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
                 <Tabs
                     value={activeTab}
                     onValueChange={(val) => {
@@ -34,19 +36,19 @@ const EnrolledCoursesPage = () => {
                             value="enrolled"
                             className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
-                            Enrolled (09)
+                            {t("enrolled")} (09)
                         </TabsTrigger>
                         <TabsTrigger
                             value="active"
                             className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
-                            Active (06)
+                            {t("active")} (06)
                         </TabsTrigger>
                         <TabsTrigger
                             value="completed"
                             className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
-                            Completed (03)
+                            {t("completed")} (03)
                         </TabsTrigger>
                     </TabsList>
                 </Tabs>

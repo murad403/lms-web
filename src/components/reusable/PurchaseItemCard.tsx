@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { TPurchaseItem } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 type PurchaseItemCardProps = {
     item: TPurchaseItem;
@@ -9,6 +10,7 @@ type PurchaseItemCardProps = {
 };
 
 const PurchaseItemCard = ({ item, purchaseDate }: PurchaseItemCardProps) => {
+    const t = useTranslations("PurchaseItemCard");
     return (
         <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 py-3 border-b border-gray-50 last:border-b-0">
             {/* Image */}
@@ -30,7 +32,7 @@ const PurchaseItemCard = ({ item, purchaseDate }: PurchaseItemCardProps) => {
                 <h5 className="text-base font-semibold text-title line-clamp-2 mb-1">
                     {item.title}
                 </h5>
-                <p className="text-sm text-description">Course by: {item.instructor}</p>
+                <p className="text-sm text-description">{t("courseBy")} {item.instructor}</p>
                 <p className="text-base font-medium text-main mt-1">${item.price.toFixed(2)}</p>
             </div>
 

@@ -4,9 +4,11 @@ import { Plus } from "lucide-react";
 import ReviewCard from "@/components/reusable/ReviewCard";
 import WriteReviewModal from "@/components/modal/WriteReviewModal";
 import { reviews } from "@/lib/profile";
+import { useTranslations } from "next-intl";
 
 const ReviewsPage = () => {
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+  const t = useTranslations("ReviewsPage");
 
   const handleWriteReview = (data: { rating: number; comment: string }) => {
     // TODO: API call to submit review
@@ -30,13 +32,13 @@ const ReviewsPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-title">Reviews</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
         <button
           onClick={() => setIsWriteReviewOpen(true)}
           className="flex items-center gap-2 px-4 py-2.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Write a Review
+          {t("writeReview")}
         </button>
       </div>
 

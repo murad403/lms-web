@@ -10,21 +10,12 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-
-const reviewSchema = z.object({
-    rating: z.number().min(1, "Please select a rating").max(5),
-    comment: z
-        .string()
-        .min(1, "Review is required")
-        .max(1000, "Review is too long"),
-});
-
-type ReviewFormData = z.infer<typeof reviewSchema>;
+import { useTranslations } from "next-intl";
 
 type WriteReviewModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: ReviewFormData) => void;
+    onSubmit: (data: { rating: number; comment: string }) => void;
     courseName?: string;
 };
 
@@ -34,6 +25,18 @@ const WriteReviewModal = ({
     onSubmit,
     courseName,
 }: WriteReviewModalProps) => {
+    const t = useTranslations("WriteReviewModal");
+
+    const reviewSchema = z.object({
+        rating: z.number().min(1, t("ratingRequired")).max(5),
+        comment: z
+            .string()
+            .min(1, t("reviewRequired"))
+            .max(1000, t("reviewTooLong")),
+    });
+
+    type ReviewFormData = z.infer<typeof reviewSchema>;
+
     const {
         register,
         handleSubmit,
@@ -67,7 +70,7 @@ const WriteReviewModal = ({
                 <DialogHeader className="p-6 pb-0">
                     <div className="flex items-center justify-between">
                         <DialogTitle className="text-xl font-bold text-title">
-                            Write a Review
+                            {t("title")}
                         </DialogTitle>
                         
                     </div>
@@ -81,7 +84,7 @@ const WriteReviewModal = ({
                     {/* Star Rating */}
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-title mb-2">
-                            Rating
+                            {t("rating")}
                         </label>
                         <div className="flex items-center gap-2">
                             <div className="flex items-center gap-1">
@@ -108,7 +111,7 @@ const WriteReviewModal = ({
                             )}
                             {rating >= 4 && (
                                 <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded ml-1 font-medium">
-                                    Featured
+                                    {t("featured")}
                                 </span>
                             )}
                         </div>
@@ -122,13 +125,13 @@ const WriteReviewModal = ({
                     {/* Review Textarea */}
                     <div className="mb-6">
                         <label className="block text-sm font-medium text-title mb-2">
-                            Feedback
+                            {t("feedback")}
                         </label>
                         <textarea
                             {...register("comment")}
                             rows={5}
                             className="w-full px-3 py-3 border border-border-light rounded-md focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main text-sm resize-none placeholder:text-gray-400"
-                            placeholder="Write your review here..."
+                            placeholder={t("placeholder")}
                         />
                         {errors.comment && (
                             <p className="text-red-500 text-xs mt-1">
@@ -144,14 +147,14 @@ const WriteReviewModal = ({
                             onClick={handleClose}
                             className="flex-1 px-4 py-2.5 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
                             className="flex-1 px-4 py-2.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {isSubmitting ? "Submitting..." : "Submit Review"}
+                            {isSubmitting ? t("submitting") : t("submit")}
                         </button>
                     </div>
                 </form>

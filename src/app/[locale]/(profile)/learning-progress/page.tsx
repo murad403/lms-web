@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Clock  , FileText, Award, TrendingUp } from "lucide-react";
 import { examAssessments, lessonTracking } from "@/lib/profile";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslations } from "next-intl";
 
 const LearningProgressPage = () => {
     const [moduleFilter, setModuleFilter] = useState("all");
+    const t = useTranslations("LearningProgress");
 
     const filteredLessons =
         moduleFilter === "all"
@@ -17,9 +19,9 @@ const LearningProgressPage = () => {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-lg sm:text-xl font-bold text-title">Learning Progress</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
                 <p className="text-xs sm:text-sm text-description mt-1">
-                    Track your detailed learning journey and achievements
+                    {t("description")}
                 </p>
             </div>
 
@@ -27,7 +29,7 @@ const LearningProgressPage = () => {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 <div className="bg-white rounded-md border border-border-light p-3 sm:p-6 flex items-center justify-between gap-3">
                     <div>
-                        <p className="text-xs text-description">Total Hours</p>
+                        <p className="text-xs text-description">{t("totalHours")}</p>
                         <p className="text-lg sm:text-xl font-bold text-title">45.5h</p>
                     </div>
                     <div className="bg-[#E5EAED] p-2 rounded-full">
@@ -36,7 +38,7 @@ const LearningProgressPage = () => {
                 </div>
                 <div className="bg-white rounded-md border border-border-light p-3 sm:p-4 flex items-center justify-between gap-3">
                     <div>
-                        <p className="text-xs text-description">Completion</p>
+                        <p className="text-xs text-description">{t("completion")}</p>
                         <p className="text-lg sm:text-xl font-bold text-title">68%</p>
                     </div>
                     <div className="bg-[#E5EAED] p-2 rounded-full">
@@ -45,8 +47,8 @@ const LearningProgressPage = () => {
                 </div>
                 <div className="bg-white rounded-md border border-border-light p-3 sm:p-4 flex items-center justify-between gap-3">
                     <div>
-                        <p className="text-xs text-description">Exam Eligible</p>
-                        <p className="text-lg sm:text-xl font-bold text-title">2 Courses</p>
+                        <p className="text-xs text-description">{t("examEligible")}</p>
+                        <p className="text-lg sm:text-xl font-bold text-title">2 {t("courses")}</p>
                     </div>
                     <div className="bg-[#E5EAED] p-2 rounded-full">
                         <FileText className="size-6 text-main shrink-0" />
@@ -54,8 +56,8 @@ const LearningProgressPage = () => {
                 </div>
                 <div className="bg-white rounded-md border border-border-light p-3 sm:p-4 flex items-center justify-between gap-3">
                     <div>
-                        <p className="text-xs text-description">Certificate Ready</p>
-                        <p className="text-lg sm:text-xl font-bold text-title">2 Courses</p>
+                        <p className="text-xs text-description">{t("certificateReady")}</p>
+                        <p className="text-lg sm:text-xl font-bold text-title">2 {t("courses")}</p>
                     </div>
                     <div className="bg-[#E5EAED] p-2 rounded-full">
                         <Award className="size-6 text-yellow-500 shrink-0" />
@@ -67,7 +69,7 @@ const LearningProgressPage = () => {
             <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg font-bold text-title mb-4 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-main" />
-                    Exams & Assessments
+                    {t("examsAssessments")}
                 </h3>
 
                 <div className="space-y-5">
@@ -102,17 +104,17 @@ const LearningProgressPage = () => {
                                         )}
                                         {exam.status === "Completed" && (
                                             <span className="px-2 py-1 bg-main text-white text-sm rounded">
-                                                Completed
+                                                {t("completed")}
                                             </span>
                                         )}
                                         {exam.status === "Exam Eligible" && (
                                             <span className="px-2 py-1 bg-main text-white text-sm rounded">
-                                                Exam Eligible
+                                                {t("examEligible")}
                                             </span>
                                         )}
                                         {exam.status === "Certificate Ready" && (
                                             <span className="px-2 py-1 bg-blue-500 text-white text-sm rounded">
-                                                Certificate Ready
+                                                {t("certificateReady")}
                                             </span>
                                         )}
                                     </div>
@@ -126,7 +128,7 @@ const LearningProgressPage = () => {
                                     />
                                 </div>
                                 <p className="text-xs text-description mt-1">
-                                    {exam.completedLessons}/{exam.totalLessons} lessons
+                                    {exam.completedLessons}/{exam.totalLessons} {t("lessons")}
                                 </p>
                             </div>
                         );
@@ -138,14 +140,14 @@ const LearningProgressPage = () => {
             <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                     <h3 className="text-base sm:text-lg font-bold text-title">
-                        Lesson Tracking
+                        {t("lessonTracking")}
                     </h3>
                     <Select value={moduleFilter} onValueChange={setModuleFilter}>
                         <SelectTrigger className="w-full sm:w-48">
-                            <SelectValue placeholder="All Categories" />
+                            <SelectValue placeholder={t("allCategories")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Categories</SelectItem>
+                            <SelectItem value="all">{t("allCategories")}</SelectItem>
                             {uniqueModules.map((mod) => (
                                 <SelectItem key={mod} value={mod}>
                                     {mod}
@@ -161,19 +163,19 @@ const LearningProgressPage = () => {
                         <thead>
                             <tr className="border-b border-gray-200">
                                 <th className="text-left py-3 px-2 font-semibold text-main text-base">
-                                    Module
+                                    {t("module")}
                                 </th>
                                 <th className="text-left py-3 px-2 font-semibold text-main text-base">
-                                    Lesson
+                                    {t("lesson")}
                                 </th>
                                 <th className="text-left py-3 px-2 font-semibold text-main text-base">
-                                    Watch Time
+                                    {t("watchTime")}
                                 </th>
                                 <th className="text-left py-3 px-2 font-semibold text-main text-base">
-                                    Status
+                                    {t("status")}
                                 </th>
                                 <th className="text-left py-3 px-2 font-semibold text-main text-base">
-                                    Date
+                                    {t("date")}
                                 </th>
                             </tr>
                         </thead>

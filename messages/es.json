@@ -430,5 +430,248 @@
     "loading": "Cargando...",
     "search": "Buscar",
     "close": "Cerrar"
+  },
+  "ProfileSidebar": {
+    "mainMenu": "Menú Principal",
+    "accountSettings": "Configuración de Cuenta",
+    "myDashboard": "Mi Panel",
+    "myProfile": "Mi Perfil",
+    "enrolledCourses": "Cursos Inscritos",
+    "learningProgress": "Progreso de Aprendizaje",
+    "liveClasses": "Clases en Vivo",
+    "aiTutor": "Tutor IA",
+    "myCertificates": "Mis Certificados",
+    "wishlist": "Lista de Deseos",
+    "reviews": "Reseñas",
+    "myQuizAttempts": "Mis Intentos de Quiz",
+    "purchaseHistory": "Historial de Compras",
+    "messages": "Mensajes",
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión"
+  },
+  "Dashboard": {
+    "quizTitle": "Quiz : Crear Sitios Web Responsivos",
+    "answered": "Respondido : 15/22",
+    "continueQuiz": "Continuar Quiz",
+    "enrolledCourses": "Cursos Inscritos",
+    "activeCourses": "Cursos Activos",
+    "completedCourses": "Cursos Completados",
+    "recentlyEnrolledCourses": "Cursos Inscritos Recientemente",
+    "recentInvoices": "Facturas Recientes",
+    "amount": "Monto",
+    "latestQuizzes": "Últimos Quizzes",
+    "correctAnswer": "Respuesta Correcta",
+    "date": "Fecha"
+  },
+  "EnrolledCoursesPage": {
+    "title": "Cursos Inscritos",
+    "enrolled": "Inscritos",
+    "active": "Activos",
+    "completed": "Completados"
+  },
+  "LearningProgress": {
+    "title": "Progreso de Aprendizaje",
+    "description": "Sigue tu recorrido de aprendizaje y logros en detalle",
+    "totalHours": "Horas Totales",
+    "completion": "Completado",
+    "examEligible": "Elegible para Examen",
+    "courses": "Cursos",
+    "certificateReady": "Certificado Listo",
+    "examsAssessments": "Exámenes y Evaluaciones",
+    "completed": "Completado",
+    "lessons": "lecciones",
+    "lessonTracking": "Seguimiento de Lecciones",
+    "allCategories": "Todas las Categorías",
+    "module": "Módulo",
+    "lesson": "Lección",
+    "watchTime": "Tiempo de Visualización",
+    "status": "Estado",
+    "date": "Fecha"
+  },
+  "LiveClasses": {
+    "title": "Clases en Vivo",
+    "description": "Asiste a sesiones en vivo y accede a las grabaciones",
+    "upcomingLiveClasses": "Próximas Clases en Vivo",
+    "joinNow": "Unirse Ahora",
+    "pastSessions": "Sesiones Pasadas"
+  },
+  "MessagesPage": {
+    "title": "Mensajes de Chat",
+    "searchPlaceholder": "Buscar",
+    "activeNow": "Activo Ahora",
+    "today": "Hoy",
+    "typePlaceholder": "Escribe tu mensaje",
+    "send": "Enviar"
+  },
+  "CertificatesPage": {
+    "title": "Mis Certificados",
+    "id": "ID",
+    "courseName": "Nombre del Curso",
+    "date": "Fecha",
+    "marks": "Calificaciones",
+    "outOf": "De",
+    "actions": "Acciones",
+    "viewCertificate": "Ver Certificado",
+    "downloadCertificate": "Descargar Certificado",
+    "certificatePreview": "Vista Previa del Certificado",
+    "certificateOfCompletion": "Certificado de Finalización",
+    "thisCertifiesThat": "Esto certifica que",
+    "hasSuccessfullyCompleted": "ha completado exitosamente el curso",
+    "certifiesUserCompleted": "Esto certifica que Kevin Gilbert ha completado exitosamente",
+    "score": "Puntuación",
+    "downloadPDF": "Descargar PDF",
+    "certificateId": "ID del Certificado",
+    "instructorSignature": "Firma del Instructor",
+    "directorSignature": "Firma del Director"
+  },
+  "ProfilePage": {
+    "title": "Mi Perfil",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "registrationDate": "Fecha de Registro",
+    "userName": "Nombre de Usuario",
+    "phoneNumber": "Número de Teléfono",
+    "email": "Correo Electrónico",
+    "gender": "Género",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "age": "Edad",
+    "bio": "Biografía"
+  },
+  "PurchaseHistoryPage": {
+    "title": "Historial de Compras",
+    "courses": "Cursos",
+    "usd": "USD"
+  },
+  "QuizAttemptsPage": {
+    "title": "Mis Intentos de Quiz"
+  },
+  "ReviewsPage": {
+    "title": "Reseñas",
+    "writeReview": "Escribir una Reseña"
+  },
+  "SettingsPage": {
+    "title": "Configuración",
+    "imageSizeError": "El tamaño de la imagen debe ser menor a 1MB",
+    "invalidImageError": "Por favor seleccione un archivo de imagen válido",
+    "imageRatioError": "La imagen debe tener una proporción 1:1 (cuadrada)",
+    "changePhoto": "Cambiar Foto",
+    "uploadPhoto": "Subir Foto",
+    "imageSizeHint": "El tamaño de la imagen debe ser menor a 1MB y la proporción debe ser 1:1",
+    "imageReady": "✓ Imagen lista para guardar",
+    "fullName": "Nombre completo",
+    "firstNamePlaceholder": "Nombre",
+    "lastNamePlaceholder": "Apellido",
+    "username": "Nombre de usuario",
+    "usernamePlaceholder": "Ingrese su nombre de usuario",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Su título, profesión o breve biografía",
+    "saveChanges": "Guardar Cambios",
+    "changePassword": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "confirmNewPassword": "Confirmar nueva contraseña",
+    "deleteAccount": "Eliminar Cuenta",
+    "deleteAccountDesc": "Eliminar permanentemente su cuenta y todos los datos asociados",
+    "deleteAccountWarning": "Advertencia: Esta acción es irreversible. Todos sus datos serán eliminados permanentemente.",
+    "delete": "Eliminar",
+    "deleteAccountConfirm": "¿Está seguro de que desea eliminar su cuenta? Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "yesDelete": "Sí, Eliminar"
+  },
+  "WishlistPage": {
+    "title": "Lista de Deseos",
+    "course": "Curso",
+    "prices": "Precios",
+    "action": "Acción"
+  },
+  "AITutor": {
+    "title": "Tutor IA",
+    "aiIsHere": "IA está Aquí",
+    "initialMessage": "¡Hola! Soy tu tutor impulsado por IA. Puedo ayudarte a entender conceptos de tus cursos, responder preguntas y proporcionar explicaciones. ¡Selecciona un curso para obtener ayuda contextual o simplemente pregúntame lo que quieras!",
+    "mockResponse": "Sí claro, gracias",
+    "you": "Tú",
+    "today": "Hoy",
+    "typePlaceholder": "Escribe tu mensaje",
+    "send": "Enviar"
+  },
+  "LogoutModal": {
+    "title": "Cerrar Sesión",
+    "description": "¿Estás seguro de que deseas cerrar sesión?",
+    "cancel": "Cancelar",
+    "confirm": "Sí, Cerrar Sesión"
+  },
+  "DashboardCourseCard": {
+    "watchLecture": "Ver Clase",
+    "completed": "Completado"
+  },
+  "EnrolledCourseCard": {
+    "viewCourse": "Ver Curso",
+    "completed": "Completado"
+  },
+  "WishlistCard": {
+    "courseBy": "Curso por",
+    "buyNow": "Comprar Ahora",
+    "addToCart": "Añadir al Carrito"
+  },
+  "PurchaseItemCard": {
+    "courseBy": "Curso por:"
+  },
+  "QuizAttemptCard": {
+    "numberOfQuestions": "Número de Preguntas"
+  },
+  "ReviewCard": {
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "WriteReviewModal": {
+    "title": "Escribir una Reseña",
+    "rating": "Calificación",
+    "featured": "Destacado",
+    "feedback": "Comentarios",
+    "placeholder": "Escribe tu reseña aquí...",
+    "cancel": "Cancelar",
+    "submitting": "Enviando...",
+    "submit": "Enviar Reseña",
+    "ratingRequired": "Por favor seleccione una calificación",
+    "reviewRequired": "La reseña es obligatoria",
+    "reviewTooLong": "La reseña es muy larga"
+  },
+  "EditReviewModal": {
+    "title": "Editar Reseña",
+    "rating": "Calificación",
+    "comment": "Comentario",
+    "placeholder": "Comparte tu experiencia...",
+    "cancel": "Cancelar",
+    "saving": "Guardando...",
+    "save": "Guardar Cambios",
+    "commentRequired": "El comentario es obligatorio",
+    "commentTooLong": "El comentario es muy largo"
+  },
+  "DeleteReviewModal": {
+    "title": "Eliminar Reseña",
+    "description": "¿Estás seguro de que deseas eliminar esta reseña? Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "deleting": "Eliminando...",
+    "delete": "Eliminar"
+  },
+  "QuizModal": {
+    "title": "Quiz",
+    "nextQuestion": "Siguiente Pregunta",
+    "submitQuiz": "Enviar Quiz",
+    "quizResult": "Resultado del Quiz",
+    "yourScore": "Tu Puntuación",
+    "pt": "pt",
+    "completion": "Completado",
+    "totalQuestion": "Total de Preguntas",
+    "correct": "Correcto",
+    "wrong": "Incorrecto",
+    "numberOfQuestions": "Número de Preguntas",
+    "retake": "Reintentar",
+    "continue": "Continuar"
   }
 }
