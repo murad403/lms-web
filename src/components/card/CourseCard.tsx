@@ -3,14 +3,13 @@ import Image from "next/image";
 import { Heart, Star } from "lucide-react";
 import { TCourse } from "@/lib/courses";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
 
 type CourseCardProps = {
     course: TCourse;
 };
 
 const CourseCard = ({ course }: CourseCardProps) => {
-    const t = useTranslations("CourseCard");
+   
     return (
         <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
             {/* Image Section */}

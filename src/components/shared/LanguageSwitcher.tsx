@@ -1,6 +1,5 @@
 "use client";
-
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { locales, localeNames, Locale } from "@/i18n/routing";
 import { useState, useRef, useEffect } from "react";
@@ -47,9 +46,8 @@ const LanguageSwitcher = ({ variant = "desktop" }: LanguageSwitcherProps) => {
             <span>Language: {localeNames[locale]}</span>
           </div>
           <ChevronDown
-            className={`w-4 h-4 transition-transform ${
-              showLanguages ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 transition-transform ${showLanguages ? "rotate-180" : ""
+              }`}
           />
         </button>
 
@@ -98,9 +96,8 @@ const LanguageSwitcher = ({ variant = "desktop" }: LanguageSwitcherProps) => {
             <span>Language: {localeNames[locale]}</span>
           </div>
           <ChevronDown
-            className={`w-4 h-4 transition-transform ${
-              showLanguages ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 transition-transform ${showLanguages ? "rotate-180" : ""
+              }`}
           />
         </button>
       </div>
@@ -117,9 +114,8 @@ const LanguageSwitcher = ({ variant = "desktop" }: LanguageSwitcherProps) => {
         <span className="hidden sm:inline">{localeNames[locale]}</span>
         <span className="sm:hidden">{locale.toUpperCase()}</span>
         <ChevronDown
-          className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${
-            showLanguages ? "rotate-180" : ""
-          }`}
+          className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${showLanguages ? "rotate-180" : ""
+            }`}
         />
       </button>
 
