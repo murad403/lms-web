@@ -5,7 +5,7 @@ const InstructorLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-light-bg">
       <InstructorSidebar />
-      <div className="lg:ml-60">
+      <div className="lg:ml-80">
         <InstructorTopbar />
         <main className="p-4 sm:p-6">{children}</main>
       </div>

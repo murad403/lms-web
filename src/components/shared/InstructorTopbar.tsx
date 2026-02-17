@@ -5,18 +5,7 @@ import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
 import { notifications, TNotification } from "@/lib/header";
 import user from "@/assets/partnership/user2.png";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Video,
-  DollarSign,
-  MessageSquare,
-  Award,
-  Bot,
-  Settings,
-  LogOut,
-  PlusCircle,
-} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle} from "lucide-react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 
@@ -80,7 +69,7 @@ const InstructorTopbar = () => {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-30 lg:ml-60">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 sm:px-6 py-3">
           {/* Left - Mobile menu + Title */}
           <div className="flex items-center gap-3">

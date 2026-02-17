@@ -1,17 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Video,
-  DollarSign,
-  MessageSquare,
-  Award,
-  Bot,
-  Settings,
-  LogOut,
-  PlusCircle,
-} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle} from "lucide-react";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
@@ -43,8 +32,8 @@ const InstructorSidebar = () => {
   };
 
   return (
-    <>
-      <aside className="hidden lg:flex flex-col w-60 bg-[#0F1B35] min-h-screen fixed left-0 top-0 z-50">
+    <div>
+      <aside className="hidden lg:flex flex-col w-80 bg-[#0F1B35] min-h-screen fixed left-0 top-0 z-50">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2">
@@ -93,7 +82,7 @@ const InstructorSidebar = () => {
       </aside>
 
       <LogoutModal open={showLogout} onClose={() => setShowLogout(false)} />
-    </>
+    </div>
   );
 };
 
