@@ -48,7 +48,7 @@ const OverallRating = ({ rating, breakdown }: OverallRatingProps) => {
   const areaPath = wavePath + ` L 100 80 L 0 80 Z`;
 
   return (
-    <div className="bg-white p-4 sm:p-5 h-auto lg:h-120 flex flex-col">
+    <div className="bg-white p-4 sm:p-5 h-95 sm:h-105 lg:h-120">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">Overall Course Rating</h3>
         <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">

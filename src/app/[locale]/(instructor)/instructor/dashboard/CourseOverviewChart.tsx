@@ -57,18 +57,10 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
   const viewsAreaPath = viewsPath + ` L 100 100 L 0 100 Z`;
 
   return (
-    <div className="bg-white p-4 sm:p-5 md:col-span-2 h-auto lg:h-120 flex flex-col">
+    <div className="bg-white p-4 sm:p-5">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">Course Overview</h3>
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          {/* <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#22D3EE]" />
-            <span className="text-xs text-description">Comments</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#6366F1]" />
-            <span className="text-xs text-description">View</span>
-          </div> */}
           <select className="text-xs sm:text-sm text-description px-2 sm:px-3 py-1 sm:py-1.5 bg-white focus:outline-none">
             <option>This week</option>
             <option>This month</option>
@@ -77,16 +69,16 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
       </div>
 
       {/* Chart */}
-      <div className="relative flex-1 min-h-75 sm:min-h-87.5">
+      <div className="relative h-95 sm:h-105 lg:h-120">
         {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-6 sm:w-10">
+        <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-6 sm:w-8">
           {yAxisLabels.map((label) => (
             <span key={label}>{label}</span>
           ))}
         </div>
 
         {/* Chart area */}
-        <div className="absolute left-8 sm:left-12 right-0 top-0 bottom-6 sm:bottom-8">
+        <div className="absolute left-8 sm:left-10 right-0 top-0 bottom-6 sm:bottom-8">
           <svg
             className="w-full h-full"
             viewBox="0 0 100 100"
@@ -150,7 +142,7 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
         </div>
 
         {/* X-axis labels */}
-        <div className="absolute left-8 sm:left-12 right-0 bottom-0 flex justify-between text-[10px] sm:text-xs text-description">
+        <div className="absolute left-8 sm:left-10 right-0 bottom-0 flex justify-between text-[10px] sm:text-xs text-description">
           {chartData.map((d) => (
             <span key={d.label} className="flex-1 text-center">{d.label}</span>
           ))}

@@ -15,13 +15,17 @@ const InstructorDashboardPage = () => {
             {/* Recent Activity + Revenue */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <RecentActivity activities={recentActivities} />
-                <RevenueChart data={revenueData} />
+                <div className="md:col-span-2">
+                    <RevenueChart data={revenueData} />
+                </div>
             </div>
 
             {/* Overall Rating + Course Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <OverallRating rating={4.6} breakdown={ratingBreakdown} />
-                <CourseOverviewChart data={courseOverviewData} />
+                <div className="md:col-span-2">
+                    <CourseOverviewChart data={courseOverviewData} />
+                </div>
             </div>
         </div>
     );

@@ -67,7 +67,7 @@ const RevenueChart = ({ data: _data }: RevenueChartProps) => {
   const xAxisLabels = ["Aug 01", "Aug 10", "Aug 20", "Aug 31", "Aug 31"];
 
   return (
-    <div className="bg-white p-4 sm:p-5 md:col-span-2">
+    <div className="bg-white p-4 sm:p-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">Revenue</h3>
         <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">

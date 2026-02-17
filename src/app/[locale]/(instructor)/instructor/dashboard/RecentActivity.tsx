@@ -29,7 +29,7 @@ const RecentActivity = ({ activities }: RecentActivityProps) => {
           <option>This Month</option>
         </select>
       </div>
-      <div className="space-y-4 max-h-126 overflow-y-auto">
+      <div className="space-y-4 max-h-122 overflow-y-auto">
         {activities.map((activity) => {
           const Icon = iconMap[activity.type] || MessageSquare;
           const color = colorMap[activity.type] || "bg-gray-100 text-gray-600";
