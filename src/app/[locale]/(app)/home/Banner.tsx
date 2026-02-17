@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import banner from "@/assets/home/banner.png";
 
 const Banner = async () => {
     const t = await getTranslations("Home");
@@ -9,7 +10,7 @@ const Banner = async () => {
         <div className="relative w-full h-63 sm:h-80 md:h-96 lg:h-200 xl:h-240 overflow-hidden">
             {/* Background Image */}
             <Image
-                src="/home/banner.jpg"
+                src={banner}
                 alt="Banner"
                 fill
                 className="object-cover"
@@ -17,7 +18,7 @@ const Banner = async () => {
             />
 
             {/* Gradient Overlay - blue on left, transparent on right */}
-            <div className="absolute inset-0 bg-linear-to-r from-blue-700/85 via-blue-600/55 to-transparent" />
+            {/* <div className="absolute inset-0 bg-linear-to-r from-blue-700/85 via-blue-600/55 to-transparent" /> */}
 
             {/* Content */}
             <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
@@ -33,7 +34,7 @@ const Banner = async () => {
 
                 {/* Button with double border effect */}
                 <div className="mt-6 sm:mt-7 inline-block max-w-fit">
-                    <div className="p-1 border-2 border-white rounded-md">
+                    <div className="p-1 hover:border-2 transition-all duration-500 border-white rounded-md">
                         <Link 
                             href="/categories" 
                             className="block px-6 sm:px-8 py-3 sm:py-4 bg-white text-main border-2 border-white rounded-md text-sm sm:text-base font-semibold hover:bg-white/95 transition-colors"
