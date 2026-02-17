@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Star, Users, BookOpen, Pencil, Plus } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { instructorProfile, instructorCourses } from "@/lib/instructor";
-import InstructorCourseCard from "@/components/instructor/courses/InstructorCourseCard";
+import InstructorCourseCard from "@/app/[locale]/(instructor)/instructor/my-courses/InstructorCourseCard";
 
 const tabs = [
     { id: "about", label: "About Me" },
