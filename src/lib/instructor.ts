@@ -443,6 +443,13 @@ export const recentActivities: TRecentActivity[] = [
   { id: "2", type: "rating", userName: "John", action: "give a 5 star rating on your course", courseName: "2021 ui/ux design with figma", time: "5 mins ago" },
   { id: "3", type: "purchase", userName: "Sraboni", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
   { id: "4", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "5", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "6", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "7", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "8", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "9", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "10", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
+  { id: "11", type: "purchase", userName: "Arif", action: "purchase your course", courseName: "2021 ui/ux design with figma", time: "6 mins ago" },
 ];
 
 export const revenueData: TRevenueData[] = [

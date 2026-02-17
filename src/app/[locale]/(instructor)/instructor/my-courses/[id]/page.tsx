@@ -10,9 +10,9 @@ import {
   Clock,
   MoreHorizontal,
 } from "lucide-react";
-import RevenueChart from "@/components/instructor/dashboard/RevenueChart";
-import OverallRating from "@/components/instructor/dashboard/OverallRating";
-import CourseOverviewChart from "@/components/instructor/dashboard/CourseOverviewChart";
+import RevenueChart from "@/app/[locale]/(instructor)/instructor/dashboard/RevenueChart";
+import OverallRating from "@/app/[locale]/(instructor)/instructor/dashboard/OverallRating";
+import CourseOverviewChart from "@/app/[locale]/(instructor)/instructor/dashboard/CourseOverviewChart";
 import {
   instructorCourseDetail,
   revenueData,

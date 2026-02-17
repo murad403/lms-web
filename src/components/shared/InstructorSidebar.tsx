@@ -33,7 +33,7 @@ const InstructorSidebar = () => {
 
   return (
     <div>
-      <aside className="hidden lg:flex flex-col w-80 bg-[#0F1B35] min-h-screen fixed left-0 top-0 z-50">
+      <aside className="hidden lg:flex flex-col w-80 bg-title min-h-screen fixed left-0 top-0 z-50">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2">
@@ -43,7 +43,7 @@ const InstructorSidebar = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 py-4 space-y-1 overflow-y-auto">
           {mainMenuItems.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
@@ -51,9 +51,9 @@ const InstructorSidebar = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                className={`flex items-center gap-3 py-3 px-6 text-sm transition-colors ${
                   active
-                    ? "bg-main text-white font-semibold"
+                    ? "bg-[#4F9BEF] text-white font-semibold"
                     : "text-gray-300 hover:bg-white/10 hover:text-white"
                 }`}
               >

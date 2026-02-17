@@ -20,16 +20,16 @@ const colorMap: Record<string, string> = {
 
 const RecentActivity = ({ activities }: RecentActivityProps) => {
   return (
-    <div className="bg-white rounded-lg border border-border-light p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-bold text-title">Recent Activity</h3>
-        <select className="text-sm text-description border border-gray-200 rounded-md px-2 py-1">
+    <div className="bg-white p-5">
+      <div className="flex items-center justify-between border-b border-border-light pb-4 mb-4">
+        <h3 className="text-lg font-semibold text-title">Recent Activity</h3>
+        <select className="text-sm text-description px-2 py-1">
           <option>Today</option>
           <option>This Week</option>
           <option>This Month</option>
         </select>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-126 overflow-y-auto">
         {activities.map((activity) => {
           const Icon = iconMap[activity.type] || MessageSquare;
           const color = colorMap[activity.type] || "bg-gray-100 text-gray-600";

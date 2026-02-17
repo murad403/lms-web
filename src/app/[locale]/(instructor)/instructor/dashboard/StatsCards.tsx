@@ -28,9 +28,9 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
         return (
           <div
             key={item.key}
-            className="bg-white rounded-lg border border-border-light p-5 flex items-center gap-4"
+            className="bg-white p-6 flex items-center gap-6"
           >
-            <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${item.color}`}>
+            <div className={`w-12 h-12 flex items-center justify-center ${item.color}`}>
               <Icon className="w-6 h-6" />
             </div>
             <div>
