@@ -1,6 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle, Wallet} from "lucide-react";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
@@ -16,7 +16,7 @@ const mainMenuItems: SidebarItem[] = [
   { label: "Create New Course", href: "/instructor/create-course", icon: PlusCircle },
   { label: "My Courses", href: "/instructor/my-courses", icon: BookOpen },
   { label: "LIVE Classes", href: "/instructor/live-classes", icon: Video },
-  { label: "Earning", href: "/instructor/earnings", icon: DollarSign },
+  { label: "Earning", href: "/instructor/earnings", icon: Wallet },
   { label: "Message", href: "/instructor/messages", icon: MessageSquare },
   { label: "Accreditation", href: "/instructor/accreditation", icon: Award },
   { label: "AI Assistant", href: "/instructor/ai-assistant", icon: Bot },

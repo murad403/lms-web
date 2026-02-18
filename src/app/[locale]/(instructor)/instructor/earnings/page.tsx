@@ -1,19 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { DollarSign, TrendingUp, ArrowDownCircle, CreditCard, Plus, Check, MoreHorizontal, X } from "lucide-react";
-import {
-  earningStats,
-  paymentCards,
-  withdrawalHistory,
-  statisticData,
-} from "@/lib/instructor";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { Plus, Check, MoreHorizontal, X } from "lucide-react";
+import { earningStats, paymentCards, withdrawalHistory, statisticData } from "@/lib/instructor";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import InstructorEarningStats from "./InstructorEarningStats";
 
 type PaymentCardForm = {
   name: string;
@@ -22,6 +13,8 @@ type PaymentCardForm = {
   expiryYear: string;
   cvc: string;
 };
+
+
 
 const EarningsPage = () => {
   const [showAddCard, setShowAddCard] = useState(false);
@@ -49,44 +42,7 @@ const EarningsPage = () => {
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg border border-border-light p-5 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
-            <DollarSign className="w-6 h-6 text-blue-600" />
-          </div>
-          <div>
-            <p className="text-xl font-bold text-title">${earningStats.totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-            <p className="text-sm text-description">Total Revenue</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg border border-border-light p-5 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-green-600" />
-          </div>
-          <div>
-            <p className="text-xl font-bold text-title">${earningStats.currentBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-            <p className="text-sm text-description">Current Balance</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg border border-border-light p-5 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center">
-            <ArrowDownCircle className="w-6 h-6 text-orange-600" />
-          </div>
-          <div>
-            <p className="text-xl font-bold text-title">${earningStats.totalWithdrawals.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-            <p className="text-sm text-description">Total Withdrawals</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg border border-border-light p-5 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
-            <CreditCard className="w-6 h-6 text-purple-600" />
-          </div>
-          <div>
-            <p className="text-xl font-bold text-title">${earningStats.todayRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-            <p className="text-sm text-description">Today Revenue</p>
-          </div>
-        </div>
-      </div>
+      <InstructorEarningStats/>
 
       {/* Statistics + Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
