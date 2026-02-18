@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
-import { Star, BookOpen, MessageSquare, Users, Paperclip, Globe, Clock, MoreHorizontal } from "lucide-react";
+import { Star, BookOpen, MessageSquare, Users, Paperclip, Globe, Clock } from "lucide-react";
 import RevenueChart from "@/app/[locale]/(instructor)/instructor/dashboard/RevenueChart";
 import OverallRating from "@/app/[locale]/(instructor)/instructor/dashboard/OverallRating";
 import CourseOverviewChart from "@/app/[locale]/(instructor)/instructor/dashboard/CourseOverviewChart";
 import { instructorCourseDetail, revenueData, ratingBreakdown, courseOverviewData } from "@/lib/instructor";
 import { Link } from "@/i18n/navigation";
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
 
 
 const CourseDetailPage = () => {
@@ -132,7 +132,9 @@ const CourseDetailPage = () => {
                         const Icon = card.icon;
                         return (
                             <div key={index} className="bg-white p-4 flex gap-5 items-center justify-center">
-                                <Icon className="size-7 text-main" />
+                                <div className="bg-[#EBEBFF] p-3">
+                                    <Icon className="size-7 text-main" />
+                                </div>
                                 <div>
                                     <p className="text-xl text-title">{card.value}</p>
                                     <p className="text-sm text-description">{card.label}</p>
@@ -144,8 +146,8 @@ const CourseDetailPage = () => {
                 </div>
                 {/* overall rating */}
                 <OverallRating rating={course.rating} breakdown={ratingBreakdown} />
-                <CourseOverviewChart data={courseOverviewData} />
                 <RevenueChart data={revenueData} />
+                <CourseOverviewChart data={courseOverviewData} />
             </div>
 
         </div>
