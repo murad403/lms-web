@@ -12,6 +12,7 @@ import {
     certificateTypeOptions,
     organizationOptions,
 } from "@/lib/instructor";
+import { Send } from "lucide-react";
 
 type Props = {
     open: boolean;
@@ -41,9 +42,10 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>Request Accreditation</DialogTitle>
+                    <DialogTitle className="text-xl">Submit Course for Accreditation</DialogTitle>
+                    <p className="text-base text-description">Choose a course to submit for official accreditation review.</p>
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
                     {/* Course Select */}
@@ -53,7 +55,7 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                         </label>
                         <select
                             {...register("course", { required: true })}
-                            className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
                             <option value="">Choose a course</option>
                             {courseSelectOptions.map((opt) => (
@@ -71,7 +73,7 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                         </label>
                         <select
                             {...register("organization", { required: true })}
-                            className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
                             <option value="">Select organization</option>
                             {organizationOptions.map((opt) => (
@@ -89,7 +91,7 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                         </label>
                         <select
                             {...register("certificateType", { required: true })}
-                            className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
                             <option value="">Select type</option>
                             {certificateTypeOptions.map((opt) => (
@@ -109,26 +111,20 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                             {...register("notes")}
                             rows={3}
                             placeholder="Any additional information..."
-                            className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
+                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
                         />
                     </div>
 
                     {/* Actions */}
-                    <div className="flex justify-end gap-3 pt-2">
-                        <button
-                            type="button"
-                            onClick={handleClose}
-                            className="px-4 py-2.5 border border-border-light rounded-lg text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                        >
-                            Cancel
-                        </button>
+                    
+                     
                         <button
                             type="submit"
-                            className="px-4 py-2.5 bg-main text-white rounded-lg text-sm font-medium hover:bg-main/90 transition-colors"
+                            className="w-full py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Submit Request
+                            Submit <Send className="w-4 h-4 ml-2 inline" />
                         </button>
-                    </div>
+                    
                 </form>
             </DialogContent>
         </Dialog>

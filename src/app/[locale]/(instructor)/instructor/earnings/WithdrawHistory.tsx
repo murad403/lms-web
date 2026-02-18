@@ -3,8 +3,8 @@ import { MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 
 const WithdrawHistory = () => {
-    const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-    
+    const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
     const statusColor: Record<string, string> = {
         Pending: "text-orange-500",
         Completed: "text-green-600",
@@ -12,7 +12,7 @@ const WithdrawHistory = () => {
         "Cancel Withdraw": "text-red-500",
     };
 
-    const handleCancelWithdraw = (id: number) => {
+    const handleCancelWithdraw = (id: string) => {
         // TODO: API call to cancel withdrawal
         console.log("Cancelling withdrawal:", id);
         setOpenMenuId(null);
@@ -47,7 +47,7 @@ const WithdrawHistory = () => {
                                 </td>
                                 <td className="py-3 px-2">
                                     <div className="relative">
-                                        <button 
+                                        <button
                                             onClick={() => setOpenMenuId(openMenuId === item.id ? null : item.id)}
                                             className="p-1 hover:bg-gray-100 rounded"
                                         >
@@ -55,11 +55,11 @@ const WithdrawHistory = () => {
                                         </button>
                                         {openMenuId === item.id && (
                                             <>
-                                                <div 
-                                                    className="fixed inset-0 z-10" 
+                                                <div
+                                                    className="fixed inset-0 z-10"
                                                     onClick={() => setOpenMenuId(null)}
                                                 />
-                                                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 min-w-[160px]">
+                                                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 min-w-40">
                                                     <button
                                                         onClick={() => handleCancelWithdraw(item.id)}
                                                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"

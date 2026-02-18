@@ -14,9 +14,10 @@ type MessageForm = {
 type ChatBoxProps = {
   title?: string;
   heightClass?: string;
+  isShowTitle: boolean;
 };
 
-const ChatBox = ({ title, heightClass = "h-[calc(100vh-320px)]" }: ChatBoxProps) => {
+const ChatBox = ({ title, heightClass = "h-[calc(100vh-320px)]", isShowTitle }: ChatBoxProps) => {
   const [selectedUser, setSelectedUser] = useState<TChatUser>(chatUsers[0]);
   const [messages, setMessages] = useState<TChatMessage[]>(chatMessages);
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,16 +60,15 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-320px)]" }: ChatBoxProps)
 
   return (
     <div>
-      {title && (
+      {isShowTitle && title && (
         <h2 className="text-lg sm:text-xl font-bold text-title mb-6">{title}</h2>
       )}
 
       <div className={`bg-white rounded-md border border-border-light flex flex-col md:flex-row ${heightClass} min-h-125 overflow-hidden`}>
         {/* User List */}
         <div
-          className={`${
-            showUserList ? "flex" : "hidden md:flex"
-          } flex-col w-full md:w-72 lg:w-80 border-r border-border-light`}
+          className={`${showUserList ? "flex" : "hidden md:flex"
+            } flex-col w-full md:w-72 lg:w-80 border-r border-border-light`}
         >
           {/* Chat Label */}
           <div className="p-3 border-b border-border-light">
@@ -91,9 +91,8 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-320px)]" }: ChatBoxProps)
               <button
                 key={user.id}
                 onClick={() => handleUserSelect(user)}
-                className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 transition-colors text-left ${
-                  selectedUser.id === user.id ? "bg-blue-50" : ""
-                }`}
+                className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 transition-colors text-left ${selectedUser.id === user.id ? "bg-blue-50" : ""
+                  }`}
               >
                 <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
                   <Image
@@ -161,9 +160,8 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-320px)]" }: ChatBoxProps)
                       <p className="text-[10px] text-description mb-1 ml-1">{selectedUser.name}</p>
                     )}
                     <div
-                      className={`px-3 py-2 rounded-xl text-sm ${
-                        msg.isOwn ? "bg-main text-white rounded-br-none" : "bg-gray-100 text-title rounded-bl-none"
-                      }`}
+                      className={`px-3 py-2 rounded-xl text-sm ${msg.isOwn ? "bg-main text-white rounded-br-none" : "bg-gray-100 text-title rounded-bl-none"
+                        }`}
                     >
                       {msg.text}
                     </div>

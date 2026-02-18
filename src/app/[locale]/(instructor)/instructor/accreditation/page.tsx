@@ -1,18 +1,12 @@
 "use client";
-
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import AccreditationStatsCards from "@/components/instructor/accreditation/AccreditationStatsCards";
-import SubmissionsTab from "@/components/instructor/accreditation/SubmissionsTab";
-import CertificatesTab from "@/components/instructor/accreditation/CertificatesTab";
-import GuidelinesTab from "@/components/instructor/accreditation/GuidelinesTab";
-import RequestAccreditationModal from "@/components/instructor/accreditation/RequestAccreditationModal";
-import {
-    accreditationStats,
-    accreditationSubmissions,
-    activeCertificates,
-    accreditationGuidelines,
-} from "@/lib/instructor";
+import AccreditationStatsCards from "@/app/[locale]/(instructor)/instructor/accreditation/AccreditationStatsCards";
+import SubmissionsTab from "@/app/[locale]/(instructor)/instructor/accreditation/SubmissionsTab";
+import CertificatesTab from "@/app/[locale]/(instructor)/instructor/accreditation/CertificatesTab";
+import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
+import RequestAccreditationModal from "@/components/modal/RequestAccreditationModal";
+import { accreditationStats, accreditationSubmissions, activeCertificates, accreditationGuidelines} from "@/lib/instructor";
 
 const tabs = [
     { id: "submissions", label: "Submissions" },
@@ -30,17 +24,17 @@ const AccreditationPage = () => {
             <AccreditationStatsCards stats={accreditationStats} />
 
             {/* Tab content card */}
-            <div className="bg-white rounded-lg border border-border-light">
+            <div>
                 {/* Tab header */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 border-b border-border-light">
-                    <div className="flex gap-1">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between">
+                    <div className="flex gap-1 bg-[#E7ECF4] px-3 py-2 rounded-md">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                     activeTab === tab.id
-                                        ? "bg-main text-white"
+                                        ? "bg-white text-main"
                                         : "text-description hover:bg-gray-100"
                                 }`}
                             >
@@ -50,7 +44,7 @@ const AccreditationPage = () => {
                     </div>
                     <button
                         onClick={() => setShowRequestModal(true)}
-                        className="flex items-center gap-1.5 px-4 py-2.5 bg-main text-white rounded-lg text-sm font-medium hover:bg-main/90 transition-colors"
+                        className="flex items-center gap-1.5 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
                         <Plus className="w-4 h-4" />
                         Request Accreditation
@@ -58,7 +52,7 @@ const AccreditationPage = () => {
                 </div>
 
                 {/* Tab body */}
-                <div className="p-4">
+                <div className="mt-6">
                     {activeTab === "submissions" && (
                         <SubmissionsTab submissions={accreditationSubmissions} />
                     )}

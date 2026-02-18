@@ -60,7 +60,7 @@ const InstructorSidebar = () => {
                 <Icon className="w-5 h-5 shrink-0" />
                 <span className="truncate">{item.label}</span>
                 {item.label === "Message" && (
-                  <span className="ml-auto w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">
+                  <span className={`ml-auto w-5 h-5 ${item.label === "Message" ? "bg-[#4F9BEF] text-white" : "bg-white text-[#4F9BEF] "} rounded-full flex items-center justify-center text-[10px] font-bold`}>
                     3
                   </span>
                 )}

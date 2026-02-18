@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 const MessagesPage = () => {
     const t = useTranslations("MessagesPage");
 
-    return <ChatBox title={t("title")} />;
+    return <ChatBox isShowTitle title={t("title")} />;
 };
 
 export default MessagesPage;

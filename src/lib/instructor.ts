@@ -140,6 +140,8 @@ export type TAccreditationStats = {
   pendingReview: number;
   certificatesIssued: number;
   activeCertificates: number;
+  title?: string;
+  border: string;
 };
 
 export type TLiveClassStats = {
