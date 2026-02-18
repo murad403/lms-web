@@ -520,6 +520,7 @@ export const accreditationStats: TAccreditationStats = {
   pendingReview: 1,
   certificatesIssued: 2139,
   activeCertificates: 1987,
+  border: "border border-border-light",
 };
 
 export const accreditationSubmissions: TAccreditationSubmission[] = [
