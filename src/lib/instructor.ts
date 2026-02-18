@@ -494,13 +494,13 @@ export const paymentCards: TPaymentCard[] = [
 ];
 
 export const withdrawalHistory: TWithdrawalHistory[] = [
-  { id: "1", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "", provider: "American Express", status: "Pending" },
-  { id: "2", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "", provider: "American Express", status: "Pending" },
-  { id: "3", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "", provider: "American Expr...", status: "Cancel Withdraw" },
-  { id: "4", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "", provider: "American Express", status: "Completed" },
-  { id: "5", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "", provider: "American Express", status: "Completed" },
-  { id: "6", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "", provider: "American Express", status: "Cancelled" },
-  { id: "7", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "", provider: "American Express", status: "Completed" },
+  { id: "1", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "234", provider: "American Express", status: "Pending" },
+  { id: "2", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "234", provider: "American Express", status: "Pending" },
+  { id: "3", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "234", provider: "American Expr...", status: "Cancel Withdraw" },
+  { id: "4", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "234", provider: "American Express", status: "Completed" },
+  { id: "5", date: "21 Sep, 2021 at 2:14 AM", method: "Visa", amount: "234", provider: "American Express", status: "Completed" },
+  { id: "6", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "234", provider: "American Express", status: "Cancelled" },
+  { id: "7", date: "21 Sep, 2021 at 2:14 AM", method: "Mastercard", amount: "234", provider: "American Express", status: "Completed" },
 ];
 
 export const statisticData: TStatisticData[] = [

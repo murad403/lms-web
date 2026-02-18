@@ -5,9 +5,12 @@ import { TRevenueData } from "@/lib/instructor";
 
 type RevenueChartProps = {
   data: TRevenueData[];
+  strokeColor: string;
+  title: string;
+  pathColor: string;
 };
 
-const RevenueChart = ({ data: _data }: RevenueChartProps) => {
+const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueChartProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   // Extended demo data for smoother curve
@@ -69,7 +72,7 @@ const RevenueChart = ({ data: _data }: RevenueChartProps) => {
   return (
     <div className="bg-white p-4 sm:p-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
-        <h3 className="text-base sm:text-lg font-semibold text-title">Revenue</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-title">{title}</h3>
         <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">
           <option>This month</option>
           <option>Last month</option>
@@ -94,8 +97,8 @@ const RevenueChart = ({ data: _data }: RevenueChartProps) => {
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#564FFD" stopOpacity="0.2" />
-                <stop offset="100%" stopColor="#564FFD" stopOpacity="0.02" />
+                <stop offset="0%" stopColor={pathColor} stopOpacity="0.2" />
+                <stop offset="100%" stopColor={pathColor} stopOpacity="0.02" />
               </linearGradient>
             </defs>
 
@@ -106,7 +109,7 @@ const RevenueChart = ({ data: _data }: RevenueChartProps) => {
             <path
               d={linePath}
               fill="none"
-              stroke="#564FFD"
+              stroke={strokeColor}
               strokeWidth="0.5"
               vectorEffect="non-scaling-stroke"
               style={{ strokeWidth: '3px' }}

@@ -16,7 +16,7 @@ const InstructorDashboardPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <RecentActivity activities={recentActivities} />
                 <div className="md:col-span-2">
-                    <RevenueChart data={revenueData} />
+                    <RevenueChart pathColor="#564FFD" strokeColor="#564FFD" title="Revenue" data={revenueData} />
                 </div>
             </div>
 
