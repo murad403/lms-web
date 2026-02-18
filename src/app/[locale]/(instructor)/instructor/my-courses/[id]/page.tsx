@@ -146,7 +146,7 @@ const CourseDetailPage = () => {
                 </div>
                 {/* overall rating */}
                 <OverallRating rating={course.rating} breakdown={ratingBreakdown} />
-                <RevenueChart data={revenueData} />
+                <RevenueChart pathColor="#564FFD" strokeColor="#564FFD" title="Revenue" data={revenueData} />
                 <CourseOverviewChart data={courseOverviewData} />
             </div>
 

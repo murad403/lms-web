@@ -1,83 +1,298 @@
+/* eslint-disable react-hooks/incompatible-library */
 "use client";
 
-import { useState } from "react";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { Upload, X, Image as ImageIcon, Film } from "lucide-react";
-import Image from "next/image";
-import {
-    TBasicInfoForm,
-    courseCategoryOptions,
-    courseLevelOptions,
-    courseLanguageOptions,
-} from "@/lib/instructor";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const TITLE_MAX = 80;
+const SUBTITLE_MAX = 120;
+
+const basicInfoSchema = z.object({
+    title: z.string().min(1, "Title is required").max(TITLE_MAX),
+    subtitle: z.string().max(SUBTITLE_MAX).optional(),
+    category: z.string().min(1, "Category is required"),
+    subCategory: z.string().optional(),
+    topic: z.string().optional(),
+    language: z.string().min(1, "Language is required"),
+    level: z.string().min(1, "Level is required"),
+    price: z.string().optional(),
+    couponCode: z.string().optional(),
+    discountPrice: z.string().optional(),
+    expiryPeriod: z.string().optional(),
+});
+
+export type BasicInfoFormData = z.infer<typeof basicInfoSchema>;
+
+const categoryOptions = [
+    { value: "development", label: "Development" },
+    { value: "business", label: "Business" },
+    { value: "design", label: "Design" },
+    { value: "marketing", label: "Marketing" },
+    { value: "it-software", label: "IT & Software" },
+    { value: "photography", label: "Photography" },
+    { value: "music", label: "Music" },
+];
+
+const subCategoryOptions = [
+    { value: "web-development", label: "Web Development" },
+    { value: "mobile-development", label: "Mobile Development" },
+    { value: "data-science", label: "Data Science" },
+    { value: "game-development", label: "Game Development" },
+    { value: "programming", label: "Programming Languages" },
+];
+
+const languageOptions = [
+    { value: "english", label: "English" },
+    { value: "spanish", label: "Spanish" },
+    { value: "french", label: "French" },
+    { value: "german", label: "German" },
+    { value: "bangla", label: "Bangla" },
+];
+
+const levelOptions = [
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
+    { value: "all-levels", label: "All Levels" },
+];
+
+const expiryOptions = [
+    { value: "limited", label: "Limited Time" },
+    { value: "1-week", label: "1 Week" },
+    { value: "1-month", label: "1 Month" },
+    { value: "3-months", label: "3 Months" },
+    { value: "unlimited", label: "Unlimited" },
+];
 
 type Props = {
-    register: UseFormRegister<TBasicInfoForm>;
-    setValue: UseFormSetValue<TBasicInfoForm>;
+    onNext: (data: BasicInfoFormData) => void;
+    onCancel: () => void;
+    defaultValues?: Partial<BasicInfoFormData>;
 };
 
-const BasicInfoTab = ({ register, setValue }: Props) => {
-    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-    const [trailerName, setTrailerName] = useState<string | null>(null);
+const BasicInfoTab = ({ onNext, onCancel, defaultValues }: Props) => {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<BasicInfoFormData>({
+        resolver: zodResolver(basicInfoSchema),
+        defaultValues: {
+            title: "",
+            subtitle: "",
+            category: "",
+            subCategory: "",
+            topic: "",
+            language: "",
+            level: "",
+            price: "",
+            couponCode: "",
+            discountPrice: "",
+            expiryPeriod: "limited",
+            ...defaultValues,
+        },
+    });
 
-    const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setValue("thumbnail", file);
-        const reader = new FileReader();
-        reader.onload = (ev) => setThumbnailPreview(ev.target?.result as string);
-        reader.readAsDataURL(file);
-    };
+    const titleValue = watch("title") || "";
+    const subtitleValue = watch("subtitle") || "";
 
-    const handleTrailer = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setValue("trailer", file);
-        setTrailerName(file.name);
+    const generateCouponCode = () => {
+        const code = "ABCUPON" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        setValue("couponCode", code);
     };
 
     return (
-        <div className="space-y-5">
-            {/* Course Title */}
+        <form onSubmit={handleSubmit(onNext)} className="space-y-6">
+            <h3 className="text-xl font-bold text-title">Basic Information</h3>
+            <div className="border-b border-border-light" />
+
+            {/* Title */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Course Title
+                    Tittle
+                </label>
+                <div className="relative">
+                    <input
+                        {...register("title")}
+                        maxLength={TITLE_MAX}
+                        placeholder="You course tittle"
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
+                        {titleValue.length}/{TITLE_MAX}
+                    </span>
+                </div>
+                {errors.title && (
+                    <p className="text-xs text-red-500 mt-1">{errors.title.message}</p>
+                )}
+            </div>
+
+            {/* Subtitle */}
+            <div>
+                <label className="text-sm font-medium text-title mb-1.5 block">
+                    Subtittle
+                </label>
+                <div className="relative">
+                    <input
+                        {...register("subtitle")}
+                        maxLength={SUBTITLE_MAX}
+                        placeholder="You course subtittle"
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
+                        {subtitleValue.length}/{SUBTITLE_MAX}
+                    </span>
+                </div>
+            </div>
+
+            {/* Category & Sub-category */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Course Category
+                    </label>
+                    <select
+                        {...register("category")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
+                    >
+                        <option value="">Course Category</option>
+                        {categoryOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.category && (
+                        <p className="text-xs text-red-500 mt-1">{errors.category.message}</p>
+                    )}
+                </div>
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Course Sub-category
+                    </label>
+                    <select
+                        {...register("subCategory")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
+                    >
+                        <option value="">Course Sub-category</option>
+                        {subCategoryOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* Course Topic */}
+            <div>
+                <label className="text-sm font-medium text-title mb-1.5 block">
+                    Course Topic
                 </label>
                 <input
-                    {...register("title", { required: true })}
-                    placeholder="e.g., Complete Web Development Bootcamp"
-                    className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                    {...register("topic")}
+                    placeholder="What is primarily taught in your course?"
+                    className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                 />
             </div>
 
-            {/* Category & Level */}
+            {/* Language & Level */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Category
+                        Course Language
                     </label>
                     <select
-                        {...register("category", { required: true })}
-                        className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                        {...register("language")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Select category</option>
-                        {courseCategoryOptions.map((opt) => (
+                        <option value="">Select...</option>
+                        {languageOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
                             </option>
                         ))}
                     </select>
+                    {errors.language && (
+                        <p className="text-xs text-red-500 mt-1">{errors.language.message}</p>
+                    )}
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Level
+                        Course Level
                     </label>
                     <select
-                        {...register("level", { required: true })}
-                        className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                        {...register("level")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Select level</option>
-                        {courseLevelOptions.map((opt) => (
+                        <option value="">Select...</option>
+                        {levelOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.level && (
+                        <p className="text-xs text-red-500 mt-1">{errors.level.message}</p>
+                    )}
+                </div>
+            </div>
+
+            {/* Price, Coupon, Discount, Expiry */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Course Price
+                    </label>
+                    <input
+                        {...register("price")}
+                        placeholder="$00.00"
+                        type="number"
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                    />
+                </div>
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Create Coupon Code
+                    </label>
+                    <div className="flex">
+                        <input
+                            {...register("couponCode")}
+                            placeholder="ABCUPON"
+                            className="flex-1 border border-border-light rounded-l-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                        />
+                        <button
+                            type="button"
+                            onClick={generateCouponCode}
+                            className="p-3 bg-main text-white text-sm font-medium rounded-r-md hover:bg-main/90 transition-colors whitespace-nowrap"
+                        >
+                            Generate Code
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Discount Price ($)
+                    </label>
+                    <input
+                        {...register("discountPrice")}
+                        placeholder="$00.00"
+                        type="number"
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                    />
+                </div>
+                <div>
+                    <label className="text-sm font-medium text-title mb-1.5 block">
+                        Expiry Period
+                    </label>
+                    <select
+                        {...register("expiryPeriod")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
+                    >
+                        {expiryOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
                             </option>
@@ -86,144 +301,23 @@ const BasicInfoTab = ({ register, setValue }: Props) => {
                 </div>
             </div>
 
-            {/* Language */}
-            <div>
-                <label className="text-sm font-medium text-title mb-1.5 block">
-                    Language
-                </label>
-                <select
-                    {...register("language", { required: true })}
-                    className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+            {/* Navigation */}
+            <div className="flex items-center justify-between pt-6 border-t border-border-light">
+                <button
+                    type="button"
+                    onClick={onCancel}
+                    className="px-5 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                 >
-                    <option value="">Select language</option>
-                    {courseLanguageOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </select>
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                >
+                    Save & Next
+                </button>
             </div>
-
-            {/* Price & Discount */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label className="text-sm font-medium text-title mb-1.5 block">
-                        Price ($)
-                    </label>
-                    <input
-                        {...register("price", { required: true })}
-                        type="number"
-                        placeholder="0.00"
-                        className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                    />
-                </div>
-                <div>
-                    <label className="text-sm font-medium text-title mb-1.5 block">
-                        Discount (%)
-                    </label>
-                    <input
-                        {...register("discount")}
-                        type="number"
-                        placeholder="0"
-                        min={0}
-                        max={100}
-                        className="w-full border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                    />
-                </div>
-            </div>
-
-            {/* Thumbnail & Trailer */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Thumbnail */}
-                <div>
-                    <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Thumbnail
-                    </label>
-                    {thumbnailPreview ? (
-                        <div className="relative w-full h-40 rounded-lg overflow-hidden border border-border-light group">
-                            <Image
-                                src={thumbnailPreview}
-                                alt="Thumbnail"
-                                fill
-                                className="object-cover"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setThumbnailPreview(null);
-                                    setValue("thumbnail", null);
-                                }}
-                                className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
-                        </div>
-                    ) : (
-                        <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-border-light rounded-lg cursor-pointer hover:border-main transition-colors">
-                            <ImageIcon className="w-8 h-8 text-description mb-2" />
-                            <span className="text-sm text-description">
-                                Upload Image
-                            </span>
-                            <span className="text-xs text-description mt-1">
-                                JPG, PNG (Max 2MB)
-                            </span>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleThumbnail}
-                                className="hidden"
-                            />
-                        </label>
-                    )}
-                </div>
-
-                {/* Trailer */}
-                <div>
-                    <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Trailer
-                    </label>
-                    {trailerName ? (
-                        <div className="flex items-center gap-3 w-full h-40 border border-border-light rounded-lg p-4">
-                            <Film className="w-8 h-8 text-main shrink-0" />
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-title truncate">
-                                    {trailerName}
-                                </p>
-                                <p className="text-xs text-description mt-1">
-                                    Video uploaded
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setTrailerName(null);
-                                    setValue("trailer", null);
-                                }}
-                                className="p-1.5 hover:bg-red-50 rounded-md transition-colors"
-                            >
-                                <X className="w-4 h-4 text-red-500" />
-                            </button>
-                        </div>
-                    ) : (
-                        <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-border-light rounded-lg cursor-pointer hover:border-main transition-colors">
-                            <Upload className="w-8 h-8 text-description mb-2" />
-                            <span className="text-sm text-description">
-                                Upload Video
-                            </span>
-                            <span className="text-xs text-description mt-1">
-                                MP4, WebM (Max 100MB)
-                            </span>
-                            <input
-                                type="file"
-                                accept="video/*"
-                                onChange={handleTrailer}
-                                className="hidden"
-                            />
-                        </label>
-                    )}
-                </div>
-            </div>
-        </div>
+        </form>
     );
 };
 

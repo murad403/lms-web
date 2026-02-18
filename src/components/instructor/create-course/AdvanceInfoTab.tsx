@@ -1,212 +1,295 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
-
-type Props = {
-    description: string;
-    setDescription: (val: string) => void;
-    requirements: string[];
-    setRequirements: (val: string[]) => void;
-    whatYouWillTeach: string[];
-    setWhatYouWillTeach: (val: string[]) => void;
-};
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Plus, Upload, Image as ImageIcon, Play } from "lucide-react";
+import Image from "next/image";
 
 const MAX_ITEMS = 8;
+const ITEM_MAX_LENGTH = 120;
 
-const AdvanceInfoTab = ({
-    description,
-    setDescription,
-    requirements,
-    setRequirements,
-    whatYouWillTeach,
-    setWhatYouWillTeach,
-}: Props) => {
-    const [newRequirement, setNewRequirement] = useState("");
-    const [newTeachItem, setNewTeachItem] = useState("");
+const advanceInfoSchema = z.object({
+    description: z.string().optional(),
+    whatYouWillTeach: z.array(z.object({
+        value: z.string().max(ITEM_MAX_LENGTH),
+    })),
+    requirements: z.array(z.object({
+        value: z.string().max(ITEM_MAX_LENGTH),
+    })),
+});
 
-    const addRequirement = () => {
-        if (!newRequirement.trim() || requirements.length >= MAX_ITEMS) return;
-        setRequirements([...requirements, newRequirement.trim()]);
-        setNewRequirement("");
+export type AdvanceInfoFormData = z.infer<typeof advanceInfoSchema>;
+
+type Props = {
+    onNext: (data: AdvanceInfoFormData, thumbnail: File | null, trailer: File | null) => void;
+    onPrev: () => void;
+    defaultValues?: Partial<AdvanceInfoFormData>;
+};
+
+const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
+    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+    const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
+    const [trailerFile, setTrailerFile] = useState<File | null>(null);
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        watch,
+    } = useForm<AdvanceInfoFormData>({
+        resolver: zodResolver(advanceInfoSchema),
+        defaultValues: {
+            description: "",
+            whatYouWillTeach: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
+            requirements: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
+            ...defaultValues,
+        },
+    });
+
+    const {
+        fields: teachFields,
+        append: appendTeach,
+    } = useFieldArray({ control, name: "whatYouWillTeach" });
+
+    const {
+        fields: reqFields,
+        append: appendReq,
+    } = useFieldArray({ control, name: "requirements" });
+
+    const watchTeach = watch("whatYouWillTeach");
+    const watchReq = watch("requirements");
+
+    const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setThumbnailFile(file);
+        const reader = new FileReader();
+        reader.onload = (ev) => setThumbnailPreview(ev.target?.result as string);
+        reader.readAsDataURL(file);
     };
 
-    const removeRequirement = (index: number) => {
-        setRequirements(requirements.filter((_, i) => i !== index));
+    const handleTrailer = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setTrailerFile(file);
+        const reader = new FileReader();
+        reader.onload = (ev) => setTrailerPreview(ev.target?.result as string);
+        reader.readAsDataURL(file);
     };
 
-    const addTeachItem = () => {
-        if (!newTeachItem.trim() || whatYouWillTeach.length >= MAX_ITEMS) return;
-        setWhatYouWillTeach([...whatYouWillTeach, newTeachItem.trim()]);
-        setNewTeachItem("");
-    };
-
-    const removeTeachItem = (index: number) => {
-        setWhatYouWillTeach(whatYouWillTeach.filter((_, i) => i !== index));
+    const onSubmit = (data: AdvanceInfoFormData) => {
+        onNext(data, thumbnailFile, trailerFile);
     };
 
     return (
-        <div className="space-y-6">
-            {/* Course Description - Rich Text Editor */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <h3 className="text-xl font-bold text-title">Advance Informations</h3>
+
+            {/* Thumbnail & Trailer */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Course Thumbnail */}
+                <div>
+                    <label className="text-sm font-medium text-title mb-3 block">
+                        Course Thumbnail
+                    </label>
+                    <div className="flex gap-4">
+                        <div className="w-28 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
+                            {thumbnailPreview ? (
+                                <Image
+                                    src={thumbnailPreview}
+                                    alt="Thumbnail"
+                                    width={112}
+                                    height={112}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <ImageIcon className="w-10 h-10 text-gray-300" />
+                            )}
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-sm text-description mb-2">
+                                Upload your course Thumbnail here. <span className="text-main font-medium">Important guidelines:</span> 1200×800 pixels or 12:8 Ratio. Supported format: <span className="text-main">.jpg, .jpeg,</span> or <span className="text-main">.png</span>
+                            </p>
+                            <label className="inline-flex items-center gap-2 px-4 py-2 border border-main text-main rounded-md text-sm font-medium hover:bg-main/5 transition-colors cursor-pointer">
+                                <span>Upload Image</span>
+                                <Upload className="w-4 h-4" />
+                                <input
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/jpg"
+                                    onChange={handleThumbnail}
+                                    className="hidden"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Course Trailer */}
+                <div>
+                    <label className="text-sm font-medium text-title mb-3 block">
+                        Course Trailer
+                    </label>
+                    <div className="flex gap-4">
+                        <div className="w-28 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
+                            {trailerPreview ? (
+                                <video
+                                    src={trailerPreview}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center">
+                                    <Play className="w-6 h-6 text-main ml-1" />
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-sm text-description mb-2">
+                                Students who watch a well-made promo video are 5X more likely to enroll in your course.
+                            </p>
+                            <label className="inline-flex items-center gap-2 px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors cursor-pointer">
+                                <span>Upload Video</span>
+                                <Upload className="w-4 h-4" />
+                                <input
+                                    type="file"
+                                    accept="video/*"
+                                    onChange={handleTrailer}
+                                    className="hidden"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Course Description */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Course Description
+                    Course Descriptions
                 </label>
-                {/* Simple toolbar */}
-                <div className="border border-border-light rounded-t-lg border-b-0 bg-gray-50 px-3 py-2 flex flex-wrap gap-1">
-                    {["B", "I", "U", "S"].map((btn) => (
-                        <button
-                            key={btn}
-                            type="button"
-                            className={`w-8 h-8 rounded text-sm font-bold text-description hover:bg-gray-200 transition-colors ${
-                                btn === "B"
-                                    ? "font-bold"
-                                    : btn === "I"
-                                    ? "italic"
-                                    : btn === "U"
-                                    ? "underline"
-                                    : "line-through"
-                            }`}
-                        >
-                            {btn}
+                <div className="border border-border-light rounded-md overflow-hidden">
+                    <textarea
+                        {...register("description")}
+                        rows={6}
+                        placeholder="Enter you course descriptions"
+                        className="w-full px-3 py-2.5 text-sm focus:outline-none resize-none"
+                    />
+                    <div className="border-t border-border-light px-3 py-2 flex items-center gap-2 bg-white">
+                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded font-bold text-sm">
+                            B
                         </button>
-                    ))}
-                    <span className="w-px h-8 bg-border-light mx-1" />
-                    <button
-                        type="button"
-                        className="px-2 h-8 rounded text-xs text-description hover:bg-gray-200 transition-colors"
-                    >
-                        H1
-                    </button>
-                    <button
-                        type="button"
-                        className="px-2 h-8 rounded text-xs text-description hover:bg-gray-200 transition-colors"
-                    >
-                        H2
-                    </button>
-                    <span className="w-px h-8 bg-border-light mx-1" />
-                    <button
-                        type="button"
-                        className="px-2 h-8 rounded text-xs text-description hover:bg-gray-200 transition-colors"
-                    >
-                        • List
-                    </button>
-                    <button
-                        type="button"
-                        className="px-2 h-8 rounded text-xs text-description hover:bg-gray-200 transition-colors"
-                    >
-                        1. List
-                    </button>
+                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded italic text-sm">
+                            I
+                        </button>
+                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded underline text-sm">
+                            U
+                        </button>
+                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded line-through text-sm">
+                            S
+                        </button>
+                    </div>
                 </div>
-                <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={8}
-                    placeholder="Provide a detailed description of your course..."
-                    className="w-full border border-border-light rounded-b-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
-                />
             </div>
 
-            {/* Course Requirements */}
+            {/* What you will teach */}
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <label className="text-sm font-medium text-title">
-                        Course Requirements
+                        What you will teach in this course ({teachFields.length}/{MAX_ITEMS})
                     </label>
-                    <span className="text-xs text-description">
-                        {requirements.length}/{MAX_ITEMS}
-                    </span>
+                    {teachFields.length < MAX_ITEMS && (
+                        <button
+                            type="button"
+                            onClick={() => appendTeach({ value: "" })}
+                            className="flex items-center gap-1 text-sm text-main font-medium hover:text-main/80"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Add new
+                        </button>
+                    )}
                 </div>
 
-                <div className="space-y-2 mb-3">
-                    {requirements.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2.5"
-                        >
-                            <span className="text-sm text-title flex-1">{item}</span>
-                            <button
-                                type="button"
-                                onClick={() => removeRequirement(index)}
-                                className="p-1 hover:bg-red-50 rounded transition-colors"
-                            >
-                                <X className="w-3.5 h-3.5 text-red-500" />
-                            </button>
+                <div className="space-y-3">
+                    {teachFields.map((field, index) => (
+                        <div key={field.id}>
+                            <span className="text-xs text-description mb-1 block">
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <div className="relative">
+                                <input
+                                    {...register(`whatYouWillTeach.${index}.value`)}
+                                    maxLength={ITEM_MAX_LENGTH}
+                                    placeholder="What you will teach in this course..."
+                                    className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
+                                    {watchTeach?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>
-
-                {requirements.length < MAX_ITEMS && (
-                    <div className="flex gap-2">
-                        <input
-                            value={newRequirement}
-                            onChange={(e) => setNewRequirement(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addRequirement())}
-                            placeholder="Add a requirement..."
-                            className="flex-1 border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                        />
-                        <button
-                            type="button"
-                            onClick={addRequirement}
-                            className="px-3 py-2.5 bg-main text-white rounded-lg text-sm font-medium hover:bg-main/90 transition-colors flex items-center gap-1"
-                        >
-                            <Plus className="w-4 h-4" />
-                            Add New
-                        </button>
-                    </div>
-                )}
             </div>
 
-            {/* What You Will Teach */}
+            {/* Course requirements */}
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <label className="text-sm font-medium text-title">
-                        What You Will Teach
+                        Course requirements ({reqFields.length}/{MAX_ITEMS})
                     </label>
-                    <span className="text-xs text-description">
-                        {whatYouWillTeach.length}/{MAX_ITEMS}
-                    </span>
+                    {reqFields.length < MAX_ITEMS && (
+                        <button
+                            type="button"
+                            onClick={() => appendReq({ value: "" })}
+                            className="flex items-center gap-1 text-sm text-main font-medium hover:text-main/80"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Add new
+                        </button>
+                    )}
                 </div>
 
-                <div className="space-y-2 mb-3">
-                    {whatYouWillTeach.map((item, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2.5"
-                        >
-                            <span className="text-sm text-title flex-1">{item}</span>
-                            <button
-                                type="button"
-                                onClick={() => removeTeachItem(index)}
-                                className="p-1 hover:bg-red-50 rounded transition-colors"
-                            >
-                                <X className="w-3.5 h-3.5 text-red-500" />
-                            </button>
+                <div className="space-y-3">
+                    {reqFields.map((field, index) => (
+                        <div key={field.id}>
+                            <span className="text-xs text-description mb-1 block">
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <div className="relative">
+                                <input
+                                    {...register(`requirements.${index}.value`)}
+                                    maxLength={ITEM_MAX_LENGTH}
+                                    placeholder="What is you course requirements..."
+                                    className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
+                                    {watchReq?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>
-
-                {whatYouWillTeach.length < MAX_ITEMS && (
-                    <div className="flex gap-2">
-                        <input
-                            value={newTeachItem}
-                            onChange={(e) => setNewTeachItem(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTeachItem())}
-                            placeholder="Add a learning objective..."
-                            className="flex-1 border border-border-light rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                        />
-                        <button
-                            type="button"
-                            onClick={addTeachItem}
-                            className="px-3 py-2.5 bg-main text-white rounded-lg text-sm font-medium hover:bg-main/90 transition-colors flex items-center gap-1"
-                        >
-                            <Plus className="w-4 h-4" />
-                            Add New
-                        </button>
-                    </div>
-                )}
             </div>
-        </div>
+
+            {/* Navigation */}
+            <div className="flex items-center justify-between pt-6 border-t border-border-light">
+                <button
+                    type="button"
+                    onClick={onPrev}
+                    className="px-5 py-2.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                >
+                    Previous
+                </button>
+                <button
+                    type="submit"
+                    className="px-5 py-2.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                >
+                    Save & Next
+                </button>
+            </div>
+        </form>
     );
 };
 
