@@ -9,9 +9,10 @@ import { liveClassSchema, LiveClassFormData } from "@/validation/liveClass.valid
 type LiveClassModalProps = {
     isOpen: boolean;
     onClose: () => void;
+    isShowDate: boolean;
 };
 
-const LiveClassModal = ({ isOpen, onClose }: LiveClassModalProps) => {
+const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) => {
     const {
         register,
         handleSubmit,
@@ -184,40 +185,43 @@ const LiveClassModal = ({ isOpen, onClose }: LiveClassModalProps) => {
                     </div>
 
                     {/* Date and Time */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-semibold text-header mb-2">
-                                Select a date
-                            </label>
-                            <div className="relative">
-                                <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                                <input
-                                    type="date"
-                                    {...register("date")}
-                                    className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
-                                />
+                    {
+                        isShowDate &&
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-header mb-2">
+                                    Select a date
+                                </label>
+                                <div className="relative">
+                                    <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                    <input
+                                        type="date"
+                                        {...register("date")}
+                                        className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
+                                    />
+                                </div>
+                                {errors.date && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>
+                                )}
                             </div>
-                            {errors.date && (
-                                <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>
-                            )}
-                        </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-header mb-2">
-                                Select Time
-                            </label>
-                            <div className="relative">
-                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                                <input
-                                    type="time"
-                                    {...register("time")}
-                                    className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
-                                />
+                            <div>
+                                <label className="block text-sm font-semibold text-header mb-2">
+                                    Select Time
+                                </label>
+                                <div className="relative">
+                                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                    <input
+                                        type="time"
+                                        {...register("time")}
+                                        className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
+                                    />
+                                </div>
+                                {errors.time && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.time.message}</p>
+                                )}
                             </div>
-                            {errors.time && (
-                                <p className="text-red-500 text-xs mt-1">{errors.time.message}</p>
-                            )}
                         </div>
-                    </div>
+                    }
 
                     {/* Choose Live Class platform */}
                     <div>
@@ -239,8 +243,8 @@ const LiveClassModal = ({ isOpen, onClose }: LiveClassModalProps) => {
                                     type="button"
                                     onClick={() => handlePlatform("google-meet")}
                                     className={`px-5 py-2.5 text-sm font-semibold ${platform === "google-meet"
-                                            ? "bg-main text-white hover:bg-main/90"
-                                            : "bg-gray-100 text-title hover:bg-gray-200"
+                                        ? "bg-main text-white hover:bg-main/90"
+                                        : "bg-gray-100 text-title hover:bg-gray-200"
                                         }`}
                                 >
                                     Host
@@ -257,8 +261,8 @@ const LiveClassModal = ({ isOpen, onClose }: LiveClassModalProps) => {
                                     type="button"
                                     onClick={() => handlePlatform("zoom")}
                                     className={`px-5 py-2.5 text-sm font-semibold ${platform === "zoom"
-                                            ? "bg-main text-white hover:bg-main/90"
-                                            : "bg-gray-100 text-title hover:bg-gray-200"
+                                        ? "bg-main text-white hover:bg-main/90"
+                                        : "bg-gray-100 text-title hover:bg-gray-200"
                                         }`}
                                 >
                                     Host

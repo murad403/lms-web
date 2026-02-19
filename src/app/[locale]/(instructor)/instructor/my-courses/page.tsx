@@ -4,7 +4,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <MyCoursesPage/>
+      <MyCoursesPage path="/instructor"/>
     </div>
   )
 }

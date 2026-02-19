@@ -8,9 +8,10 @@ type CourseActionsModalProps = {
     onClose: () => void;
     courseId: number;
     onDelete: (id: number) => void;
+    path: string;
 };
 
-const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete }: CourseActionsModalProps) => {
+const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: CourseActionsModalProps) => {
     const handleDelete = () => {
         onDelete(courseId);
         onClose();
@@ -29,7 +30,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete }: CourseActio
 
                 <div className="p-2">
                     <Link
-                        href={`/instructor/my-courses/${courseId}`}
+                        href={`${path}/my-courses/${courseId}`}
                         onClick={onClose}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >
@@ -43,7 +44,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete }: CourseActio
                     </Link>
 
                     <Link
-                        href={`/instructor/create-course?edit=${courseId}`}
+                        href={`${path}/create-course?edit=${courseId}`}
                         onClick={onClose}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >
@@ -57,7 +58,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete }: CourseActio
                     </Link>
 
                     <Link
-                        href="/instructor/accreditation"
+                        href={`${path}/accreditation`}
                         onClick={onClose}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >

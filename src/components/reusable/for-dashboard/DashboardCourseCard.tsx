@@ -8,9 +8,10 @@ import CourseActionsModal from "@/components/modal/CourseActionsModal";
 type DashboardCourseCardProps = {
   course: TInstructorCourse;
   onDelete: (id: number) => void;
+  path: string;
 };
 
-const DashboardCourseCard = ({ course, onDelete }: DashboardCourseCardProps) => {
+const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProps) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -60,6 +61,7 @@ const DashboardCourseCard = ({ course, onDelete }: DashboardCourseCardProps) => 
         onClose={() => setShowModal(false)}
         courseId={course.id}
         onDelete={onDelete}
+        path={path}
       />
     </div>
   );

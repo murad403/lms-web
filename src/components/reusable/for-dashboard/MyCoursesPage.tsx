@@ -8,7 +8,7 @@ import DashboardCourseCard from "@/components/reusable/for-dashboard/DashboardCo
 
 const COURSES_PER_PAGE = 8;
 
-const MyCoursesPage = () => {
+const MyCoursesPage = ({ path }: { path: string }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All Category");
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,6 +71,7 @@ const MyCoursesPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {paginatedCourses.map((course) => (
                     <DashboardCourseCard
+                        path={path}
                         key={course.id}
                         course={course}
                         onDelete={handleDelete}
