@@ -1,10 +1,13 @@
 "use client";
 import { useState } from "react";
-import { Users, UserCheck, UserX, ShieldCheck, MoreVertical, Plus, Search, ChevronDown, X, Clock } from "lucide-react";
-import { teamStats, teamMembers, rolePermissions, activityLogs, TTeamMember } from "@/lib/organization";
+import { Plus, X } from "lucide-react";
+import { rolePermissions, TTeamMember } from "@/lib/organization";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import TeamManagementStats from "./TeamManagementStats";
+import TeamMembersTab from "./TeamMembersTab";
+import ActivityLogs from "./ActivityLogs";
+import RoleAndPermissions from "./RoleAndPermissions";
 
 type Tab = "members" | "permissions" | "activity";
 
@@ -22,18 +25,7 @@ type EditPermissionForm = {
   permissions: string[];
 };
 
-const roleBadgeColors: Record<string, string> = {
-  Admin: "bg-purple-50 text-purple-700",
-  Manager: "bg-blue-50 text-blue-700",
-  Instructor: "bg-green-50 text-green-700",
-  Moderator: "bg-orange-50 text-orange-700",
-};
 
-const statusColors: Record<string, string> = {
-  Active: "bg-green-50 text-green-700",
-  Suspended: "bg-red-50 text-red-700",
-  Pending: "bg-yellow-50 text-yellow-700",
-};
 
 const allPermissions = [
   "Manage Users", "Manage Courses", "Manage Settings", "View Reports",
@@ -42,7 +34,7 @@ const allPermissions = [
 
 const TeamManagementPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>("members");
-  const [openAction, setOpenAction] = useState<string | null>(null);
+
   const [showAddUser, setShowAddUser] = useState(false);
   const [showEditPermission, setShowEditPermission] = useState(false);
   const [editingMember, setEditingMember] = useState<TTeamMember | null>(null);
@@ -129,246 +121,97 @@ const TeamManagementPage = () => {
         <div className="mt-6">
           {/* Team Members Tab */}
           {activeTab === "members" && (
-            <div className="bg-white border border-border-light rounded-md">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-border-light">
-                      <th className="text-left py-3 px-4 font-semibold text-main">Member</th>
-                      <th className="text-left py-3 px-4 font-semibold text-main">Email</th>
-                      <th className="text-left py-3 px-4 font-semibold text-main">Role</th>
-                      <th className="text-left py-3 px-4 font-semibold text-main">Last Login</th>
-                      <th className="text-left py-3 px-4 font-semibold text-main">Status</th>
-                      <th className="text-left py-3 px-4 font-semibold text-main">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {teamMembers.map((member) => (
-                      <tr key={member.id} className="border-b border-border-light last:border-0">
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-3">
-                            <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                              <Image src={member.avatar} alt={member.name} fill className="object-cover" />
-                            </div>
-                            <span className="text-title font-medium">{member.name}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-title">{member.email}</td>
-                        <td className="py-3 px-4">
-                          <span className={`px-3 py-1 text-xs font-medium ${roleBadgeColors[member.role]}`}>
-                            {member.role}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-description">{member.lastLogin}</td>
-                        <td className="py-3 px-4">
-                          <span className={`px-3 py-1 text-xs font-medium ${statusColors[member.status]}`}>
-                            {member.status}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4">
-                          <div className="relative">
-                            <button
-                              onClick={() => setOpenAction(openAction === member.id ? null : member.id)}
-                              className="p-1 hover:bg-gray-100 rounded"
-                            >
-                              <MoreVertical className="w-4 h-4 text-description" />
-                            </button>
-                            {openAction === member.id && (
-                              <div className="absolute right-8 top-8 bg-white shadow-lg border border-border-light rounded z-10 w-44">
-                                <button
-                                  onClick={() => { handleEditPermission(member); setOpenAction(null); }}
-                                  className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
-                                >
-                                  Edit Role
-                                </button>
-                                <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
-                                  {member.status === "Suspended" ? "Activate" : "Suspend"}
-                                </button>
-                                <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-                                  Remove Member
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <TeamMembersTab onEditPermission={handleEditPermission} />
           )}
 
           {/* Role & Permissions Tab */}
           {activeTab === "permissions" && (
-            <div className="space-y-6">
-              {/* Roles Permissions Table */}
-              <div>
-                <h3 className="text-base font-semibold text-title mb-4">Roles Permissions</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border-light">
-                        <th className="text-left py-3 px-4 font-medium text-description">Role</th>
-                        <th className="text-left py-3 px-4 font-medium text-description">Permissions</th>
-                        <th className="text-left py-3 px-4 font-medium text-description">Members</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rolePermissions.map((role) => (
-                        <tr key={role.id} className="border-b border-border-light last:border-0">
-                          <td className="py-3 px-4">
-                            <span className={`px-3 py-1 text-xs font-medium ${roleBadgeColors[role.role] || "bg-gray-50 text-gray-700"}`}>
-                              {role.role}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="flex flex-wrap gap-1">
-                              {role.permissions.map((perm) => (
-                                <span key={perm} className="px-2 py-0.5 text-xs bg-gray-100 text-description rounded">
-                                  {perm}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                          <td className="py-3 px-4 text-description">{role.members}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* User Roles Table */}
-              <div>
-                <h3 className="text-base font-semibold text-title mb-4">User Roles</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border-light">
-                        <th className="text-left py-3 px-4 font-medium text-description">Member</th>
-                        <th className="text-left py-3 px-4 font-medium text-description">Role</th>
-                        <th className="text-left py-3 px-4 font-medium text-description">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {teamMembers.map((member) => (
-                        <tr key={member.id} className="border-b border-border-light last:border-0">
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                                <Image src={member.avatar} alt={member.name} fill className="object-cover" />
-                              </div>
-                              <span className="text-title font-medium">{member.name}</span>
-                            </div>
-                          </td>
-                          <td className="py-3 px-4">
-                            <span className={`px-3 py-1 text-xs font-medium ${roleBadgeColors[member.role]}`}>
-                              {member.role}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <button
-                              onClick={() => handleEditPermission(member)}
-                              className="text-sm text-main hover:text-main/80"
-                            >
-                              Edit Permission
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <RoleAndPermissions />
           )}
 
           {/* Activity Log Tab */}
           {activeTab === "activity" && (
-            <div className="space-y-4">
-              {activityLogs.map((log) => (
-                <div key={log.id} className="flex items-start gap-4 p-4 border border-border-light">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                    <Image src={log.avatar} alt={log.user} fill className="object-cover" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-title">
-                      <span className="font-medium">{log.user}</span>{" "}
-                      <span className="text-description">{log.action}</span>{" "}
-                      <span className="font-medium">{log.target}</span>
-                    </p>
-                    <div className="flex items-center gap-1 mt-1">
-                      <Clock className="w-3 h-3 text-description" />
-                      <span className="text-xs text-description">{log.time}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ActivityLogs />
           )}
         </div>
       </div>
 
       {/* Add User Modal */}
       {showAddUser && (
-        <div className="fixed inset-0 bg-black/50  z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-md w-full max-w-xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-border-light">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between px-7 py-5 border-b border-border-light">
               <h2 className="text-xl font-bold text-main">Add User</h2>
               <button onClick={() => { setShowAddUser(false); addUserForm.reset(); }}>
                 <X className="w-5 h-5 text-description" />
               </button>
             </div>
-            <form onSubmit={addUserForm.handleSubmit(handleAddUser)} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">Full Name</label>
+
+            <form onSubmit={addUserForm.handleSubmit(handleAddUser)} className="px-7 py-6 space-y-4">
+
+              {/* Full Name */}
+              <div className="flex items-center gap-4">
+                <label className="w-36 shrink-0 text-sm font-medium text-title">Full Name</label>
                 <input
                   {...addUserForm.register("fullName", { required: true })}
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
+                  className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
                   placeholder="Enter full name"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">Email</label>
-                <input
-                  {...addUserForm.register("email", { required: true })}
-                  type="email"
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                  placeholder="Enter email address"
-                />
+
+              {/* Email */}
+              <div className="flex items-center gap-4">
+                <label className="w-36 shrink-0 text-sm font-medium text-title">Email address</label>
+                <div className="flex-1 relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </span>
+                  <input
+                    {...addUserForm.register("email", { required: true })}
+                    type="email"
+                    className="w-full pl-9 pr-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
+                    placeholder="Enter email address"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">Username</label>
+
+              {/* Username */}
+              <div className="flex items-center gap-4">
+                <label className="w-36 shrink-0 text-sm font-medium text-title">Username</label>
                 <input
                   {...addUserForm.register("username", { required: true })}
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
+                  className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
                   placeholder="Enter username"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">Password</label>
-                <input
-                  {...addUserForm.register("password", { required: true })}
-                  type="password"
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                  placeholder="Enter password"
-                />
+
+              {/* Password + Confirm Password side by side */}
+              <div className="flex items-center gap-4">
+                <label className="w-36 shrink-0 text-sm font-medium text-title">Password</label>
+                <div className="flex-1 flex gap-3">
+                  <input
+                    {...addUserForm.register("password", { required: true })}
+                    type="password"
+                    className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
+                    placeholder="password"
+                  />
+                  <input
+                    {...addUserForm.register("confirmPassword", { required: true })}
+                    type="password"
+                    className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
+                    placeholder="confirm password"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">Confirm Password</label>
-                <input
-                  {...addUserForm.register("confirmPassword", { required: true })}
-                  type="password"
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                  placeholder="Confirm password"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-title mb-1">User Permission</label>
+
+              {/* User Permission */}
+              <div className="flex items-center gap-4">
+                <label className="w-36 shrink-0 text-sm font-medium text-title">User Permission</label>
                 <select
                   {...addUserForm.register("permission", { required: true })}
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
+                  className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main bg-white"
                 >
                   <option value="">Select permission</option>
                   <option value="Admin">Admin</option>
@@ -377,21 +220,24 @@ const TeamManagementPage = () => {
                   <option value="Moderator">Moderator</option>
                 </select>
               </div>
-              <div className="flex gap-3 pt-2">
+
+              {/* Buttons */}
+              <div className="flex gap-3 justify-end pt-2">
                 <button
                   type="button"
                   onClick={() => { setShowAddUser(false); addUserForm.reset(); }}
-                  className="flex-1 px-4 py-2.5 text-sm border border-border-light text-description hover:bg-gray-50"
+                  className=" px-5 py-3 text-sm border border-border-light rounded-lg text-description hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium hover:bg-main/90"
+                  className="px-5 py-3 text-sm bg-main text-white font-medium rounded-lg hover:bg-main/90"
                 >
                   Add User
                 </button>
               </div>
+
             </form>
           </div>
         </div>
@@ -400,7 +246,7 @@ const TeamManagementPage = () => {
       {/* Edit Permission Modal */}
       {showEditPermission && editingMember && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="bg-white w-full rounded-xl max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border-light">
               <h2 className="text-lg font-semibold text-title">Edit Permission</h2>
               <button onClick={() => { setShowEditPermission(false); setEditingMember(null); }}>
@@ -425,7 +271,7 @@ const TeamManagementPage = () => {
                 <select
                   {...editPermForm.register("role")}
                   defaultValue={editingMember.role}
-                  className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
+                  className="w-full px-4 py-3 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
                 >
                   <option value="Admin">Admin</option>
                   <option value="Manager">Manager</option>
@@ -461,14 +307,14 @@ const TeamManagementPage = () => {
                 <button
                   type="button"
                   onClick={() => { setShowEditPermission(false); setEditingMember(null); }}
-                  className="flex-1 px-4 py-2.5 text-sm border border-border-light text-description hover:bg-gray-50"
+                  className="flex-1 px-4 py-3 text-sm border border-border-light text-description hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={saveEditPermission}
-                  className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium hover:bg-main/90"
+                  className="flex-1 px-4 py-3 text-sm bg-main text-white font-medium hover:bg-main/90"
                 >
                   Save Changes
                 </button>
