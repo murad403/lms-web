@@ -1,7 +1,7 @@
 "use client";
 import {  revenueData } from "@/lib/instructor";
 import InstructorEarningStats from "./InstructorEarningStats";
-import RevenueChart from "../dashboard/RevenueChart";
+import RevenueChart from "../../../../../components/reusable/for-dashboard/RevenueChart";
 import Cards from "./Cards";
 import WithdrawHistory from "./WithdrawHistory";
 import WithdrawSection from "./WithdrawSection";

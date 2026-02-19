@@ -1,9 +1,9 @@
 "use client";
-import StatsCards from "@/app/[locale]/(instructor)/instructor/dashboard/StatsCards";
-import RecentActivity from "@/app/[locale]/(instructor)/instructor/dashboard/RecentActivity";
-import RevenueChart from "@/app/[locale]/(instructor)/instructor/dashboard/RevenueChart";
-import OverallRating from "@/app/[locale]/(instructor)/instructor/dashboard/OverallRating";
-import CourseOverviewChart from "@/app/[locale]/(instructor)/instructor/dashboard/CourseOverviewChart";
+import StatsCards from "@/components/reusable/for-dashboard/StatsCards";
+import RecentActivity from "@/components/reusable/for-dashboard/RecentActivity";
+import RevenueChart from "@/components/reusable/for-dashboard/RevenueChart";
+import OverallRating from "@/components/reusable/for-dashboard/OverallRating";
+import CourseOverviewChart from "@/components/reusable/for-dashboard/CourseOverviewChart";
 import { dashboardStats, recentActivities, revenueData, ratingBreakdown, courseOverviewData } from "@/lib/instructor";
 
 const InstructorDashboardPage = () => {

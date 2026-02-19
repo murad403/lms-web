@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import { Star, BookOpen, MessageSquare, Users, Paperclip, Globe, Clock } from "lucide-react";
-import RevenueChart from "@/app/[locale]/(instructor)/instructor/dashboard/RevenueChart";
-import OverallRating from "@/app/[locale]/(instructor)/instructor/dashboard/OverallRating";
-import CourseOverviewChart from "@/app/[locale]/(instructor)/instructor/dashboard/CourseOverviewChart";
+import RevenueChart from "@/components/reusable/for-dashboard/RevenueChart";
+import OverallRating from "@/components/reusable/for-dashboard/OverallRating";
+import CourseOverviewChart from "@/components/reusable/for-dashboard/CourseOverviewChart";
 import { instructorCourseDetail, revenueData, ratingBreakdown, courseOverviewData } from "@/lib/instructor";
 import { Link } from "@/i18n/navigation";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
