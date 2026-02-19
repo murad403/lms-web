@@ -69,7 +69,7 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
       </div>
 
       {/* Chart */}
-      <div className="relative h-95 sm:h-105 lg:h-120">
+      <div className="relative h-95 sm:h-100 lg:h-105">
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-6 sm:w-8">
           {yAxisLabels.map((label) => (

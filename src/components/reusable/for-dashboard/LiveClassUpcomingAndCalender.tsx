@@ -10,10 +10,9 @@ const LiveClassUpcomingAndCalendar = () => {
 
 
     return (
-
         < div className="grid grid-cols-1 md:grid-cols-3 gap-6" >
             {/* Upcoming Live Classes */}
-            <div className="col-span-2 p-5" >
+            <div className="col-span-2" >
                 <h3 className="text-base font-bold text-main mb-4 flex items-center gap-2">
                     <Video className="w-5 h-5 text-main" />
                     Upcoming Live Classes
@@ -57,7 +56,7 @@ const LiveClassUpcomingAndCalendar = () => {
             </div >
 
             {/* Calendar */}
-            < div className="p-5" >
+            < div className="" >
                 <h3 className="text-base font-bold text-main mb-4">Live Classes Schedule</h3>
                 <Calendar
                     mode="single"

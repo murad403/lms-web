@@ -1,10 +1,10 @@
 "use client";
 import {  revenueData } from "@/lib/instructor";
-import InstructorEarningStats from "./InstructorEarningStats";
+import InstructorEarningStats from "../../../../../components/reusable/for-dashboard/InstructorEarningStats";
 import RevenueChart from "../../../../../components/reusable/for-dashboard/RevenueChart";
-import Cards from "./Cards";
-import WithdrawHistory from "./WithdrawHistory";
-import WithdrawSection from "./WithdrawSection";
+import WithdrawHistory from "../../../../../components/reusable/for-dashboard/WithdrawHistory";
+import WithdrawSection from "../../../../../components/reusable/for-dashboard/WithdrawSection";
+import PaymentCards from "@/components/reusable/for-dashboard/PaymentCards";
 
 
 
@@ -23,7 +23,7 @@ const EarningsPage = () => {
         </div>
 
         {/* Cards */}
-        <Cards/>
+        <PaymentCards/>
       </div>
 
       {/* Withdraw + Withdrawal History */}

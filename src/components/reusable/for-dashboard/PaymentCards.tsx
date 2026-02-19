@@ -13,7 +13,7 @@ type PaymentCardForm = {
     cvc: string;
 };
 
-const Cards = () => {
+const PaymentCards = () => {
     const [cardView, setCardView] = useState(0);
     const { register, handleSubmit, reset } = useForm<PaymentCardForm>();
     const [showAddCard, setShowAddCard] = useState(false);
@@ -25,7 +25,7 @@ const Cards = () => {
     };
     return (
         <div>
-            <div className="bg-white p-5">
+            <div className="bg-white p-5 h-full">
                 <h3 className="text-base sm:text-lg font-semibold text-title mb-6 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">Cards</h3>
                 {/* Card Display */}
                 {paymentCards[cardView] && (
@@ -74,7 +74,7 @@ const Cards = () => {
                     onClick={() => setShowAddCard(true)}
                     className="w-full flex items-center justify-center gap-2 py-10 border-2 border-dashed border-gray-300 rounded-lg text-sm text-description hover:border-main hover:text-main transition-colors"
                 >
-                    <CirclePlus className="w-4 h-4 text-[#4F9BEF]" />
+                    <CirclePlus className="size-7 text-[#4F9BEF]" />
                     <span className='text-title font-medium text-base'>Add new card</span>
                 </button>
             </div>
@@ -140,4 +140,4 @@ const Cards = () => {
     )
 }
 
-export default Cards
+export default PaymentCards;
