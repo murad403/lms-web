@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/incompatible-library */
 "use client";
-
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Upload, Image as ImageIcon, Play } from "lucide-react";
+import { Plus, Upload, Image as ImageIcon, CirclePlay } from "lucide-react";
 import Image from "next/image";
 
 const MAX_ITEMS = 8;
@@ -96,7 +96,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                         Course Thumbnail
                     </label>
                     <div className="flex gap-4">
-                        <div className="w-28 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-32 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
                             {thumbnailPreview ? (
                                 <Image
                                     src={thumbnailPreview}
@@ -106,14 +106,14 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
-                                <ImageIcon className="w-10 h-10 text-gray-300" />
+                                <ImageIcon className="size-20 text-gray-300" />
                             )}
                         </div>
                         <div className="flex-1">
                             <p className="text-sm text-description mb-2">
-                                Upload your course Thumbnail here. <span className="text-main font-medium">Important guidelines:</span> 1200×800 pixels or 12:8 Ratio. Supported format: <span className="text-main">.jpg, .jpeg,</span> or <span className="text-main">.png</span>
+                                Upload your course Thumbnail here. <span className="text-title font-medium">Important guidelines:</span> 1200×800 pixels or 12:8 Ratio. Supported format: <span className="text-title">.jpg, .jpeg,</span> or <span className="text-title">.png</span>
                             </p>
-                            <label className="inline-flex items-center gap-2 px-4 py-2 border border-main text-main rounded-md text-sm font-medium hover:bg-main/5 transition-colors cursor-pointer">
+                            <label className="inline-flex items-center gap-2 px-4 py-3 bg-[#EDF5FD] text-main rounded-md text-sm font-medium hover:bg-main/5 transition-colors cursor-pointer">
                                 <span>Upload Image</span>
                                 <Upload className="w-4 h-4" />
                                 <input
@@ -133,7 +133,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                         Course Trailer
                     </label>
                     <div className="flex gap-4">
-                        <div className="w-28 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-32 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
                             {trailerPreview ? (
                                 <video
                                     src={trailerPreview}
@@ -141,7 +141,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                                 />
                             ) : (
                                 <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center">
-                                    <Play className="w-6 h-6 text-main ml-1" />
+                                    <CirclePlay className="size-12 text-[#B7BAC7]" />
                                 </div>
                             )}
                         </div>
@@ -149,7 +149,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                             <p className="text-sm text-description mb-2">
                                 Students who watch a well-made promo video are 5X more likely to enroll in your course.
                             </p>
-                            <label className="inline-flex items-center gap-2 px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors cursor-pointer">
+                            <label className="inline-flex items-center gap-2 px-4 py-3 bg-[#EDF5FD] rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors cursor-pointer">
                                 <span>Upload Video</span>
                                 <Upload className="w-4 h-4" />
                                 <input
@@ -174,29 +174,16 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                         {...register("description")}
                         rows={6}
                         placeholder="Enter you course descriptions"
-                        className="w-full px-3 py-2.5 text-sm focus:outline-none resize-none"
+                        className="w-full px-3 py-3.5 text-sm focus:outline-none resize-none"
                     />
-                    <div className="border-t border-border-light px-3 py-2 flex items-center gap-2 bg-white">
-                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded font-bold text-sm">
-                            B
-                        </button>
-                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded italic text-sm">
-                            I
-                        </button>
-                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded underline text-sm">
-                            U
-                        </button>
-                        <button type="button" className="w-8 h-8 flex items-center justify-center text-description hover:bg-gray-100 rounded line-through text-sm">
-                            S
-                        </button>
-                    </div>
+                    
                 </div>
             </div>
 
             {/* What you will teach */}
             <div>
                 <div className="flex items-center justify-between mb-3">
-                    <label className="text-sm font-medium text-title">
+                    <label className="text-base font-medium text-title">
                         What you will teach in this course ({teachFields.length}/{MAX_ITEMS})
                     </label>
                     {teachFields.length < MAX_ITEMS && (
@@ -222,7 +209,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                                     {...register(`whatYouWillTeach.${index}.value`)}
                                     maxLength={ITEM_MAX_LENGTH}
                                     placeholder="What you will teach in this course..."
-                                    className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                                    className="w-full border border-border-light rounded-md px-3 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
                                     {watchTeach?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
@@ -236,7 +223,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
             {/* Course requirements */}
             <div>
                 <div className="flex items-center justify-between mb-3">
-                    <label className="text-sm font-medium text-title">
+                    <label className="text-base font-medium text-title">
                         Course requirements ({reqFields.length}/{MAX_ITEMS})
                     </label>
                     {reqFields.length < MAX_ITEMS && (
@@ -262,7 +249,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                                     {...register(`requirements.${index}.value`)}
                                     maxLength={ITEM_MAX_LENGTH}
                                     placeholder="What is you course requirements..."
-                                    className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
+                                    className="w-full border border-border-light rounded-md px-3 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
                                     {watchReq?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
@@ -278,13 +265,13 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
                 <button
                     type="button"
                     onClick={onPrev}
-                    className="px-5 py-2.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                    className="px-5 py-3.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                 >
                     Previous
                 </button>
                 <button
                     type="submit"
-                    className="px-5 py-2.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                    className="px-5 py-3.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                 >
                     Save & Next
                 </button>

@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Check, Layers, FileText, Play, Globe } from "lucide-react";
-import BasicInfoTab, { BasicInfoFormData } from "@/components/instructor/create-course/BasicInfoTab";
-import AdvanceInfoTab, { AdvanceInfoFormData } from "@/components/instructor/create-course/AdvanceInfoTab";
-import CurriculumTab from "@/components/instructor/create-course/CurriculumTab";
-import PublishCourseTab from "@/components/instructor/create-course/PublishCourseTab";
+import BasicInfoTab, { BasicInfoFormData } from "@/components/modal/create-course/BasicInfoTab";
+import AdvanceInfoTab, { AdvanceInfoFormData } from "@/components/modal/create-course/AdvanceInfoTab";
+import PublishCourseTab from "@/components/modal/create-course/PublishCourseTab";
 import { TCourseSection } from "@/lib/instructor";
+import CurriculumTab from "@/components/modal/create-course/CurriculumTab";
 
 const tabs = [
     { id: 0, label: "Basic Information", icon: Layers },

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -251,23 +252,6 @@ const AddQuizPage = () => {
                                 <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                         </div>
-
-                        {/* Shuffle Questions */}
-                        <div>
-                            <label className="text-sm font-medium text-title mb-1.5 block">
-                                Shuffle Questions
-                            </label>
-                            <div className="flex items-center h-10.5">
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        {...register("shuffleQuestions")}
-                                        className="sr-only peer"
-                                    />
-                                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-main peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                                </label>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -340,11 +324,10 @@ const AddQuizPage = () => {
                                                     <button
                                                         type="button"
                                                         onClick={() => handleCorrectAnswerChange(qIndex, oIndex)}
-                                                        className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors shrink-0 ${
-                                                            option.isCorrect
+                                                        className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors shrink-0 ${option.isCorrect
                                                                 ? "bg-main text-white"
                                                                 : "bg-white border border-border-light text-title hover:border-main"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {option.label}
                                                     </button>
@@ -378,11 +361,10 @@ const AddQuizPage = () => {
                                                     key={oIndex}
                                                     type="button"
                                                     onClick={() => handleCorrectAnswerChange(qIndex, oIndex)}
-                                                    className={`px-6 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                                                        option.isCorrect
+                                                    className={`px-6 py-2.5 rounded-md text-sm font-medium transition-colors ${option.isCorrect
                                                             ? "bg-main text-white"
                                                             : "bg-white border border-border-light text-title hover:border-main"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {option.label}
                                                 </button>
