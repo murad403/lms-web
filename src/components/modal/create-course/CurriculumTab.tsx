@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import { useState } from "react";
-import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, Upload, File, Menu, StickyNote, AlignLeft, X } from "lucide-react";
+import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, Upload, File, Menu, StickyNote, AlignLeft } from "lucide-react";
 import { TCourseSection, TCourseLecture } from "@/lib/instructor";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 
 type Props = {
@@ -430,7 +431,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                 <button
                                     type="button"
                                     onClick={() => addLecture(section.id)}
-                                    className="flex items-center gap-1 px-3 py-2 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
+                                    className="flex items-center gap-1 p-3 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     Add Lecture
@@ -438,7 +439,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                 <button
                                     type="button"
                                     onClick={() => openQuizModal(section.id)}
-                                    className="flex items-center gap-1 px-3 py-2 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
+                                    className="flex items-center gap-1 p-3 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     Add Quiz
@@ -725,47 +726,57 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
 
             {/* Add Quiz Modal */}
             <Dialog open={modalType === "addQuiz"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="sm:max-w-7xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Add Quiz</DialogTitle>
+                        <DialogTitle className="text-xl font-semibold text-main">Create Quiz Question</DialogTitle>
+                        <DialogDescription className="text-base text-description">Question for the lessons</DialogDescription>
                     </DialogHeader>
 
                     <div className="space-y-6 mt-2">
                         {/* Top Row: Left = Title & Description, Right = Settings */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Left Side - Quiz Title & Description */}
-                            <div className="space-y-4">
+                            <div className="space-y-4 border rounded-md border-border-light p-4">
                                 <div>
-                                    <label className="text-sm font-medium text-title mb-1.5 block">Quiz Title</label>
-                                    <input
-                                        value={quizData.title}
-                                        onChange={(e) => updateQuizField("title", e.target.value)}
-                                        placeholder="Enter quiz title..."
-                                        className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                                    />
+                                    <h3 className="text-lg font-semibold text-title">Quiz</h3>
+                                    <p className="text-sm text-description">Quiz details</p>
                                 </div>
-                                <div>
-                                    <label className="text-sm font-medium text-title mb-1.5 block">Description</label>
-                                    <textarea
-                                        value={quizData.description}
-                                        onChange={(e) => updateQuizField("description", e.target.value)}
-                                        rows={4}
-                                        placeholder="Enter quiz description..."
-                                        className="w-full border border-border-light rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
-                                    />
+                                <div className="border border-border-light p-4 rounded-md">
+                                    <div>
+                                        <label className="text-sm font-medium text-title mb-1.5 block">Question Title</label>
+                                        <input
+                                            value={quizData.title}
+                                            onChange={(e) => updateQuizField("title", e.target.value)}
+                                            placeholder="Enter quiz title..."
+                                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-title mb-1.5 block">Enter a brief description</label>
+                                        <textarea
+                                            value={quizData.description}
+                                            onChange={(e) => updateQuizField("description", e.target.value)}
+                                            rows={4}
+                                            placeholder="Enter a brief description..."
+                                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Right Side - Quiz Settings */}
-                            <div className="bg-gray-50 rounded-md border border-border-light p-4 space-y-4">
-                                <h4 className="text-sm font-bold text-title">Quiz Settings</h4>
+                            <div className="rounded-md border border-border-light p-4 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="text-base font-bold text-title">Quiz Settings</h4>
+                                    <button className="mt-2 px-3 py-3 bg-main text-white rounded-md text-sm hover:bg-main-dark transition-colors">Save Settings</button>
+                                </div>
                                 <div>
                                     <label className="text-xs font-medium text-title mb-1 block">Time Limit</label>
                                     <div className="relative">
                                         <select
                                             value={quizData.timeLimit}
                                             onChange={(e) => updateQuizField("timeLimit", e.target.value)}
-                                            className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
+                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
                                         >
                                             {timeLimitOptions.map((opt) => (
                                                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -780,7 +791,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                         <select
                                             value={quizData.attemptsAllowed}
                                             onChange={(e) => updateQuizField("attemptsAllowed", e.target.value)}
-                                            className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
+                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
                                         >
                                             {attemptsOptions.map((opt) => (
                                                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -795,7 +806,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                         <select
                                             value={quizData.passingScore}
                                             onChange={(e) => updateQuizField("passingScore", e.target.value)}
-                                            className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
+                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
                                         >
                                             {passingScoreOptions.map((opt) => (
                                                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -811,8 +822,8 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                         <div className="border-b border-border-light" />
 
                         {/* Quiz Questions */}
-                        <div className="space-y-4">
-                            <h4 className="text-sm font-bold text-title">Quiz Questions</h4>
+                        <div className="space-y-4 border border-border-light rounded-md p-4">
+                            <h4 className="text-lg font-semibold text-main">Quiz Questions </h4>
 
                             {quizData.questions.map((question, qIndex) => (
                                 <div
@@ -820,7 +831,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     className="bg-gray-50 rounded-md border border-border-light p-4 space-y-4"
                                 >
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm font-semibold text-title">Question {qIndex + 1}</span>
+                                        <span className="text-base font-semibold text-title">Question {qIndex + 1}</span>
                                         {quizData.questions.length > 1 && (
                                             <button
                                                 type="button"
@@ -835,12 +846,12 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                         {/* Question Type */}
                                         <div>
-                                            <label className="text-xs font-medium text-title mb-1 block">Question Type</label>
+                                            <label className="text-sm font-medium text-title mb-1 block">Question Type</label>
                                             <div className="relative">
                                                 <select
                                                     value={question.type}
                                                     onChange={(e) => changeQuestionType(question.id, e.target.value as QuizQuestionType)}
-                                                    className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
+                                                    className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
                                                 >
                                                     <option value="multiple-choice">Multiple Choice</option>
                                                     <option value="true-false">True or False</option>
@@ -852,12 +863,12 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
 
                                         {/* Question Text */}
                                         <div className="md:col-span-2">
-                                            <label className="text-xs font-medium text-title mb-1 block">Question</label>
+                                            <label className="text-sm font-medium text-title mb-1 block">Question</label>
                                             <input
                                                 value={question.questionText}
                                                 onChange={(e) => updateQuizQuestion(question.id, "questionText", e.target.value)}
                                                 placeholder="Write question here..."
-                                                className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                                                className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                             />
                                         </div>
                                     </div>
@@ -865,18 +876,17 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     {/* Options based on type */}
                                     {question.type === "multiple-choice" && (
                                         <div className="space-y-2">
-                                            <label className="text-xs font-medium text-title block">Options (Select the correct answer)</label>
+                                            <label className="text-sm font-medium text-title block">Options</label>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                                 {question.options.map((option, oIndex) => (
                                                     <div key={oIndex} className="flex items-center gap-2">
                                                         <button
                                                             type="button"
                                                             onClick={() => setCorrectOption(question.id, oIndex)}
-                                                            className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors shrink-0 ${
-                                                                option.isCorrect
+                                                            className={`size-9 flex items-center justify-center rounded-md text-sm font-medium transition-colors shrink-0 ${option.isCorrect
                                                                     ? "bg-main text-white"
                                                                     : "bg-white border border-border-light text-title hover:border-main"
-                                                            }`}
+                                                                }`}
                                                         >
                                                             {option.label}
                                                         </button>
@@ -884,7 +894,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                                             value={option.value}
                                                             onChange={(e) => updateQuizOption(question.id, oIndex, e.target.value)}
                                                             placeholder={`Option ${option.label}`}
-                                                            className="flex-1 border border-border-light rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                                                            className="flex-1 border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                                         />
                                                     </div>
                                                 ))}
@@ -901,11 +911,10 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                                         key={oIndex}
                                                         type="button"
                                                         onClick={() => setCorrectOption(question.id, oIndex)}
-                                                        className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
-                                                            option.isCorrect
+                                                        className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${option.isCorrect
                                                                 ? "bg-main text-white"
                                                                 : "bg-white border border-border-light text-title hover:border-main"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {option.label}
                                                     </button>
@@ -921,7 +930,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                                 value={question.answer || ""}
                                                 onChange={(e) => updateQuizQuestion(question.id, "answer", e.target.value)}
                                                 placeholder="Write the correct answer here..."
-                                                className="w-full border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
+                                                className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                             />
                                         </div>
                                     )}
@@ -932,7 +941,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                             <button
                                 type="button"
                                 onClick={addQuizQuestion}
-                                className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 border-2 border-dashed border-border-light rounded-md text-sm font-medium text-description hover:text-main hover:border-main transition-colors"
+                                className="w-full flex items-center justify-center gap-1.5 px-4 py-3 border-2 border-dashed border-border-light rounded-md text-sm font-medium text-description hover:text-main hover:border-main transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
                                 Add Question
@@ -944,14 +953,14 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                             <button
                                 type="button"
                                 onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                                className="px-4 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="button"
                                 onClick={saveQuiz}
-                                className="px-5 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                                className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                             >
                                 Save Quiz
                             </button>
