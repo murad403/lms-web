@@ -1,11 +1,7 @@
-import React from 'react'
+import InstructorsPage from '@/components/organization/InstructorsPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <InstructorsPage />
 }
 
 export default page

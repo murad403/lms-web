@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Star, X } from "lucide-react";
+import { Star } from "lucide-react";
 import {
     Dialog,
     DialogContent,

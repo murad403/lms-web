@@ -1,11 +1,7 @@
-import React from 'react'
+import WhiteLabelPage from '@/components/organization/WhiteLabelPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <WhiteLabelPage />
 }
 
 export default page

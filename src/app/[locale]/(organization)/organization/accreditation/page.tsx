@@ -1,11 +1,7 @@
-import React from 'react'
+import AccreditationPage from '@/components/organization/AccreditationPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <AccreditationPage />
 }
 
 export default page

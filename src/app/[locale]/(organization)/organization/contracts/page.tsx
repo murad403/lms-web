@@ -1,11 +1,7 @@
-import React from 'react'
+import ContractsPage from '@/components/organization/ContractsPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <ContractsPage />
 }
 
 export default page

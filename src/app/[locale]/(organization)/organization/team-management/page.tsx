@@ -1,11 +1,7 @@
-import React from 'react'
+import TeamManagementPage from '@/components/organization/TeamManagementPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <TeamManagementPage />
 }
 
 export default page

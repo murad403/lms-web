@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 // components/modals/EditReviewModal.tsx
 "use client";
 import { useForm } from "react-hook-form";

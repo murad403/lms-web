@@ -5,12 +5,12 @@ import { Star, Users, MoreHorizontal } from "lucide-react";
 import { TInstructorCourse } from "@/lib/instructor";
 import CourseActionsModal from "@/components/modal/CourseActionsModal";
 
-type InstructorCourseCardProps = {
+type DashboardCourseCardProps = {
   course: TInstructorCourse;
   onDelete: (id: number) => void;
 };
 
-const InstructorCourseCard = ({ course, onDelete }: InstructorCourseCardProps) => {
+const DashboardCourseCard = ({ course, onDelete }: DashboardCourseCardProps) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -65,4 +65,4 @@ const InstructorCourseCard = ({ course, onDelete }: InstructorCourseCardProps) =
   );
 };
 
-export default InstructorCourseCard;
+export default DashboardCourseCard;

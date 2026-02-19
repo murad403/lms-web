@@ -1,11 +1,7 @@
-import React from 'react'
+import ReportsPage from '@/components/organization/ReportsPage'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <ReportsPage />
 }
 
 export default page
