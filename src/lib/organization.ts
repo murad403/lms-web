@@ -75,6 +75,7 @@ export type TReportStats = {
   instructorPayouts: number;
   organizationShare: number;
   avgCoursePrice: number;
+  increment: string;
 };
 
 export type TRevenueBarData = {
@@ -197,6 +198,7 @@ export const reportStats: TReportStats = {
   instructorPayouts: 229000,
   organizationShare: 99000,
   avgCoursePrice: 82,
+  increment: ""
 };
 
 export const revenueBarData: TRevenueBarData[] = [
