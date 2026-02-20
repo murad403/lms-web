@@ -1,24 +1,24 @@
 "use client"
 import { teamMembers, TTeamMember } from '@/lib/organization';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, SquarePen, Trash2, UserRoundX } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react'
 
 const roleBadgeColors: Record<string, string> = {
-  Admin: "bg-purple-50 text-purple-700",
-  Manager: "bg-blue-50 text-blue-700",
-  Instructor: "bg-green-50 text-green-700",
-  Moderator: "bg-orange-50 text-orange-700",
+    Admin: "bg-purple-50 text-purple-700",
+    Manager: "bg-blue-50 text-blue-700",
+    Instructor: "bg-green-50 text-green-700",
+    Moderator: "bg-orange-50 text-orange-700",
 };
 
 const statusColors: Record<string, string> = {
-  Active: "bg-green-50 text-green-700",
-  Suspended: "bg-red-50 text-red-700",
-  Pending: "bg-yellow-50 text-yellow-700",
+    Active: "bg-green-50 text-green-700",
+    Suspended: "bg-red-50 text-red-700",
+    Pending: "bg-yellow-50 text-yellow-700",
 };
 
 type Props = {
-  onEditPermission: (member: TTeamMember) => void;
+    onEditPermission: (member: TTeamMember) => void;
 };
 
 const TeamMembersTab = ({ onEditPermission }: Props) => {
@@ -74,12 +74,15 @@ const TeamMembersTab = ({ onEditPermission }: Props) => {
                                                     onClick={() => { onEditPermission(member); setOpenAction(null); }}
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
+                                                    <SquarePen className="w-4 h-4 mr-2 inline" />
                                                     Edit Role
                                                 </button>
                                                 <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
+                                                    <UserRoundX className="w-4 h-4 mr-2 inline" />
                                                     {member.status === "Suspended" ? "Activate" : "Suspend"}
                                                 </button>
                                                 <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                                                    <Trash2 className="w-4 h-4 mr-2 inline" />
                                                     Remove Member
                                                 </button>
                                             </div>
