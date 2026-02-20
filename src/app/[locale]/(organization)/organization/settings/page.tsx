@@ -5,7 +5,7 @@ import ChangePassword from '@/components/reusable/for-dashboard/ChangePassword'
 
 const page = () => {
   return (
-    <div>
+    <div className='space-y-6'>
       <PhotoAndBanner />
       <AccountSettings />
       <ChangePassword />

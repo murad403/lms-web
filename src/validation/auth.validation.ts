@@ -111,3 +111,44 @@ export const contactFormSchema = z.object({
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
+
+
+export const photoAndBannerSchema = z.object({
+  photo: z
+    .any()
+    .optional()
+    .refine(
+      (file) => !file || file.size <= 5 * 1024 * 1024,
+      "Photo must be less than 5MB"
+    )
+    .refine(
+      (file) => !file || ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      "Photo must be JPG, PNG, or WEBP"
+    ),
+  banner: z
+    .any()
+    .optional()
+    .refine(
+      (file) => !file || file.size <= 10 * 1024 * 1024,
+      "Banner must be less than 10MB"
+    )
+    .refine(
+      (file) => !file || ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      "Banner must be JPG, PNG, or WEBP"
+    ),
+});
+
+export const accountSettingsSchema = z.object({
+  schoolName: z.string().min(2, "School name must be at least 2 characters"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+  phoneCode: z.string().min(1, "Country code is required"),
+  phone: z
+    .string()
+    .min(6, "Phone number must be at least 6 digits")
+    .regex(/^[0-9]+$/, "Phone number must contain only digits"),
+  title: z.string().max(50, "Title must be 50 characters or less").optional(),
+  biography: z.string().optional(),
+});
