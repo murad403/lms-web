@@ -104,6 +104,8 @@ export type TAuditLog = {
   performedBy: string;
   date: string;
   details: string;
+  subtitle: string;
+  timeAgo: string;
 };
 
 export type TAttendanceRecord = {
@@ -230,12 +232,12 @@ export const recentCourses: TRecentCourse[] = [
 ];
 
 export const auditLogs: TAuditLog[] = [
-  { id: "1", action: "Course Accredited", performedBy: "Sarah Johnson", date: "Jan 15, 2024", details: "Advanced Machine Learning course was accredited with Professional certification" },
-  { id: "2", action: "Certificate Issued", performedBy: "System", date: "Jan 14, 2024", details: "Certificate CERT-001 issued for Advanced Machine Learning" },
-  { id: "3", action: "Accreditation Submitted", performedBy: "Michael Chen", date: "Jan 13, 2024", details: "Deep Learning Fundamentals submitted for Standard certification" },
-  { id: "4", action: "Course Revision Requested", performedBy: "Emily Davis", date: "Jan 12, 2024", details: "NLP with Transformers needs content revision before accreditation" },
-  { id: "5", action: "Certificate Renewed", performedBy: "System", date: "Jan 11, 2024", details: "Certificate CERT-002 renewed for UX Design Masterclass" },
-  { id: "6", action: "Accreditation Rejected", performedBy: "Admin", date: "Jan 10, 2024", details: "Computer Vision Basics accreditation rejected due to insufficient content" },
+  { id: "1", action: "Certificate Issued", performedBy: "System", date: "Jan 15, 2024", details: "Certificate CERT-001 issued for Advanced Machine Learning", subtitle: "Advanced ML • Student: John Doe", timeAgo: "5 hours ago" },
+  { id: "2", action: "Accreditation Approved", performedBy: "Sarah Johnson", date: "Jan 14, 2024", details: "Advanced Machine Learning course was accredited with Professional certification", subtitle: "Deep Learning Fundamentals • Instructor: Michael Chen", timeAgo: "1 day ago" },
+  { id: "3", action: "Revision Requested", performedBy: "Emily Davis", date: "Jan 13, 2024", details: "NLP with Transformers needs content revision before accreditation", subtitle: "NLP with Transformers • Reviewer: Emily Davis", timeAgo: "2 days ago" },
+  { id: "4", action: "Compliance Check Passed", performedBy: "Admin", date: "Jan 12, 2024", details: "Computer Vision Basics passed compliance review", subtitle: "Computer Vision Basics • Admin Review", timeAgo: "3 days ago" },
+  { id: "5", action: "Certificate Renewed", performedBy: "System", date: "Jan 11, 2024", details: "Certificate CERT-002 renewed for UX Design Masterclass", subtitle: "UX Design Masterclass • Auto-renewal", timeAgo: "4 days ago" },
+  { id: "6", action: "Accreditation Rejected", performedBy: "Admin", date: "Jan 10, 2024", details: "Computer Vision Basics accreditation rejected due to insufficient content", subtitle: "Computer Vision Basics • Insufficient Content", timeAgo: "5 days ago" },
 ];
 
 export const examRules: TExamRule[] = [

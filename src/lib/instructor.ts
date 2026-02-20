@@ -121,9 +121,21 @@ export type TStatisticData = {
 export type TAccreditationSubmission = {
   id: string;
   course: string;
+  avatar: string;
+  image: string;
+  instructor: string;
+  organization: string;
+  accreditationCourse: string;
   submitted: string;
   certificateType: string;
   status: "Approved" | "Pending" | "Needs Revision" | "Rejected";
+  price: number;
+  rating: number;
+  students: number;
+  category: string;
+  created: string;
+  totalRevenue: string;
+  courseStatus: "Published" | "Draft" | "Under Review";
 };
 
 export type TActiveCertificate = {
@@ -524,10 +536,10 @@ export const accreditationStats: TAccreditationStats = {
 };
 
 export const accreditationSubmissions: TAccreditationSubmission[] = [
-  { id: "ACC-001", course: "Advanced Machine Learning", submitted: "1/5/2024", certificateType: "Professional", status: "Approved" },
-  { id: "ACC-002", course: "Deep Learning Fundamentals", submitted: "1/8/2024", certificateType: "Standard", status: "Pending" },
-  { id: "ACC-003", course: "NLP with Transformers", submitted: "1/10/2024", certificateType: "Professional", status: "Needs Revision" },
-  { id: "ACC-004", course: "Computer Vision Basics", submitted: "12/15/2023", certificateType: "Standard", status: "Rejected" },
+  { id: "ACC-001", course: "Advanced Machine Learning", avatar: "/courses/Course Images.png", image: "/courses/Course Images.png", instructor: "Sarah Johnson", organization: "Tech Academy", accreditationCourse: "Professional Certification", submitted: "Jan 5, 2024", certificateType: "Professional", status: "Approved", price: 57, rating: 4.8, students: 1247, category: "Development", created: "2024-01-05", totalRevenue: "$124,500", courseStatus: "Published" },
+  { id: "ACC-002", course: "Deep Learning Fundamentals", avatar: "/courses/Course Images (1).png", image: "/courses/Course Images (1).png", instructor: "Michael Chen", organization: "AI Institute", accreditationCourse: "Standard Certification", submitted: "Jan 8, 2024", certificateType: "Standard", status: "Pending", price: 49, rating: 4.6, students: 856, category: "Data Science", created: "2024-01-08", totalRevenue: "$89,200", courseStatus: "Published" },
+  { id: "ACC-003", course: "NLP with Transformers", avatar: "/courses/Course Images (2).png", image: "/courses/Course Images (2).png", instructor: "Emily Davis", organization: "ML Hub", accreditationCourse: "Professional Certification", submitted: "Jan 10, 2024", certificateType: "Professional", status: "Needs Revision", price: 64, rating: 4.5, students: 432, category: "AI & ML", created: "2024-01-10", totalRevenue: "$42,600", courseStatus: "Under Review" },
+  { id: "ACC-004", course: "Computer Vision Basics", avatar: "/courses/Course Images (3).png", image: "/courses/Course Images (3).png", instructor: "James Wilson", organization: "Vision Labs", accreditationCourse: "Standard Certification", submitted: "Dec 15, 2023", certificateType: "Standard", status: "Rejected", price: 39, rating: 4.2, students: 319, category: "Computer Vision", created: "2023-12-15", totalRevenue: "$28,900", courseStatus: "Draft" },
 ];
 
 export const activeCertificates: TActiveCertificate[] = [

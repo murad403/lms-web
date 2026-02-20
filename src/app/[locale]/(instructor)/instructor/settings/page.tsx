@@ -1,5 +1,5 @@
 import AccoutSettings from "./AccoutSettings";
-import ChangePassword from "./ChangePassword";
+import ChangePassword from "../../../../../components/reusable/for-dashboard/ChangePassword";
 
 const InstructorSettingsPage = () => {
     return (
