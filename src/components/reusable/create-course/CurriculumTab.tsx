@@ -1,9 +1,15 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 import { useState } from "react";
-import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, Upload, File, Menu, StickyNote, AlignLeft } from "lucide-react";
+import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, File, Menu, StickyNote, AlignLeft } from "lucide-react";
 import { TCourseSection, TCourseLecture } from "@/lib/instructor";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import EditLectureModal from "@/components/modal/create-course/EditLectureModal";
+import EditSectionModal from "@/components/modal/create-course/EditSectionModal";
+import LectureVideoModal from "@/components/modal/create-course/LectureVideoModal";
+import LectureDescriptionModal from "@/components/modal/create-course/LectureDescriptionModal";
+import LectureNotesModal from "@/components/modal/create-course/LectureNotesModal";
+import AttachFileModal from "@/components/modal/create-course/AttachFileModal";
+import AddQuizModal from "@/components/modal/create-course/AddQuizModal";
 
 
 type Props = {
@@ -39,34 +45,6 @@ type QuizData = {
     passingScore: string;
     questions: QuizQuestion[];
 };
-
-const timeLimitOptions = [
-    { label: "No Time Limit", value: "0" },
-    { label: "10 Minutes", value: "10" },
-    { label: "15 Minutes", value: "15" },
-    { label: "20 Minutes", value: "20" },
-    { label: "30 Minutes", value: "30" },
-    { label: "45 Minutes", value: "45" },
-    { label: "60 Minutes", value: "60" },
-];
-
-const attemptsOptions = [
-    { label: "Unlimited", value: "unlimited" },
-    { label: "1x", value: "1" },
-    { label: "2x", value: "2" },
-    { label: "3x", value: "3" },
-    { label: "5x", value: "5" },
-    { label: "8x", value: "8" },
-];
-
-const passingScoreOptions = [
-    { label: "50%", value: "50" },
-    { label: "60%", value: "60" },
-    { label: "70%", value: "70" },
-    { label: "80%", value: "80" },
-    { label: "90%", value: "90" },
-    { label: "100%", value: "100" },
-];
 
 const defaultMultipleChoiceOptions: QuizOption[] = [
     { label: "A", value: "", isCorrect: true },
@@ -479,495 +457,67 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
             </div>
 
             {/* Edit Lecture Name Modal */}
-            <Dialog open={modalType === "editLecture"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Edit Lecture Name</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        <div>
-                            <label className="text-sm font-medium text-title mb-1.5 block">Lecture Name</label>
-                            <input
-                                value={editingLectureTitle}
-                                onChange={(e) => setEditingLectureTitle(e.target.value)}
-                                placeholder="Write your lecture name here..."
-                                className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                            />
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={saveEditLecture}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Save Changes
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <EditLectureModal
+                open={modalType === "editLecture"}
+                onClose={() => setModalType(null)}
+                editingLectureTitle={editingLectureTitle}
+                setEditingLectureTitle={setEditingLectureTitle}
+                onSave={saveEditLecture}
+            />
 
             {/* Edit Section Modal */}
-            <Dialog open={modalType === "editSection"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Edit Section Name</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        <div>
-                            <label className="text-sm font-medium text-title mb-1.5 block">Section</label>
-                            <input
-                                value={editingSectionTitle}
-                                onChange={(e) => setEditingSectionTitle(e.target.value)}
-                                placeholder="Write your section name here..."
-                                className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                            />
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={saveEditSection}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Save Changes
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <EditSectionModal
+                open={modalType === "editSection"}
+                onClose={() => setModalType(null)}
+                editingSectionTitle={editingSectionTitle}
+                setEditingSectionTitle={setEditingSectionTitle}
+                onSave={saveEditSection}
+            />
 
             {/* Lecture Video Modal */}
-            <Dialog open={modalType === "lectureVideo"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Lecture Video</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        {uploadedVideo ? (
-                            <div className="flex gap-4 items-start">
-                                <div className="w-32 h-20 bg-gray-100 rounded-md overflow-hidden">
-                                    <video src={uploadedVideo.preview} className="w-full h-full object-cover" />
-                                </div>
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-xs font-medium text-green-600 uppercase">FILE UPLOADED</span>
-                                        <span className="text-xs text-description">• 1:55</span>
-                                    </div>
-                                    <p className="text-sm text-title truncate">{uploadedVideo.name}</p>
-                                    <button
-                                        onClick={() => setUploadedVideo(null)}
-                                        className="text-sm text-main mt-2"
-                                    >
-                                        Replace Video
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="border-2 border-dashed border-border-light rounded-md p-6 text-center">
-                                <p className="text-sm text-description mb-2">Upload Files</p>
-                                <label className="inline-flex items-center gap-2 px-4 py-2 text-main text-sm font-medium hover:text-main/80 cursor-pointer">
-                                    <Upload className="w-4 h-4" />
-                                    Upload File
-                                    <input
-                                        type="file"
-                                        accept="video/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files?.[0];
-                                            if (file) {
-                                                setUploadedVideo({
-                                                    name: file.name,
-                                                    preview: URL.createObjectURL(file),
-                                                });
-                                            }
-                                        }}
-                                        className="hidden"
-                                    />
-                                </label>
-                                <p className="text-xs text-description mt-2">
-                                    Note: All files should be at least 720p in a lesson
-                                </p>
-                            </div>
-                        )}
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Upload Video
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <LectureVideoModal
+                open={modalType === "lectureVideo"}
+                onClose={() => setModalType(null)}
+                uploadedVideo={uploadedVideo}
+                setUploadedVideo={setUploadedVideo}
+            />
 
-            {/* Add Lecture Description Modal */}
-            <Dialog open={modalType === "lectureDescription"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Add Lecture Description</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        <div className="border-2 border-dashed border-main rounded-md p-4">
-                            <textarea
-                                value={lectureDescription}
-                                onChange={(e) => setLectureDescription(e.target.value)}
-                                rows={4}
-                                placeholder="Write your lecture description here..."
-                                className="w-full text-sm focus:outline-none resize-none"
-                            />
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Add Description
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            {/* Lecture Description Modal */}
+            <LectureDescriptionModal
+                open={modalType === "lectureDescription"}
+                onClose={() => setModalType(null)}
+                lectureDescription={lectureDescription}
+                setLectureDescription={setLectureDescription}
+            />
 
-            {/* Add Lecture Notes Modal */}
-            <Dialog open={modalType === "lectureNotes"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Add Lecture Notes</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        <div>
-                            <label className="text-sm font-medium text-title mb-1.5 block">Notes</label>
-                            <textarea
-                                value={lectureNotes}
-                                onChange={(e) => setLectureNotes(e.target.value)}
-                                rows={4}
-                                placeholder="Write your lecture Notes here..."
-                                className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
-                            />
-                        </div>
-                        <div className="border border-dashed border-border-light rounded-md p-4 text-center">
-                            <p className="text-sm font-medium text-title mb-2">Uploads Notes</p>
-                            <label className="text-sm text-description cursor-pointer">
-                                Drag and drop a file or <span className="text-main">Browse file</span>
-                                <input type="file" className="hidden" />
-                            </label>
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Add Notes
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            {/* Lecture Notes Modal */}
+            <LectureNotesModal
+                open={modalType === "lectureNotes"}
+                onClose={() => setModalType(null)}
+                lectureNotes={lectureNotes}
+                setLectureNotes={setLectureNotes}
+            />
 
             {/* Attach File Modal */}
-            <Dialog open={modalType === "attachFile"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle className="text-lg font-bold text-title">Attach File</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 mt-2">
-                        <div className="border border-dashed border-border-light rounded-md p-6 text-center">
-                            <p className="text-sm font-medium text-title mb-2">Attach File</p>
-                            <label className="text-sm text-description cursor-pointer">
-                                Drag and drop a file or <span className="text-main">Browse file</span>
-                                <input type="file" className="hidden" />
-                            </label>
-                        </div>
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Save & upload
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <AttachFileModal
+                open={modalType === "attachFile"}
+                onClose={() => setModalType(null)}
+            />
 
             {/* Add Quiz Modal */}
-            <Dialog open={modalType === "addQuiz"} onOpenChange={() => setModalType(null)}>
-                <DialogContent className="sm:max-w-7xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                        <DialogTitle className="text-xl font-semibold text-main">Create Quiz Question</DialogTitle>
-                        <DialogDescription className="text-base text-description">Question for the lessons</DialogDescription>
-                    </DialogHeader>
-
-                    <div className="space-y-6 mt-2">
-                        {/* Top Row: Left = Title & Description, Right = Settings */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Left Side - Quiz Title & Description */}
-                            <div className="space-y-4 border rounded-md border-border-light p-4">
-                                <div>
-                                    <h3 className="text-lg font-semibold text-title">Quiz</h3>
-                                    <p className="text-sm text-description">Quiz details</p>
-                                </div>
-                                <div className="border border-border-light p-4 rounded-md">
-                                    <div>
-                                        <label className="text-sm font-medium text-title mb-1.5 block">Question Title</label>
-                                        <input
-                                            value={quizData.title}
-                                            onChange={(e) => updateQuizField("title", e.target.value)}
-                                            placeholder="Enter quiz title..."
-                                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="text-sm font-medium text-title mb-1.5 block">Enter a brief description</label>
-                                        <textarea
-                                            value={quizData.description}
-                                            onChange={(e) => updateQuizField("description", e.target.value)}
-                                            rows={4}
-                                            placeholder="Enter a brief description..."
-                                            className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Right Side - Quiz Settings */}
-                            <div className="rounded-md border border-border-light p-4 space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <h4 className="text-base font-bold text-title">Quiz Settings</h4>
-                                    <button className="mt-2 px-3 py-3 bg-main text-white rounded-md text-sm hover:bg-main-dark transition-colors">Save Settings</button>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-medium text-title mb-1 block">Time Limit</label>
-                                    <div className="relative">
-                                        <select
-                                            value={quizData.timeLimit}
-                                            onChange={(e) => updateQuizField("timeLimit", e.target.value)}
-                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
-                                        >
-                                            {timeLimitOptions.map((opt) => (
-                                                <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-medium text-title mb-1 block">Attempts Allowed</label>
-                                    <div className="relative">
-                                        <select
-                                            value={quizData.attemptsAllowed}
-                                            onChange={(e) => updateQuizField("attemptsAllowed", e.target.value)}
-                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
-                                        >
-                                            {attemptsOptions.map((opt) => (
-                                                <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-medium text-title mb-1 block">Passing Score</label>
-                                    <div className="relative">
-                                        <select
-                                            value={quizData.passingScore}
-                                            onChange={(e) => updateQuizField("passingScore", e.target.value)}
-                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
-                                        >
-                                            {passingScoreOptions.map((opt) => (
-                                                <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Divider */}
-                        <div className="border-b border-border-light" />
-
-                        {/* Quiz Questions */}
-                        <div className="space-y-4 border border-border-light rounded-md p-4">
-                            <h4 className="text-lg font-semibold text-main">Quiz Questions </h4>
-
-                            {quizData.questions.map((question, qIndex) => (
-                                <div
-                                    key={question.id}
-                                    className="bg-gray-50 rounded-md border border-border-light p-4 space-y-4"
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-base font-semibold text-title">Question {qIndex + 1}</span>
-                                        {quizData.questions.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeQuizQuestion(question.id)}
-                                                className="p-1 hover:bg-red-50 rounded transition-colors"
-                                            >
-                                                <Trash2 className="w-3.5 h-3.5 text-red-500" />
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                        {/* Question Type */}
-                                        <div>
-                                            <label className="text-sm font-medium text-title mb-1 block">Question Type</label>
-                                            <div className="relative">
-                                                <select
-                                                    value={question.type}
-                                                    onChange={(e) => changeQuestionType(question.id, e.target.value as QuizQuestionType)}
-                                                    className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
-                                                >
-                                                    <option value="multiple-choice">Multiple Choice</option>
-                                                    <option value="true-false">True or False</option>
-                                                    <option value="short-answer">Question Answers</option>
-                                                </select>
-                                                <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                            </div>
-                                        </div>
-
-                                        {/* Question Text */}
-                                        <div className="md:col-span-2">
-                                            <label className="text-sm font-medium text-title mb-1 block">Question</label>
-                                            <input
-                                                value={question.questionText}
-                                                onChange={(e) => updateQuizQuestion(question.id, "questionText", e.target.value)}
-                                                placeholder="Write question here..."
-                                                className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Options based on type */}
-                                    {question.type === "multiple-choice" && (
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-title block">Options</label>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                                {question.options.map((option, oIndex) => (
-                                                    <div key={oIndex} className="flex items-center gap-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setCorrectOption(question.id, oIndex)}
-                                                            className={`size-9 flex items-center justify-center rounded-md text-sm font-medium transition-colors shrink-0 ${option.isCorrect
-                                                                    ? "bg-main text-white"
-                                                                    : "bg-white border border-border-light text-title hover:border-main"
-                                                                }`}
-                                                        >
-                                                            {option.label}
-                                                        </button>
-                                                        <input
-                                                            value={option.value}
-                                                            onChange={(e) => updateQuizOption(question.id, oIndex, e.target.value)}
-                                                            placeholder={`Option ${option.label}`}
-                                                            className="flex-1 border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {question.type === "true-false" && (
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-medium text-title block">Select the correct answer</label>
-                                            <div className="flex gap-3">
-                                                {question.options.map((option, oIndex) => (
-                                                    <button
-                                                        key={oIndex}
-                                                        type="button"
-                                                        onClick={() => setCorrectOption(question.id, oIndex)}
-                                                        className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${option.isCorrect
-                                                                ? "bg-main text-white"
-                                                                : "bg-white border border-border-light text-title hover:border-main"
-                                                            }`}
-                                                    >
-                                                        {option.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {question.type === "short-answer" && (
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-medium text-title block">Correct Answer</label>
-                                            <input
-                                                value={question.answer || ""}
-                                                onChange={(e) => updateQuizQuestion(question.id, "answer", e.target.value)}
-                                                placeholder="Write the correct answer here..."
-                                                className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-
-                            {/* Add Question Button */}
-                            <button
-                                type="button"
-                                onClick={addQuizQuestion}
-                                className="w-full flex items-center justify-center gap-1.5 px-4 py-3 border-2 border-dashed border-border-light rounded-md text-sm font-medium text-description hover:text-main hover:border-main transition-colors"
-                            >
-                                <Plus className="w-4 h-4" />
-                                Add Question
-                            </button>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex justify-end gap-3 pt-2 border-t border-border-light">
-                            <button
-                                type="button"
-                                onClick={() => setModalType(null)}
-                                className="px-4 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={saveQuiz}
-                                className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
-                            >
-                                Save Quiz
-                            </button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <AddQuizModal
+                open={modalType === "addQuiz"}
+                onClose={() => setModalType(null)}
+                quizData={quizData}
+                updateQuizField={updateQuizField}
+                addQuizQuestion={addQuizQuestion}
+                removeQuizQuestion={removeQuizQuestion}
+                updateQuizQuestion={updateQuizQuestion}
+                changeQuestionType={changeQuestionType}
+                updateQuizOption={updateQuizOption}
+                setCorrectOption={setCorrectOption}
+                onSave={saveQuiz}
+            />
         </div>
     );
 };
