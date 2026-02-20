@@ -17,7 +17,7 @@ import React from "react";
 
 const demoData = [
   {
-    title: "Total Clicks",
+    title: "Total Clicks Sales",
     value: "3,247",
     change: 12.5,
     icon: MousePointerClick,
@@ -25,7 +25,7 @@ const demoData = [
     iconBgClassName: "bg-orange-50",
   },
   {
-    title: "Courses Sold",
+    title: "Total Sales",
     value: "1,245",
     change: 8.2,
     icon: BookOpen,
@@ -33,7 +33,7 @@ const demoData = [
     iconBgClassName: "bg-blue-50",
   },
   {
-    title: "Referral Links",
+    title: "Total Earned",
     value: "512",
     change: -4.3,
     icon: Link2,
@@ -41,20 +41,12 @@ const demoData = [
     iconBgClassName: "bg-green-50",
   },
   {
-    title: "Payments Received",
+    title: "Pending Commissions",
     value: "$12,450",
     change: 15.7,
     icon: CreditCard,
     iconClassName: "text-purple-500",
     iconBgClassName: "bg-purple-50",
-  },
-  {
-    title: "Active Affiliates",
-    value: "87",
-    change: 3.1,
-    icon: Users,
-    iconClassName: "text-red-500",
-    iconBgClassName: "bg-red-50",
   },
 ];
 
@@ -179,16 +171,10 @@ const Page = () => {
           </div>
         ))}
       </div>
-      <div>
-        <AffiliateReferralCard
-          affiliateCode="AFF-83921"
-          referralLink="https://platform.com/course?id=123&ref=AFF-83921"
-          className="w-full"
-        />
-      </div>
+
       <div>
         <CommissionWalletCard
-          title="Commission Wallet"
+          title="Sales Commission Wallet"
           totalEarned={2845.5}
           totalPayable={213.75}
           totalPaid={2631.75}

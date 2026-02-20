@@ -1,0 +1,101 @@
+"use client";
+
+import { PaymentProgressCard } from "@/components/commission/PaymentProgress";
+import { RecentTransactionsCard } from "@/components/commission/RecentTransection";
+import { WalletCard } from "@/components/commission/WalletCard";
+import {
+  CreditCard,
+  Wallet,
+  DollarSign,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import React from "react";
+
+const demoWalletData = [
+  {
+    label: "Total Earned",
+    amount: 213.75,
+    icon: CreditCard,
+    iconClassName: "text-amber-500",
+    iconBgClassName: "bg-amber-50",
+  },
+  {
+    label: "Pending Payment",
+    amount: 1240.5,
+    icon: Wallet,
+    iconClassName: "text-green-500",
+    iconBgClassName: "bg-green-50",
+  },
+  {
+    label: "Total Paid",
+    amount: 75.25,
+    icon: DollarSign,
+    iconClassName: "text-blue-500",
+    iconBgClassName: "bg-blue-50",
+  },
+];
+
+const Page = () => {
+  return (
+    <div className="p-8 space-y-8">
+      <h1 className="text-2xl font-semibold mb-6">Commission Wallet</h1>
+
+      {/* Responsive flex grid */}
+      <div className="flex flex-wrap gap-5">
+        {demoWalletData.map((item, idx) => (
+          <div key={idx} className="flex-1 min-w-55">
+            <WalletCard
+              label={item.label}
+              amount={item.amount}
+              icon={item.icon}
+              iconClassName={item.iconClassName}
+              iconBgClassName={item.iconBgClassName}
+              className="w-full"
+            />
+          </div>
+        ))}
+      </div>
+      <div>
+        <PaymentProgressCard
+          title="Payment Progress"
+          label="Paid vs Total Earned"
+          percent={92.5}
+          className="w-full"
+        />
+      </div>
+      <div>
+        <RecentTransactionsCard
+          title="Recent Transactions"
+          currency="€"
+          className="w-full"
+          transactions={[
+            {
+              orderId: "ORD-8821",
+              course: "Advanced React",
+              date: "2/10/2026",
+              amount: 44.85,
+              status: "Paid",
+            },
+            {
+              orderId: "ORD-8820",
+              course: "TypeScript Mastery",
+              date: "2/9/2026",
+              amount: 29.85,
+              status: "Approved",
+            },
+            {
+              orderId: "ORD-8819",
+              course: "Node.js Guide",
+              date: "2/8/2026",
+              amount: 37.35,
+              status: "Pending",
+            },
+          ]}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Page;
