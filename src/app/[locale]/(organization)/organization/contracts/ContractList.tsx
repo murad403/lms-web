@@ -1,6 +1,6 @@
 "use client";
 import { contracts, TContract } from '@/lib/organization'
-import { MoreVertical, Search } from 'lucide-react'
+import { ChevronDown, Eye, MoreVertical, Search, ShieldX, SquarePen } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import ContractDetailsModal from '@/components/modal/ContractDetailsModal'
@@ -42,26 +42,29 @@ const ContractList = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between mb-4">
-                <div className="relative">
+             <div className="flex items-center gap-3 mb-4">
+                <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
                     <input
                         type="text"
-                        placeholder="Search contracts..."
+                        placeholder="Search Courses ...."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10 pr-4 py-2 text-sm border border-border-light focus:outline-none focus:border-main w-80 rounded-md"
+                        className="w-full pl-9 pr-4 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title placeholder:text-description"
                     />
                 </div>
-                <select
-                    value={roleFilter}
-                    onChange={(e) => setRoleFilter(e.target.value)}
-                    className="px-4 py-2 text-sm border border-border-light text-description focus:outline-none rounded-md"
-                >
-                    <option value="all">All Roles</option>
-                    <option value="Instructors">Instructors</option>
-                    <option value="Managers">Managers</option>
-                </select>
+                <div className="relative">
+                    <select
+                        value={roleFilter}
+                        onChange={(e) => setRoleFilter(e.target.value)}
+                        className="appearance-none pl-4 pr-9 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title cursor-pointer"
+                    >
+                        <option>All Roles</option>
+                        <option>Instructors</option>
+                        <option>Managers</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description pointer-events-none" />
+                </div>
             </div>
 
             <div className="overflow-x-auto bg-white rounded-md p-4">
@@ -119,15 +122,19 @@ const ContractList = () => {
                                                     onClick={() => handleViewDetails(contract)}
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
+                                                    <Eye className="w-4 h-4 inline mr-2"/>
                                                     View Details
                                                 </button>
                                                 <button
                                                     onClick={() => handleEditContract(contract)}
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
+                                                    <SquarePen className="w-4 h-4 inline mr-2"/>
                                                     Edit Contract
                                                 </button>
-                                                <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Terminate</button>
+                                                <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                                                    <ShieldX className="w-4 h-4 inline mr-2" />
+                                                    Terminate</button>
                                             </div>
                                         )}
                                     </div>

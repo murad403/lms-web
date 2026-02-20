@@ -33,7 +33,7 @@ const EditContractModal = ({ show, contract, onClose, onSave }: Props) => {
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="bg-white w-full rounded-md max-w-md max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between p-6 border-b border-border-light">
                     <h2 className="text-lg font-semibold text-title">Edit Contract</h2>
                     <button onClick={onClose}>
@@ -59,7 +59,7 @@ const EditContractModal = ({ show, contract, onClose, onSave }: Props) => {
                             type="number"
                             min="0"
                             max="100"
-                            className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
+                            className="w-full rounded-md px-4 py-3 text-sm border border-border-light focus:outline-none focus:border-main"
                             placeholder="e.g. 70"
                         />
                     </div>
@@ -69,7 +69,7 @@ const EditContractModal = ({ show, contract, onClose, onSave }: Props) => {
                         <input
                             {...form.register("expiryDate", { required: true })}
                             type="date"
-                            className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
+                            className="w-full rounded-md px-4 py-3 text-sm border border-border-light focus:outline-none focus:border-main"
                         />
                     </div>
 
@@ -77,7 +77,7 @@ const EditContractModal = ({ show, contract, onClose, onSave }: Props) => {
                         <label className="block text-sm font-medium text-title mb-1">Status</label>
                         <select
                             {...form.register("status", { required: true })}
-                            className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
+                            className="w-full rounded-md px-4 py-3 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
                         >
                             <option value="Active">Active</option>
                             <option value="Pending">Pending</option>
@@ -89,13 +89,13 @@ const EditContractModal = ({ show, contract, onClose, onSave }: Props) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 py-2.5 text-sm border border-border-light text-description hover:bg-gray-50"
+                            className="flex-1 px-4 rounded-md py-3 text-sm border border-border-light text-description hover:bg-gray-50"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium hover:bg-main/90"
+                            className="flex-1 px-4 rounded-md py-3 text-sm bg-main text-white font-medium hover:bg-main/90"
                         >
                             Save Changes
                         </button>
