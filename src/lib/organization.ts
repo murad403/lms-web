@@ -157,7 +157,7 @@ export const activityLogs: TActivityLog[] = [
   { id: "5", user: "Michael Chen", avatar: "/home/banner.jpg", action: "updated permissions for", target: "Moderator role", time: "3 days ago" },
   { id: "6", user: "Sarah Johnson", avatar: "/home/banner.jpg", action: "approved accreditation for", target: "Advanced ML Course", time: "4 days ago" },
   { id: "7", user: "Lisa Anderson", avatar: "/home/banner.jpg", action: "uploaded contract for", target: "Data Science Course", time: "5 days ago" },
-  { id: "8", user: "Michael Chen", avatar: "/home/banner.jpg", action: "generated report for", target: "Q4 2024", time: "1 week ago" },
+  { id: "8", user: "Michael Chen", avatar: "/home/banner.jpg", action: "generated report for", target: "Q4 2024", time: "1 week ago" }
 ];
 
 export const instructorStats: TInstructorStats = {
@@ -173,6 +173,8 @@ export const instructorMembers: TInstructorMember[] = [
   { id: "3", name: "Emily Davis", avatar: "/home/banner.jpg", email: "emily@org.com", role: "Instructor", lastLogin: "1 day ago", status: "Pending", courses: 2 },
   { id: "4", name: "James Wilson", avatar: "/home/banner.jpg", email: "james@org.com", role: "Assistant", lastLogin: "3 days ago", status: "Active", courses: 1 },
   { id: "5", name: "Lisa Anderson", avatar: "/home/banner.jpg", email: "lisa@org.com", role: "Lead Instructor", lastLogin: "6 hours ago", status: "Active", courses: 4 },
+  { id: "6", name: "David Miller", avatar: "/home/banner.jpg", email: "david@org.com", role: "Assistant", lastLogin: "1 week ago", status: "Active", courses: 2 },
+  { id: "7", name: "Sophia Garcia", avatar: "/home/banner.jpg", email: "sophia@org.com", role: "Instructor", lastLogin: "2 weeks ago", status: "Active", courses: 3 },
 ];
 
 export const contractStats: TContractStats = {

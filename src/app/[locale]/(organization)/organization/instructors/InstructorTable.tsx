@@ -1,15 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Eye, MoreVertical, SquarePen, Trash2, UserRoundX, X } from "lucide-react";
-import { instructorMembers } from "@/lib/organization";
+import { MoreVertical, SquarePen, Eye, Trash2, UserRoundX } from "lucide-react";
+import { instructorMembers, TInstructorMember } from "@/lib/organization";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-
-type AddInstructorForm = {
-  fullName: string;
-  email: string;
-  role: string;
-};
+import AddInstructorModal, { AddInstructorForm } from "@/components/modal/AddInstructorModal";
+import EditInstructorRoleModal from "@/components/modal/EditInstructorRoleModal";
+import ViewContractModal from "@/components/modal/ViewContractModal";
 
 const roleBadgeColors: Record<string, string> = {
   "Lead Instructor": "bg-purple-50 text-purple-700",
@@ -36,6 +33,13 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
     const [roleFilter, setRoleFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
 
+    const [showEditRole, setShowEditRole] = useState(false);
+    const [editingInstructor, setEditingInstructor] = useState<TInstructorMember | null>(null);
+    const [selectedRole, setSelectedRole] = useState("");
+
+    const [showViewContract, setShowViewContract] = useState(false);
+    const [viewingInstructor, setViewingInstructor] = useState<TInstructorMember | null>(null);
+
     const form = useForm<AddInstructorForm>();
 
     const filteredInstructors = instructorMembers.filter((i) => {
@@ -50,6 +54,25 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
         console.log("Add Instructor:", data);
         setShowAddInstructor(false);
         form.reset();
+    };
+
+    const handleEditRole = (instructor: TInstructorMember) => {
+        setEditingInstructor(instructor);
+        setSelectedRole(instructor.role);
+        setOpenAction(null);
+        setShowEditRole(true);
+    };
+
+    const handleViewContract = (instructor: TInstructorMember) => {
+        setViewingInstructor(instructor);
+        setOpenAction(null);
+        setShowViewContract(true);
+    };
+
+    const saveEditRole = () => {
+        console.log("Save role:", editingInstructor?.id, selectedRole);
+        setShowEditRole(false);
+        setEditingInstructor(null);
     };
     return (
         <div>
@@ -129,11 +152,15 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                                             </button>
                                             {openAction === instructor.id && (
                                                 <div className="absolute right-0 top-8 bg-white shadow-lg border border-border-light rounded z-10 w-44">
-                                                    <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
+                                                    <button
+                                                        onClick={() => handleEditRole(instructor)}
+                                                        className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                         <SquarePen className="w-4 h-4 mr-2 inline" />
                                                         Edit Role
                                                         </button>
-                                                    <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
+                                                    <button
+                                                        onClick={() => handleViewContract(instructor)}
+                                                        className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                         <Eye className="w-4 h-4 mr-2 inline" />
                                                         View Contract
                                                         </button>
@@ -155,66 +182,27 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                 </div>
             </div>
 
-            {/* Add Instructor Modal */}
-            {showAddInstructor && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white w-full max-w-md rounded-md">
-                        <div className="flex items-center justify-between p-6 border-b border-border-light">
-                            <h2 className="text-lg font-semibold text-title">Add Instructor</h2>
-                            <button onClick={() => { setShowAddInstructor(false); form.reset(); }}>
-                                <X className="w-5 h-5 text-description" />
-                            </button>
-                        </div>
-                        <form onSubmit={form.handleSubmit(handleAddInstructor)} className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-title mb-1">Full Name</label>
-                                <input
-                                    {...form.register("fullName", { required: true })}
-                                    className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                                    placeholder="Enter full name"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-title mb-1">Email</label>
-                                <input
-                                    {...form.register("email", { required: true })}
-                                    type="email"
-                                    className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                                    placeholder="Enter email address"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-title mb-1">Role</label>
-                                <select
-                                    {...form.register("role", { required: true })}
-                                    className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
-                                >
-                                    <option value="">Select role</option>
-                                    <option value="Lead Instructor">Admin</option>
-                                    <option value="Instructor">Manager</option>
-                                    <option value="Assistant">Reviewer</option>
-                                    <option value="Assistant">Finance</option>
-                                </select>
-                            </div>
-                            <div className="flex gap-3 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => { setShowAddInstructor(false); form.reset(); }}
-                                    className="flex-1 px-4 py-2.5 text-sm border border-border-light text-description hover:bg-gray-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium hover:bg-main/90"
-                                >
-                                    Add Instructor
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+            <AddInstructorModal
+                show={showAddInstructor}
+                onClose={() => setShowAddInstructor(false)}
+                form={form}
+                onSubmit={handleAddInstructor}
+            />
+
+            <EditInstructorRoleModal
+                show={showEditRole}
+                instructor={editingInstructor}
+                selectedRole={selectedRole}
+                onRoleChange={setSelectedRole}
+                onClose={() => { setShowEditRole(false); setEditingInstructor(null); }}
+                onSave={saveEditRole}
+            />
+
+            <ViewContractModal
+                show={showViewContract}
+                instructor={viewingInstructor}
+                onClose={() => { setShowViewContract(false); setViewingInstructor(null); }}
+            />
         </div>
     )
 }
