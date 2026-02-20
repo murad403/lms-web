@@ -9,7 +9,7 @@ import OrganizationTopbar from '../shared/OrganizationTopbar'
 
 const InstructorWrapper = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
-    const isShowLayout = pathname.includes('/instructor/profile');
+    const isShowLayout = pathname.includes('/organization/profile');
     // console.log(isShowLayout);
     return (
         <div className="min-h-screen bg-light-bg">

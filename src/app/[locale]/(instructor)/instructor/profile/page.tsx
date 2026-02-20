@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Star, Users, ChevronDown, ArrowRight, CirclePlay } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { instructorProfile, instructorCourses } from "@/lib/instructor";
+import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
 
 const publicReviews = [
     {
@@ -118,14 +119,7 @@ const InstructorProfilePage = () => {
             {/* Body */}
             <div className="container mx-auto py-8 space-y-8">
                 {/* About Me */}
-                <div className="bg-white p-6">
-                    <h2 className="text-sm font-bold text-title mb-3 uppercase tracking-widest">
-                        About Me
-                    </h2>
-                    <div className="text-sm text-description leading-relaxed whitespace-pre-line">
-                        {profile.bio}
-                    </div>
-                </div>
+                <ProfileAbout/>
 
                 {/* Tabs */}
                 <div>
