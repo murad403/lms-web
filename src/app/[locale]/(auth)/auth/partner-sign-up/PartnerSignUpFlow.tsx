@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Handshake } from 'lucide-react';
+import { Check, Building2 } from 'lucide-react';
 
 const features = [
     {
@@ -20,7 +20,7 @@ const PartnerSignUpFlow = () => {
     return (
         <div className="w-full lg:w-1/2 bg-main flex flex-col items-center justify-center px-8 sm:px-12 lg:px-16 py-12 text-white">
             <div className="max-w-md">
-                <Handshake className="size-16 mb-6" />
+                <Building2 className="size-16 mb-6" />
 
                 <h2 className="text-3xl font-bold mb-4">Expand Your Reach</h2>
                 <p className="text-white/70 mb-8 leading-relaxed">

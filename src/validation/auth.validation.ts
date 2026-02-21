@@ -59,11 +59,15 @@ export type OrganizationSignUpFormData = z.infer<typeof organizationFields>;
 
 // Partner Sign Up Schema
 const partnerFields = z.object({
-  contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
-  organizationName: z.string().min(2, "Organization name must be at least 2 characters"),
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
+  organizationName: z.string().min(2, "Organization name must be at least 2 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string().min(1, "Please confirm your password"),
+  affiliateType: z.string().min(1, "Please select an affiliate type"),
+  taxId: z.string().optional(),
+  iban: z.string().min(5, "IBAN is required"),
+  address: z.string().min(3, "Address is required"),
   terms: z.boolean(),
 });
 
