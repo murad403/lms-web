@@ -26,7 +26,7 @@ const accountTypes = [
         title: "Become a Partner",
         description: 'Be the reference point and earn by providing guidance, collaborating with institutions and trainers',
         icon: Handshake,
-        href: '/auth/partner-sign-up',
+        href: '/auth/affiliate-sign-up',
     },
 ];
 
