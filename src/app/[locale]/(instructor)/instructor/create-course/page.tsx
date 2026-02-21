@@ -101,7 +101,7 @@ const CreateCoursePage = () => {
                                     )}
                                 </button>
                                 {i < tabs.length - 1 && (
-                                    <div className={`flex-1 h-px mx-4 ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
+                                    <div className={`flex-1 h-px mx-2 sm:mx-4 ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
                                 )}
                             </div>
                         );

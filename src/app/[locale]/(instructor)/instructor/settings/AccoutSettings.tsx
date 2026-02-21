@@ -93,7 +93,7 @@ const AccoutSettings = () => {
                         <label className="text-sm font-medium text-title mb-1.5 block">
                             Full name
                         </label>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <input
                                     {...register("firstName")}

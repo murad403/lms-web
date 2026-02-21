@@ -32,7 +32,7 @@ const TrainerSignUpForm = () => {
 
     return (
         <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 md:py-0">
-            <div className='w-full md:w-1/2 px-5 md:px-0'>
+            <div className="w-full max-w-md px-5">
                 <Link
                     href="/auth/sign-up"
                     className="text-sm text-description hover:text-main transition inline-flex items-center gap-1 mb-4"

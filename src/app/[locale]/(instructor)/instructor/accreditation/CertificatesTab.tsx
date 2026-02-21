@@ -18,17 +18,17 @@ const CertificatesTab = ({ certificates }: Props) => {
                 {
                     certificates.map((cert) => (
                         <div key={cert.id} className="p-4 border border-border-light rounded-md">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-[#ECF9FF] p-2 rounded-md">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <div className="bg-[#ECF9FF] p-2 rounded-md shrink-0">
                                         <SlBadge className="text-main size-6" />
                                     </div>
-                                    <div>
-                                        <h3 className="font-medium text-title">{cert.courseName}</h3>
+                                    <div className="min-w-0">
+                                        <h3 className="font-medium text-title truncate">{cert.courseName}</h3>
                                         <p className="text-sm text-description">{cert.certId}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
                                     <div>
                                         <h3 className="font-medium text-title">1,247</h3>
                                         <p className="text-sm text-description">Issued</p>

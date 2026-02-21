@@ -80,7 +80,7 @@ const SubmissionsTab = ({ submissions }: Props) => {
                                 <td className="py-3.5 px-4 text-sm font-medium text-title">
                                     {sub.id}
                                 </td>
-                                <td className="py-3.5 px-4 text-sm text-title">
+                                <td className="py-3.5 px-4 text-sm text-title text-nowrap">
                                     {sub.course}
                                 </td>
                                 <td className="py-3.5 px-4 text-sm text-description">
@@ -91,7 +91,7 @@ const SubmissionsTab = ({ submissions }: Props) => {
                                 </td>
                                 <td className="py-3.5 px-4">
                                     <span
-                                        className={`text-xs font-medium px-2.5 py-1.5 rounded-sm ${statusColors[sub.status] || ""
+                                        className={`text-xs font-medium px-2.5 py-1.5 rounded-sm text-nowrap ${statusColors[sub.status] || ""
                                             }`}
                                     >
                                         {sub.status}
@@ -122,7 +122,7 @@ const SubmissionsTab = ({ submissions }: Props) => {
                     {viewItem && (
                         <div className="space-y-4 mt-4">
                             {/* Course Image */}
-                            <div className="relative w-full h-60 rounded-lg overflow-hidden">
+                            <div className="relative w-full h-40 sm:h-60 rounded-lg overflow-hidden">
                                 <Image
                                     src={course}
                                     fill
@@ -157,7 +157,7 @@ const SubmissionsTab = ({ submissions }: Props) => {
                             </div>
 
                             {/* Details Grid */}
-                            <div className="grid grid-cols-4 gap-4 pt-2">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
                                 <div className="border border-border-light rounded-md p-3">
                                     <p className="text-xs text-description mb-1">Category</p>
                                     <p className="text-sm font-medium text-title">

@@ -16,14 +16,14 @@ const LiveClassPage = () => {
       <LiveClassStats />
 
       {/* Live Classes Section */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-title">Live Classes</h2>
-          <p className="text-base text-description">Attend live sessions and access recordings</p>
+          <h2 className="text-lg sm:text-xl font-bold text-title">Live Classes</h2>
+          <p className="text-sm sm:text-base text-description">Attend live sessions and access recordings</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors"
+          className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto shrink-0"
         >
           Schedule Live Class
         </button>

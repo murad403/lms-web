@@ -23,7 +23,7 @@ const InstructorWrapper = ({ children }: { children: React.ReactNode }) => {
                 {
                     (isShowLayout == false) && <InstructorTopbar />
                 }
-                <main className={isShowLayout === false ? "px-4 sm:px-10 md:px-30 py-6" : "px-4 sm:px-10 md:px-30 py-6"}>{children}</main>
+                <main className={isShowLayout === false ? "px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 py-6" : "px-4 sm:px-6 md:px-10 lg:px-20 xl:px-30 py-6"}>{children}</main>
             </div>
 
             {

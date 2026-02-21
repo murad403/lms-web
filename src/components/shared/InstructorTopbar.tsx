@@ -70,7 +70,7 @@ const InstructorTopbar = () => {
     return (
         <>
             <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-                <div className="flex items-center justify-between px-4 sm:px-10 md:px-30 py-2.5">
+                <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 py-2.5">
                     {/* Left - Mobile menu + Title */}
                     <div className="flex items-center gap-3">
                         {/* Mobile Menu Button */}
@@ -86,8 +86,8 @@ const InstructorTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-sm text-[#6E7485] font-medium">Good Morning</p>
-                            <h1 className="text-xl font-bold text-title">{getPageTitle()}</h1>
+                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">Good Morning</p>
+                            <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>
 
@@ -134,7 +134,7 @@ const InstructorTopbar = () => {
                         </div>
 
                         {/* Profile */}
-                        <Link href="/instructor/settings" className="size-12 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors">
+                        <Link href="/instructor/settings" className="size-10 sm:size-12 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors">
                             <Image src={user} alt="User" width={48} height={48} className="w-full h-full object-cover" />
                         </Link>
                     </div>

@@ -19,7 +19,7 @@ const WithdrawHistory = () => {
     };
 
     return (
-        <div className="bg-white md:col-span-2 p-5">
+        <div className="bg-white lg:col-span-2 p-5">
             <h3 className="text-base sm:text-lg font-semibold text-title mb-2">Withdraw History</h3>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -36,7 +36,7 @@ const WithdrawHistory = () => {
                     <tbody>
                         {withdrawalHistory.map((item) => (
                             <tr key={item.id} className="border-b border-gray-100">
-                                <td className="py-3 px-2 text-description text-xs">{item.date}</td>
+                                <td className="py-3 px-2 text-description text-xs text-nowrap">{item.date}</td>
                                 <td className="py-3 px-2 text-title">{item.method}</td>
                                 <td className="py-3 px-2 text-title">${item.amount}</td>
                                 <td className="py-3 px-2 text-title">{item.provider}</td>

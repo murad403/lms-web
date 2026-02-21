@@ -15,13 +15,13 @@ const WithdrawSection = () => {
                     <button
                         key={card.id}
                         onClick={() => setSelectedCard(card.id)}
-                        className={`w-full flex items-center gap-3 p-3 border transition-colors ${
+                        className={`w-full flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 p-3 border transition-colors ${
                             selectedCard === card.id 
                                 ? 'border-main bg-blue-50' 
                                 : 'border-border-light hover:border-gray-400'
                         }`}
                     >
-                        <div className={`w-12 h-8 rounded flex items-center justify-center text-white text-[10px] font-bold ${card.type === "visa" ? "bg-blue-600" : "bg-orange-500"}`}>
+                        <div className={`w-12 h-8 rounded flex items-center justify-center text-white text-[10px] font-bold shrink-0 ${card.type === "visa" ? "bg-blue-600" : "bg-orange-500"}`}>
                             {card.type.toUpperCase()}
                         </div>
                         <div className="flex-1 text-sm text-left">
@@ -35,15 +35,14 @@ const WithdrawSection = () => {
                     </button>
                 ))}
             </div>
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
                 <div>
                     <p className="text-2xl font-bold text-title mb-4">
                         ${earningStats.currentBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </p>
                     <p className="text-xs text-description mb-2">Current Balance</p>
                 </div>
-                <button className="px-5 py-3 bg-main text-white 
-             text-sm font-semibold hover:bg-main/90 transition-colors">
+                <button className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto">
                     Withdraw Money
                 </button>
             </div>
