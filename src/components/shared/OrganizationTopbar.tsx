@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
 import { notifications, TNotification } from "@/lib/header";
 import user from "@/assets/partnership/user2.png";
-import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle } from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Settings, LogOut, PlusCircle, Wallet, Users, UserCheck, ReceiptText, ChartSpline, NotebookPen } from "lucide-react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 
@@ -20,7 +20,12 @@ const mobileMenuItems: SidebarItem[] = [
     { label: "Create New Course", href: "/organization/create-course", icon: PlusCircle },
     { label: "My Courses", href: "/organization/my-courses", icon: BookOpen },
     { label: "Live Classes", href: "/organization/live-classes", icon: Video },
-    { label: "Earning", href: "/organization/earnings", icon: DollarSign },
+    { label: "Earning", href: "/organization/earnings", icon: Wallet },
+    { label: "Team Management", href: "/organization/team-management", icon: Users },
+    { label: "Instructor", href: "/organization/instructors", icon: UserCheck },
+    { label: "Contracts", href: "/organization/contracts", icon: ReceiptText },
+    { label: "Reports", href: "/organization/reports", icon: ChartSpline },
+    { label: "White-Label", href: "/organization/white-label", icon: NotebookPen },
     { label: "Message", href: "/organization/messages", icon: MessageSquare },
     { label: "Accreditation", href: "/organization/accreditation", icon: Award },
     { label: "Settings", href: "/organization/settings", icon: Settings },
