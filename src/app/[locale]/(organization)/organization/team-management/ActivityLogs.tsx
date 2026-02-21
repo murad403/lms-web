@@ -12,9 +12,9 @@ const ActivityLogs = () => {
             </div>
             <div className="space-y-4">
                 {activityLogs.map((log) => (
-                    <div key={log.id} className="flex items-center justify-between rounded-md gap-4 p-4 border border-border-light">
-                        <div className='flex gap-4 items-center'>
-                            <Image className="rounded-full size-12" src={log.avatar || avatar} alt={log.user} width={500} height={500} />
+                    <div key={log.id} className="flex flex-col sm:flex-row sm:items-center justify-between rounded-md gap-3 sm:gap-4 p-4 border border-border-light">
+                        <div className='flex gap-3 sm:gap-4 items-center'>
+                            <Image className="rounded-full size-10 sm:size-12" src={log.avatar || avatar} alt={log.user} width={500} height={500} />
                             <div>
                                 <h3 className="font-medium text-title">{log.user}</h3>
                                 <p className="text-sm text-description">{log.action} {log.target}</p>

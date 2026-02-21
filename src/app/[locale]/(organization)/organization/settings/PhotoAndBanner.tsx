@@ -45,10 +45,10 @@ const PhotoAndBanner = () => {
 
   return (
     <form className="bg-white p-4" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex gap-3 overflow-hidden border border-border-light bg-white">
+      <div className="flex flex-col sm:flex-row gap-3 overflow-hidden border border-border-light bg-white">
         {/* Photo */}
         <div
-          className="relative w-[200px] shrink-0 cursor-pointer group"
+          className="relative w-full sm:w-50 shrink-0 cursor-pointer group"
           onClick={() => photoInputRef.current?.click()}
         >
           <div className="relative w-full overflow-hidden" style={{ height: "200px" }}>

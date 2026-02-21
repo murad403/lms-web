@@ -79,9 +79,9 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
             {/* Table */}
             <div className="">
                 <div className="mb-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h3 className="text-lg font-semibold text-title">Available Instructors</h3>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full sm:w-auto">
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}

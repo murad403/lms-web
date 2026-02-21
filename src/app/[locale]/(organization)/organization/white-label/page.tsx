@@ -40,20 +40,20 @@ const WhiteLabel = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-title">White-Label Settings</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-title">White-Label Settings</h1>
           <p className="text-sm text-description mt-1">Customize your organization branding and appearance.</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <button
             onClick={() => setShowPreview(true)}
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium border border-border-light text-description hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium border border-border-light text-description hover:bg-gray-50 transition-colors flex-1 sm:flex-none justify-center"
           >
             <Eye className="w-4 h-4" /> Preview
           </button>
           <button
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-main text-white hover:bg-main/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-main text-white hover:bg-main/90 transition-colors flex-1 sm:flex-none justify-center"
           >
             <Pencil className="w-4 h-4" /> Edit Branding
           </button>

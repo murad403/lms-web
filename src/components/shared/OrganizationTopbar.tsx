@@ -16,15 +16,14 @@ type SidebarItem = {
 };
 
 const mobileMenuItems: SidebarItem[] = [
-    { label: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
-    { label: "Create New Course", href: "/instructor/create-course", icon: PlusCircle },
-    { label: "My Courses", href: "/instructor/my-courses", icon: BookOpen },
-    { label: "LIVE Classes", href: "/instructor/live-classes", icon: Video },
-    { label: "Earning", href: "/instructor/earnings", icon: DollarSign },
-    { label: "Message", href: "/instructor/messages", icon: MessageSquare },
-    { label: "Accreditation", href: "/instructor/accreditation", icon: Award },
-    { label: "AI Assistant", href: "/instructor/ai-assistant", icon: Bot },
-    { label: "Settings", href: "/instructor/settings", icon: Settings },
+    { label: "Dashboard", href: "/organization/dashboard", icon: LayoutDashboard },
+    { label: "Create New Course", href: "/organization/create-course", icon: PlusCircle },
+    { label: "My Courses", href: "/organization/my-courses", icon: BookOpen },
+    { label: "Live Classes", href: "/organization/live-classes", icon: Video },
+    { label: "Earning", href: "/organization/earnings", icon: DollarSign },
+    { label: "Message", href: "/organization/messages", icon: MessageSquare },
+    { label: "Accreditation", href: "/organization/accreditation", icon: Award },
+    { label: "Settings", href: "/organization/settings", icon: Settings },
 ];
 
 const OrganizationTopbar = () => {
@@ -70,7 +69,7 @@ const OrganizationTopbar = () => {
     return (
         <>
             <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-                <div className="flex items-center justify-between px-4 sm:px-10 md:px-30 py-2.5">
+                <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 py-2.5">
                     {/* Left - Mobile menu + Title */}
                     <div className="flex items-center gap-3">
                         {/* Mobile Menu Button */}
@@ -86,8 +85,8 @@ const OrganizationTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-sm text-[#6E7485] font-medium">Good Morning</p>
-                            <h1 className="text-xl font-bold text-title">{getPageTitle()}</h1>
+                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">Good Morning</p>
+                            <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>
 
@@ -134,7 +133,7 @@ const OrganizationTopbar = () => {
                         </div>
 
                         {/* Profile */}
-                        <Link href="/organization/settings" className="size-12 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors">
+                        <Link href="/organization/settings" className="size-10 sm:size-12 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors">
                             <Image src={user} alt="User" width={48} height={48} className="w-full h-full object-cover" />
                         </Link>
                     </div>

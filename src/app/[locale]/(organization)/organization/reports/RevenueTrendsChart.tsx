@@ -22,7 +22,7 @@ const RevenueTrendsChart = () => {
   return (
     <div className="bg-white rounded-md p-5">
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-6">
         <div>
           <h3 className="text-lg font-semibold text-title">Revenue Trends</h3>
           <p className="text-sm text-description mt-0.5">Monthly revenue and instructor payouts</p>
@@ -53,7 +53,7 @@ const RevenueTrendsChart = () => {
         {/* Right side: bars + day labels */}
         <div className="flex-1 flex flex-col">
           {/* Bars */}
-          <div className="flex items-end gap-6 h-52 border-l border-b border-gray-200 pl-4">
+          <div className="flex items-end gap-3 sm:gap-6 h-52 border-l border-b border-gray-200 pl-4">
             {revenueData.map((bar, index) => {
               const heightPercent = (bar.revenue / maxRevenue) * 100;
               return (
@@ -83,7 +83,7 @@ const RevenueTrendsChart = () => {
           </div>
 
           {/* Day Labels */}
-          <div className="flex gap-6 pl-4 pt-2">
+          <div className="flex gap-3 sm:gap-6 pl-4 pt-2">
             {revenueData.map((bar) => (
               <div key={bar.day} className="flex-1 flex justify-center">
                 <span className="text-xs text-description">{bar.day}</span>

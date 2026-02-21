@@ -83,14 +83,14 @@ const TeamManagementPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-title">Team Management</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-title">Team Management</h1>
           <p className="text-sm text-description mt-1">Manage your team members and permissions</p>
         </div>
         <button
           onClick={() => setShowAddUser(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors w-full sm:w-auto justify-center sm:justify-start"
         >
           <Plus className="w-4 h-4" /> Add User
         </button>
@@ -150,8 +150,8 @@ const TeamManagementPage = () => {
             <form onSubmit={addUserForm.handleSubmit(handleAddUser)} className="px-7 py-6 space-y-4">
 
               {/* Full Name */}
-              <div className="flex items-center gap-4">
-                <label className="w-36 shrink-0 text-sm font-medium text-title">Full Name</label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Full Name</label>
                 <input
                   {...addUserForm.register("fullName", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
@@ -160,8 +160,8 @@ const TeamManagementPage = () => {
               </div>
 
               {/* Email */}
-              <div className="flex items-center gap-4">
-                <label className="w-36 shrink-0 text-sm font-medium text-title">Email address</label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Email address</label>
                 <div className="flex-1 relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -178,8 +178,8 @@ const TeamManagementPage = () => {
               </div>
 
               {/* Username */}
-              <div className="flex items-center gap-4">
-                <label className="w-36 shrink-0 text-sm font-medium text-title">Username</label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Username</label>
                 <input
                   {...addUserForm.register("username", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
@@ -188,8 +188,8 @@ const TeamManagementPage = () => {
               </div>
 
               {/* Password + Confirm Password side by side */}
-              <div className="flex items-center gap-4">
-                <label className="w-36 shrink-0 text-sm font-medium text-title">Password</label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Password</label>
                 <div className="flex-1 flex gap-3">
                   <input
                     {...addUserForm.register("password", { required: true })}
@@ -207,8 +207,8 @@ const TeamManagementPage = () => {
               </div>
 
               {/* User Permission */}
-              <div className="flex items-center gap-4">
-                <label className="w-36 shrink-0 text-sm font-medium text-title">User Permission</label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">User Permission</label>
                 <select
                   {...addUserForm.register("permission", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main bg-white"
