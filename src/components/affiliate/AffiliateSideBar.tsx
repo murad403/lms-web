@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader} from "@/components/ui/sidebar";
 import { LayoutDashboard, BookOpen, Link as LinkIcon, History, Wallet, CreditCard, Settings, GraduationCap, LogOut} from "lucide-react";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPageHeader } from "@/redux/slice/pageHeaderSlice";
 import LogoutModal from "../shared/LogoutModal";
+import Link from "next/link";
 
 export function AffiliateSideBar() {
   const pathname = usePathname();
@@ -77,14 +77,14 @@ export function AffiliateSideBar() {
   return (
     <Sidebar className="border-r-0">
       <SidebarHeader className="bg-background-base py-4 ">
-        <div className="flex items-center gap-4 justify-center">
+        <Link href={"/"} className="flex items-center gap-4 justify-center">
           <div className="rounded-lg bg-[#042F54] p-2">
             <GraduationCap className="w-8 h-8 text-nav-text-active" />
           </div>
           <span className="text-[28px] font-bold text-nav-text-active">
             Form-Cert
           </span>
-        </div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent className="px-3 bg-background-base ">
