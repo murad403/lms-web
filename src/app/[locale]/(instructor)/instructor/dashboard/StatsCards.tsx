@@ -11,8 +11,8 @@ const statItems = [
   { key: "activeCourses" as const, label: "Active Courses", icon: BookOpen, color: "bg-green-50 text-green-600" },
   { key: "studentsEnrolled" as const, label: "Students Enrolled", icon: Users, color: "bg-orange-50 text-orange-600" },
   { key: "onlineStudents" as const, label: "Online Students", icon: Monitor, color: "bg-red-50 text-red-600" },
-  { key: "onlineCourses" as const, label: "Online Courses", icon: GraduationCap, color: "bg-green-50 text-green-600" },
-  { key: "totalEarning" as const, label: "USD Total Earning", icon: DollarSign, color: "bg-purple-50 text-purple-600" },
+  { key: "onlineCourses" as const, label: "Online Courses", icon: GraduationCap, color: "bg-violet-50 text-violet-600" },
+  { key: "totalEarning" as const, label: "USD Total Earning", icon: DollarSign, color: "bg-slate-50 text-slate-600" },
 ];
 
 const StatsCards = ({ stats }: StatsCardsProps) => {

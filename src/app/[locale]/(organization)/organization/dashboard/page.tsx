@@ -2,7 +2,7 @@ import CourseOverviewChart from '@/components/reusable/for-dashboard/CourseOverv
 import OverallRating from '@/components/reusable/for-dashboard/OverallRating'
 import RecentActivity from '@/components/reusable/for-dashboard/RecentActivity'
 import RevenueChart from '@/components/reusable/for-dashboard/RevenueChart'
-import StatsCards from '@/components/reusable/for-dashboard/StatsCards'
+import StatsCards from '@/app/[locale]/(instructor)/instructor/dashboard/StatsCards'
 import { courseOverviewData, dashboardStats, ratingBreakdown, recentActivities, revenueData } from '@/lib/instructor'
 
 const page = () => {

@@ -17,6 +17,11 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
         onClose();
     };
 
+    const handleRequestAccreditation = () => {
+        console.log("Requesting accreditation for course ID:", courseId);
+        onClose();
+    };
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="max-w-xs p-0 gap-0">
@@ -57,9 +62,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                         </div>
                     </Link>
 
-                    <Link
-                        href={`${path}/accreditation`}
-                        onClick={onClose}
+                    <button
+                        onClick={handleRequestAccreditation}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >
                         <div className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center">
@@ -69,7 +73,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <p className="font-medium">Request Accreditation</p>
                             <p className="text-xs text-description">Get official certification</p>
                         </div>
-                    </Link>
+                    </button>
 
                     <button
                         onClick={handleDelete}
