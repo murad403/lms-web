@@ -1,12 +1,18 @@
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Check, Layers, FileText, Play, Globe } from "lucide-react";
-import BasicInfoTab, { BasicInfoFormData } from "@/components/reusable/create-course/BasicInfoTab";
-import AdvanceInfoTab, { AdvanceInfoFormData } from "@/components/reusable/create-course/AdvanceInfoTab";
+import BasicInfoTab, { basicInfoSchema } from "@/components/reusable/create-course/BasicInfoTab";
+import AdvanceInfoTab, { advanceInfoSchema } from "@/components/reusable/create-course/AdvanceInfoTab";
 import PublishCourseTab from "@/components/reusable/create-course/PublishCourseTab";
 import { TCourseSection } from "@/lib/instructor";
 import CurriculumTab from "@/components/reusable/create-course/CurriculumTab";
+
+const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
+type CourseFormData = z.infer<typeof courseFormSchema>;
 
 const tabs = [
     { id: 0, label: "Basic Information", icon: Layers },
@@ -33,9 +39,28 @@ const CreateCoursePage = () => {
 
     const [activeTab, setActiveTab] = useState(0);
     
-    // Form data storage
-    const [basicInfo, setBasicInfo] = useState<BasicInfoFormData | null>(null);
-    const [advanceInfo, setAdvanceInfo] = useState<AdvanceInfoFormData | null>(null);
+    // React Hook Form
+    const methods = useForm<CourseFormData>({
+        resolver: zodResolver(courseFormSchema),
+        defaultValues: {
+            title: "",
+            subtitle: "",
+            category: "",
+            subCategory: "",
+            topic: "",
+            language: "",
+            level: "",
+            price: "",
+            couponCode: "",
+            discountPrice: "",
+            expiryPeriod: "limited",
+            description: "",
+            whatYouWillTeach: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
+            requirements: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
+        },
+    });
+
+    // File state (managed outside form)
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const [trailer, setTrailer] = useState<File | null>(null);
 
@@ -56,24 +81,90 @@ const CreateCoursePage = () => {
         }
     };
 
-    const handleBasicSubmit = (data: BasicInfoFormData) => {
-        setBasicInfo(data);
-        goNext();
-    };
+    const handlePublish = async (): Promise<boolean> => {
+        // Validate all form fields
+        const isValid = await methods.trigger();
+        if (!isValid) {
+            const { errors } = methods.formState;
+            if (errors.title || errors.category || errors.language || errors.level) {
+                setActiveTab(0);
+                return false;
+            }
+            if (errors.description || errors.whatYouWillTeach || errors.requirements) {
+                setActiveTab(1);
+                return false;
+            }
+            return false;
+        }
 
-    const handleAdvanceSubmit = (data: AdvanceInfoFormData, thumb: File | null, trail: File | null) => {
-        setAdvanceInfo(data);
-        setThumbnail(thumb);
-        setTrailer(trail);
-        goNext();
-    };
+        if (sections.length === 0) {
+            setActiveTab(2);
+            return false;
+        }
 
-    const handlePublish = () => {
-        // TODO: API call to create/update course
-        console.log("Publishing course...", { basicInfo, advanceInfo, sections });
+        try {
+            const values = methods.getValues();
+            const formData = new FormData();
+
+            // Basic Info
+            formData.append("title", values.title);
+            if (values.subtitle) formData.append("subtitle", values.subtitle);
+            formData.append("category", values.category);
+            if (values.subCategory) formData.append("subCategory", values.subCategory);
+            if (values.topic) formData.append("topic", values.topic);
+            formData.append("language", values.language);
+            formData.append("level", values.level);
+            if (values.price) formData.append("price", values.price);
+            if (values.couponCode) formData.append("couponCode", values.couponCode);
+            if (values.discountPrice) formData.append("discountPrice", values.discountPrice);
+            if (values.expiryPeriod) formData.append("expiryPeriod", values.expiryPeriod);
+
+            // Advance Info
+            if (values.description) formData.append("description", values.description);
+            formData.append("whatYouWillTeach", JSON.stringify(
+                values.whatYouWillTeach.map(item => item.value).filter(Boolean)
+            ));
+            formData.append("requirements", JSON.stringify(
+                values.requirements.map(item => item.value).filter(Boolean)
+            ));
+
+            // Files
+            if (thumbnail) formData.append("thumbnail", thumbnail);
+            if (trailer) formData.append("trailer", trailer);
+
+            // Curriculum
+            formData.append("sections", JSON.stringify(sections));
+
+            // Edit mode
+            if (isEdit && editId) {
+                formData.append("courseId", editId);
+            }
+
+            // TODO: Replace with your actual API endpoint
+            // const response = await fetch("/api/courses", {
+            //     method: isEdit ? "PUT" : "POST",
+            //     body: formData,
+            // });
+            // if (!response.ok) throw new Error("Failed to submit course");
+
+            console.log("Course data ready for API:", {
+                values,
+                thumbnail: thumbnail?.name,
+                trailer: trailer?.name,
+                sections,
+                isEdit,
+                editId,
+            });
+
+            return true;
+        } catch (error) {
+            console.error("Error submitting course:", error);
+            return false;
+        }
     };
 
     return (
+        <FormProvider {...methods}>
         <div className="space-y-6">
             {/* Step indicator */}
             <div className="bg-white rounded-lg border border-border-light p-4">
@@ -113,17 +204,17 @@ const CreateCoursePage = () => {
             <div className="bg-white rounded-lg border border-border-light p-4 sm:p-6">
                 {activeTab === 0 && (
                     <BasicInfoTab
-                        onNext={handleBasicSubmit}
+                        onNext={goNext}
                         onCancel={() => window.history.back()}
-                        defaultValues={basicInfo || undefined}
                     />
                 )}
 
                 {activeTab === 1 && (
                     <AdvanceInfoTab
-                        onNext={handleAdvanceSubmit}
+                        onNext={goNext}
                         onPrev={goPrev}
-                        defaultValues={advanceInfo || undefined}
+                        onThumbnailChange={setThumbnail}
+                        onTrailerChange={setTrailer}
                     />
                 )}
 
@@ -144,6 +235,7 @@ const CreateCoursePage = () => {
                 )}
             </div>
         </div>
+        </FormProvider>
     );
 };
 
