@@ -1,31 +1,39 @@
 "use client";
-
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@/i18n/navigation";
 
+
 type Props = {
     onPrev: () => void;
-    onSubmit: () => void;
+    onSubmit: () => Promise<boolean>;
 };
 
-const PublishCourseTab = ({ onPrev, }: Props) => {
+const PublishCourseTab = ({ onPrev, onSubmit }: Props) => {
 
     const [showSuccess, setShowSuccess] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmitForReview = () => {
-        // TODO: API call
-        setShowSuccess(true);
+    const handleSubmitForReview = async () => {
+        setIsSubmitting(true);
+        try {
+            const success = await onSubmit();
+            if (success) {
+                setShowSuccess(true);
+            }
+        } catch (error) {
+            console.error("Submission failed:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
         <div className="space-y-6">
             {/* Header with Save buttons */}
-           
-                <h3 className="text-xl font-bold text-title">Publish Course</h3>
-                
-        
+
+            <h3 className="text-xl font-bold text-title">Publish Course</h3>
 
             <div className="border-b border-border-light" />
 
@@ -60,9 +68,11 @@ const PublishCourseTab = ({ onPrev, }: Props) => {
                 <button
                     type="button"
                     onClick={handleSubmitForReview}
-                    className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                    disabled={isSubmitting}
+                    className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
-                    Submit For Review
+                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {isSubmitting ? "Submitting..." : "Submit For Review"}
                 </button>
             </div>
 

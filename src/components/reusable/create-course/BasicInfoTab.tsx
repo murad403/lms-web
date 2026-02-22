@@ -1,14 +1,12 @@
-/* eslint-disable react-hooks/incompatible-library */
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 const TITLE_MAX = 80;
 const SUBTITLE_MAX = 120;
 
-const basicInfoSchema = z.object({
+export const basicInfoSchema = z.object({
     title: z.string().min(1, "Title is required").max(TITLE_MAX),
     subtitle: z.string().max(SUBTITLE_MAX).optional(),
     category: z.string().min(1, "Category is required"),
@@ -66,38 +64,29 @@ const expiryOptions = [
 ];
 
 type Props = {
-    onNext: (data: BasicInfoFormData) => void;
+    onNext: () => void;
     onCancel: () => void;
-    defaultValues?: Partial<BasicInfoFormData>;
 };
 
-const BasicInfoTab = ({ onNext, onCancel, defaultValues }: Props) => {
+const BasicInfoTab = ({ onNext, onCancel }: Props) => {
     const {
         register,
-        handleSubmit,
+        trigger,
         watch,
         setValue,
         formState: { errors },
-    } = useForm<BasicInfoFormData>({
-        resolver: zodResolver(basicInfoSchema),
-        defaultValues: {
-            title: "",
-            subtitle: "",
-            category: "",
-            subCategory: "",
-            topic: "",
-            language: "",
-            level: "",
-            price: "",
-            couponCode: "",
-            discountPrice: "",
-            expiryPeriod: "limited",
-            ...defaultValues,
-        },
-    });
+    } = useFormContext<BasicInfoFormData>();
 
     const titleValue = watch("title") || "";
     const subtitleValue = watch("subtitle") || "";
+
+    const handleNext = async () => {
+        const valid = await trigger([
+            "title", "subtitle", "category", "subCategory", "topic",
+            "language", "level", "price", "couponCode", "discountPrice", "expiryPeriod"
+        ]);
+        if (valid) onNext();
+    };
 
     const generateCouponCode = () => {
         const code = "ABCUPON" + Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -105,7 +94,7 @@ const BasicInfoTab = ({ onNext, onCancel, defaultValues }: Props) => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onNext)} className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="space-y-6">
             <h3 className="text-xl font-bold text-title">Basic Information</h3>
             <div className="border-b border-border-light" />
 

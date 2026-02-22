@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/incompatible-library */
 "use client";
 import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { Plus, Upload, Image as ImageIcon, CirclePlay } from "lucide-react";
 import Image from "next/image";
@@ -10,7 +8,7 @@ import Image from "next/image";
 const MAX_ITEMS = 8;
 const ITEM_MAX_LENGTH = 120;
 
-const advanceInfoSchema = z.object({
+export const advanceInfoSchema = z.object({
     description: z.string().optional(),
     whatYouWillTeach: z.array(z.object({
         value: z.string().max(ITEM_MAX_LENGTH),
@@ -23,31 +21,22 @@ const advanceInfoSchema = z.object({
 export type AdvanceInfoFormData = z.infer<typeof advanceInfoSchema>;
 
 type Props = {
-    onNext: (data: AdvanceInfoFormData, thumbnail: File | null, trailer: File | null) => void;
+    onNext: () => void;
     onPrev: () => void;
-    defaultValues?: Partial<AdvanceInfoFormData>;
+    onThumbnailChange: (file: File | null) => void;
+    onTrailerChange: (file: File | null) => void;
 };
 
-const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
+const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: Props) => {
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
     const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
-    const [trailerFile, setTrailerFile] = useState<File | null>(null);
 
     const {
         register,
-        handleSubmit,
+        trigger,
         control,
         watch,
-    } = useForm<AdvanceInfoFormData>({
-        resolver: zodResolver(advanceInfoSchema),
-        defaultValues: {
-            description: "",
-            whatYouWillTeach: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
-            requirements: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
-            ...defaultValues,
-        },
-    });
+    } = useFormContext<AdvanceInfoFormData>();
 
     const {
         fields: teachFields,
@@ -65,7 +54,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
     const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        setThumbnailFile(file);
+        onThumbnailChange(file);
         const reader = new FileReader();
         reader.onload = (ev) => setThumbnailPreview(ev.target?.result as string);
         reader.readAsDataURL(file);
@@ -74,18 +63,19 @@ const AdvanceInfoTab = ({ onNext, onPrev, defaultValues }: Props) => {
     const handleTrailer = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        setTrailerFile(file);
+        onTrailerChange(file);
         const reader = new FileReader();
         reader.onload = (ev) => setTrailerPreview(ev.target?.result as string);
         reader.readAsDataURL(file);
     };
 
-    const onSubmit = (data: AdvanceInfoFormData) => {
-        onNext(data, thumbnailFile, trailerFile);
+    const handleNext = async () => {
+        const valid = await trigger(["description", "whatYouWillTeach", "requirements"]);
+        if (valid) onNext();
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="space-y-6">
             <h3 className="text-xl font-bold text-title">Advance Informations</h3>
 
             {/* Thumbnail & Trailer */}
