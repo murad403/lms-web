@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { chatUsers, chatMessages, TChatUser, TChatMessage } from "@/lib/profile";
 import { useTranslations } from "next-intl";
+import avatar from "@/assets/banner/avatar.png"
 
 type MessageForm = {
   message: string;
@@ -138,7 +139,7 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-200px)] md:h-[calc(100vh-
 
             <div className="relative shrink-0">
               <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden">
-                <Image src={selectedUser.avatar} alt={selectedUser.name} fill className="object-cover" />
+                <Image src={avatar} alt={selectedUser.name} fill className="object-cover" />
               </div>
               {selectedUser.online && (
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" />

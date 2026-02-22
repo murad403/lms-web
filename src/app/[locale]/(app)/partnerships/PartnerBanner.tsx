@@ -26,7 +26,7 @@ const PartnerBanner = async () => {
                     {t("bannerDescription")}
                 </p>
                 <div className=" mt-4 flex items-center">
-                    <Link href={"/auth/partner-sign-up"} className="py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
+                    <Link href={"/auth/affiliate-sign-up"} className="py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
                         {t("joinNetwork")}
                     </Link>
                 </div>
