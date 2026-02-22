@@ -13,155 +13,143 @@ const CookiePolicyPage = async () => {
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* 1. Introduction */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">1. Introduction</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section1Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            Form-Cert SRL is dedicated to ensuring transparency and protecting your privacy. This Cookie Policy explains how we use cookies and similar technologies to enhance your experience on our platform.
+                            {t("section1Desc")}
                         </p>
                     </div>
 
                     {/* 2. What Are Cookies? */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">2. What Are Cookies?</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section2Title")}</h2>
                         <div className="ml-6 space-y-2">
                             <p className="text-description text-xs sm:text-sm md:text-base">
-                                <span className="font-semibold">We utilize the following types of cookies:</span>
+                                <span className="font-semibold">{t("section2Intro")}</span>
                             </p>
                             <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
-                                <li>Essential cookies (necessary for basic site functionality)</li>
-                                <li>Performance cookies (analyze site usage to improve performance)</li>
-                                <li>Functional cookies (enhance user experience with personalized features)</li>
-                                <li>
-                                    Advertising cookies (track browsing habits to deliver targeted ads)
-                                </li>
-                                <li>
-                                    Third-party cookies (set by external services integrated into our site)
-                                </li>
+                                <li>{t("cookie1")}</li>
+                                <li>{t("cookie2")}</li>
+                                <li>{t("cookie3")}</li>
+                                <li>{t("cookie4")}</li>
+                                <li>{t("cookie5")}</li>
                             </ul>
                         </div>
                     </div>
 
                     {/* 3. How We Use Cookies */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">3. How We Use Cookies</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">We use cookies to:</p>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section3Title")}</h2>
+                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">{t("section3Intro")}</p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Keep you signed in</li>
-                            <li>Understand how you interact with our Site</li>
-                            <li>Personalize content and ads</li>
-                            <li>Analyze site traffic and user behavior</li>
-                            <li>Improve Site functionality and performance</li>
+                            <li>{t("cu1")}</li>
+                            <li>{t("cu2")}</li>
+                            <li>{t("cu3")}</li>
+                            <li>{t("cu4")}</li>
+                            <li>{t("cu5")}</li>
                         </ul>
                     </div>
 
                     {/* 4. Third-Party Services */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">4. Analyze site traffic and user behavior</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section4Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
-                            Personalize your experience and remember your preferences
+                            {t("section4Desc")}
                         </p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Provide relevant content and advertising</li>
-                            <li>Improve site functionality and performance</li>
-                            <li>You can manage your cookie preferences through your browser settings. You can choose to block all cookies, accept </li>
-                            <li>More Information</li>
-                            <li>For more details on how we handle data, please see our Privacy Policy.</li>
-                            <li>6. Updates to This Policy</li>
+                            <li>{t("cp1")}</li>
+                            <li>{t("cp2")}</li>
+                            <li>{t("cp3")}</li>
+                            <li>{t("cp4")}</li>
                         </ul>
                     </div>
 
                     {/* 5. Updates to Cookie Policy */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">
-                            5. We may update this Cookie Policy periodically.
-                        </h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section5Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
-                            If you have any questions or concerns about our use of cookies, please contact us:
+                            {t("section5Desc")}
                         </p>
                         <div className="ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
                             <p>
-                                <span className="font-semibold">Email:</span> privacy@form-cert.eu
+                                <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>
                             <p>
-                                <span className="font-semibold">Address:</span> Form-Cert SRL, Via Roma 123, 20121
-                                Milano, Italy
+                                <span className="font-semibold">{t("addressLabel")}:</span> {t("contactAddress")}
                             </p>
                         </div>
                         <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mt-4">
-                            By continuing to use our Site, you consent to our use of cookies as described in this
-                            policy.
+                            {t("section5Consent")}
                         </p>
                     </div>
 
                     {/* 6. Data Sharing and Disclosure */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">6. Data Sharing and Disclosure</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section6Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
-                            We do not sell your personal data. We may share your information with:
+                            {t("section6Intro")}
                         </p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Legal authorities when required by law</li>
-                            <li>Payment processors for transaction processing</li>
-                            <li>Service providers who assist in operating our platform</li>
-                            <li>Legal authorities when required by law</li>
+                            <li>{t("cs1")}</li>
+                            <li>{t("cs2")}</li>
+                            <li>{t("cs3")}</li>
                         </ul>
                     </div>
 
                     {/* 7. Data Security */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">7. Data Security</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section7Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
-                           We implement appropriate technical and organizational security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
+                            {t("section7Desc")}
                         </p>
                     </div>
 
                     {/* 8. Data Retention */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">8. Data Retention</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section8Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
-                            We retain your personal data only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required by law.
+                            {t("section8Desc")}
                         </p>
                     </div>
 
                     {/* 9. Your Rights and Choices */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">9. Your Rights and Choices</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section9Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
-                            You can update your account information, unsubscribe from marketing communications, or request deletion of your data by contacting us at privacy@form-cert.eu.
+                            {t("section9Desc")}
                         </p>
                     </div>
 
                     {/* 10. Children's Privacy */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">10. Children&apos;s Privacy</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section10Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
-                            Our services are not directed to individuals under the age of 16. We do not knowingly collect personal information from children.
+                            {t("section10Desc")}
                         </p>
                     </div>
 
                     {/* 11. Changes to This Policy */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">11. Changes to This Policy</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section11Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
-                           We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                            {t("section11Desc")}
                         </p>
                     </div>
 
                     {/* 12. Contact Us */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">12. Contact Us</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section12Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
-                            If you have questions about this Privacy Policy, please contact us:
+                            {t("section12Intro")}
                         </p>
                         <div className="ml-6 space-y-1 text-description text-xs sm:text-sm">
                             <p>
-                                <span className="font-semibold">Email:</span> privacy@form-cert.eu
+                                <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>
                             <p>
-                                <span className="font-semibold">Phone:</span> +39 02 1234 5678
+                                <span className="font-semibold">{t("phoneLabel")}:</span> {t("contactPhone")}
                             </p>
                             <p>
-                                <span className="font-semibold">Address:</span> Form-Cert SRL, Via Roma 123, 20121
-                                Milano, Italy
+                                <span className="font-semibold">{t("addressLabel")}:</span> {t("contactAddress")}
                             </p>
                         </div>
                     </div>

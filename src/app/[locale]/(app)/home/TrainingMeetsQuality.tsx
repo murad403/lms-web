@@ -1,6 +1,7 @@
 import Image from "next/image";
 import user from "../../../../../public/home/user2.png";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 const TrainingMeetsQuality = async () => {
     const t = await getTranslations("Home");
@@ -29,9 +30,9 @@ const TrainingMeetsQuality = async () => {
                         {t("fromTraining2")}
                     </p>
                     <div>
-                        <button className="px-12 py-3 bg-white text-main rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-gray-100 transition-colors">
+                        <Link href={"/contacts"} className="px-12 py-3 bg-white text-main rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-gray-100 transition-colors">
                             {t("joinUs")}
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

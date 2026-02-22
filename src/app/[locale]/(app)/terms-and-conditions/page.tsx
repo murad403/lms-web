@@ -12,33 +12,33 @@ const TermsAndConditions = async () => {
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* 1. Introduction */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">1. Introduction</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section1Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            Form-Cert SRL ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our platform and use our services.
+                            {t("section1Desc")}
                         </p>
                     </div>
 
                     {/* 2. Information We Collect */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">2. Information We Collect</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section2Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-4">
-                            We may collect personal information that you provide to us, such as:
+                            {t("section2Intro")}
                         </p>
                         <div className="ml-6 space-y-3">
                             <div>
-                                <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">Personal Data:</p>
+                                <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">{t("personalDataTitle")}</p>
                                 <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
-                                    <li>Name and contact information (email address, phone number)</li>
-                                    <li>Professional information (job title, company, industry)</li>
-                                    <li>Account credentials (username, password)</li>
-                                    <li>Payment information (processed securely through third-party payment processors)</li>
-                                    <li>Course enrollment and progress data</li>
+                                    <li>{t("pd1")}</li>
+                                    <li>{t("pd2")}</li>
+                                    <li>{t("pd3")}</li>
+                                    <li>{t("pd4")}</li>
+                                    <li>{t("pd5")}</li>
                                 </ul>
                             </div>
                             <div>
-                                <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">Usage Data:</p>
+                                <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">{t("usageDataTitle")}</p>
                                 <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
-                                    <li>We automatically collect information about your device and how you interact with our platform, including IP address, browser type, pages visited, time spent on pages, and other diagnostic data.</li>
+                                    <li>{t("ud1")}</li>
                                 </ul>
                             </div>
                         </div>
@@ -46,106 +46,105 @@ const TermsAndConditions = async () => {
 
                     {/* 3. How We Use Your Information */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">3. How We Use Your Information</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">We use the information we collect to:</p>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section3Title")}</h2>
+                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">{t("section3Intro")}</p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Provide, operate, and maintain our services</li>
-                            <li>Process your course enrollments and certifications</li>
-                            <li>Send you course updates, notifications, and marketing communications</li>
-                            <li>Improve and personalize your experience</li>
-                            <li>Respond to your inquiries and provide customer support</li>
-                            <li>Detect, prevent, and address technical issues and fraud</li>
-                            <li>Comply with legal obligations</li>
+                            <li>{t("use1")}</li>
+                            <li>{t("use2")}</li>
+                            <li>{t("use3")}</li>
+                            <li>{t("use4")}</li>
+                            <li>{t("use5")}</li>
+                            <li>{t("use6")}</li>
+                            <li>{t("use7")}</li>
                         </ul>
                     </div>
 
                     {/* 4. GDPR Compliance */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">4. GDPR Compliance</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section4Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
-                            Form-Cert complies with the General Data Protection Regulation (GDPR). If you are a resident of the European Economic Area (EEA), you have certain data protection rights, including:
+                            {t("section4Intro")}
                         </p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Right to access your personal data</li>
-                            <li>Right to rectification of inaccurate data</li>
-                            <li>Right to erasure ("right to be forgotten")</li>
-                            <li>Right to restrict processing</li>
-                            <li>Right to data portability</li>
-                            <li>Right to object to processing</li>
-                            <li>Right to withdraw consent</li>
+                            <li>{t("gdpr1")}</li>
+                            <li>{t("gdpr2")}</li>
+                            <li>{t("gdpr3")}</li>
+                            <li>{t("gdpr4")}</li>
+                            <li>{t("gdpr5")}</li>
+                            <li>{t("gdpr6")}</li>
+                            <li>{t("gdpr7")}</li>
                         </ul>
                     </div>
 
                     {/* 5. Data Sharing and Disclosure */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">5. Data Sharing and Disclosure</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section5Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
-                            We do not sell your personal information. However, we may share your information with:
+                            {t("section5Intro")}
                         </p>
                         <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
-                            <li>Course instructors and training institutions (limited to enrollment information)</li>
-                            <li>Service providers who assist in operating our platform</li>
-                            <li>Payment processors for transaction processing</li>
-                            <li>Legal authorities when required by law</li>
+                            <li>{t("share1")}</li>
+                            <li>{t("share2")}</li>
+                            <li>{t("share3")}</li>
+                            <li>{t("share4")}</li>
                         </ul>
                     </div>
 
                     {/* 6. Data Security */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">6. Data Security</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section6Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            We implement appropriate technical and organizational security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
+                            {t("section6Desc")}
                         </p>
                     </div>
 
                     {/* 7. Data Retention */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">7. Data Retention</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section7Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            We retain your personal data only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required by law.
+                            {t("section7Desc")}
                         </p>
                     </div>
 
                     {/* 8. Your Rights and Choices */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">8. Your Rights and Choices</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section8Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            You can update your account information, unsubscribe from marketing communications, or request deletion of your data by contacting us at privacy@form-cert.eu.
+                            {t("section8Desc")}
                         </p>
                     </div>
 
                     {/* 9. Children's Privacy */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">9. Children&apos;s Privacy</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section9Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            Our services are not directed to individuals under the age of 16. We do not knowingly collect personal information from children.
+                            {t("section9Desc")}
                         </p>
                     </div>
 
                     {/* 10. Changes to This Policy */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">10. Changes to This Policy</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section10Title")}</h2>
                         <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                            We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                            {t("section10Desc")}
                         </p>
                     </div>
 
                     {/* 11. Contact Us */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">11. Contact Us</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section11Title")}</h2>
                         <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
-                            If you have questions about this Privacy Policy, please contact us:
+                            {t("section11Intro")}
                         </p>
                         <div className="ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
                             <p>
-                                <span className="font-semibold">Email:</span> privacy@form-cert.eu
+                                <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>
                             <p>
-                                <span className="font-semibold">Phone:</span> +39 02 1234 5678
+                                <span className="font-semibold">{t("phoneLabel")}:</span> {t("contactPhone")}
                             </p>
                             <p>
-                                <span className="font-semibold">Address:</span> Form-Cert SRL, Via Roma 123, 20121 Milano,
-                                Italy
+                                <span className="font-semibold">{t("addressLabel")}:</span> {t("contactAddress")}
                             </p>
                         </div>
                     </div>
