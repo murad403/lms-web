@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Pencil } from "lucide-react";
 import { userProfile } from "@/lib/profile";
 import { Link } from "@/i18n/navigation";
+import avatar from "@/assets/banner/avatar.png"
 
 const ProfileHeader = () => {
     return (
@@ -10,7 +11,7 @@ const ProfileHeader = () => {
             <div className="flex items-center gap-4 sm:gap-6">
                 <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden shrink-0 border-2 border-gray-200">
                     <Image
-                        src={userProfile.avatar}
+                        src={avatar}
                         alt={`${userProfile.firstName} ${userProfile.lastName}`}
                         fill
                         className="object-cover"
