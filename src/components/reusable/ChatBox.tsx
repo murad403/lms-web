@@ -101,7 +101,7 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-200px)] md:h-[calc(100vh-
                 }`}
               >
                 <div className="relative w-10 h-10 rounded-full">
-                  <Image src={user.avatar} alt={user.name} fill className="object-cover rounded-full" />
+                  <Image src={avatar} alt={user.name} fill className="object-cover rounded-full" />
                   {user.online && (
                     <span className="absolute z-10 bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" />
                   )}
@@ -162,7 +162,7 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-200px)] md:h-[calc(100vh-
                 <div className={`flex items-end gap-1.5 sm:gap-2 max-w-[85%] sm:max-w-[75%] md:max-w-[70%] ${msg.isOwn ? "flex-row-reverse" : ""}`}>
                   {!msg.isOwn && (
                     <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full mb-4">
-                      <Image src={selectedUser.avatar} alt={selectedUser.name} fill className="rounded-full object-cover" />
+                      <Image src={avatar} alt={selectedUser.name} fill className="rounded-full object-cover" />
                     </div>
                   )}
                   <div>
