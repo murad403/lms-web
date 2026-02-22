@@ -1,61 +1,45 @@
 "use client";
-import { AffiliateReferralCard } from "@/components/affiliate/overview/Affiliatereferralcard";
-import { CommissionWalletCard } from "@/components/affiliate/overview/Commissionwalletcard";
-import {
-  SaleRecord,
-  SalesHistoryTable,
-} from "@/components/affiliate/overview/Saleshistorytable";
-import { AffiliateStatCard } from "@/components/affiliate/overview/StateCard";
-import {
-  MousePointerClick,
-  BookOpen,
-  Link2,
-  CreditCard,
-  Users,
-} from "lucide-react";
-import React from "react";
+import { AffiliateReferralCard } from "@/components/affiliate/dashboard/Affiliatereferralcard";
+import { CommissionWalletCard } from "@/components/affiliate/dashboard/Commissionwalletcard";
+import { SaleRecord, SalesHistoryTable} from "@/components/affiliate/dashboard/Saleshistorytable";
+import { AffiliateStatCard } from "@/components/affiliate/dashboard/StateCard";
+import { BookOpen, Link2, CreditCard, MousePointer2, ShoppingCart, Euro, Clock} from "lucide-react";
+
+
 
 const demoData = [
   {
     title: "Total Clicks",
     value: "3,247",
     change: 12.5,
-    icon: MousePointerClick,
+    icon: MousePointer2,
     iconClassName: "text-orange-500",
     iconBgClassName: "bg-orange-50",
   },
   {
-    title: "Courses Sold",
+    title: "Total sales",
     value: "1,245",
     change: 8.2,
-    icon: BookOpen,
+    icon: ShoppingCart,
     iconClassName: "text-blue-500",
     iconBgClassName: "bg-blue-50",
   },
   {
-    title: "Referral Links",
-    value: "512",
+    title: "Total Earned",
+    value: "$512",
     change: -4.3,
-    icon: Link2,
+    icon: Euro,
     iconClassName: "text-green-500",
     iconBgClassName: "bg-green-50",
   },
   {
-    title: "Payments Received",
+    title: "Pending Commissions",
     value: "$12,450",
     change: 15.7,
-    icon: CreditCard,
+    icon: Clock,
     iconClassName: "text-purple-500",
     iconBgClassName: "bg-purple-50",
-  },
-  {
-    title: "Active Affiliates",
-    value: "87",
-    change: 3.1,
-    icon: Users,
-    iconClassName: "text-red-500",
-    iconBgClassName: "bg-red-50",
-  },
+  }
 ];
 
 const salesData: SaleRecord[] = [

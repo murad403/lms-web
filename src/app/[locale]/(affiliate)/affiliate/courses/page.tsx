@@ -86,7 +86,7 @@ const Page = () => {
 
       <div className="">
         <Pagination
-          totalPages={100}
+          totalPages={3}
           maxVisiblePages={4}
           currentPage={1}
           onPageChange={() => {}}

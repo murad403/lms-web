@@ -1,11 +1,11 @@
 "use client";
-import { AffiliateReferralCard } from "@/components/affiliate/overview/Affiliatereferralcard";
-import { CommissionWalletCard } from "@/components/affiliate/overview/Commissionwalletcard";
+import { AffiliateReferralCard } from "@/components/affiliate/dashboard/Affiliatereferralcard";
+import { CommissionWalletCard } from "@/components/affiliate/dashboard/Commissionwalletcard";
 import {
   SaleRecord,
   SalesHistoryTable,
-} from "@/components/affiliate/overview/Saleshistorytable";
-import { AffiliateStatCard } from "@/components/affiliate/overview/StateCard";
+} from "@/components/affiliate/dashboard/Saleshistorytable";
+import { AffiliateStatCard } from "@/components/affiliate/dashboard/StateCard";
 import {
   MousePointerClick,
   BookOpen,

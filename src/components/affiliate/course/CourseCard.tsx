@@ -94,7 +94,7 @@ export function CourseCard({
       <div className="px-4 pb-4">
         <button
           onClick={handleCopy}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-colors duration-150"
+          className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold rounded-md transition-colors duration-150"
         >
           {copied ? (
             <Check className="w-4 h-4" />
