@@ -72,7 +72,7 @@ function PayoutRow({ payout, currency }: PayoutRowProps) {
       </div>
 
       {/* Right */}
-      <div className="flex flex-col items-end gap-1.5">
+      <div className="flex flex-col items-center gap-1.5">
         <span className="text-sm font-bold text-green-500">
           {currency}
           {amount.toLocaleString("en-US", {
@@ -81,7 +81,7 @@ function PayoutRow({ payout, currency }: PayoutRowProps) {
           })}
         </span>
         <span
-          className={`text-xs font-medium px-2.5 py-0.5 rounded-md ${badge}`}
+          className={`text-xs font-medium py-0.5 rounded-md ${badge}`}
         >
           {status}
         </span>

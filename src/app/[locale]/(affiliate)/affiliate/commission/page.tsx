@@ -6,33 +6,30 @@ import { WalletCard } from "@/components/commission/WalletCard";
 import {
   CreditCard,
   Wallet,
-  DollarSign,
-  TrendingUp,
-  Users,
+  DollarSign
 } from "lucide-react";
-import React from "react";
 
 const demoWalletData = [
   {
     label: "Total Earned",
     amount: 213.75,
     icon: CreditCard,
-    iconClassName: "text-amber-500",
-    iconBgClassName: "bg-amber-50",
+    iconClassName: "text-green-500",
+    iconBgClassName: "bg-green-50",
   },
   {
     label: "Pending Payment",
     amount: 1240.5,
     icon: Wallet,
-    iconClassName: "text-green-500",
-    iconBgClassName: "bg-green-50",
+    iconClassName: "text-amber-500",
+    iconBgClassName: "bg-amber-50",
   },
   {
     label: "Total Paid",
     amount: 75.25,
     icon: DollarSign,
-    iconClassName: "text-blue-500",
-    iconBgClassName: "bg-blue-50",
+    iconClassName: "text-purple-500",
+    iconBgClassName: "bg-purple-50",
   },
 ];
 

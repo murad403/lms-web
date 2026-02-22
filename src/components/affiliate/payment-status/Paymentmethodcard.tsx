@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, Building2 } from "lucide-react";
+import { LucideIcon, Building2, Landmark } from "lucide-react";
 
 export interface PaymentMethodCardProps {
   title?: string;
@@ -18,7 +18,7 @@ export function PaymentMethodCard({
   methodName = "Bank Transfer (IBAN)",
   accountNumber = "DE89 3704 0044 0532 0130 00",
   note = "Payments are processed monthly on the 1st",
-  icon: Icon = Building2,
+  icon: Icon = Landmark,
   iconClassName = "text-blue-400",
   iconBgClassName = "bg-blue-50",
   className = "",

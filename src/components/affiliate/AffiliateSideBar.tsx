@@ -1,34 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Link as LinkIcon,
-  History,
-  Wallet,
-  CreditCard,
-  Settings,
-  GraduationCap,
-} from "lucide-react";
-import { useEffect } from "react";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader} from "@/components/ui/sidebar";
+import { LayoutDashboard, BookOpen, Link as LinkIcon, History, Wallet, CreditCard, Settings, GraduationCap, LogOut} from "lucide-react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPageHeader } from "@/redux/slice/pageHeaderSlice";
-import { LogoutDialog } from "../shared/LogoutDialog";
+import LogoutModal from "../shared/LogoutModal";
 
 export function AffiliateSideBar() {
   const pathname = usePathname();
   const params = useParams();
   const locale = params.locale;
   const dispatch = useDispatch();
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const routes = [
     {
@@ -45,7 +31,7 @@ export function AffiliateSideBar() {
     },
     {
       title: "My Referral Link",
-      href: `/${locale}/affiliate/my-refarrel`,
+      href: `/${locale}/affiliate/my-referral`,
       icon: LinkIcon,
       info: "Share your referral link and earn commissions",
     },
@@ -111,7 +97,7 @@ export function AffiliateSideBar() {
               <Link
                 key={route.href}
                 href={route.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[14px] font-medium transition-all
+                className={`flex items-center gap-3 px-4 py-3 rounded-md text-[14px] font-medium transition-all
                   ${isActive
                     ? "bg-background-active text-nav-text-active shadow-md"
                     : "text-nav-text hover:bg-white/5 hover:text-white"
@@ -122,7 +108,14 @@ export function AffiliateSideBar() {
               </Link>
             );
           })}
-          <LogoutDialog></LogoutDialog>
+          <LogoutModal open={logoutOpen} onClose={() => setLogoutOpen(false)} />
+          <button
+            onClick={() => setLogoutOpen(true)}
+            className="flex items-center gap-3 px-4 py-3 rounded-md text-[14px] font-medium transition-all text-nav-text hover:bg-white/5 hover:text-white w-full"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
         </div>
       </SidebarContent>
 
