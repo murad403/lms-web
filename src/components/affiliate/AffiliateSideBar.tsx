@@ -19,7 +19,7 @@ export function AffiliateSideBar() {
   const routes = [
     {
       title: "Dashboard",
-      href: `/${locale}/affiliate/dashboard`,
+      href: `/${locale}/affiliate/overview`,
       icon: LayoutDashboard,
       info: "Overview of your affiliate stats and earnings",
     },

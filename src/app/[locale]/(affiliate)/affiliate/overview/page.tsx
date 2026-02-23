@@ -3,7 +3,7 @@ import { AffiliateReferralCard } from "@/components/affiliate/dashboard/Affiliat
 import { CommissionWalletCard } from "@/components/affiliate/dashboard/Commissionwalletcard";
 import { SaleRecord, SalesHistoryTable} from "@/components/affiliate/dashboard/Saleshistorytable";
 import { AffiliateStatCard } from "@/components/affiliate/dashboard/StateCard";
-import { BookOpen, Link2, CreditCard, MousePointer2, ShoppingCart, Euro, Clock} from "lucide-react";
+import { MousePointer2, ShoppingCart, Euro, Clock} from "lucide-react";
 
 
 
