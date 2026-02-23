@@ -1,0 +1,40 @@
+import { BookOpen, CheckCircle, MonitorPlay } from 'lucide-react'
+import { useTranslations } from 'next-intl';
+import React from 'react'
+
+const DashboardStats = () => {
+    const t = useTranslations("Dashboard");
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-6 h-6 text-main" />
+                </div>
+                <div>
+                    <p className="text-base text-description">{t("enrolledCourses")}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">12</p>
+                </div>
+            </div>
+            <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-md bg-green-50 flex items-center justify-center shrink-0">
+                    <MonitorPlay className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                    <p className="text-base text-description">{t("activeCourses")}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">03</p>
+                </div>
+            </div>
+            <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-md bg-purple-50 flex items-center justify-center shrink-0">
+                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                    <p className="text-base text-description">{t("completedCourses")}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">10</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default DashboardStats
