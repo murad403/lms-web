@@ -1,20 +1,11 @@
 "use client";
-import { useState } from "react";
-import { Plus } from "lucide-react";
-import ReviewCard from "@/components/reusable/ReviewCard";
-import WriteReviewModal from "@/components/modal/WriteReviewModal";
+import ReviewCard from "@/components/card/ReviewCard";
 import { reviews } from "@/lib/profile";
 import { useTranslations } from "next-intl";
 
 const ReviewsPage = () => {
-  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
   const t = useTranslations("ReviewsPage");
 
-  const handleWriteReview = (data: { rating: number; comment: string }) => {
-    // TODO: API call to submit review
-    console.log("New review:", data);
-    setIsWriteReviewOpen(false);
-  };
 
   const handleEditReview = async (
     reviewId: string,
@@ -33,13 +24,6 @@ const ReviewsPage = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
-        <button
-          onClick={() => setIsWriteReviewOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          {t("writeReview")}
-        </button>
       </div>
 
       <div className="bg-white space-y-4">
@@ -52,12 +36,6 @@ const ReviewsPage = () => {
           />
         ))}
       </div>
-
-      <WriteReviewModal
-        isOpen={isWriteReviewOpen}
-        onClose={() => setIsWriteReviewOpen(false)}
-        onSubmit={handleWriteReview}
-      />
     </div>
   );
 };

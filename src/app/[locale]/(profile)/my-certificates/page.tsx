@@ -228,7 +228,7 @@ const MyCertificatesPage = () => {
                             </p>
                             <button 
                                 onClick={() => handleDownloadCertificate(selectedCert)}
-                                className="mt-4 px-6 py-2 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
+                                className="mt-4 px-6 py-2 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
                             >
                                 {t("downloadPDF")}
                             </button>

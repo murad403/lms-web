@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import EnrolledCourseCard from "@/components/reusable/EnrolledCourseCard";
+import EnrolledCourseCard from "@/components/card/EnrolledCourseCard";
 import Pagination from "@/components/reusable/Pagination";
 import { enrolledCourses } from "@/lib/profile";
 import { useTranslations } from "next-intl";

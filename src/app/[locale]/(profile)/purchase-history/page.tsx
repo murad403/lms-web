@@ -1,6 +1,6 @@
 "use client";
 import { CreditCard, ShoppingCart } from "lucide-react";
-import PurchaseItemCard from "@/components/reusable/PurchaseItemCard";
+import PurchaseItemCard from "@/components/card/PurchaseItemCard";
 import { purchaseHistory } from "@/lib/profile";
 import { useTranslations } from "next-intl";
 

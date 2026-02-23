@@ -2,11 +2,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Upload, Trash2, X } from "lucide-react";
+import { Upload, Trash2, X } from "lucide-react";
 import { userProfile } from "@/lib/profile";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
 
 type ProfileFormData = {
     firstName: string;
@@ -17,16 +17,7 @@ type ProfileFormData = {
     avatar?: File | null;
 };
 
-type PasswordFormData = {
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-};
-
 const SettingsPage = () => {
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -47,10 +38,7 @@ const SettingsPage = () => {
         },
     });
 
-    const {
-        register: registerPassword,
-        handleSubmit: handlePasswordSubmit,
-    } = useForm<PasswordFormData>();
+    
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -84,8 +72,6 @@ const SettingsPage = () => {
                     setUploadError(t("imageRatioError"));
                     return;
                 }
-
-                // If all validations pass, set the preview and file
                 setPreviewImage(event.target?.result as string);
                 setSelectedFile(file);
                 setValue("avatar", file);
@@ -104,7 +90,6 @@ const SettingsPage = () => {
 
     const onProfileSubmit = async (data: ProfileFormData) => {
         try {
-            // Create FormData for file upload
             const formData = new FormData();
             formData.append("firstName", data.firstName);
             formData.append("lastName", data.lastName);
@@ -115,29 +100,15 @@ const SettingsPage = () => {
                 formData.append("avatar", selectedFile);
             }
 
-            // TODO: API call to update profile
             console.log("Profile update:", data);
             console.log("Selected file:", selectedFile);
 
-            // Example API call:
-            // const response = await fetch('/api/profile', {
-            //     method: 'PATCH',
-            //     body: formData,
-            // });
-            // if (!response.ok) throw new Error('Failed to update profile');
-
-            // Reset preview after successful save
-            // setPreviewImage(null);
-            // setSelectedFile(null);
         } catch (error) {
             console.error("Failed to update profile:", error);
         }
     };
 
-    const onPasswordSubmit = (data: PasswordFormData) => {
-        // TODO: API call to change password
-        console.log("Password change:", data);
-    };
+    
 
     const handleDeleteAccount = () => {
         // TODO: API call to delete account
@@ -219,12 +190,12 @@ const SettingsPage = () => {
                                 <input
                                     {...registerProfile("firstName")}
                                     placeholder={t("firstNamePlaceholder")}
-                                    className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
+                                    className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
                                 />
                                 <input
                                     {...registerProfile("lastName")}
                                     placeholder={t("lastNamePlaceholder")}
-                                    className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
+                                    className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
                                 />
                             </div>
                         </div>
@@ -236,7 +207,7 @@ const SettingsPage = () => {
                             <input
                                 {...registerProfile("username")}
                                 placeholder={t("usernamePlaceholder")}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
+                                className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
                             />
                         </div>
 
@@ -248,7 +219,7 @@ const SettingsPage = () => {
                                 {...registerProfile("email")}
                                 placeholder={t("emailPlaceholder")}
                                 readOnly
-                                className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm bg-gray-50 text-description cursor-not-allowed"
+                                className="w-full px-3 py-3 border border-gray-200 text-sm bg-gray-50 text-description cursor-not-allowed"
                             />
                         </div>
 
@@ -259,13 +230,13 @@ const SettingsPage = () => {
                             <input
                                 {...registerProfile("title")}
                                 placeholder={t("titlePlaceholder")}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
+                                className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="px-6 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
+                            className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors"
                         >
                             {t("saveChanges")}
                         </button>
@@ -274,103 +245,7 @@ const SettingsPage = () => {
             </form>
 
             {/* Change Password */}
-            <form
-                onSubmit={handlePasswordSubmit(onPasswordSubmit)}
-                className="bg-white rounded-xl border border-border-light p-4 sm:p-6"
-            >
-                <h3 className="text-base font-bold text-title mb-4">{t("changePassword")}</h3>
-
-                <div className="space-y-4 max-w-md">
-                    <div>
-                        <label className="text-xs font-medium text-title mb-1 block">
-                            {t("currentPassword")}
-                        </label>
-                        <div className="relative">
-                            <input
-                                {...registerPassword("currentPassword")}
-                                type={showCurrentPassword ? "text" : "password"}
-                                placeholder={t("password")}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-description hover:text-title"
-                            >
-                                {showCurrentPassword ? (
-                                    <EyeOff className="w-4 h-4" />
-                                ) : (
-                                    <Eye className="w-4 h-4" />
-                                )}
-                            </button>
-                        </div>
-                        <div className="text-right mt-1">
-                            <Link href={"/auth/forgot-password"}
-                                className="text-xs text-red-500 hover:text-red-600 font-medium"
-                            >
-                                {t("forgotPassword")}
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="text-xs font-medium text-title mb-1 block">
-                            {t("newPassword")}
-                        </label>
-                        <div className="relative">
-                            <input
-                                {...registerPassword("newPassword")}
-                                type={showNewPassword ? "text" : "password"}
-                                placeholder={t("password")}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowNewPassword(!showNewPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-description hover:text-title"
-                            >
-                                {showNewPassword ? (
-                                    <EyeOff className="w-4 h-4" />
-                                ) : (
-                                    <Eye className="w-4 h-4" />
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="text-xs font-medium text-title mb-1 block">
-                            {t("confirmPassword")}
-                        </label>
-                        <div className="relative">
-                            <input
-                                {...registerPassword("confirmPassword")}
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder={t("confirmNewPassword")}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main pr-10"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-description hover:text-title"
-                            >
-                                {showConfirmPassword ? (
-                                    <EyeOff className="w-4 h-4" />
-                                ) : (
-                                    <Eye className="w-4 h-4" />
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="px-6 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
-                    >
-                        {t("changePassword")}
-                    </button>
-                </div>
-            </form>
+            <ChangePassword/>
 
             {/* Delete Account */}
             <div className="bg-red-50 rounded-xl border border-red-200 p-4 sm:p-6">
@@ -386,7 +261,7 @@ const SettingsPage = () => {
                     </div>
                     <button
                         onClick={() => setShowDeleteModal(true)}
-                        className="px-5 py-2.5 bg-red-500 text-white rounded-md text-sm font-semibold hover:bg-red-600 transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-5 py-3 bg-red-500 text-white rounded-md text-sm font-semibold hover:bg-red-600 transition-colors flex items-center gap-1.5 shrink-0"
                     >
                         <Trash2 className="w-4 h-4" />
                         {t("delete")}
@@ -411,13 +286,13 @@ const SettingsPage = () => {
                     <AlertDialogFooter className="flex-row gap-3 sm:justify-center">
                         <button
                             onClick={() => setShowDeleteModal(false)}
-                            className="flex-1 px-6 py-2.5 border border-gray-300 rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                            className="flex-1 px-6 py-3 border border-gray-300 rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
                             {t("cancel")}
                         </button>
                         <button
                             onClick={handleDeleteAccount}
-                            className="flex-1 px-6 py-2.5 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 transition-colors"
+                            className="flex-1 px-6 py-3 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 transition-colors"
                         >
                             {t("yesDelete")}
                         </button>

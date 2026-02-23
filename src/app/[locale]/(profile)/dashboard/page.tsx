@@ -1,5 +1,5 @@
 "use client";
-import DashboardCourseCard from "@/components/reusable/DashboardCourseCard";
+import DashboardCourseCard from "@/components/card/DashboardCourseCard";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import DashboardStats from "./DashboardStats";
