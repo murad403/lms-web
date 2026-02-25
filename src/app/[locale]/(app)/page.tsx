@@ -5,17 +5,16 @@ import LearningMode from './home/LearningMode'
 import Certificate from './home/Certificate'
 import TrainingMeetsQuality from './home/TrainingMeetsQuality'
 import JoinOurPlatform from './home/JoinOurPlatform'
-import { getTranslations } from 'next-intl/server'
+import AboutInstructor from './home/AboutInstructor'
 
 const page = async () => {
-  const t = await getTranslations('Home')
-
   return (
     <div className='md:space-y-28 space-y-20'>
       <Banner />
       <Courses/> 
       <LearningMode/>
       <Certificate/>
+      <AboutInstructor/>
       <JoinOurPlatform/>
       <TrainingMeetsQuality/>
     </div>

@@ -3,6 +3,8 @@ import banner from "@/assets/banner/categories.png";
 import { getTranslations } from "next-intl/server";
 import { certificationAreas } from "@/lib/certifications";
 
+
+
 const page = async () => {
     const t = await getTranslations("Certifications");
     return (
