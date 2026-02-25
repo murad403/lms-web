@@ -148,7 +148,7 @@ const InstructorTopbar = () => {
                             <div className="px-3 pb-3 mb-3 border-b border-white/10">
                                 <Link href="/" className="flex items-center gap-2" onClick={() => setShowMobileMenu(false)}>
                                     <PiGraduationCap className="size-7 text-white" />
-                                    <span className="text-lg font-bold text-white">From-Cert</span>
+                                    <span className="text-lg font-bold text-white">Forma-Cert</span>
                                 </Link>
                             </div>
                             <nav className="space-y-1">

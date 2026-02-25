@@ -21,7 +21,7 @@ const Banner = async () => {
             {/* <div className="absolute inset-0 bg-linear-to-r from-blue-700/85 via-blue-600/55 to-transparent" /> */}
 
             {/* Content */}
-            <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
+            <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-8">
                 <h1 className="text-4xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                     {t("bannerTitle1")}
                     <br />

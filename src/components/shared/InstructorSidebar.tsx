@@ -38,7 +38,7 @@ const InstructorSidebar = () => {
         <div className="px-5 py-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2">
             <PiGraduationCap className="size-7 text-white" />
-            <span className="text-lg font-bold text-white">From-Cert</span>
+            <span className="text-lg font-bold text-white">Forma-Cert</span>
           </Link>
         </div>
 

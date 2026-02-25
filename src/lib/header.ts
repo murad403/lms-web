@@ -78,12 +78,12 @@ export type TCategory = {
 }
 
 export const categories: TCategory[] = [
-    { name: "HEALTHCARE & MEDICAL CERTIFICATIONS", count: "20,126 Courses" },
-    { name: "SCHOOL & ACADEMIC CERTIFICATIONS", count: "20,126 Courses" },
-    { name: "CFU – University Educational Credits", count: "20,126 Courses" },
-    { name: "MIUR-Recognized Language Certifications", count: "20,126 Courses" },
+    { name: "Healthcare & Medical", count: "20,126 Courses" },
+    { name: "Academic & School", count: "18,540 Courses" },
+    { name: "Workplace Safety", count: "15,320 Courses" },
+    { name: "Quality, Health, Safety & Environment (QHSE)", count: "12,750 Courses" },
     {
-        name: "Certifications for Teachers & Educators",
-        count: "20,126 Courses",
+        name: "Professional Development & Soft Skills",
+        count: "10,890 Courses",
     },
 ];

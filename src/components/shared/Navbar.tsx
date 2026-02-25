@@ -95,7 +95,7 @@ const Navbar = () => {
                         <PiGraduationCap className="size-8 text-main" />
 
                         <span className="text-lg md:text-2xl font-bold text-main">
-                            From-Cert
+                            Forma-Cert
                         </span>
                     </Link>
 
