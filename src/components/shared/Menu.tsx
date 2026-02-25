@@ -1,7 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import React from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const Menu = () => {
@@ -28,11 +27,10 @@ const Menu = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-[13px] sm:text-sm md:text-[15px] hover:text-gray-200 transition-colors whitespace-nowrap border-t-[3px] py-4 ${
-                  isActive
+                className={`text-[13px] sm:text-sm md:text-[15px] hover:text-gray-200 transition-colors whitespace-nowrap border-t-[3px] py-4 ${isActive
                     ? "border-white font-semibold"
                     : "border-transparent"
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
