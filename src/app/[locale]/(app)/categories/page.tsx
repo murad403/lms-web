@@ -36,9 +36,9 @@ const page = async () => {
             <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto">
                 {
                     categories.map((category: TCategory) =>
-                        <Link className="mb-5 block" key={category.id} href={`/categories/${category.title}`}>
-                            <h3 className={`text-sm sm:text-base md:text-lg font-bold text-white ${category?.description ? "rounded-t-lg" : "rounded-lg"} p-5 ${category.headingColor}`}>{category.title}</h3>
-                            <p className={`${category?.description ? "p-5" : "p-0"} rounded-b-lg text-xs sm:text-sm md:text-base ${category.descriptionColor}`}>{category?.description}</p>
+                        <Link className="mb-5 block" key={category.id} href={`/categories/${category.slug}`}>
+                            <h3 className={`text-sm sm:text-base md:text-lg font-bold text-white rounded-t-lg p-5 ${category.headingColor}`}>{t(`cat${category.id}Title`)}</h3>
+                            <p className={`p-5 rounded-b-lg text-xs sm:text-sm md:text-base ${category.descriptionColor}`}>{t(`cat${category.id}Desc`)}</p>
                         </Link>
                     )
                 }

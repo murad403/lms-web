@@ -7,12 +7,14 @@ import Pagination from '@/components/reusable/Pagination';
 import { TCourse, trendingCourses } from '@/lib/courses';
 import CourseCard from '@/components/card/CourseCard';
 import { useTranslations } from "next-intl";
+import { categories } from "@/lib/categories";
 
 
 const Category = () => {
     const t = useTranslations("Categories");
     const params = useParams();
-    const value = decodeURIComponent(params.category as string);
+    const slug = decodeURIComponent(params.category as string);
+    const category = categories.find(c => c.slug === slug);
     const [currentPage, setCurrentPage] = useState(1);
     
     const handlePageChange = (page: number) => {
@@ -21,7 +23,6 @@ const Category = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     
-    console.log(value)
     return (
         <div>
             {/* banner */}
@@ -38,7 +39,7 @@ const Category = () => {
                 {/* Content */}
                 <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
-                        {value}
+                        {category ? t(`cat${category.id}Title`) : slug}
                     </h1>
 
                     <p className="mt-3 md:mt-4 text-lg sm:text-xl md:text-2xl text-header">
