@@ -10,14 +10,14 @@ import { getTranslations } from 'next-intl/server'
 const JoinOurPlatform = async () => {
     const t = await getTranslations("Home");
     return (
-        <section className="py-16 px-3 sm:px-4 md:px-6 lg:px-0">
+        <section className="pb-16 px-3 sm:px-4 md:px-6 lg:px-0">
             <div className="container mx-auto">
                 {/* Header */}
-                <div className="text-center md:mb-28 mb-16">
+                <div className="text-center md:mb-28 mb-12">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
                         {t("joinOurPlatform")}
                     </h2>
-                    <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+                    <p className="text-gray-600 text-base md:text-lg">
                         {t("opportunities")}
                     </p>
                 </div>
