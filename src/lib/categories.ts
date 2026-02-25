@@ -3,6 +3,7 @@ export type TCategory = {
     headingColor?: string;
     descriptionColor?: string;
     slug: string;
+    title?: string;
 }
 
 export const categories: TCategory[] = [
