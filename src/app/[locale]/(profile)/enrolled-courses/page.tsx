@@ -31,22 +31,22 @@ const EnrolledCoursesPage = () => {
                         setCurrentPage(1);
                     }}
                 >
-                    <TabsList className="bg-white space-x-4">
+                    <TabsList className="bg-white gap-1 sm:gap-2 sm:space-x-2">
                         <TabsTrigger
                             value="enrolled"
-                            className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
+                            className="text-xs sm:text-base rounded-2xl py-2 px-3 sm:py-5 sm:px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
                             {t("enrolled")} (09)
                         </TabsTrigger>
                         <TabsTrigger
                             value="active"
-                            className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
+                            className="text-xs sm:text-base rounded-2xl py-2 px-3 sm:py-5 sm:px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
                             {t("active")} (06)
                         </TabsTrigger>
                         <TabsTrigger
                             value="completed"
-                            className="text-base rounded-2xl py-5 px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
+                            className="text-xs sm:text-base rounded-2xl py-2 px-3 sm:py-5 sm:px-4 bg-[#F4F6F9] text-title data-[state=active]:bg-main data-[state=active]:text-white"
                         >
                             {t("completed")} (03)
                         </TabsTrigger>
@@ -54,7 +54,7 @@ const EnrolledCoursesPage = () => {
                 </Tabs>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {paginatedCourses.map((course) => (
                     <EnrolledCourseCard key={course.id} course={course} />
                 ))}

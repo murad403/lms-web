@@ -10,11 +10,11 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
             <Menu />
             <Navbar />
             <div className="min-h-screen">
-                <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-6 md:py-10">
+                <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 py-6 md:py-10">
                     <ProfileHeader />
                     <div className="flex flex-col lg:flex-row gap-6">
                         <ProfileSidebar />
-                        <div className="flex-1 min-w-0">{children}</div>
+                        <div className="flex-1 min-w-0 px-4 lg:px-0">{children}</div>
                     </div>
                 </div>
             </div>

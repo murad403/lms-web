@@ -41,7 +41,7 @@ const ChatBox = ({ title, heightClass = "h-[calc(100vh-200px)] md:h-[calc(100vh-
   );
 
   const onSubmit = (data: MessageForm) => {
-    if (!data.message.trim()) return;
+    if (!data.message?.trim()) return;
 
     const newMsg: TChatMessage = {
       id: Date.now().toString(),

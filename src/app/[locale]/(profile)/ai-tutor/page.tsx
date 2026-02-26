@@ -45,7 +45,7 @@ const AITutorPage = () => {
     }, [messages]);
 
     const onSubmit = (data: ChatForm) => {
-        if (!data.message.trim()) return;
+        if (!data.message?.trim()) return;
 
         const userMsg: Message = {
             id: Date.now().toString(),

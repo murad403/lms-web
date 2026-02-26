@@ -1,12 +1,10 @@
 'use client';
 import { Link } from '@/i18n/navigation';
-import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
 import { Mail } from 'lucide-react';
-import authImage from '@/assets/auth/auth.png';
 import AuthBanner from '@/components/auth/AuthBanner';
 
 const ForgotPassword = () => {
