@@ -7,7 +7,7 @@ const Banner = async () => {
     const t = await getTranslations("Home");
 
     return (
-        <div className="relative w-full h-80 sm:h-80 md:h-96 lg:h-200 xl:h-218 overflow-hidden ">
+        <div className="relative w-full h-80 sm:h-80 md:h-96 lg:h-160 xl:h-218 overflow-hidden ">
             {/* Background Image */}
             <Image
                 src={banner}

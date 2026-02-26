@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Paperclip } from "lucide-react";
+import { Bot, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 

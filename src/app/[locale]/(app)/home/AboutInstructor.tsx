@@ -25,7 +25,7 @@ const AboutInstructor = async () => {
     });
 
     return (
-        <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto">
+        <div className="px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 container mx-auto">
             <div className="text-center mb-10 md:mb-12">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-header mb-3 md:mb-4">
                     {t("trainersTitle")}

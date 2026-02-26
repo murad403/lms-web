@@ -75,7 +75,7 @@ const Navbar = () => {
 
     return (
         <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-            <div className="container mx-auto py-3 md:py-4 px-3 sm:px-4 md:px-6 lg:px-0">
+            <div className="container mx-auto py-3 md:py-4 px-2 sm:px-4 md:px-4 lg:px-6 xl:px-0">
                 <div className="flex items-center justify-between gap-2 md:gap-4">
                     {/* Mobile Menu Button */}
                     <button

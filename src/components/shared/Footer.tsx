@@ -51,7 +51,7 @@ const Footer = () => {
 
     return (
         <footer className="bg-border-light border-t md:mt-28 mt-20 border-gray-200">
-            <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-12 md:py-16">
+            <div className="container mx-auto py-12 md:py-16 px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 {/* Links Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
                     {Object.values(footerLinks).map((section) => (

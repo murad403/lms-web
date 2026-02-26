@@ -10,7 +10,7 @@ import { getTranslations } from 'next-intl/server'
 const JoinOurPlatform = async () => {
     const t = await getTranslations("Home");
     return (
-        <section className="pb-16 px-3 sm:px-4 md:px-6 lg:px-0">
+        <section className="pb-16 px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
             <div className="container mx-auto">
                 {/* Header */}
                 <div className="text-center md:mb-28 mb-12">
@@ -36,11 +36,11 @@ const JoinOurPlatform = async () => {
                          height={390}/>
                         <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                             <div>
-                                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">{t("becomeTrainer")}</h3>
-                                <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
+                                <h3 className="text-2xl md:text-3xl font-bold mb-2">{t("becomeTrainer")}</h3>
+                                <p className="text-gray-200 text-sm md:text-base mb-4">
                                     {t("createPublish")}
                                 </p>
-                                <Link href={"/for-trainers"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-trainers"} className="px-8 py-3 bg-main text-white rounded-md text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                     {t("startTeaching")}
                                 </Link>
                             </div>
@@ -58,11 +58,11 @@ const JoinOurPlatform = async () => {
 
                         <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                             <div>
-                                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">{t("areYouSchool")}</h3>
-                                <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
+                                <h3 className="text-2xl md:text-3xl font-bold mb-2">{t("areYouSchool")}</h3>
+                                <p className="text-gray-200 text-sm md:text-base mb-4">
                                     {t("publishCatalog")}
                                 </p>
-                                <Link href={"/for-school"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
+                                <Link href={"/for-school"} className="px-8 py-3 bg-main text-white rounded-md text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                     {t("getAccreditedNow")}
                                 </Link>
                             </div>
@@ -81,13 +81,13 @@ const JoinOurPlatform = async () => {
 
                     <div className="absolute inset-0 p-8 flex flex-col justify-center text-white">
                         <div>
-                            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">
+                            <h3 className="text-2xl md:text-3xl font-bold mb-2">
                                 {t("becomeCenter")}
                             </h3>
-                            <p className="text-gray-200 text-xs sm:text-sm md:text-base mb-4">
+                            <p className="text-gray-200 text-sm md:text-base mb-4">
                                 {t("referencePoint")}
                             </p>
-                            <Link href={"/partnerships"} className="px-8 py-3 bg-main text-white rounded-md text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
+                            <Link href={"/partnerships"} className="px-8 py-3 bg-main text-white rounded-md text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
                                 {t("becomePartner")}
                             </Link>
                         </div>

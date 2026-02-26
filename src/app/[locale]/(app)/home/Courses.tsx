@@ -28,7 +28,7 @@ const Courses = () => {
 
 
     return (
-        <div className="px-4 md:px-6 lg:px-16">
+        <div className="px-4 md:px-5 lg:px-6 xl:px-8 2xl:px-0">
             <div className="container mx-auto">
                 {/* Trending Courses Section */}
                 <div className="mb-12">
@@ -50,7 +50,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {trendingCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -86,7 +86,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {featuredCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -122,7 +122,7 @@ const Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {mostRequestedCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
                             ))}

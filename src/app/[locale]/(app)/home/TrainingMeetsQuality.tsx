@@ -7,12 +7,12 @@ const TrainingMeetsQuality = async () => {
     const t = await getTranslations("Home");
     return (
         <div className="relative w-full md:py-10 pt-10 bg-main">
-            <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-32">
+            <div className="container mx-auto px-4 sm:px-4 md:px-6 lg:px-30 xl:px-24">
                 {/* Desktop: Image positioned absolutely */}
                 <Image
                     src={user}
                     alt="Student"
-                    className="hidden md:block absolute right-100 bottom-1 scale-102"
+                    className="hidden md:block absolute xl:right-100 lg:right-40 bottom-1 scale-102"
                     width={350}
                     height={320}
                 />

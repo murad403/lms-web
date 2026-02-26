@@ -51,7 +51,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
                 {/* Price and Button */}
                 <div className="flex items-center justify-between">
-                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-[#042F54]">
+                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-navy-blue">
                         ${course.price}
                     </span>
                     <Link href={`/course/${2}`} className="px-8 py-2 bg-main text-white rounded text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors">

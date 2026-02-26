@@ -18,7 +18,7 @@ const Menu = () => {
 
   return (
     <div className="bg-main text-white hidden md:block">
-      <div className="container mx-auto flex justify-between items-center px-3 sm:px-4 md:px-6 lg:px-0">
+      <div className="container mx-auto flex justify-between items-center px-2 sm:px-4 md:px-4 lg:px-6 xl:px-0">
         {/* Menu Items */}
         <div className="flex items-center gap-3 md:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide">
           {menuItems.map((item) => {

@@ -7,8 +7,8 @@ const Certificate = async () => {
     const t = await getTranslations("Home");
     return (
         <div className="py-16 md:py-28 bg-gray-50">
-            <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-16">
-                <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-16 max-w-5xl mx-auto">
+            <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-8 2xl:px-0">
+                <div className="flex flex-col md:flex-row md:items-center justify-between max-w-6xl mx-auto gap-10 sm:gap-0">
                     {/* Left Content */}
                     <div className="flex-1">
                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header leading-tight mb-4">
