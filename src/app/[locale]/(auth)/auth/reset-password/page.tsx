@@ -36,7 +36,7 @@ const ResetPassword = () => {
         <div className="min-h-screen flex">
             {/* Left Side - Form */}
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center">
-                <div className="w-full md:w-1/2 px-5 md:px-0">
+                <div className="w-full px-6 md:px-8 lg:px-12 xl:px-16 max-w-xl">
                     <Link href="/" className="flex items-center gap-2 mb-10">
                         <PiGraduationCap className="size-10 text-main" />
                         <span className="text-3xl font-bold text-main">Form-Cert</span>
@@ -45,7 +45,7 @@ const ResetPassword = () => {
                     <h1 className="text-3xl font-bold text-header mb-2">Reset Password</h1>
                     <p className="text-description mb-8">Type a new password</p>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
                         {/* New Password */}
                         <div>
                             <label className="block text-sm font-semibold text-header mb-2">

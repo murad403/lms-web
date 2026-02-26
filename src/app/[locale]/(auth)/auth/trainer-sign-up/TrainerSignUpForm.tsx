@@ -32,7 +32,7 @@ const TrainerSignUpForm = () => {
 
     return (
         <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 md:py-0">
-            <div className="w-full max-w-md px-5">
+            <div className="w-full px-6 md:px-8 lg:px-12 xl:px-16 max-w-xl">
                 <Link
                     href="/auth/sign-up"
                     className="text-sm text-description hover:text-main transition inline-flex items-center gap-1 mb-4"
@@ -48,7 +48,7 @@ const TrainerSignUpForm = () => {
                 <h1 className="text-3xl font-bold text-header mb-2">Trainer Registration</h1>
                 <p className="text-description mb-6">Complete your registration to get started</p>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
                     {/* Full Name */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">Full Name</label>

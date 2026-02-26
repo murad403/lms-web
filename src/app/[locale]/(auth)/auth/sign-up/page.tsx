@@ -35,7 +35,7 @@ const SignUp = () => {
         <div className="min-h-screen flex">
             {/* Left Side */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center items-center">
-                <div className='w-full md:w-1/2 px-5 md:px-0'>
+                <div className='w-full px-6 md:px-8 lg:px-12 xl:px-16 max-w-2xl'>
                     <Link href="/" className="flex items-center gap-2 mb-10">
                         <PiGraduationCap className="size-10 text-main" />
                         <span className="text-3xl font-bold text-main">Form-Cert</span>
