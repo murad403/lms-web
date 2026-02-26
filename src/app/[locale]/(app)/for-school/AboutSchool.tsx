@@ -11,14 +11,14 @@ const AboutSchool = async () => {
 
             {/* Do You Want to Teach */}
             <div className="border border-gray-100 rounded-md p-5 md:p-12 mb-8">
-                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-main mb-4">
+                <h2 className="text-2xl lg:text-4xl font-bold text-navy-blue mb-4">
                     {t("aboutTitle")}
                 </h2>
-                <p className="text-description text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-4">
+                <p className="text-description text-base md:text-lg leading-relaxed mb-4">
                     {t("aboutDesc")}
                 </p>
-                <p className="text-main text-base sm:text-lg md:text-xl font-semibold">
-                    You create the courses. We certify them, publish them, promote them, and sell them.
+                <p className="text-navy-blue text-base md:text-lg font-semibold">
+                    {t("aboutSubDesc")}
                 </p>
             </div>
 
@@ -28,34 +28,34 @@ const AboutSchool = async () => {
 
                     {/* Left Content */}
                     <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-main mb-6">
-                            Why Choose Our Platform
+                        <h2 className="text-2xl lg:text-4xl font-bold text-navy-blue mb-6">
+                            {t("whyChooseTitle")}
                         </h2>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("fullDigitalCatalog")}</span>
+                                <span className="text-description text-base">{t("fullDigitalCatalog")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("registrationTracking")}</span>
+                                <span className="text-description text-base">{t("registrationTracking")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("certificationIssuance")}</span>
+                                <span className="text-description text-base">{t("certificationIssuance")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("integratedPayments")}</span>
+                                <span className="text-description text-base">{t("integratedPayments")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("analyticsInsights")}</span>
+                                <span className="text-description text-base">{t("analyticsInsights")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description text-xs sm:text-sm md:text-base">{t("brandedExperience")}</span>
+                                <span className="text-description text-base">{t("brandedExperience")}</span>
                             </div>
                         </div>
                     </div>

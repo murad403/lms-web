@@ -18,7 +18,7 @@ const SchoolWhatYouCanDo = async () => {
     ];
     return (
         <div className="container mx-auto max-w-7xl">
-            <h2 className="text-3xl font-bold text-title text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-navy-blue text-center mb-10">
                 {t("whatYouCanDo")}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-16">
@@ -27,8 +27,8 @@ const SchoolWhatYouCanDo = async () => {
                         <div key={item?.id} className="flex gap-4">
                             <h1 className="text-4xl font-semibold text-gray-400">{item.id}</h1>
                             <div className="space-y-4">
-                                <h3 className="text-2xl font-semibold text-main">{item.title}</h3>
-                                <p className="text-description text-xl">{item.description}</p>
+                                <h3 className="md:text-2xl text-xl font-bold text-main">{item.title}</h3>
+                                <p className="text-description text-base">{item.description}</p>
                             </div>
                         </div>
                     )

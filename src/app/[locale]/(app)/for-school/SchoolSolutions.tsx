@@ -13,36 +13,36 @@ const SchoolSolutions = async () => {
                 {/* Left Side - Who This Opportunity Is For */}
                 <div className="p-5 md:p-6 flex flex-col md:flex-row justify-between items-center">
                     <div>
-                        <h2 className="text-2xl md:text-4xl font-bold text-main mb-4">
+                        <h2 className="text-2xl md:text-4xl font-bold text-navy-blue mb-4">
                             {t("solutionsTitle")}
                         </h2>
 
-                        <p className="text-description mb-4 text-xl">This platform is ideal for</p>
+                        <p className="text-description mb-4 text-lg">{t("solutionsIdealFor")}</p>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Accredited training providers</span>
+                                <span className="text-description text-base">{t("accreditedProviders")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Professional academies</span>
+                                <span className="text-description text-base">{t("professionalAcademies")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Training schools and institutes</span>
+                                <span className="text-description text-base">{t("trainingSchools")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Public and private educational institutions</span>
+                                <span className="text-description text-base">{t("publicPrivateInstitutions")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Certified training organizations</span>
+                                <span className="text-description text-base">{t("certifiedOrganizations")}</span>
                             </div>
                         </div>
-                        <p className="text-main text-xl font-semibold mt-3">
-                            If you offer quality training, we help you sell it online.
+                        <p className="text-navy-blue text-xl font-semibold mt-3">
+                            {t("solutionsSubDesc")}
                         </p>
                     </div>
                     <Image src={image2} alt="Opportunity Illustration" width={463} height={370} />
@@ -55,31 +55,31 @@ const SchoolSolutions = async () => {
                     <Image src={image3} alt="Opportunity Illustration" width={463} height={370} />
 
                     <div>
-                        <h2 className="text-2xl md:text-4xl font-bold text-main mb-6">
-                            What You DON&apos;T Have to Do
+                        <h2 className="text-2xl md:text-4xl font-bold text-navy-blue mb-6">
+                            {t("whatYouDontDoTitle")}
                         </h2>
 
                         <div className="space-y-3 text-[17px]">
                             <div className="flex items-start gap-3">
                                 <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
-                                <span className="text-description">Build or manage a website</span>
+                                <span className="text-description text-base">{t("dontItem1")}</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
-                                <span className="text-description">Handle payments and invoicing</span>
+                                <span className="text-description text-base">{t("dontItem2")}</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
-                                <span className="text-description">Run advertising campaigns</span>
+                                <span className="text-description text-base">{t("dontItem3")}</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
-                                <span className="text-description">Deal with technical infrastructure</span>
+                                <span className="text-description text-base">{t("dontItem4")}</span>
                             </div>
                         </div>
 
-                        <p className="text-main text-xl font-semibold mt-6">
-                            We take care of everything except delivering the training.
+                        <p className="text-navy-blue text-xl font-semibold mt-6">
+                            {t("dontSubDesc")}
                         </p>
                     </div>
                 </div>
@@ -87,28 +87,28 @@ const SchoolSolutions = async () => {
                 {/* section 3 */}
                 <div className="p-5 md:p-6 flex flex-col md:flex-row justify-between items-center">
                     <div>
-                        <h2 className="text-2xl md:text-4xl font-bold text-main mb-4">
-                            Dedicated Support
+                        <h2 className="text-2xl md:text-4xl font-bold text-navy-blue mb-4">
+                            {t("dedicatedSupportTitle")}
                         </h2>
 
-                        <p className="text-description mb-4 text-xl">You are never alone. Our team supports <br /> your institution at every stage:</p>
+                        <p className="text-description text-base mb-4 text-xl">{t("dedicatedSupportIntro")}</p>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Onboarding and setup</span>
+                                <span className="text-description text-base">{t("supportItem1")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Course upload and optimization</span>
+                                <span className="text-description text-base">{t("supportItem2")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Certification process</span>
+                                <span className="text-description text-base">{t("supportItem3")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                                <span className="text-description">Platform usage and reporting</span>
+                                <span className="text-description text-base">{t("supportItem4")}</span>
                             </div>
                         </div>
                     </div>

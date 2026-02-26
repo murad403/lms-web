@@ -7,92 +7,92 @@ const SchoolHowItsWorks = async () => {
   
             <div className="container mx-auto max-w-7xl">
                 {/* Header */}
-                <h2 className="text-xl md:text-3xl font-bold text-center text-main ">
+                <h2 className="text-2xl md:text-4xl font-bold text-center text-navy-blue">
                     {t("howItWorksTitle")}
                 </h2>
-                <p className='text-description text-lg md:text-xl text-center mt-2 mb-12'>Perfect for established training organizations</p>
+                <p className='text-description text-lg text-center mt-2 mb-12'>{t("howItWorksSubTitle")}</p>
 
                 {/* Steps Grid */}
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6'>
                     
                     {/* Step 1 */}
                     <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                            {t("step1Title")}
+                        <h3 className="text-xl md:text-2xl font-bold text-navy-blue mb-4">
+                            1. {t("step1Title")}
                         </h3>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-600 text-base mb-3">
                             {t("step1Desc")}
                         </p>
-                        <p className="text-gray-600">
-                            Simple and free registration.
+                        <p className="text-gray-600 text-base">
+                            {t("step1SubDesc")}
                         </p>
                     </div>
 
                     {/* Step 2 */}
                     <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                            {t("step2Title")}
+                        <h3 className="text-xl md:text-2xl font-bold text-navy-blue mb-4">
+                            2. {t("step2Title")}
                         </h3>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-600 text-base mb-3">
                             {t("step2Desc")}
                         </p>
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600 mb-3">
-                            <div>• Videos</div>
-                            <div>• Learning modules</div>
-                            <div>• Documents</div>
-                            <div>• Assessments</div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600 text-base mb-3">
+                            <div>• {t("step2Videos")}</div>
+                            <div>• {t("step2LearningModules")}</div>
+                            <div>• {t("step2Documents")}</div>
+                            <div>• {t("step2Assessments")}</div>
                         </div>
-                        <p className="text-gray-600">
-                            You stay in full control of your content.
+                        <p className="text-gray-600 text-base">
+                            {t("step2SubDesc")}
                         </p>
                     </div>
 
                     {/* Step 3 */}
                     <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                            {t("step3Title")}
+                        <h3 className="text-xl md:text-2xl font-bold text-navy-blue mb-4">
+                            3. {t("step3Title")}
                         </h3>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-600 text-base mb-3">
                             {t("step3Desc")}
                         </p>
-                        <p className="text-gray-600">
-                            Certified courses gain higher credibility and value.
+                        <p className="text-gray-600 text-base">
+                            {t("step3SubDesc")}
                         </p>
                     </div>
 
                     {/* Step 4 */}
                     <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                            {t("step4Title")}
+                        <h3 className="text-xl md:text-2xl font-bold text-navy-blue mb-4">
+                            4. {t("step4Title")}
                         </h3>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-600 text-base mb-3">
                             {t("step4Desc")}
                         </p>
-                        <ul className="text-gray-600 space-y-1 mb-3">
-                            <li>• Published on the platform</li>
-                            <li>• Promoted through our channels</li>
-                            <li>• Listed in the most relevant categories</li>
+                        <ul className="text-gray-600 text-base space-y-1 mb-3">
+                            <li>• {t("step4Item1")}</li>
+                            <li>• {t("step4Item2")}</li>
+                            <li>• {t("step4Item3")}</li>
                         </ul>
-                        <p className="text-gray-600">
-                            We handle marketing and visibility.
+                        <p className="text-gray-600 text-base">
+                            {t("step4SubDesc")}
                         </p>
                     </div>
 
                     {/* Step 5 */}
                     <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-gray-200">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                            5. Sales and Revenue
+                        <h3 className="text-xl md:text-2xl font-bold text-navy-blue mb-4">
+                            5. {t("step5Title")}
                         </h3>
-                        <p className="text-gray-600 mb-3">
-                            Your courses are sold online and you start earning
+                        <p className="text-gray-600 text-base mb-3">
+                            {t("step5Desc")}
                         </p>
-                        <ul className="text-gray-600 space-y-1 mb-3">
-                            <li>• Track sales performance</li>
-                            <li>• Manage enrollments</li>
-                            <li>• Receive payments according to agreed terms</li>
+                        <ul className="text-gray-600 text-base space-y-1 mb-3">
+                            <li>• {t("step5Item1")}</li>
+                            <li>• {t("step5Item2")}</li>
+                            <li>• {t("step5Item3")}</li>
                         </ul>
-                        <p className="text-gray-600">
-                            You focus on training, we manage the commercial process
+                        <p className="text-gray-600 text-base">
+                            {t("step5SubDesc")}
                         </p>
                     </div>
 
