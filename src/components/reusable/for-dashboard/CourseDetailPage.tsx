@@ -37,23 +37,23 @@ const CourseDetailPage = () => {
             </div>
 
             {/* Course Header */}
-            <div className="bg-white p-5">
-                <div className="flex flex-col lg:flex-row gap-6">
+            <div className="bg-white p-4 sm:p-5">
+                <div className="flex flex-col xl:flex-row gap-5">
                     {/* Course Image */}
-                    <div className="relative w-full lg:w-64 h-48 overflow-hidden shrink-0">
+                    <div className="relative w-full xl:w-64 xl:h-auto h-52 sm:h-60 overflow-hidden shrink-0">
                         <Image src={course.image} alt={course.title} fill className="object-cover" />
                     </div>
 
                     {/* Course Info */}
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                         <p className="text-xs text-description">
                             Published: {course.publishedDate} &nbsp; Last updated: {course.lastUpdated}
                         </p>
-                        <h2 className="text-xl font-bold text-title mt-1">{course.title}</h2>
+                        <h2 className="text-lg sm:text-xl font-bold text-title mt-1">{course.title}</h2>
                         <p className="text-sm text-description mt-1">{course.description}</p>
 
-                        <div className="flex flex-col sm:flex-row justify-between gap-4">
-                            <div className="flex gap-2 mt-3">
+                        <div className="flex flex-wrap justify-between gap-3 mt-3">
+                            <div className="flex gap-2">
                                 <div>
                                     <AvatarGroup className="grayscale">
                                         <Avatar>
@@ -80,7 +80,7 @@ const CourseDetailPage = () => {
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <span className="text-xs text-description">Created by:</span>
-                                    <div className="flex items-center gap-1">
+                                    <div className="flex flex-wrap items-center gap-1">
                                         {course.creators.map((creator, i) => (
                                             <span key={i} className="text-sm font-medium text-main">
                                                 {creator}{i < course.creators.length - 1 ? " • " : ""}
@@ -90,11 +90,11 @@ const CourseDetailPage = () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-1 mt-2">
+                            <div className="flex items-center gap-1">
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <Star
                                         key={i}
-                                        className={`size-5 ${i < Math.floor(course.rating) ? "text-orange-400 fill-orange-400" : "text-gray-300"
+                                        className={`size-4 sm:size-5 ${i < Math.floor(course.rating) ? "text-orange-400 fill-orange-400" : "text-gray-300"
                                             }`}
                                     />
                                 ))}
@@ -103,30 +103,28 @@ const CourseDetailPage = () => {
                             </div>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-border-light mt-6 gap-4">
-                            <div className="flex items-center gap-4 sm:gap-8 mt-3">
-                                <div className="flex gap-2 flex-col">
-                                    <span className="text-xl text-title">${course.price}</span>
-                                    <span className="text-sm text-description">Course price</span>
-                                </div>
-                                <div className="flex gap-2 flex-col">
-                                    <span className="text-xl text-title">${course.totalRevenue.toLocaleString()}</span>
-                                    <span className="text-sm text-description ml-1">USD dollar Revenue</span>
-                                </div>
+                        <div className="flex flex-wrap items-center border-t border-border-light mt-6 gap-4 pt-4">
+
+                            <div className="flex gap-2 flex-col">
+                                <span className="text-xl text-title">${course.price}</span>
+                                <span className="text-sm text-description">Course price</span>
+                            </div>
+                            <div className="flex gap-2 flex-col">
+                                <span className="text-xl text-title">${course.totalRevenue.toLocaleString()}</span>
+                                <span className="text-sm text-description">USD dollar Revenue</span>
                             </div>
 
-                            <div className="flex items-center gap-2 mt-4">
-                                <button className="px-5 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors">
-                                    Withdraw Money
-                                </button>
-                            </div>
+                            <button className="sm:ml-auto px-5 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors">
+                                Withdraw Money
+                            </button>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Revenue + Course Overview */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {infoCards.map((card, index) => {
                         const Icon = card.icon;

@@ -19,7 +19,7 @@ const WithdrawHistory = () => {
     };
 
     return (
-        <div className="bg-white lg:col-span-2 p-5">
+        <div className="bg-white xl:col-span-2 p-5">
             <h3 className="text-base sm:text-lg font-semibold text-title mb-2">Withdraw History</h3>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">

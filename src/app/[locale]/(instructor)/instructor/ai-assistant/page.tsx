@@ -106,9 +106,9 @@ const AIAssistantPage = () => {
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Chat Assistant */}
-            <div className=" bg-white rounded-lg border border-border-light flex flex-col h-[calc(100vh-200px)] sm:h-[calc(100vh-150px)] min-h-96 sm:min-h-125">
+            <div className="bg-white rounded-lg border border-border-light flex flex-col h-125 lg:h-150 xl:h-[calc(100vh-150px)] min-h-96">
                 {/* Header */}
                 <div className="p-4 border-b border-border-light flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
