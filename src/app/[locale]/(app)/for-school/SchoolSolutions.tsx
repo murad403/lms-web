@@ -91,7 +91,7 @@ const SchoolSolutions = async () => {
                             {t("dedicatedSupportTitle")}
                         </h2>
 
-                        <p className="text-description text-base mb-4 text-xl">{t("dedicatedSupportIntro")}</p>
+                        <p className="text-description mb-4 text-xl">{t("dedicatedSupportIntro")}</p>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
