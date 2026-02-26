@@ -20,7 +20,7 @@ const page = async () => {
                 />
 
                 {/* Content */}
-                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
+                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
                         {t("title")}
                     </h1>
@@ -33,7 +33,7 @@ const page = async () => {
 
 
             {/* categories */}
-            <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto">
+            <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 {
                     categories.map((category: TCategory) =>
                         <Link className="mb-5 block" key={category.id} href={`/categories/${category.slug}`}>

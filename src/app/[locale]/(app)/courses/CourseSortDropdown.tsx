@@ -12,9 +12,9 @@ interface CourseSortDropdownProps {
 const CourseSortDropdown = ({ sortBy, onSortChange }: CourseSortDropdownProps) => {
     const t = useTranslations("Courses");
     const sortOptions = [
-        { label: 'Relevance', value: 'relevance' },
-        { label: 'Trending', value: 'trending' },
-        { label: 'High Rated', value: 'high-rated' },
+        { label: t('relevance'), value: 'relevance' },
+        { label: t('trending'), value: 'trending' },
+        { label: t('highRated'), value: 'high-rated' },
         { label: t('newest'), value: 'newest' },
     ];
     const [isOpen, setIsOpen] = React.useState(false);

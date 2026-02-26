@@ -60,7 +60,7 @@ const CoursesPage = () => {
     };
 
     return (
-        <section className="pt-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+        <section className="pt-10 container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
             {/* Page Header */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-header mb-6">{t("title")}</h1>
@@ -155,7 +155,7 @@ const CoursesPage = () => {
                     {paginatedCourses.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-20 text-center">
                             <p className="text-lg font-semibold text-header mb-2">{t("noCourses")}</p>
-                            <p className="text-sm text-description">Try adjusting your filters or search query.</p>
+                            <p className="text-sm text-description">{t("noCoursesHint")}</p>
                         </div>
                     )}
 

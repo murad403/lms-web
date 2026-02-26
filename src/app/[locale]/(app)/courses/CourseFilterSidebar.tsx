@@ -6,33 +6,27 @@ import { BsStarFill } from 'react-icons/bs';
 import { categories } from '@/lib/categories';
 import { useTranslations } from "next-intl";
 
-// Transform categories into filter options
-const categoryOptions = categories.map((cat) => ({
-    label: cat.title,
-    value: String(cat.id),
-}));
-
 const ratingOptions = [
-    { label: '5 Star', value: '5', count: 1580 },
-    { label: '4 Star & up', value: '4', count: 1020 },
-    { label: '3 Star & up', value: '3', count: 1045 },
-    { label: '2 Star & up', value: '2', count: 990 },
-    { label: '1 Star & up', value: '1', count: 870 },
+    { tKey: 'fiveStar', value: '5', count: 1580 },
+    { tKey: 'fourStar', value: '4', count: 1020 },
+    { tKey: 'threeStar', value: '3', count: 1045 },
+    { tKey: 'twoStar', value: '2', count: 990 },
+    { tKey: 'oneStar', value: '1', count: 870 },
 ];
 
 const courseLevelOptions = [
-    { label: 'All Level', value: 'all' },
-    { label: 'Beginner', value: 'beginner' },
-    { label: 'Intermediate', value: 'intermediate' },
-    { label: 'Expert', value: 'expert' },
+    { tKey: 'allLevel', value: 'all' },
+    { tKey: 'beginner', value: 'beginner' },
+    { tKey: 'intermediate', value: 'intermediate' },
+    { tKey: 'expert', value: 'expert' },
 ];
 
 const durationOptions = [
-    { label: '6-12 Months', value: '6-12-months', count: 1100 },
-    { label: '3-6 Months', value: '3-6-months', count: 990 },
-    { label: '1-3 Months', value: '1-3-months', count: 870 },
-    { label: '1-4 Weeks', value: '1-4-weeks', count: 455 },
-    { label: '1-7 Days', value: '1-7-days', count: 300 },
+    { tKey: 'sixToTwelveMonths', value: '6-12-months', count: 1100 },
+    { tKey: 'threeToSixMonths', value: '3-6-months', count: 990 },
+    { tKey: 'oneToThreeMonths', value: '1-3-months', count: 870 },
+    { tKey: 'oneToFourWeeks', value: '1-4-weeks', count: 455 },
+    { tKey: 'oneToSevenDays', value: '1-7-days', count: 300 },
 ];
 
 // Custom square checkbox
@@ -63,6 +57,11 @@ interface CourseFilterSidebarProps {
 
 const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarProps) => {
     const t = useTranslations("Courses");
+    const tCat = useTranslations("Categories");
+    const categoryOptions = categories.map((cat) => ({
+        label: tCat(`cat${cat.id}Title` as Parameters<typeof tCat>[0]),
+        value: String(cat.id),
+    }));
     const [openSections, setOpenSections] = React.useState({
         category: true,
         rating: true,
@@ -151,7 +150,7 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                         <SquareCheck checked={isActive} />
                                         <span className="flex items-center gap-1">
                                             <BsStarFill size={16} className="text-yellow-500" />
-                                            <span>{opt.label}</span>
+                                            <span>{t(opt.tKey as Parameters<typeof t>[0])}</span>
                                         </span>
                                     </div>
                                     <span className="text-xs sm:text-sm text-gray-400 shrink-0">{opt.count}</span>
@@ -190,7 +189,7 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                     }`}
                                 >
                                     <SquareCheck checked={isActive} />
-                                    <span>{opt.label}</span>
+                                    <span>{t(opt.tKey as Parameters<typeof t>[0])}</span>
                                 </button>
                             );
                         })}
@@ -273,7 +272,7 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                     onClick={() => toggleSection('duration')}
                     className="flex items-center justify-between w-full text-[15px] sm:text-[17px] font-bold text-header uppercase tracking-wide mb-3"
                 >
-                    Duration
+                    {t("duration")}
                     <ChevronUp
                         className={`size-4 transition-transform ${openSections.duration ? '' : 'rotate-180'}`}
                     />
@@ -295,7 +294,7 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                 >
                                     <div className="flex items-center gap-2">
                                         <SquareCheck checked={isActive} />
-                                        <span>{opt.label}</span>
+                                        <span>{t(opt.tKey as Parameters<typeof t>[0])}</span>
                                     </div>
                                     <span className="text-xs sm:text-sm text-gray-400 shrink-0">{opt.count}</span>
                                 </button>
