@@ -8,12 +8,12 @@ const TermsAndConditions = async () => {
         <div>
             <FooterNavigationBanner title={t("title")} description={`${t("lastUpdated")}: January 27, 2025`} />
 
-            <section className="pt-16 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+            <section className="pt-16 container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* 1. Introduction */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section1Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section1Desc")}
                         </p>
                     </div>
@@ -21,13 +21,13 @@ const TermsAndConditions = async () => {
                     {/* 2. Information We Collect */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section2Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-4">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-4">
                             {t("section2Intro")}
                         </p>
                         <div className="ml-6 space-y-3">
                             <div>
                                 <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">{t("personalDataTitle")}</p>
-                                <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
+                                <ul className="list-disc ml-6 space-y-1 text-description text-base md:text-lg">
                                     <li>{t("pd1")}</li>
                                     <li>{t("pd2")}</li>
                                     <li>{t("pd3")}</li>
@@ -37,7 +37,7 @@ const TermsAndConditions = async () => {
                             </div>
                             <div>
                                 <p className="text-title text-base sm:text-lg md:text-xl font-semibold mb-1">{t("usageDataTitle")}</p>
-                                <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
+                                <ul className="list-disc ml-6 space-y-1 text-description text-base md:text-lg">
                                     <li>{t("ud1")}</li>
                                 </ul>
                             </div>
@@ -47,8 +47,8 @@ const TermsAndConditions = async () => {
                     {/* 3. How We Use Your Information */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section3Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">{t("section3Intro")}</p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">{t("section3Intro")}</p>
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("use1")}</li>
                             <li>{t("use2")}</li>
                             <li>{t("use3")}</li>
@@ -62,10 +62,10 @@ const TermsAndConditions = async () => {
                     {/* 4. GDPR Compliance */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section4Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section4Intro")}
                         </p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("gdpr1")}</li>
                             <li>{t("gdpr2")}</li>
                             <li>{t("gdpr3")}</li>
@@ -79,10 +79,10 @@ const TermsAndConditions = async () => {
                     {/* 5. Data Sharing and Disclosure */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section5Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section5Intro")}
                         </p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("share1")}</li>
                             <li>{t("share2")}</li>
                             <li>{t("share3")}</li>
@@ -93,7 +93,7 @@ const TermsAndConditions = async () => {
                     {/* 6. Data Security */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section6Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section6Desc")}
                         </p>
                     </div>
@@ -101,7 +101,7 @@ const TermsAndConditions = async () => {
                     {/* 7. Data Retention */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section7Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section7Desc")}
                         </p>
                     </div>
@@ -109,7 +109,7 @@ const TermsAndConditions = async () => {
                     {/* 8. Your Rights and Choices */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section8Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section8Desc")}
                         </p>
                     </div>
@@ -117,7 +117,7 @@ const TermsAndConditions = async () => {
                     {/* 9. Children's Privacy */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section9Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section9Desc")}
                         </p>
                     </div>
@@ -125,7 +125,7 @@ const TermsAndConditions = async () => {
                     {/* 10. Changes to This Policy */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section10Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section10Desc")}
                         </p>
                     </div>
@@ -133,10 +133,10 @@ const TermsAndConditions = async () => {
                     {/* 11. Contact Us */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section11Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section11Intro")}
                         </p>
-                        <div className="ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
+                        <div className="ml-6 space-y-1 text-description text-base md:text-lg">
                             <p>
                                 <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>

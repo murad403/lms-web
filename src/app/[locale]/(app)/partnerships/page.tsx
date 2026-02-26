@@ -11,7 +11,7 @@ const page = async () => {
     return (
         <div>
             <PartnerBanner />
-            <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto space-y-20 max-w-7xl">
+            <div className="px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 container mx-auto space-y-20 max-w-7xl">
                 <AboutPartner />
                 <PartnerShipHowItsWorks/>
                 <PartnershipOpportunity/>

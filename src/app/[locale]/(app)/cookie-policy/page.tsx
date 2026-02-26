@@ -9,12 +9,12 @@ const CookiePolicyPage = async () => {
         <div>
             <FooterNavigationBanner title={t("title")} description={`${t("lastUpdated")}: January 27, 2025`} />
 
-            <section className="pt-16 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+            <section className="pt-16 container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* 1. Introduction */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section1Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section1Desc")}
                         </p>
                     </div>
@@ -23,10 +23,10 @@ const CookiePolicyPage = async () => {
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section2Title")}</h2>
                         <div className="ml-6 space-y-2">
-                            <p className="text-description text-xs sm:text-sm md:text-base">
+                            <p className="text-description text-base md:text-lg">
                                 <span className="font-semibold">{t("section2Intro")}</span>
                             </p>
-                            <ul className="list-disc ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
+                            <ul className="list-disc ml-6 space-y-1 text-description text-base md:text-lg">
                                 <li>{t("cookie1")}</li>
                                 <li>{t("cookie2")}</li>
                                 <li>{t("cookie3")}</li>
@@ -39,8 +39,8 @@ const CookiePolicyPage = async () => {
                     {/* 3. How We Use Cookies */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section3Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">{t("section3Intro")}</p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">{t("section3Intro")}</p>
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("cu1")}</li>
                             <li>{t("cu2")}</li>
                             <li>{t("cu3")}</li>
@@ -52,10 +52,10 @@ const CookiePolicyPage = async () => {
                     {/* 4. Third-Party Services */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section4Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section4Desc")}
                         </p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("cp1")}</li>
                             <li>{t("cp2")}</li>
                             <li>{t("cp3")}</li>
@@ -66,10 +66,10 @@ const CookiePolicyPage = async () => {
                     {/* 5. Updates to Cookie Policy */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section5Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section5Desc")}
                         </p>
-                        <div className="ml-6 space-y-1 text-description text-xs sm:text-sm md:text-base">
+                        <div className="ml-6 space-y-1 text-description text-base md:text-lg">
                             <p>
                                 <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>
@@ -77,7 +77,7 @@ const CookiePolicyPage = async () => {
                                 <span className="font-semibold">{t("addressLabel")}:</span> {t("contactAddress")}
                             </p>
                         </div>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mt-4">
+                        <p className="text-description text-base md:text-lg leading-relaxed mt-4">
                             {t("section5Consent")}
                         </p>
                     </div>
@@ -85,10 +85,10 @@ const CookiePolicyPage = async () => {
                     {/* 6. Data Sharing and Disclosure */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section6Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section6Intro")}
                         </p>
-                        <ul className="list-disc ml-6 space-y-2 text-description text-xs sm:text-sm md:text-base">
+                        <ul className="list-disc ml-6 space-y-2 text-description text-base md:text-lg">
                             <li>{t("cs1")}</li>
                             <li>{t("cs2")}</li>
                             <li>{t("cs3")}</li>
@@ -98,7 +98,7 @@ const CookiePolicyPage = async () => {
                     {/* 7. Data Security */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section7Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section7Desc")}
                         </p>
                     </div>
@@ -106,7 +106,7 @@ const CookiePolicyPage = async () => {
                     {/* 8. Data Retention */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section8Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section8Desc")}
                         </p>
                     </div>
@@ -114,7 +114,7 @@ const CookiePolicyPage = async () => {
                     {/* 9. Your Rights and Choices */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section9Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section9Desc")}
                         </p>
                     </div>
@@ -122,7 +122,7 @@ const CookiePolicyPage = async () => {
                     {/* 10. Children's Privacy */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section10Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section10Desc")}
                         </p>
                     </div>
@@ -130,7 +130,7 @@ const CookiePolicyPage = async () => {
                     {/* 11. Changes to This Policy */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section11Title")}</h2>
-                        <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed">
+                        <p className="text-description text-base md:text-lg leading-relaxed">
                             {t("section11Desc")}
                         </p>
                     </div>
@@ -138,10 +138,10 @@ const CookiePolicyPage = async () => {
                     {/* 12. Contact Us */}
                     <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-4">{t("section12Title")}</h2>
-                        <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed mb-3">
+                        <p className="text-description text-base md:text-lg leading-relaxed mb-3">
                             {t("section12Intro")}
                         </p>
-                        <div className="ml-6 space-y-1 text-description text-xs sm:text-sm">
+                        <div className="ml-6 space-y-1 text-description text-base md:text-lg">
                             <p>
                                 <span className="font-semibold">{t("emailLabel")}:</span> {t("contactEmail")}
                             </p>

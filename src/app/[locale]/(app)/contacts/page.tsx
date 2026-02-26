@@ -32,7 +32,7 @@ const ContactPage = () => {
                 description={t("description")}
             />
 
-            <section className="py-16 max-w-7xl container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+            <section className="py-16 max-w-7xl container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 <div className="grid lg:grid-cols-2 gap-12">
                     {/* Contact Information */}
                     <div>

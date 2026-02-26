@@ -59,7 +59,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-6 md:py-10">
+    <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 py-6 md:py-10">
       <h1 className="text-xl sm:text-2xl font-bold text-title text-center mb-8">
         Checkout
       </h1>

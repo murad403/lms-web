@@ -20,7 +20,7 @@ const page = async () => {
                 />
 
                 {/* Content */}
-                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
+                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
                         {t("title")}
                     </h1>
@@ -32,7 +32,7 @@ const page = async () => {
             </div>
 
             {/* certifications */}
-            <div className="px-3 sm:px-4 md:px-6 lg:px-0 container mx-auto">
+            <div className="px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 container mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {certificationAreas.map((area) => (
                         <div key={area.id} className="rounded-md overflow-hidden shadow-sm h-fit">

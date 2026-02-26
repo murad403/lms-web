@@ -37,8 +37,8 @@ const Category = () => {
                 />
 
                 {/* Content */}
-                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
+                <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
+                    <h1 className="text-4xl lg:text-5xl font-bold text-main leading-tight ">
                         {category ? t(`cat${category.id}Title`) : slug}
                     </h1>
 
@@ -48,9 +48,9 @@ const Category = () => {
                 </div>
             </div>
 
-            <div className='container mx-auto px-3 sm:px-4 md:px-6 lg:px-0'>
+            <div className='container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0'>
                 <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-title mb-6'>Category</h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
                     {
                         trendingCourses.slice(0, 12).map((course: TCourse) => 
                             <CourseCard key={course.id} course={course} />

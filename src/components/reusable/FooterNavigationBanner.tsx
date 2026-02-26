@@ -6,12 +6,12 @@ type TProps = {
 
 const FooterNavigationBanner = ({ title, description }: TProps) => {
     return (
-        <div className="bg-linear-to-t to-main from-[#1E40AF] py-10 md:py-24">
-            <div className='container mx-auto px-3 sm:px-4 md:px-6 lg:px-0'>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+        <div className="bg-linear-to-t to-main from-[#1E40AF] py-10 md:py-24 px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
+            <div className='container mx-auto'>
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
                     {title}
                 </h2>
-                <p className="text-[#DBEAFE] text-sm sm:text-base md:text-lg lg:text-xl mb-6">
+                <p className="text-[#DBEAFE] text-base md:text-lg mb-6">
                     {description}
                 </p>
             </div>

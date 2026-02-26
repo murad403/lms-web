@@ -9,7 +9,7 @@ type TProps = {
 
 const CTABanner = ({ title, description, buttonText, route }: TProps) => {
     return (
-        <div className='container mx-auto max-w-7xl px-3 sm:px-4 md:px-6 lg:px-0'>
+        <div className='container mx-auto max-w-7xl'>
             <div className="bg-linear-to-t to-main from-[#1E40AF] rounded-md py-10 md:py-24 text-center">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
                     {title}

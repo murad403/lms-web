@@ -68,8 +68,8 @@ const HowItWorksPage = async () => {
             />
 
             {/* For Learners Section */}
-            <section className="py-16 container max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">{t("forLearners")}</h2>
+            <section className="py-16 container max-w-7xl mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
+                <h2 className="text-3xl md:text-4xl font-bold text-header text-center mb-12">{t("forLearners")}</h2>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                     {learnerSteps.map((item, index) => {
@@ -79,9 +79,9 @@ const HowItWorksPage = async () => {
                                 <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                     <Icon className="size-8 text-main" />
                                 </div>
-                                <h3 className="text-sm sm:text-base md:text-lg font-medium text-main mb-2">{t("step")} {index + 1}</h3>
-                                <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
-                                <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
+                                <h3 className="text-base md:text-lg font-medium text-main mb-2">{t("step")} {index + 1}</h3>
+                                <h4 className="text-lg font-semibold text-header mb-3">{item.step}</h4>
+                                <p className="text-description text-base leading-relaxed">{item.description}</p>
                             </div>
                         );
                     })}
@@ -91,7 +91,7 @@ const HowItWorksPage = async () => {
             {/* For Trainers Section */}
             <section className=" max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
                 <div className="container py-16 mx-auto bg-[#F9FAFB] rounded-md">
-                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">{t("forTrainers")}</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-header text-center mb-12">{t("forTrainers")}</h2>
 
                     <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {trainerSteps.map((item, index) => {
@@ -101,9 +101,9 @@ const HowItWorksPage = async () => {
                                     <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                         <Icon className="size-8 text-main" />
                                     </div>
-                                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-main mb-2">{t("step")} {index + 1}</h3>
-                                    <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
-                                    <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
+                                    <h3 className="text-base md:text-lg font-bold text-main mb-2">{t("step")} {index + 1}</h3>
+                                    <h4 className="text-lg font-semibold text-header mb-3">{item.step}</h4>
+                                    <p className="text-description text-base leading-relaxed">{item.description}</p>
                                 </div>
                             );
                         })}
@@ -112,8 +112,8 @@ const HowItWorksPage = async () => {
             </section>
 
             {/* For Schools & Institutions Section */}
-            <section className="py-16 container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-header text-center mb-12">{t("forSchools")}</h2>
+            <section className="py-16 container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
+                <h2 className="text-3xl md:text-4xl font-bold text-header text-center mb-12">{t("forSchools")}</h2>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {schoolSteps.map((item, index) => {
@@ -123,9 +123,9 @@ const HowItWorksPage = async () => {
                                 <div className="bg-[#DBEAFE] p-4 rounded-full w-fit mx-auto mb-4">
                                     <Icon className="size-8 text-main" />
                                 </div>
-                                <h3 className="text-sm sm:text-base md:text-lg font-bold text-main mb-2">{t("step")} {index + 1}</h3>
-                                <h4 className="text-lg sm:text-xl md:text-2xl font-semibold text-header mb-3">{item.step}</h4>
-                                <p className="text-description text-xs sm:text-sm md:text-base leading-relaxed">{item.description}</p>
+                                <h3 className="text-base md:text-lg font-bold text-main mb-2">{t("step")} {index + 1}</h3>
+                                <h4 className="text-lg font-semibold text-header mb-3">{item.step}</h4>
+                                <p className="text-description text-base leading-relaxed">{item.description}</p>
                             </div>
                         );
                     })}
@@ -133,7 +133,7 @@ const HowItWorksPage = async () => {
             </section>
 
             {/* CTA Banner */}
-            <section className="pt-16">
+            <section className="pt-16 px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
                 <CTABanner
                     title={t("ctaTitle")}
                     description={t("ctaDescription")}
