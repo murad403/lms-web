@@ -13,7 +13,7 @@ export function MyReferralLinkPage({
   commissionPercent = 15,
 }: MyReferralLinkPageProps) {
   return (
-    <div className="flex flex-col gap-3 p-6 lg:w-2/3">
+    <div className="flex flex-col gap-3 p-4 sm:p-6 w-full lg:w-2/3">
       {/* Page Title */}
       <div className="flex flex-col gap-1 mb-2">
         <h1 className="text-xl font-bold text-gray-900">My Referral Link</h1>

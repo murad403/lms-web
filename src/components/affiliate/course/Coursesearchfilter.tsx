@@ -38,9 +38,9 @@ export function CourseSearchFilter({
   className = "",
 }: CourseSearchFilterProps) {
   return (
-    <div className={`flex  gap-4 ${className} justify-between`}>
+    <div className={`flex flex-col sm:flex-row gap-4 ${className} justify-between`}>
       {/* Search */}
-      <div className="flex flex-col gap-1.5 w-96">
+      <div className="flex flex-col gap-1.5 w-full sm:w-64 lg:w-80 xl:w-96">
         <label className="text-xs text-gray-400 font-medium">Search:</label>
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 " />
@@ -54,7 +54,7 @@ export function CourseSearchFilter({
       </div>
 
       {/* Category */}
-      <div className="flex flex-col gap-1.5 w-52 ">
+      <div className="flex flex-col gap-1.5 w-full sm:w-40 lg:w-48 xl:w-52">
         <label className="text-xs text-gray-400 font-medium">Category</label>
         <Select value={category} onValueChange={onCategoryChange}>
           <SelectTrigger className="py-5.5   bg-gray-50 border-gray-200 text-sm text-gray-700  border-none shadow-none rounded-none focus:ring-0 focus-visible:ring-0">

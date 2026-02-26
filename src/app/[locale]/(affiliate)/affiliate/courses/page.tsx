@@ -56,7 +56,7 @@ const Page = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   return (
-    <div className="p-8 min-h-[95vh]  flex flex-col space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 min-h-[95vh] flex flex-col space-y-6 sm:space-y-8">
       <CourseSearchFilter
         search={search}
         onSearchChange={setSearch}

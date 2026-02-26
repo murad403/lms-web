@@ -6,7 +6,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
       <div>
         <PaymentMethodCard
           methodName="Bank Transfer (IBAN)"

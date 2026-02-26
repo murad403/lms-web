@@ -35,7 +35,7 @@ export function CommissionWalletCard({
       <h2 className="text-[18px] font-bold text-gray-900">{title}</h2>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Earned */}
         <div className="flex flex-col gap-1">
           <p className="text-sm text-gray-400">Total Earned</p>

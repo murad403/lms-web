@@ -35,13 +35,13 @@ const demoWalletData = [
 
 const Page = () => {
   return (
-    <div className="p-8 space-y-8">
-      <h1 className="text-2xl font-semibold mb-6">Commission Wallet</h1>
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
+      <h1 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Commission Wallet</h1>
 
-      {/* Responsive flex grid */}
-      <div className="flex flex-wrap gap-5">
+      {/* Responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {demoWalletData.map((item, idx) => (
-          <div key={idx} className="flex-1 min-w-55">
+          <div key={idx} className="w-full">
             <WalletCard
               label={item.label}
               amount={item.amount}

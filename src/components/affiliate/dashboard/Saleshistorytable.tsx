@@ -160,10 +160,10 @@ export function SalesHistoryTable({
 
   return (
     <div
-      className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-5 ${className} `}
+      className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 flex flex-col gap-5 ${className} `}
     >
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 flex-wrap">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h2 className="text-[18px] font-bold  text-gray-900 ">Sales History</h2>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -174,13 +174,13 @@ export function SalesHistoryTable({
               placeholder="Search sales..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-9 w-52 text-sm border-gray-200 focus-visible:ring-0"
+              className="pl-9 h-9 w-full sm:w-40 lg:w-52 text-sm border-gray-200 focus-visible:ring-0"
             />
           </div>
 
           {/* Status Filter */}
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-9 w-36 text-sm border-gray-200 focus:ring-0">
+            <SelectTrigger className="h-9 w-28 sm:w-32 lg:w-36 text-sm border-gray-200 focus:ring-0">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent>
@@ -205,8 +205,8 @@ export function SalesHistoryTable({
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-gray-100 overflow-hidden">
-        <Table>
+      <div className="rounded-xl border border-gray-100 overflow-x-auto">
+        <Table className="min-w-[800px]">
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
