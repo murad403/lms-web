@@ -68,7 +68,7 @@ const ContractList = () => {
             </div>
 
             <div className="overflow-x-auto bg-white rounded-md p-4">
-                <table className="w-full text-sm">
+                <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
                             <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>

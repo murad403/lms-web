@@ -46,7 +46,7 @@ const RoleAndPermissions = () => {
              
 
                 <div className="overflow-x-auto bg-white rounded-md border border-border-light">
-                    <table className="w-full text-sm">
+                    <table className="w-full min-w-[450px] text-sm">
                         <thead>
                             <tr className="border-b border-border-light">
                                 <th className="text-left py-3 px-6 font-semibold text-main">Role</th>

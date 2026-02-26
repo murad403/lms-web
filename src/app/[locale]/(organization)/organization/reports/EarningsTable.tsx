@@ -91,7 +91,7 @@ const EarningsTable = () => {
       </div>
 
       <div className="px-6 pb-6 overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[600px] text-sm">
           <thead>
             <tr className="border-b border-border-light">
               <th className="text-left py-3 font-semibold text-title">Order ID</th>

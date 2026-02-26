@@ -108,7 +108,7 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                 </div>
 
                 <div className="p-4 bg-white overflow-x-auto">
-                    <table className="w-full text-sm">
+                    <table className="w-full min-w-[700px] text-sm">
                         <thead>
                             <tr className="border-b border-border-light">
                                 <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>
@@ -132,13 +132,13 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                                     </td>
                                     <td className="py-3 px-4 text-description">{instructor.email}</td>
                                     <td className="py-3 px-4">
-                                        <span className={`px-3 py-1 text-xs font-medium ${roleBadgeColors[instructor.role]}`}>
+                                        <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${roleBadgeColors[instructor.role]}`}>
                                             {instructor.role}
                                         </span>
                                     </td>
-                                    <td className="py-3 px-4 text-description">{instructor.lastLogin}</td>
+                                    <td className="py-3 px-4 text-description whitespace-nowrap">{instructor.lastLogin}</td>
                                     <td className="py-3 px-4">
-                                        <span className={`px-3 py-1 text-xs font-medium ${statusColors[instructor.status]}`}>
+                                        <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${statusColors[instructor.status]}`}>
                                             {instructor.status}
                                         </span>
                                     </td>

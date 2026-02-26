@@ -10,7 +10,7 @@ const ReportStats = () => {
         { label: "Avg Course Price", value: `$${reportStats.avgCoursePrice}`, icon: BookOpen, color: "bg-orange-50 text-orange-600", increment: "78% completion rate" },
     ];
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
             {stats.map((stat) => {
                 const Icon = stat.icon;
                 return (

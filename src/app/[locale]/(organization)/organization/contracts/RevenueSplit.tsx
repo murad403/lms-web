@@ -65,7 +65,7 @@ const RevenueSplit = () => {
 
             {/* Table */}
             <div className="overflow-x-auto bg-white p-4 border border-border-light rounded-md">
-                <table className="w-full text-sm">
+                <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
                             <th className="text-left py-3 px-4 font-medium text-description">Instructor</th>

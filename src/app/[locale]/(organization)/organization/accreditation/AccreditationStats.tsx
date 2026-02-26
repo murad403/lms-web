@@ -10,7 +10,7 @@ const AccreditationStats = () => {
         { label: "Certificates Issued", value: accreditationStats.activeCertificates.toLocaleString(), icon: Award, color: "bg-purple-50 text-purple-600" },
     ];
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
             {stats.map((stat) => {
                 const Icon = stat.icon;
                 return (

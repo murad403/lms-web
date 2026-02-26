@@ -26,7 +26,7 @@ const TeamMembersTab = ({ onEditPermission }: Props) => {
     return (
         <div className="bg-white border border-border-light rounded-md">
             <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
                             <th className="text-left py-3 px-4 font-semibold text-main">Member</th>
@@ -54,7 +54,7 @@ const TeamMembersTab = ({ onEditPermission }: Props) => {
                                         {member.role}
                                     </span>
                                 </td>
-                                <td className="py-3 px-4 text-description">{member.lastLogin}</td>
+                                <td className="py-3 px-4 text-description whitespace-nowrap">{member.lastLogin}</td>
                                 <td className="py-3 px-4">
                                     <span className={`px-3 py-1 text-xs font-medium ${statusColors[member.status]}`}>
                                         {member.status}
