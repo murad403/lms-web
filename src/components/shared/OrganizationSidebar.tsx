@@ -38,7 +38,7 @@ const OrganizationSidebar = () => {
 
   return (
     <div>
-      <aside className="hidden lg:flex flex-col w-80 bg-title min-h-screen fixed left-0 top-0 z-50">
+      <aside className="hidden lg:flex flex-col w-64 xl:w-80 bg-title min-h-screen fixed left-0 top-0 z-50">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2">

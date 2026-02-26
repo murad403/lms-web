@@ -38,9 +38,9 @@ const CourseDetailPage = () => {
 
             {/* Course Header */}
             <div className="bg-white p-5">
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col lg:flex-row gap-6">
                     {/* Course Image */}
-                    <div className="relative w-full md:w-64 h-48 overflow-hidden shrink-0">
+                    <div className="relative w-full lg:w-64 h-48 overflow-hidden shrink-0">
                         <Image src={course.image} alt={course.title} fill className="object-cover" />
                     </div>
 
@@ -52,7 +52,7 @@ const CourseDetailPage = () => {
                         <h2 className="text-xl font-bold text-title mt-1">{course.title}</h2>
                         <p className="text-sm text-description mt-1">{course.description}</p>
 
-                        <div className="flex justify-between">
+                        <div className="flex flex-col sm:flex-row justify-between gap-4">
                             <div className="flex gap-2 mt-3">
                                 <div>
                                     <AvatarGroup className="grayscale">
@@ -103,8 +103,8 @@ const CourseDetailPage = () => {
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-center border-t border-border-light mt-6">
-                            <div className="flex items-center gap-8 mt-3">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-border-light mt-6 gap-4">
+                            <div className="flex items-center gap-4 sm:gap-8 mt-3">
                                 <div className="flex gap-2 flex-col">
                                     <span className="text-xl text-title">${course.price}</span>
                                     <span className="text-sm text-description">Course price</span>
@@ -126,8 +126,8 @@ const CourseDetailPage = () => {
             </div>
 
             {/* Revenue + Course Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {infoCards.map((card, index) => {
                         const Icon = card.icon;
                         return (

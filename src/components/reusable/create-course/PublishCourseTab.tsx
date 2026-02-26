@@ -38,8 +38,8 @@ const PublishCourseTab = ({ onPrev, onSubmit }: Props) => {
             <div className="border-b border-border-light" />
 
             {/* Video Preview Card */}
-            <div className="flex gap-4 items-start">
-                <div className="w-40 h-24 bg-gray-100 rounded-md overflow-hidden shrink-0">
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
+                <div className="w-full sm:w-40 h-40 sm:h-24 bg-gray-100 rounded-md overflow-hidden shrink-0">
                     <video src="/videos/video.mp4" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">

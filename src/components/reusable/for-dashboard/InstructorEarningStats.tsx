@@ -3,7 +3,7 @@ import { ArrowDownCircle, CreditCard, DollarSign, Wallet } from 'lucide-react'
 
 const EarningStats = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
       <div className="bg-white p-5 flex items-center gap-4">
         <div className="w-12 h-12 bg-blue-50 flex items-center justify-center">
           <DollarSign className="w-6 h-6 text-blue-600" />

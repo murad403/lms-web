@@ -79,7 +79,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
             <h3 className="text-xl font-bold text-title">Advance Informations</h3>
 
             {/* Thumbnail & Trailer */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Course Thumbnail */}
                 <div>
                     <label className="text-sm font-medium text-title mb-3 block">

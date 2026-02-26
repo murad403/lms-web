@@ -13,17 +13,17 @@ const InstructorDashboardPage = () => {
             <StatsCards stats={dashboardStats} />
 
             {/* Recent Activity + Revenue */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 <RecentActivity activities={recentActivities} />
-                <div className="lg:col-span-2">
+                <div className="xl:col-span-2">
                     <RevenueChart pathColor="#564FFD" strokeColor="#564FFD" title="Revenue" data={revenueData} />
                 </div>
             </div>
 
             {/* Overall Rating + Course Overview */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 <OverallRating rating={4.6} breakdown={ratingBreakdown} />
-                <div className="lg:col-span-2">
+                <div className="xl:col-span-2">
                     <CourseOverviewChart data={courseOverviewData} />
                 </div>
             </div>

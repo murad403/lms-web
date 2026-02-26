@@ -333,7 +333,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                             {section.lectures.map((lecture, lIndex) => (
                                 <div
                                     key={lecture.id}
-                                    className="flex items-center gap-2 px-3 py-3 bg-white border border-border-light rounded-md"
+                                    className="flex flex-wrap items-center gap-2 px-3 py-3 bg-white border border-border-light rounded-md"
                                 >
                                     <GripVertical className="w-3.5 h-3.5 text-description cursor-grab shrink-0" />
                                     {lecture.type === "video" ? (
@@ -342,7 +342,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                         <FileText className="w-4 h-4 text-main shrink-0" />
                                     )}
 
-                                    <span className="flex-1 text-sm text-title">
+                                    <span className="flex-1 min-w-0 text-sm text-title truncate">
                                         Lecture {lIndex + 1}: {lecture.title}
                                     </span>
 

@@ -49,7 +49,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                             <h3 className="text-lg font-bold text-title">
                                 {profile.firstName} Courses ({publishedCourses.length.toString().padStart(2, "0")})
                             </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                                 {publishedCourses.map((course) => (
                                     <Link
                                         key={course.id}
