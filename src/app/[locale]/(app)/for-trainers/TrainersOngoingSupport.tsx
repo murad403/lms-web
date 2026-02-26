@@ -15,32 +15,32 @@ const TrainersOngoingSupport = async () => {
 
           {/* Left Content */}
           <div>
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-6">
+            <h2 className="text-2xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-6">
               {t("ongoingSupportTitle")}
             </h2>
-            <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-2">{t("ongoingSupportDesc")}</p>
-            <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-6">{t("ongoingSupportTeamIntro")}</p>
+            <p className="text-description text-base leading-relaxed mb-2">{t("ongoingSupportDesc")}</p>
+            <p className="text-description text-base leading-relaxed mb-6">{t("ongoingSupportTeamIntro")}</p>
 
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                <span className="text-description text-xs sm:text-sm">{t("support247")}</span>
+                <span className="text-description text-base">{t("support247")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                <span className="text-description text-xs sm:text-sm">{t("supportCourseCreation")}</span>
+                <span className="text-description text-base">{t("supportCourseCreation")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                <span className="text-description text-xs sm:text-sm">{t("supportCertification")}</span>
+                <span className="text-description text-base">{t("supportCertification")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                <span className="text-description text-xs sm:text-sm">{t("supportPublication")}</span>
+                <span className="text-description text-base">{t("supportPublication")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Check className="text-green-500 w-5 h-5 shrink-0" />
-                <span className="text-description text-xs sm:text-sm">{t("supportContentImprovement")}</span>
+                <span className="text-description text-base">{t("supportContentImprovement")}</span>
               </div>
             </div>
           </div>

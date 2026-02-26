@@ -13,13 +13,13 @@ const TrainersOpportunity = async () => {
           {/* Who This Opportunity Is For */}
           <div className="border border-gray-100 rounded-md p-5 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-4">
+              <h2 className="text-2xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-4">
                 {t("opportunityTitle")}
               </h2>
 
-              <p className="text-description text-sm sm:text-base md:text-lg leading-relaxed mb-4">{t("opportunityIdealFor")}</p>
+              <p className="text-description text-lg leading-relaxed mb-4">{t("opportunityIdealFor")}</p>
 
-              <ul className="space-y-1 text-description text-xs sm:text-sm md:text-base mb-6">
+              <ul className="space-y-1 text-description text-base mb-6">
                 <li>• {t("opportunityTrainers")}</li>
                 <li>• {t("opportunityTeachers")}</li>
                 <li>• {t("opportunityFreelancers")}</li>
@@ -43,11 +43,11 @@ const TrainersOpportunity = async () => {
             <Image src={image2} alt="Opportunity Illustration" width={463} height={370} className="shrink-0" />
 
             <div>
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-6">
+              <h2 className="text-2xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-6">
                 {t("whatYouDontDoTitle")}
               </h2>
 
-              <div className="space-y-3 text-xs sm:text-sm md:text-base">
+              <div className="space-y-3 text-base">
                 <div className="flex items-start gap-3">
                   <X className="text-red-500 w-5 h-5 shrink-0 mt-1" />
                   <span className="text-description">{t("dontNeedWebsite")}</span>

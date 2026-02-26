@@ -6,7 +6,7 @@ const TrainersHowItsWorks = async () => {
         <div className="container mx-auto max-w-7xl">
             {/* Header */}
             <div className="border border-gray-100 rounded-md p-5 md:p-12 mb-8">
-                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-8">
+                <h2 className="text-2xl md:text-2xl lg:text-4xl font-bold text-navy-blue mb-8">
                     {t("howItWorksTitle")}
                 </h2>
 
@@ -20,10 +20,10 @@ const TrainersHowItsWorks = async () => {
                                     1
                                 </div>
                                 <div>
-                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-title mb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-navy-blue mb-3">
                                         {t("step1Title")}
                                     </h3>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed">
+                                    <p className="text-description text-base leading-relaxed">
                                         {t("step1Desc")}
                                     </p>
                                 </div>
@@ -37,13 +37,13 @@ const TrainersHowItsWorks = async () => {
                                     2
                                 </div>
                                 <div>
-                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-title mb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-navy-blue mb-3">
                                         {t("step2Title")}
                                     </h3>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed mb-2">
+                                    <p className="text-description text-base leading-relaxed mb-2">
                                         {t("step2Desc")}
                                     </p>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed">
+                                    <p className="text-description text-base leading-relaxed">
                                         {t("step2Extra")}
                                     </p>
                                 </div>
@@ -59,13 +59,13 @@ const TrainersHowItsWorks = async () => {
                                     3
                                 </div>
                                 <div>
-                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-title mb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-navy-blue mb-3">
                                         {t("step3Title")}
                                     </h3>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed mb-2">
+                                    <p className="text-description text-base leading-relaxed mb-2">
                                         {t("step3Desc")}
                                     </p>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed">
+                                    <p className="text-description text-base leading-relaxed">
                                         {t("step3Extra")}
                                     </p>
                                 </div>
@@ -79,18 +79,18 @@ const TrainersHowItsWorks = async () => {
                                     4
                                 </div>
                                 <div>
-                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-title mb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-navy-blue mb-3">
                                         {t("step4Title")}
                                     </h3>
-                                    <p className="text-description text-xs sm:text-sm leading-relaxed mb-2">
+                                    <p className="text-description text-base leading-relaxed mb-2">
                                         {t("step4Desc")}
                                     </p>
-                                    <ul className="text-description text-xs sm:text-sm space-y-1 mb-2">
+                                    <ul className="text-description text-base space-y-1 mb-2">
                                         <li>• {t("step4List1")}</li>
                                         <li>• {t("step4List2")}</li>
                                         <li>• {t("step4List3")}</li>
                                     </ul>
-                                    <p className="text-description text-xs sm:text-sm">
+                                    <p className="text-description text-base leading-relaxed">
                                         {t("step4Extra")}
                                     </p>
                                 </div>

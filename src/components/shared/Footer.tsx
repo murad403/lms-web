@@ -56,7 +56,7 @@ const Footer = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
                     {Object.values(footerLinks).map((section) => (
                         <div key={section.title}>
-                            <h4 className="font-bold text-title text-sm sm:text-base md:text-lg mb-4">
+                            <h4 className="font-bold text-title text-base md:text-xl mb-4">
                                 {section.title}
                             </h4>
                             <ul className="space-y-3">
@@ -64,7 +64,7 @@ const Footer = () => {
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-xs sm:text-sm md:text-base text-description hover:text-main transition-colors"
+                                            className="text-[15px] text-description hover:text-main transition-colors"
                                         >
                                             {link.label}
                                         </Link>
