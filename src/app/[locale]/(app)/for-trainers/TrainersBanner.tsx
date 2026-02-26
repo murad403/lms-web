@@ -18,11 +18,11 @@ const TrainersBanner = async () => {
 
             {/* Content */}
             <div className="relative z-10 container mx-auto flex flex-col justify-center h-full px-3 sm:px-4 md:px-6 lg:px-0">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-main leading-tight ">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-navy-blue leading-tight ">
                     {t("bannerTitle")}
                 </h1>
 
-                <p className="mt-3 md:mt-4 text-lg sm:text-xl md:text-2xl text-header">
+                <p className="mt-3 md:mt-4 text-lg sm:text-xl md:text-2xl text-header font-semibold">
                     {t("bannerDescription")}
                 </p>
                 <div className=" mt-4 flex items-center">
