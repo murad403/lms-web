@@ -170,7 +170,7 @@ const Navbar = () => {
                                     {/* Header */}
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-header">
-                                            {t("recentNotifications")}
+                                            {t("notifications")}
                                         </h3>
                                         <div className="flex gap-2">
                                             <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Download, FileText, ChevronDown } from "lucide-react";
+import { Download, FileText, Loader } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { coursePlayerInfo, lectureDescription, lectureNotes, courseAttachments, courseComments, TCourseComment } from "@/lib/profile";
 import { FaRegComments } from "react-icons/fa6";
@@ -136,7 +136,7 @@ const CoursePlayerTabs = ({
                 <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mt-3">
                     {/* Student Avatars */}
                     <div className="flex items-center gap-2">
-                        <div className="flex -space-x-2">
+                        <div className="flex -space-x-3.5">
                             {[1, 2, 3, 4].map((i) => (
                                 <div
                                     key={i}
@@ -301,10 +301,10 @@ const CoursePlayerTabs = ({
                         {visibleComments < courseComments.length && (
                             <button
                                 onClick={() => setVisibleComments((prev) => prev + 5)}
-                                className="flex items-center gap-1.5 mt-6 text-sm font-medium text-main hover:text-main/80 transition-colors"
+                                className="flex items-center gap-1.5 py-3 px-4 mt-6 text-sm font-medium bg-[#EDF5FD] text-[#4F9BEF] hover:bg-[#EDF5FD]/90 transition-colors"
                             >
                                 {t("loadMore")}
-                                <ChevronDown className="w-4 h-4" />
+                                <Loader className="size-4 animate-spin"/>
                             </button>
                         )}
                     </div>
