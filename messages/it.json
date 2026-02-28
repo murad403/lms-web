@@ -1105,7 +1105,8 @@
     "viewCourse": "Vedi Corso",
     "addToCart": "Aggiungi al Carrello",
     "bestseller": "Bestseller",
-    "new": "Nuovo"
+    "new": "Nuovo",
+    "info": "Informazioni"
   },
   "CourseDetail": {
     "description": "Descrizione",
