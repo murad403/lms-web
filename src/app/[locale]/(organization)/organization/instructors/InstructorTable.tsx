@@ -108,7 +108,7 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                 </div>
 
                 <div className="p-4 bg-white overflow-x-auto">
-                    <table className="w-full min-w-[700px] text-sm">
+                    <table className="w-full min-w-175 text-sm">
                         <thead>
                             <tr className="border-b border-border-light">
                                 <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>
