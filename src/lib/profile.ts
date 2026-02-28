@@ -558,6 +558,23 @@ export const quizQuestionsData: TQuizData[] = [
   },
 ];
 
+// Course Player types
+export type TCourseComment = {
+  id: string;
+  userName: string;
+  avatar: string;
+  timeAgo: string;
+  comment: string;
+  replies?: TCourseComment[];
+};
+
+export type TCourseAttachment = {
+  id: string;
+  fileName: string;
+  fileSize: string;
+  fileUrl: string;
+};
+
 // Course player data
 export const coursePlayerInfo = {
   title: "Complete Website Responsive Design: from Figma to Webflow to Website Design",
@@ -673,5 +690,114 @@ export const checkoutCourses: TCheckoutCourse[] = [
     reviews: "320,120",
     price: 24.0,
     originalPrice: 40.0,
+  },
+];
+// Course player lecture description
+export const lectureDescription = `We cover everything you need to build your first website. From creating your first page through to uploading your website to the internet. We'll use the world's most popular free web design tool called Visual Studio Code. There are exercises then you can download and then work along with me. At the end of each video, I have a downloadable version of where we are in the process so that you can compare your project with mine. This will enable you to see easily where you might have a problem. We will delve into all the good stuff such as how to create your very own mobile navigation menu from scratch learning some basic JavaScript and jQuery.
+
+If that all sounds a little too fancy - don't worry, this course is aimed at people new to web design and who have never coded before. We'll start right at the beginning and work our way through step by step.`;
+
+// Course player lecture notes
+export const lectureNotes = `In ut aliquet ante. Curabitur mollis tincidunt turpis, sed aliquet mauris finibus vel. Praesent eget mi in mi maximus sagittis. Mauris eget ipsum in purus bibendum pellentesque. Sed id arcu in arcu elementum eleifend condimentum quis dolor. Phasellus tempus, urna ut auctor mattis, nisl tortor, tincidunt tortor, eu sagittis augus facilisi at amet sapien. Maecenas tristique aliquet neque, a fermentum augue tempor in. Aliquam torta ante, imperdiet in lacus a, posuere suscipit augue.
+
+Nullam non quam a lectus finibus cursus nec a arcu. Aliquam officius sem cursus sit offictur turpis.
+• Morbi sit amet pretium niblo. Donec blandit fermentum lobortis.
+• Proin lectis sem in tincidunt tincidunt. Nam vel ex id libid suscipto. Donec lacrilis tincidunt mattis.
+• Curabitur placerat vehicula dolor in sagittis.
+• Donec ut diam vel lacus placerat vestibulum a id est. Mauris vestibulum mattis quix elt lectari, dictum maximus ipsum pellentesque.
+• Sed elementum, libero id lacus aliquet, purus nibh consectetur mauris, aged interdum in lectus vitae sem.
+
+Donec congue aliquet lorem nec congue. Suspendisse eu risus mattis, tincidunt ante sed, fringilla urna. Praesent mattis dictum sapien a iaculis. Id scelerisque magna aliquet. Aliquam eros guis consequat purus. Suspendisse eget sceleresque felis, Integer volutpata urna lacinia puris vehicula condimentum. Donec quis lacra quam. Curabitur quis moleste eros. Nam praesent suspiris versus, Sed uabortmqus lacitias molestum.`;
+
+// Course player attachments
+export const courseAttachments: TCourseAttachment[] = [
+  {
+    id: "1",
+    fileName: "Create account on webflow.pdf",
+    fileSize: "12.6 MB",
+    fileUrl: "#",
+  },
+];
+
+// Course player comments
+export const courseComments: TCourseComment[] = [
+  {
+    id: "c1",
+    userName: "Ronald Richards",
+    avatar: "/home/banner.jpg",
+    timeAgo: "1 week ago",
+    comment: "Maecenas rhus tortor, tincidunt nec purus eu, gravida suscipit tortor.",
+  },
+  {
+    id: "c2",
+    userName: "Cody Fisher",
+    avatar: "/home/banner.jpg",
+    timeAgo: "1 week ago",
+    comment: "Thank You so much sir, you're a great mentor. 🔥🔥🔥",
+  },
+  {
+    id: "c3",
+    userName: "Guy Hawkins",
+    avatar: "/home/banner.jpg",
+    timeAgo: "2 weeks ago",
+    comment: "Thank you for your helpful video. May I ask what is the application use to demo the animation at [4:24], is it the runnable mobile application?\n\nAs what I know, Figma Mirror app cannot do that. Please help me.\n\nGreat thanks",
+    replies: [
+      {
+        id: "c3r1",
+        userName: "Kevin Gilbert",
+        avatar: "/home/banner.jpg",
+        timeAgo: "1 week ago",
+        comment: "You're welcome! The app shown at 4:24 is a custom prototype built with ProtoPie. It allows more advanced interactions than Figma Mirror.",
+      },
+    ],
+  },
+  {
+    id: "c4",
+    userName: "Esther Howard",
+    avatar: "/home/banner.jpg",
+    timeAgo: "2 weeks ago",
+    comment: "Quality content 🔥",
+  },
+  {
+    id: "c5",
+    userName: "Theresa Webb",
+    avatar: "/home/banner.jpg",
+    timeAgo: "3 weeks ago",
+    comment: "Now I know that I will spent that 5 minutes of my life with pure pleasure",
+  },
+  {
+    id: "c6",
+    userName: "Marvin McKinney",
+    avatar: "/home/banner.jpg",
+    timeAgo: "3 weeks ago",
+    comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
+  },
+  {
+    id: "c7",
+    userName: "Darrell Steward",
+    avatar: "/home/banner.jpg",
+    timeAgo: "1 month ago",
+    comment: "Awesome video. Sometimes, we have got to try and push the possibilities of designs and not be bounded by codes. The fact that the design itself is a push from the norm, it is only expected that to code it would require some level of thinking out of the box. That is what differentiates yourself from others who are just building on top of someone else's code.",
+  },
+  {
+    id: "c8",
+    userName: "Floyd Miles",
+    avatar: "/home/banner.jpg",
+    timeAgo: "1 month ago",
+    comment: "I really hope you create more series of this UI + AE tutorials :)",
+  },
+  {
+    id: "c9",
+    userName: "Courtney Henry",
+    avatar: "/home/banner.jpg",
+    timeAgo: "1 month ago",
+    comment: "Imagine seeing this while being a front end programmer.",
+  },
+  {
+    id: "c10",
+    userName: "Brooklyn Simmons",
+    avatar: "/home/banner.jpg",
+    timeAgo: "2 months ago",
+    comment: "This is one of the best courses I've ever taken online. Highly recommended!",
   },
 ];

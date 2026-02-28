@@ -1382,5 +1382,33 @@
     "numberOfQuestions": "Number of Questions",
     "retake": "Retake",
     "continue": "Continue"
+  },
+  "CoursePlayer": {
+    "description": "Description",
+    "lectureNotes": "Lecture Notes",
+    "attachFile": "Attach File",
+    "comments": "Comments",
+    "studentsWatching": "Students watching",
+    "lastUpdated": "Last updated",
+    "lecturesDescription": "Lectures Description",
+    "downloadNotes": "Download Notes",
+    "attachFiles": "Attach Files",
+    "downloadFile": "Download File",
+    "writeAComment": "Write a comment...",
+    "comment": "Comment",
+    "reply": "REPLY",
+    "writeYourReply": "Write your reply...",
+    "commentReply": "Comment Reply",
+    "loadMore": "Load More",
+    "sections": "Sections",
+    "lectures": "lectures",
+    "courseContents": "Course Contents",
+    "completed": "Completed",
+    "writeAReview": "Write A Review",
+    "review": "Review",
+    "nextLecture": "Next Lecture",
+    "next": "Next",
+    "start": "Start",
+    "startQuiz": "Start Quiz"
   }
 }

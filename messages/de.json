@@ -1382,5 +1382,33 @@
     "numberOfQuestions": "Anzahl der Fragen",
     "retake": "Wiederholen",
     "continue": "Weiter"
+  },
+  "CoursePlayer": {
+    "description": "Beschreibung",
+    "lectureNotes": "Vorlesungsnotizen",
+    "attachFile": "Datei anhängen",
+    "comments": "Kommentare",
+    "studentsWatching": "Studenten schauen zu",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "lecturesDescription": "Vorlesungsbeschreibung",
+    "downloadNotes": "Notizen herunterladen",
+    "attachFiles": "Dateien anhängen",
+    "downloadFile": "Datei herunterladen",
+    "writeAComment": "Kommentar schreiben...",
+    "comment": "Kommentar",
+    "reply": "ANTWORTEN",
+    "writeYourReply": "Antwort schreiben...",
+    "commentReply": "Antwort kommentieren",
+    "loadMore": "Mehr laden",
+    "sections": "Abschnitte",
+    "lectures": "Vorlesungen",
+    "courseContents": "Kursinhalt",
+    "completed": "Abgeschlossen",
+    "writeAReview": "Bewertung schreiben",
+    "review": "Bewertung",
+    "nextLecture": "Nächste Vorlesung",
+    "next": "Weiter",
+    "start": "Start",
+    "startQuiz": "Quiz starten"
   }
 }

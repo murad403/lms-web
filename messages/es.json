@@ -1382,5 +1382,33 @@
     "numberOfQuestions": "Número de Preguntas",
     "retake": "Reintentar",
     "continue": "Continuar"
+  },
+  "CoursePlayer": {
+    "description": "Descripción",
+    "lectureNotes": "Notas de clase",
+    "attachFile": "Archivo adjunto",
+    "comments": "Comentarios",
+    "studentsWatching": "Estudiantes viendo",
+    "lastUpdated": "Última actualización",
+    "lecturesDescription": "Descripción de la clase",
+    "downloadNotes": "Descargar notas",
+    "attachFiles": "Archivos adjuntos",
+    "downloadFile": "Descargar archivo",
+    "writeAComment": "Escribe un comentario...",
+    "comment": "Comentar",
+    "reply": "RESPONDER",
+    "writeYourReply": "Escribe tu respuesta...",
+    "commentReply": "Responder comentario",
+    "loadMore": "Cargar más",
+    "sections": "Secciones",
+    "lectures": "clases",
+    "courseContents": "Contenido del curso",
+    "completed": "Completado",
+    "writeAReview": "Escribir una reseña",
+    "review": "Reseña",
+    "nextLecture": "Siguiente clase",
+    "next": "Siguiente",
+    "start": "Iniciar",
+    "startQuiz": "Iniciar quiz"
   }
 }

@@ -1,14 +1,16 @@
 "use client";
 import { useState, useRef, useMemo } from "react";
-import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, Clock, BookOpen, Layers, MessageCircle, CalendarDays, Menu} from "lucide-react";
-import Image from "next/image";
-import {courseSections,coursePlayerInfo,quizQuestionsData,} from "@/lib/profile";
+import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, Clock, BookOpen, Layers, Menu } from "lucide-react";
+import { courseSections, coursePlayerInfo, quizQuestionsData, } from "@/lib/profile";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import QuizModal from "@/components/modal/QuizModal";
 import WriteReviewModal from "@/components/modal/WriteReviewModal";
+import CoursePlayerTabs from "./CoursePlayerTabs";
 
 const CoursePlayerPage = () => {
   const router = useRouter();
+  const t = useTranslations("CoursePlayer");
   const [currentLecture, setCurrentLecture] = useState(
     courseSections[0].lectures[1]
   );
@@ -97,21 +99,21 @@ const CoursePlayerPage = () => {
               >
                 <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-title" />
               </button>
-              
+
               <div className="min-w-0 flex-1">
                 <h1 className="text-sm sm:text-base md:text-lg font-medium text-title truncate">
                   {coursePlayerInfo.title}
                 </h1>
-                
+
                 {/* Desktop Stats - Hidden on mobile */}
                 <div className="hidden md:flex items-center gap-3 lg:gap-4 mt-1 text-xs md:text-sm text-description">
                   <span className="flex items-center gap-1">
                     <Layers className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#4F9BEF]" />
-                    {coursePlayerInfo.sections} Sections
+                    {coursePlayerInfo.sections} {t("sections")}
                   </span>
                   <span className="flex items-center gap-1">
                     <BookOpen className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#564FFD]" />
-                    {coursePlayerInfo.totalLectures} lectures
+                    {coursePlayerInfo.totalLectures} {t("lectures")}
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#FD8E1F]" />
@@ -121,9 +123,9 @@ const CoursePlayerPage = () => {
 
                 {/* Mobile Stats - Simplified */}
                 <div className="flex md:hidden items-center gap-2 mt-1 text-xs text-description">
-                  <span>{coursePlayerInfo.sections} Sections</span>
+                  <span>{coursePlayerInfo.sections} {t("sections")}</span>
                   <span>•</span>
-                  <span>{coursePlayerInfo.totalLectures} lectures</span>
+                  <span>{coursePlayerInfo.totalLectures} {t("lectures")}</span>
                 </div>
               </div>
             </div>
@@ -143,8 +145,8 @@ const CoursePlayerPage = () => {
                 onClick={() => setIsReviewOpen(true)}
                 className="hidden sm:flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 border border-border-light rounded-md text-xs sm:text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
               >
-                <span className="hidden md:inline">Write A Review</span>
-                <span className="md:hidden">Review</span>
+                <span className="hidden md:inline">{t("writeAReview")}</span>
+                <span className="md:hidden">{t("review")}</span>
               </button>
 
               {/* Next Lecture */}
@@ -153,8 +155,8 @@ const CoursePlayerPage = () => {
                 disabled={currentIndex >= allLectures.length - 1}
                 className="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 bg-main text-white rounded-md text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span className="hidden sm:inline">Next Lecture</span>
-                <span className="sm:hidden">Next</span>
+                <span className="hidden sm:inline">{t("nextLecture")}</span>
+                <span className="sm:hidden">{t("next")}</span>
               </button>
             </div>
           </div>
@@ -183,8 +185,12 @@ const CoursePlayerPage = () => {
               onClick={() => setIsReviewOpen(true)}
               className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
             >
-              Write A Review
+              {t("writeAReview")}
             </button>
+            <CoursePlayerTabs
+              currentLectureTitle={currentLecture.title}
+              currentLectureNumber={getCurrentLectureNumber()}
+            />
           </div>
 
           {/* Desktop Course Contents Sidebar */}
@@ -193,10 +199,10 @@ const CoursePlayerPage = () => {
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
                 <h3 className="text-lg xl:text-xl font-medium text-title">
-                  Course Contents
+                  {t("courseContents")}
                 </h3>
                 <span className="text-sm font-medium text-success">
-                  {progressPercent}% Completed
+                  {progressPercent}% {t("completed")}
                 </span>
               </div>
 
@@ -255,9 +261,8 @@ const CoursePlayerPage = () => {
                               <button
                                 key={lecture.id}
                                 onClick={() => handlePlayLecture(lecture)}
-                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${
-                                  isActive ? "bg-main/10" : ""
-                                }`}
+                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${isActive ? "bg-main/10" : ""
+                                  }`}
                               >
                                 <div className="shrink-0">
                                   {lecture.completed ? (
@@ -268,11 +273,10 @@ const CoursePlayerPage = () => {
                                 </div>
 
                                 <span
-                                  className={`flex-1 text-sm truncate ${
-                                    isActive
+                                  className={`flex-1 text-sm truncate ${isActive
                                       ? "text-main font-medium"
                                       : "text-title"
-                                  }`}
+                                    }`}
                                 >
                                   {idx + 1}. {lecture.title}
                                 </span>
@@ -295,13 +299,13 @@ const CoursePlayerPage = () => {
                             <div className="flex items-center gap-3 px-4 py-2.5">
                               <Square className="size-4 text-gray-300 shrink-0" />
                               <span className="flex-1 text-sm text-title">
-                                {section.lectures.length + 1}. Start Quiz
+                                {section.lectures.length + 1}. {t("startQuiz")}
                               </span>
                               <button
                                 onClick={() => setIsQuizOpen(true)}
                                 className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors"
                               >
-                                Start
+                                {t("start")}
                               </button>
                             </div>
                           )}
@@ -330,7 +334,7 @@ const CoursePlayerPage = () => {
             {/* Sidebar Header */}
             <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
               <h3 className="text-lg font-medium text-title">
-                Course Contents
+                {t("courseContents")}
               </h3>
               <div className="flex items-center gap-3">
                 <span className="text-sm font-medium text-success">
@@ -386,9 +390,8 @@ const CoursePlayerPage = () => {
                             <button
                               key={lecture.id}
                               onClick={() => handlePlayLecture(lecture)}
-                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${
-                                isActive ? "bg-main/10" : ""
-                              }`}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${isActive ? "bg-main/10" : ""
+                                }`}
                             >
                               <div className="shrink-0">
                                 {lecture.completed ? (
@@ -399,9 +402,8 @@ const CoursePlayerPage = () => {
                               </div>
 
                               <span
-                                className={`flex-1 text-sm truncate ${
-                                  isActive ? "text-main font-medium" : "text-title"
-                                }`}
+                                className={`flex-1 text-sm truncate ${isActive ? "text-main font-medium" : "text-title"
+                                  }`}
                               >
                                 {idx + 1}. {lecture.title}
                               </span>
@@ -417,7 +419,7 @@ const CoursePlayerPage = () => {
                           <div className="flex items-center gap-3 px-4 py-2.5">
                             <Square className="size-4 text-gray-300 shrink-0" />
                             <span className="flex-1 text-sm text-title">
-                              {section.lectures.length + 1}. Start Quiz
+                              {section.lectures.length + 1}. {t("startQuiz")}
                             </span>
                             <button
                               onClick={() => {
@@ -426,7 +428,7 @@ const CoursePlayerPage = () => {
                               }}
                               className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold"
                             >
-                              Start
+                              {t("start")}
                             </button>
                           </div>
                         )}
