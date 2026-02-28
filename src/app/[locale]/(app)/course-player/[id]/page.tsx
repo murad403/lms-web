@@ -86,7 +86,7 @@ const CoursePlayerPage = () => {
   };
 
   return (
-    <div className="sm:min-h-screen bg-white">
+    <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
       {/* Top Header Bar - Fully Responsive */}
       <div className="border-b border-border-light bg-white sticky top-0 z-30">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
