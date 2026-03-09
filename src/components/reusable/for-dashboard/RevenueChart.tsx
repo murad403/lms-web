@@ -2,6 +2,7 @@
 "use client";
 import { useState } from "react";
 import { TRevenueData } from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
 type RevenueChartProps = {
   data: TRevenueData[];
@@ -12,6 +13,7 @@ type RevenueChartProps = {
 
 const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueChartProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const t = useTranslations("InstructorDashboard");
 
   // Extended demo data for smoother curve
   const chartData: TRevenueData[] = [
@@ -74,9 +76,9 @@ const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueCha
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">{title}</h3>
         <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">
-          <option>This month</option>
-          <option>Last month</option>
-          <option>This year</option>
+          <option>{t("thisMonth")}</option>
+          <option>{t("lastMonth")}</option>
+          <option>{t("thisYear")}</option>
         </select>
       </div>
 

@@ -13,6 +13,7 @@ import {
     organizationOptions,
 } from "@/lib/instructor";
 import { Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Props = {
     open: boolean;
@@ -28,6 +29,7 @@ type FormValues = {
 
 const RequestAccreditationModal = ({ open, onClose }: Props) => {
     const { register, handleSubmit, reset } = useForm<FormValues>();
+    const t = useTranslations("InstructorAccreditation");
 
     const onSubmit = (data: FormValues) => {
         console.log("Request Accreditation:", data);
@@ -44,20 +46,20 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
-                    <DialogTitle className="text-xl">Submit Course for Accreditation</DialogTitle>
-                    <p className="text-base text-description">Choose a course to submit for official accreditation review.</p>
+                    <DialogTitle className="text-xl">{t("submitForAccreditation")}</DialogTitle>
+                    <p className="text-base text-description">{t("chooseACourse")}</p>
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
                     {/* Course Select */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Select Course
+                            {t("selectCourse")}
                         </label>
                         <select
                             {...register("course", { required: true })}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
-                            <option value="">Choose a course</option>
+                            <option value="">{t("chooseACourseOption")}</option>
                             {courseSelectOptions.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
                                     {opt.label}
@@ -69,13 +71,13 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                     {/* Organization */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Accrediting Organization
+                            {t("accreditingOrganization")}
                         </label>
                         <select
                             {...register("organization", { required: true })}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
-                            <option value="">Select organization</option>
+                            <option value="">{t("selectOrganization")}</option>
                             {organizationOptions.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
                                     {opt.label}
@@ -87,13 +89,13 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                     {/* Certificate Type */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Certificate Type
+                            {t("certificateType")}
                         </label>
                         <select
                             {...register("certificateType", { required: true })}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                         >
-                            <option value="">Select type</option>
+                            <option value="">{t("selectType")}</option>
                             {certificateTypeOptions.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
                                     {opt.label}
@@ -105,12 +107,12 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                     {/* Additional Notes */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Additional Notes
+                            {t("additionalNotes")}
                         </label>
                         <textarea
                             {...register("notes")}
                             rows={3}
-                            placeholder="Any additional information..."
+                            placeholder={t("additionalNotesPlaceholder")}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
                         />
                     </div>
@@ -122,7 +124,7 @@ const RequestAccreditationModal = ({ open, onClose }: Props) => {
                             type="submit"
                             className="w-full py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Submit <Send className="w-4 h-4 ml-2 inline" />
+                            {t("submit")} <Send className="w-4 h-4 ml-2 inline" />
                         </button>
                     
                 </form>

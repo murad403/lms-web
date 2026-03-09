@@ -1,6 +1,7 @@
 "use client";
 import { TRecentActivity } from "@/lib/instructor";
 import { MessageSquare, Star, ShoppingCart } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type RecentActivityProps = {
   activities: TRecentActivity[];
@@ -19,14 +20,15 @@ const colorMap: Record<string, string> = {
 };
 
 const RecentActivity = ({ activities }: RecentActivityProps) => {
+  const t = useTranslations("InstructorDashboard");
   return (
     <div className="bg-white p-5">
       <div className="flex items-center justify-between border-b border-border-light pb-4 mb-4">
-        <h3 className="text-lg font-semibold text-title">Recent Activity</h3>
+        <h3 className="text-lg font-semibold text-title">{t("recentActivity")}</h3>
         <select className="text-sm text-description px-2 py-1">
-          <option>Today</option>
-          <option>This Week</option>
-          <option>This Month</option>
+          <option>{t("today")}</option>
+          <option>{t("thisWeek")}</option>
+          <option>{t("thisMonth")}</option>
         </select>
       </div>
       <div className="space-y-4 max-h-106 overflow-y-auto">

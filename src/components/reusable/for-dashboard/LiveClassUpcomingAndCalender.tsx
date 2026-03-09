@@ -3,10 +3,12 @@ import { Calendar } from '@/components/ui/calendar'
 import { instructorLiveClasses } from '@/lib/instructor'
 import { CalendarIcon, Clock, ExternalLink, User, Video } from 'lucide-react'
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 const LiveClassUpcomingAndCalendar = () => {
 
     const [date, setDate] = useState<Date | undefined>(new Date());
+    const t = useTranslations("InstructorLiveClasses");
 
 
     return (
@@ -15,7 +17,7 @@ const LiveClassUpcomingAndCalendar = () => {
             <div className="xl:col-span-2" >
                 <h3 className="text-base font-bold text-main mb-4 flex items-center gap-2">
                     <Video className="w-5 h-5 text-main" />
-                    Upcoming Live Classes
+                    {t("upcomingLiveClasses")}
                 </h3>
                 <div className="space-y-3">
                     {instructorLiveClasses.map((cls) => (
@@ -48,7 +50,7 @@ const LiveClassUpcomingAndCalendar = () => {
                                 className="px-4 py-2.5 bg-[#1B2E5A] text-white rounded-md text-sm font-medium hover:bg-[#1B2E5A]/90 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
                             >
                                 <ExternalLink className="w-4 h-4" />
-                                Live Class
+                                {t("liveClass")}
                             </a>
                         </div>
                     ))}
@@ -57,7 +59,7 @@ const LiveClassUpcomingAndCalendar = () => {
 
             {/* Calendar */}
             < div className="" >
-                <h3 className="text-base font-bold text-main mb-4">Live Classes Schedule</h3>
+                <h3 className="text-base font-bold text-main mb-4">{t("liveClassesSchedule")}</h3>
                 <Calendar
                     mode="single"
                     selected={date}

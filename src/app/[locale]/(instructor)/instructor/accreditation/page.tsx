@@ -7,16 +7,18 @@ import CertificatesTab from "@/app/[locale]/(instructor)/instructor/accreditatio
 import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
 import RequestAccreditationModal from "@/components/modal/RequestAccreditationModal";
 import { accreditationStats, accreditationSubmissions, activeCertificates, accreditationGuidelines} from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
-const tabs = [
-    { id: "submissions", label: "Submissions" },
-    { id: "certificates", label: "Certificates" },
-    { id: "guidelines", label: "Guidelines" },
+const tabKeys = [
+    { id: "submissions", labelKey: "submissions" },
+    { id: "certificates", labelKey: "certificates" },
+    { id: "guidelines", labelKey: "guidelines" },
 ];
 
 const AccreditationPage = () => {
     const [activeTab, setActiveTab] = useState("submissions");
     const [showRequestModal, setShowRequestModal] = useState(false);
+    const t = useTranslations("InstructorAccreditation");
 
     return (
         <div className="space-y-6">
@@ -28,7 +30,7 @@ const AccreditationPage = () => {
                 {/* Tab header */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between">
                     <div className="flex gap-1 bg-[#E7ECF4] px-3 py-2 rounded-md">
-                        {tabs.map((tab) => (
+                        {tabKeys.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
@@ -38,7 +40,7 @@ const AccreditationPage = () => {
                                         : "text-description hover:bg-gray-100"
                                 }`}
                             >
-                                {tab.label}
+                                {t(tab.labelKey)}
                             </button>
                         ))}
                     </div>
@@ -47,7 +49,7 @@ const AccreditationPage = () => {
                         className="flex items-center gap-1.5 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
                         <Plus className="w-4 h-4" />
-                        Request Accreditation
+                        {t("requestAccreditation")}
                     </button>
                 </div>
 

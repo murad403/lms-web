@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/incompatible-library */
+/* eslint-disable react-hooks-incompatible-library */
 "use client";
 import { useState } from "react";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Upload } from "lucide-react";
 import { instructorProfile } from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
 const TITLE_MAX = 50;
 
@@ -24,6 +25,7 @@ const AccoutSettings = () => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploadError, setUploadError] = useState("");
+    const t = useTranslations("InstructorSettings");
 
     const {
         register,
@@ -82,7 +84,7 @@ const AccoutSettings = () => {
             className="bg-white rounded-lg border border-border-light p-4 sm:p-6"
         >
             <h3 className="text-base font-bold text-title mb-5">
-                Account Settings
+                {t("accountSettings")}
             </h3>
 
             <div className="flex flex-col-reverse md:flex-row gap-8">
@@ -91,14 +93,14 @@ const AccoutSettings = () => {
                     {/* Full Name Row */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Full name
+                            {t("fullName")}
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <input
                                     {...register("firstName")}
                                     className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                                    placeholder="First name"
+                                    placeholder={t("firstNamePlaceholder")}
                                 />
                                 {errors.firstName && (
                                     <p className="text-xs text-red-500 mt-1">{errors.firstName.message}</p>
@@ -108,7 +110,7 @@ const AccoutSettings = () => {
                                 <input
                                     {...register("lastName")}
                                     className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                                    placeholder="Last name"
+                                    placeholder={t("lastNamePlaceholder")}
                                 />
                                 {errors.lastName && (
                                     <p className="text-xs text-red-500 mt-1">{errors.lastName.message}</p>
@@ -120,12 +122,12 @@ const AccoutSettings = () => {
                     {/* Username */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Username
+                            {t("username")}
                         </label>
                         <input
                             {...register("username")}
                             className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                            placeholder="Enter your username"
+                            placeholder={t("usernamePlaceholder")}
                         />
                         {errors.username && (
                             <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>
@@ -136,14 +138,14 @@ const AccoutSettings = () => {
                     {/* Title with counter */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Tittle
+                            {t("title")}
                         </label>
                         <div className="relative">
                             <input
                                 {...register("title")}
                                 maxLength={TITLE_MAX}
                                 className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
-                                placeholder="Your tittle, proffesion or small biography"
+                                placeholder={t("titlePlaceholder")}
                             />
                             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
                                 {titleValue.length}/{TITLE_MAX}
@@ -154,13 +156,13 @@ const AccoutSettings = () => {
                     {/* Biography */}
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Biography
+                            {t("biography")}
                         </label>
                         <textarea
                             {...register("biography")}
                             rows={4}
                             className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
-                            placeholder="Your tittle, proffesion or small biography"
+                            placeholder={t("biographyPlaceholder")}
                         />
                     </div>
 
@@ -169,7 +171,7 @@ const AccoutSettings = () => {
                             type="submit"
                             className="px-6 py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Save Changes
+                            {t("saveChanges")}
                         </button>
                     </div>
                 </div>
@@ -196,7 +198,7 @@ const AccoutSettings = () => {
                         >
                             <div className="flex items-center gap-1.5 text-white text-sm font-medium">
                                 <Upload className="w-4 h-4" />
-                                Upload Photo
+                                {t("uploadPhoto")}
                             </div>
                         </label>
                     </div>

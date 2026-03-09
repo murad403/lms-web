@@ -1,6 +1,7 @@
 "use client";
 import { Star } from "lucide-react";
 import { TRatingBreakdown } from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
 type OverallRatingProps = {
   rating: number;
@@ -8,6 +9,7 @@ type OverallRatingProps = {
 };
 
 const OverallRating = ({ rating, breakdown }: OverallRatingProps) => {
+  const t = useTranslations("InstructorDashboard");
   // Wave pattern data for the chart
   const wavePoints = [
     { x: 0, y: 60 },
@@ -50,11 +52,11 @@ const OverallRating = ({ rating, breakdown }: OverallRatingProps) => {
   return (
     <div className="bg-white p-4 sm:p-5 min-h-95 sm:min-h-105 lg:min-h-120">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
-        <h3 className="text-base sm:text-lg font-semibold text-title">Overall Course Rating</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-title">{t("overallCourseRating")}</h3>
         <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">
-          <option>This week</option>
-          <option>This month</option>
-          <option>This year</option>
+          <option>{t("thisWeek")}</option>
+          <option>{t("thisMonth")}</option>
+          <option>{t("thisYear")}</option>
         </select>
       </div>
 
@@ -77,7 +79,7 @@ const OverallRating = ({ rating, breakdown }: OverallRatingProps) => {
                 />
               ))}
             </div>
-            <p className="text-xs text-description mt-1.5">Overall Rating</p>
+            <p className="text-xs text-description mt-1.5">{t("overallRating")}</p>
           </div>
 
           {/* Wave Chart */}
@@ -126,7 +128,7 @@ const OverallRating = ({ rating, breakdown }: OverallRatingProps) => {
                 />
               ))}
             </div>
-            <span className="text-[10px] sm:text-xs text-description w-10 sm:w-12 shrink-0">{item.star} Star</span>
+            <span className="text-[10px] sm:text-xs text-description w-10 sm:w-12 shrink-0">{item.star} {t("star")}</span>
             <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
                 className="h-full bg-orange-400 rounded-full transition-all duration-500"

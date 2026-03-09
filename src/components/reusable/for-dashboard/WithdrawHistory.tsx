@@ -1,9 +1,11 @@
 import { withdrawalHistory } from '@/lib/instructor'
 import { MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 const WithdrawHistory = () => {
     const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+    const t = useTranslations("InstructorEarnings");
 
     const statusColor: Record<string, string> = {
         Pending: "text-orange-500",
@@ -20,16 +22,16 @@ const WithdrawHistory = () => {
 
     return (
         <div className="bg-white xl:col-span-2 p-5">
-            <h3 className="text-base sm:text-lg font-semibold text-title mb-2">Withdraw History</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-title mb-2">{t("withdrawHistory")}</h3>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="border-b border-gray-200 bg-light-bg">
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">Date</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">Method</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">Amount</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">Provider</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">Status</th>
+                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("date")}</th>
+                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("method")}</th>
+                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("amount")}</th>
+                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("provider")}</th>
+                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("status")}</th>
                             <th className="py-3 px-2"></th>
                         </tr>
                     </thead>
@@ -65,7 +67,7 @@ const WithdrawHistory = () => {
                                                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                                                         disabled={item.status !== "Pending"}
                                                     >
-                                                        Cancel Withdraw
+                                                        {t("cancelWithdraw")}
                                                     </button>
                                                 </div>
                                             </>

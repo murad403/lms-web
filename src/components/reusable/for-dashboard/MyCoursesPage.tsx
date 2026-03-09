@@ -5,6 +5,7 @@ import DeleteCourseModal from "@/components/modal/DeleteCourseModal";
 import Pagination from "@/components/reusable/Pagination";
 import { instructorCourses } from "@/lib/instructor";
 import DashboardCourseCard from "@/components/reusable/for-dashboard/DashboardCourseCard";
+import { useTranslations } from "next-intl";
 
 const COURSES_PER_PAGE = 8;
 
@@ -17,6 +18,7 @@ const MyCoursesPage = ({ path }: { path: string }) => {
         courseId: null,
         courseName: "",
     });
+    const t = useTranslations("InstructorMyCourses");
 
     const filteredCourses = instructorCourses.filter((course) => {
         const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -51,7 +53,7 @@ const MyCoursesPage = ({ path }: { path: string }) => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search in your courses..."
+                        placeholder={t("searchPlaceholder")}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main bg-white"
                     />
                 </div>
@@ -60,7 +62,7 @@ const MyCoursesPage = ({ path }: { path: string }) => {
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="px-4 py-3 bg-white text-sm text-description focus:outline-none focus:border-main"
                 >
-                    <option>All Category</option>
+                    <option>{t("allCategory")}</option>
                     <option>DEVELOPMENT</option>
                     <option>DESIGN</option>
                     <option>MARKETING</option>

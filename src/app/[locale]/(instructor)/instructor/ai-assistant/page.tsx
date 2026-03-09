@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Send, Sparkles, BookOpen, FileText, HelpCircle, Target, Trash2, ChartNoAxesCombined } from "lucide-react";
 import { FaRobot } from "react-icons/fa6";
+import { useTranslations } from "next-intl";
 
 
 type TChatMessage = {
@@ -20,23 +21,24 @@ type ContentForm = {
     contentType: string;
 };
 const quickActions = [
-    { label: "Suggest Course Structure", icon: BookOpen },
-    { label: "Generate Lesson Draft", icon: FileText },
-    { label: "Create Quiz Questions", icon: HelpCircle },
-    { label: "Improve Content", icon: ChartNoAxesCombined },
-    { label: "Learning Objectives", icon: Target },
+    { labelKey: "suggestCourseStructure", icon: BookOpen },
+    { labelKey: "generateLessonDraft", icon: FileText },
+    { labelKey: "createQuizQuestions", icon: HelpCircle },
+    { labelKey: "improveContent", icon: ChartNoAxesCombined },
+    { labelKey: "learningObjectives", icon: Target },
 ];
 
 
-const contentTypeOptions = [
-    { value: "course-structure", label: "Course Structure" },
-    { value: "lesson-plan", label: "Lesson Plan" },
-    { value: "quiz", label: "Quiz Questions" },
-    { value: "assignment", label: "Assignment" },
-    { value: "summary", label: "Content Summary" },
+const contentTypeKeys = [
+    { value: "course-structure", labelKey: "courseStructure" },
+    { value: "lesson-plan", labelKey: "lessonPlan" },
+    { value: "quiz", labelKey: "quizQuestions" },
+    { value: "assignment", labelKey: "assignment" },
+    { value: "summary", labelKey: "contentSummary" },
 ];
 
 const AIAssistantPage = () => {
+    const t = useTranslations("InstructorAIAssistant");
     const [messages, setMessages] = useState<TChatMessage[]>([
         {
             id: "1",
@@ -92,7 +94,7 @@ const AIAssistantPage = () => {
     const onContentGenerate = (data: ContentForm) => {
         if (!data.topic.trim()) return;
         const type =
-            contentTypeOptions.find((o) => o.value === data.contentType)?.label ||
+            contentTypeKeys.find((o) => o.value === data.contentType)?.labelKey ||
             data.contentType;
         addMessage(`Generate ${type} for: ${data.topic}`, "user");
         contentForm.reset();
@@ -116,8 +118,8 @@ const AIAssistantPage = () => {
                             <FaRobot className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-bold text-title">AI Teaching Assistant</h3>
-                            <p className="text-xs text-description">Powered by advanced AI</p>
+                            <h3 className="text-sm font-bold text-title">{t("aiTeachingAssistant")}</h3>
+                            <p className="text-xs text-description">{t("poweredByAI")}</p>
                         </div>
                     </div>
                     <button
@@ -131,7 +133,7 @@ const AIAssistantPage = () => {
                             ])
                         }
                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        title="Clear chat"
+                        title={t("clearChat")}
                     >
                         <Trash2 className="w-4 h-4 text-description" />
                     </button>
@@ -165,7 +167,7 @@ const AIAssistantPage = () => {
                 >
                     <input
                         {...chatForm.register("message")}
-                        placeholder="Ask me anything about course creation..."
+                        placeholder={t("askPlaceholder")}
                         className="flex-1 bg-gray-50 rounded-md px-4 py-3 border border-border-light text-sm focus:outline-none focus:ring-1 focus:ring-main"
                         autoComplete="off"
                     />
@@ -173,7 +175,7 @@ const AIAssistantPage = () => {
                         type="submit"
                         className="px-4 py-3 bg-[#4F9BEF] text-white rounded-md text-sm font-semibold hover:bg-[#4F9BEF]/90 transition-colors flex items-center gap-1.5 shrink-0"
                     >
-                        Send
+                        {t("send")}
                         <Send className="w-4 h-4" />
                     </button>
                 </form>
@@ -186,20 +188,20 @@ const AIAssistantPage = () => {
                 <div className="space-y-3">
                     {quickActions.map((action) => (
                         <button
-                            key={action.label}
-                            onClick={() => handleQuickAction(action.label)}
+                            key={action.labelKey}
+                            onClick={() => handleQuickAction(t(action.labelKey))}
                             className="flex items-center gap-3 w-full py-3 px-4 border border-border-light rounded-md text-base font-medium text-description hover:bg-gray-50 hover:text-title transition-colors"
                         >
                             <action.icon className="size-5" />
-                            {action.label}
+                            {t(action.labelKey)}
                         </button>
                     ))}
                 </div>
                 <h3 className="text-lg font-medium text-title mb-1 mt-6">
-                    Content Generator
+                    {t("contentGenerator")}
                 </h3>
                 <p className="text-sm text-description mb-5">
-                    Generate course content instantly with AI
+                    {t("generateDesc")}
                 </p>
 
                 <form
@@ -208,27 +210,27 @@ const AIAssistantPage = () => {
                 >
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Topic / Subject
+                            {t("topicSubject")}
                         </label>
                         <input
                             {...contentForm.register("topic", { required: true })}
-                            placeholder="e.g., Introduction to React Hooks"
+                            placeholder={t("topicPlaceholder")}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                         />
                     </div>
 
                     <div>
                         <label className="text-sm font-medium text-title mb-1.5 block">
-                            Content Type
+                            {t("contentType")}
                         </label>
                         <select
                             {...contentForm.register("contentType")}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                             defaultValue="course-structure"
                         >
-                            {contentTypeOptions.map((opt) => (
+                            {contentTypeKeys.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
-                                    {opt.label}
+                                    {t(opt.labelKey)}
                                 </option>
                             ))}
                         </select>
@@ -240,14 +242,14 @@ const AIAssistantPage = () => {
                             className="flex-1 px-4 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors flex items-center justify-center gap-1.5"
                         >
                             <Sparkles className="w-4 h-4" />
-                            Generate
+                            {t("generate")}
                         </button>
                         <button
                             type="button"
                             onClick={() => contentForm.reset()}
                             className="px-4 py-3 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors"
                         >
-                            Clear
+                            {t("clear")}
                         </button>
                     </div>
                 </form>

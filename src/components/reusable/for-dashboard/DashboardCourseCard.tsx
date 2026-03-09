@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Star, Users, MoreHorizontal } from "lucide-react";
 import { TInstructorCourse } from "@/lib/instructor";
 import CourseActionsModal from "@/components/modal/CourseActionsModal";
+import { useTranslations } from "next-intl";
 
 type DashboardCourseCardProps = {
   course: TInstructorCourse;
@@ -13,6 +14,7 @@ type DashboardCourseCardProps = {
 
 const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProps) => {
   const [showModal, setShowModal] = useState(false);
+  const t = useTranslations("InstructorMyCourses");
 
   return (
     <div className="bg-white overflow-hidden group relative">
@@ -41,7 +43,7 @@ const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProp
           </div>
           <div className="flex items-center gap-1">
             <Users className="size-5 text-[#564FFD]" />
-            <span className="text-sm">{course.students} students</span>
+            <span className="text-sm">{course.students} {t("students")}</span>
           </div>
         </div>
         <div className="flex justify-between items-center">

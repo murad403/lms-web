@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Video, User, Tag, Calendar as CalendarIcon, Clock, Link as LinkIcon, ChevronDown } from "lucide-react";
 import { liveClassSchema, LiveClassFormData } from "@/validation/liveClass.validation";
+import { useTranslations } from "next-intl";
 
 type LiveClassModalProps = {
     isOpen: boolean;
@@ -13,6 +14,7 @@ type LiveClassModalProps = {
 };
 
 const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) => {
+    const t = useTranslations("InstructorLiveClassModal");
     const {
         register,
         handleSubmit,
@@ -68,7 +70,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                             <Video className="w-4 h-4 text-blue-600" />
                         </div>
                         <DialogTitle className="text-lg font-bold text-title">
-                            Live Class
+                            {t("liveClass")}
                         </DialogTitle>
                     </div>
                 </DialogHeader>
@@ -77,13 +79,13 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Live Class Title */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            Live Class Title
+                            {t("liveClassTitle")}
                         </label>
                         <div className="relative">
                             <Video className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Your course title"
+                                placeholder={t("courseTitlePlaceholder")}
                                 {...register("title")}
                                 maxLength={80}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
@@ -100,13 +102,13 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Instructor */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            Instructor
+                            {t("instructor")}
                         </label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Instructor name"
+                                placeholder={t("instructorPlaceholder")}
                                 {...register("instructor")}
                                 maxLength={120}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
@@ -124,7 +126,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-semibold text-header mb-2">
-                                Course Category
+                                {t("courseCategory")}
                             </label>
                             <div className="relative">
                                 <select
@@ -145,7 +147,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         </div>
                         <div>
                             <label className="block text-sm font-semibold text-header mb-2">
-                                Course Sub-category
+                                {t("courseSubCategory")}
                             </label>
                             <div className="relative">
                                 <select
@@ -169,12 +171,12 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Live Class Topic */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            Live Class Topic
+                            {t("liveClassTopic")}
                         </label>
                         <div className="relative">
                             <Tag className="absolute left-4 top-4 size-5 text-gray-400" />
                             <textarea
-                                placeholder="What is primarily taught in this live class?"
+                                placeholder={t("topicPlaceholder")}
                                 {...register("topic")}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400 min-h-20 resize-none"
                             />
@@ -190,7 +192,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-semibold text-header mb-2">
-                                    Select a date
+                                    {t("selectDate")}
                                 </label>
                                 <div className="relative">
                                     <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
@@ -206,7 +208,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold text-header mb-2">
-                                    Select Time
+                                    {t("selectTime")}
                                 </label>
                                 <div className="relative">
                                     <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
@@ -226,7 +228,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Choose Live Class platform */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-3">
-                            Choose Live Class platform
+                            {t("choosePlatform")}
                         </label>
                         <div className="flex gap-4">
                             <div className="flex items-center flex-1">
@@ -247,7 +249,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                                         : "bg-gray-100 text-title hover:bg-gray-200"
                                         }`}
                                 >
-                                    Host
+                                    {t("host")}
                                 </button>
                             </div>
                             <div className="flex items-center flex-1">
@@ -265,7 +267,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                                         : "bg-gray-100 text-title hover:bg-gray-200"
                                         }`}
                                 >
-                                    Host
+                                    {t("host")}
                                 </button>
                             </div>
                         </div>
@@ -277,13 +279,13 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Live Class Link */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            Live Class Link
+                            {t("liveClassLink")}
                         </label>
                         <div className="relative">
                             <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Live Class Link"
+                                placeholder={t("meetingLinkPlaceholder")}
                                 {...register("link")}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
@@ -300,14 +302,14 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                             onClick={handleClose}
                             className="px-6 py-3 border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition"
                         >
-                            Cancel
+                            {t("cancelBtn")}
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
                             className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition disabled:opacity-50"
                         >
-                            {isSubmitting ? "Saving..." : "Save & Confirm"}
+                            {isSubmitting ? t("saving") : t("createLiveClass")}
                         </button>
                     </div>
                 </form>

@@ -2,16 +2,18 @@ import { Badge } from '@/components/ui/badge'
 import { instructorPastClasses } from '@/lib/instructor'
 import { CalendarIcon, Clock, User } from 'lucide-react'
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 const LiveClassPastSessions = () => {
+    const t = useTranslations("InstructorLiveClasses");
     return (
 
         <div>
-            <h3 className="text-xl font-bold text-title mb-4">Past Sessions</h3>
+            <h3 className="text-xl font-bold text-title mb-4">{t("pastSessions")}</h3>
             <div className="rounded-md border border-border-light p-5">
                 <h4 className="text-base font-bold text-title mb-4 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-description" />
-                    Past Live Classes
+                    {t("pastLiveClasses")}
                 </h4>
                 <div className="space-y-3">
                     {instructorPastClasses.map((session) => (

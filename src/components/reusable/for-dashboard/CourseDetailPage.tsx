@@ -7,18 +7,20 @@ import CourseOverviewChart from "@/components/reusable/for-dashboard/CourseOverv
 import { instructorCourseDetail, revenueData, ratingBreakdown, courseOverviewData } from "@/lib/instructor";
 import { Link } from "@/i18n/navigation";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 
 
 const CourseDetailPage = () => {
     const course = instructorCourseDetail;
+    const t = useTranslations("InstructorCourseDetail");
 
     const infoCards = [
-        { icon: BookOpen, value: course.lectureCount.toLocaleString(), label: "Lectures", sub: course.lectureSize },
-        { icon: MessageSquare, value: course.totalComments.toLocaleString(), label: "Total Comments", sub: "" },
-        { icon: Users, value: course.studentsEnrolled.toLocaleString(), label: "Students enrolled", sub: "" },
-        { icon: Paperclip, value: course.attachFiles.toString(), label: "Attach File", sub: course.attachSize },
-        { icon: Globe, value: course.language, label: "Course Language", sub: "" },
-        { icon: Clock, value: course.totalHours, label: "Hours", sub: "" },
+        { icon: BookOpen, value: course.lectureCount.toLocaleString(), labelKey: "lectures", sub: course.lectureSize },
+        { icon: MessageSquare, value: course.totalComments.toLocaleString(), labelKey: "totalComments", sub: "" },
+        { icon: Users, value: course.studentsEnrolled.toLocaleString(), labelKey: "studentsEnrolled", sub: "" },
+        { icon: Paperclip, value: course.attachFiles.toString(), labelKey: "attachFile", sub: course.attachSize },
+        { icon: Globe, value: course.language, labelKey: "courseLanguage", sub: "" },
+        { icon: Clock, value: course.totalHours, labelKey: "hours", sub: "" },
     ];
 
     return (
@@ -26,11 +28,11 @@ const CourseDetailPage = () => {
             {/* Breadcrumb */}
             <div className="text-sm text-description">
                 <Link href="/instructor/my-courses" className="hover:text-main">
-                    Course
+                    {t("courseBreadcrumb")}
                 </Link>
                 {" > "}
                 <Link href="/instructor/my-courses" className="hover:text-main">
-                    My Courses
+                    {t("myCoursesLink")}
                 </Link>
                 {" > "}
                 <span className="text-title font-medium">{course.title}</span>
@@ -47,7 +49,7 @@ const CourseDetailPage = () => {
                     {/* Course Info */}
                     <div className="flex-1 min-w-0">
                         <p className="text-xs text-description">
-                            Published: {course.publishedDate} &nbsp; Last updated: {course.lastUpdated}
+                            {t("published")}: {course.publishedDate} &nbsp; {t("lastUpdated")}: {course.lastUpdated}
                         </p>
                         <h2 className="text-lg sm:text-xl font-bold text-title mt-1">{course.title}</h2>
                         <p className="text-sm text-description mt-1">{course.description}</p>
@@ -79,7 +81,7 @@ const CourseDetailPage = () => {
 
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-xs text-description">Created by:</span>
+                                    <span className="text-xs text-description">{t("createdBy")}</span>
                                     <div className="flex flex-wrap items-center gap-1">
                                         {course.creators.map((creator, i) => (
                                             <span key={i} className="text-sm font-medium text-main">
@@ -107,15 +109,15 @@ const CourseDetailPage = () => {
 
                             <div className="flex gap-2 flex-col">
                                 <span className="text-xl text-title">${course.price}</span>
-                                <span className="text-sm text-description">Course price</span>
+                                <span className="text-sm text-description">{t("coursePrice")}</span>
                             </div>
                             <div className="flex gap-2 flex-col">
                                 <span className="text-xl text-title">${course.totalRevenue.toLocaleString()}</span>
-                                <span className="text-sm text-description">USD dollar Revenue</span>
+                                <span className="text-sm text-description">{t("usdRevenue")}</span>
                             </div>
 
                             <button className="sm:ml-auto px-5 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors">
-                                Withdraw Money
+                                {t("withdrawMoney")}
                             </button>
 
                         </div>
@@ -135,7 +137,7 @@ const CourseDetailPage = () => {
                                 </div>
                                 <div>
                                     <p className="text-xl text-title">{card.value}</p>
-                                    <p className="text-sm text-description">{card.label}</p>
+                                    <p className="text-sm text-description">{t(card.labelKey)}</p>
                                     {card.sub && <p className="text-[10px] text-description">{card.sub}</p>}
                                 </div>
                             </div>

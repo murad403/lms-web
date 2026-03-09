@@ -1,15 +1,17 @@
 import { earningStats, paymentCards } from '@/lib/instructor'
 import { Check } from 'lucide-react'
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 const WithdrawSection = () => {
     const [selectedCard, setSelectedCard] = useState(paymentCards.find(card => card.isDefault)?.id || paymentCards[0]?.id);
+    const t = useTranslations("InstructorEarnings");
     
     return (
         <div className="bg-white p-5">
-            <h3 className="text-base sm:text-lg font-semibold text-title mb-6 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">Withdraw your money</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-title mb-6 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">{t("withdrawYourMoney")}</h3>
             {/* Payment Methods */}
-            <p className='text-description text-sm mb-4'>Payment method:</p>
+            <p className='text-description text-sm mb-4'>{t("paymentMethod")}</p>
             <div className="space-y-3 mb-4">
                 {paymentCards.map((card) => (
                     <button
@@ -40,10 +42,10 @@ const WithdrawSection = () => {
                     <p className="text-2xl font-bold text-title mb-4">
                         ${earningStats.currentBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </p>
-                    <p className="text-xs text-description mb-2">Current Balance</p>
+                    <p className="text-xs text-description mb-2">{t("currentBalance")}</p>
                 </div>
                 <button className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto">
-                    Withdraw Money
+                    {t("withdrawMoney")}
                 </button>
             </div>
         </div>

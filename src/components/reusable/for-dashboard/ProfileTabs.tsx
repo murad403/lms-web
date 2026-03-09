@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Star, Users, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { TInstructorProfile, TInstructorCourse } from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
 type TReview = {
     id: number;
@@ -25,6 +26,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
     const [ratingFilter, setRatingFilter] = useState("5 Star Rating");
     const [showAllReviews, setShowAllReviews] = useState(false);
     const visibleReviews = showAllReviews ? publicReviews : publicReviews.slice(0, 4);
+    const t = useTranslations("InstructorProfile");
 
   return (
     <div>
@@ -38,7 +40,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                                     : "border-transparent text-description hover:text-title"
                                     }`}
                             >
-                                {tab === "courses" ? "Courses" : "Review"}
+                                {tab === "courses" ? t("coursesTab") : t("reviewTab")}
                             </button>
                         ))}
                     </div>
@@ -85,7 +87,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <Users className="w-3.5 h-3.5" />
-                                                    <span>{course.students} students</span>
+                                                    <span>{course.students} {t("students")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,18 +101,18 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                     {activeTab === "reviews" && (
                         <div className="mt-6 space-y-5">
                             <div className="flex items-center justify-between flex-wrap gap-3">
-                                <h3 className="text-xl font-bold text-title">Students Feedback</h3>
+                                <h3 className="text-xl font-bold text-title">{t("studentsFeedback")}</h3>
                                 <div className="relative">
                                     <select
                                         value={ratingFilter}
                                         onChange={(e) => setRatingFilter(e.target.value)}
                                         className="appearance-none border border-border-light rounded text-sm text-description px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                     >
-                                        <option>5 Star Rating</option>
-                                        <option>4 Star Rating</option>
-                                        <option>3 Star Rating</option>
-                                        <option>2 Star Rating</option>
-                                        <option>1 Star Rating</option>
+                                        <option>5 {t("starRating")}</option>
+                                        <option>4 {t("starRating")}</option>
+                                        <option>3 {t("starRating")}</option>
+                                        <option>2 {t("starRating")}</option>
+                                        <option>1 {t("starRating")}</option>
                                     </select>
                                     <ChevronDown className="w-4 h-4 text-description absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                                 </div>
@@ -150,7 +152,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                                         onClick={() => setShowAllReviews(true)}
                                         className="flex items-center gap-2 px-5 py-2.5 border border-border-light rounded text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                                     >
-                                        Load More
+                                        {t("loadMore")}
                                         <ArrowRight className="w-4 h-4" />
                                     </button>
                                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Props = {
     guidelines: {
@@ -10,16 +11,17 @@ type Props = {
 };
 
 const GuidelinesTab = ({ guidelines }: Props) => {
+    const t = useTranslations("InstructorAccreditation");
     return (
         <div className="space-y-6 bg-white rounded-md p-5">
             <div>
-                <h3 className="text-lg font-semibold text-title">Accreditation Guidelines</h3>
-                <p className="text-sm text-description">Requirements for course accreditation</p>
+                <h3 className="text-lg font-semibold text-title">{t("accreditationGuidelines")}</h3>
+                <p className="text-sm text-description">{t("requirementsForAccreditation")}</p>
             </div>
             {/* Course Requirements */}
             <div>
                 <h3 className="text-lg font-semibold text-title mb-3">
-                    Course Requirements
+                    {t("courseRequirements")}
                 </h3>
                 <ul className="space-y-2.5">
                     {guidelines.courseRequirements.map((req, i) => (
@@ -34,7 +36,7 @@ const GuidelinesTab = ({ guidelines }: Props) => {
             {/* Review Process */}
             <div>
                 <h3 className="text-lg font-semibold text-title mb-3">
-                    Review Process
+                    {t("reviewProcess")}
                 </h3>
                 <ol className="space-y-2.5">
                     {guidelines.reviewProcess.map((step, i) => (
@@ -49,7 +51,7 @@ const GuidelinesTab = ({ guidelines }: Props) => {
             </div>
 
             <p className="text-base text-title font-medium bg-[#ECF9FF] p-4 rounded-md">
-                Need help? Contact our accreditation team at accreditation@learnhub.com
+                {t("needHelp")}
             </p>
         </div>
     );

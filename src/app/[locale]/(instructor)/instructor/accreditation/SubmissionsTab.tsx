@@ -5,6 +5,7 @@ import { Eye, User } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import course from "@/assets/partnership/image1.png"
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type Props = {
     submissions: TAccreditationSubmission[];
@@ -20,6 +21,7 @@ const statusColors: Record<string, string> = {
 const SubmissionsTab = ({ submissions }: Props) => {
     const [filter, setFilter] = useState("all");
     const [viewItem, setViewItem] = useState<TAccreditationSubmission | null>(null);
+    const t = useTranslations("InstructorAccreditation");
 
     const filtered =
         filter === "all"
@@ -38,11 +40,11 @@ const SubmissionsTab = ({ submissions }: Props) => {
                     onChange={(e) => setFilter(e.target.value)}
                     className="border border-border-light rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                 >
-                    <option value="all">All Status</option>
-                    <option value="approved">Approved</option>
-                    <option value="pending">Pending</option>
-                    <option value="needs-revision">Needs Revision</option>
-                    <option value="rejected">Rejected</option>
+                    <option value="all">{t("allStatus")}</option>
+                    <option value="approved">{t("approved")}</option>
+                    <option value="pending">{t("pending")}</option>
+                    <option value="needs-revision">{t("needsRevision")}</option>
+                    <option value="rejected">{t("rejected")}</option>
                 </select>
             </div>
 
@@ -52,22 +54,22 @@ const SubmissionsTab = ({ submissions }: Props) => {
                     <thead>
                         <tr className="border-b border-border-light">
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Submission ID
+                                {t("submissionId")}
                             </th>
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Course
+                                {t("course")}
                             </th>
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Submitted
+                                {t("submitted")}
                             </th>
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Certificate Type
+                                {t("certificateType")}
                             </th>
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Status
+                                {t("status")}
                             </th>
                             <th className="py-3 px-4 text-sm font-semibold text-title uppercase">
-                                Action
+                                {t("action")}
                             </th>
                         </tr>
                     </thead>
@@ -103,7 +105,7 @@ const SubmissionsTab = ({ submissions }: Props) => {
                                         className="p-1.5 px-2.5 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-1 bg-[#ECF9FF]"
                                     >
                                         <Eye className="w-4 h-4 text-description" />
-                                        view
+                                        {t("view")}
                                     </button>
                                 </td>
                             </tr>
@@ -149,35 +151,35 @@ const SubmissionsTab = ({ submissions }: Props) => {
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <User className="size-4 text-main" />
-                                        <span className="font-medium">100 students</span>
+                                        <span className="font-medium">100 {t("studentsCount")}</span>
                                     </div>
                                 </div>
 
-                                <h3 className="text-lg font-medium text-main">Overview</h3>
+                                <h3 className="text-lg font-medium text-main">{t("overview")}</h3>
                             </div>
 
                             {/* Details Grid */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
                                 <div className="border border-border-light rounded-md p-3">
-                                    <p className="text-xs text-description mb-1">Category</p>
+                                    <p className="text-xs text-description mb-1">{t("category")}</p>
                                     <p className="text-sm font-medium text-title">
                                         Development
                                     </p>
                                 </div>
                                 <div className="border border-border-light rounded-md p-3">
-                                    <p className="text-xs text-description mb-1">Created</p>
+                                    <p className="text-xs text-description mb-1">{t("created")}</p>
                                     <p className="text-sm font-medium text-title">
                                         {viewItem.submitted}
                                     </p>
                                 </div>
                                 <div className="border border-border-light rounded-md p-3">
-                                    <p className="text-xs text-description mb-1">Total Revenue</p>
+                                    <p className="text-xs text-description mb-1">{t("totalRevenueLabel")}</p>
                                     <p className="text-sm font-medium text-title">
                                         $124,500
                                     </p>
                                 </div>
                                 <div className="border border-border-light rounded-md p-3">
-                                    <p className="text-xs text-description mb-1">Status</p>
+                                    <p className="text-xs text-description mb-1">{t("status")}</p>
                                     <p className="text-sm font-medium text-title bg-green-500 inline py-1 px-2 rounded-sm">
                                         {viewItem.status}
                                     </p>

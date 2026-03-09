@@ -8,23 +8,24 @@ import user from "@/assets/partnership/user2.png";
 import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle } from "lucide-react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
+import { useTranslations } from "next-intl";
 
 type SidebarItem = {
-    label: string;
+    labelKey: string;
     href: string;
     icon: React.ElementType;
 };
 
 const mobileMenuItems: SidebarItem[] = [
-    { label: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
-    { label: "Create New Course", href: "/instructor/create-course", icon: PlusCircle },
-    { label: "My Courses", href: "/instructor/my-courses", icon: BookOpen },
-    { label: "LIVE Classes", href: "/instructor/live-classes", icon: Video },
-    { label: "Earning", href: "/instructor/earnings", icon: DollarSign },
-    { label: "Message", href: "/instructor/messages", icon: MessageSquare },
-    { label: "Accreditation", href: "/instructor/accreditation", icon: Award },
-    { label: "AI Assistant", href: "/instructor/ai-assistant", icon: Bot },
-    { label: "Settings", href: "/instructor/settings", icon: Settings },
+    { labelKey: "dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
+    { labelKey: "createNewCourse", href: "/instructor/create-course", icon: PlusCircle },
+    { labelKey: "myCourses", href: "/instructor/my-courses", icon: BookOpen },
+    { labelKey: "liveClasses", href: "/instructor/live-classes", icon: Video },
+    { labelKey: "earning", href: "/instructor/earnings", icon: DollarSign },
+    { labelKey: "message", href: "/instructor/messages", icon: MessageSquare },
+    { labelKey: "accreditation", href: "/instructor/accreditation", icon: Award },
+    { labelKey: "aiAssistant", href: "/instructor/ai-assistant", icon: Bot },
+    { labelKey: "settings", href: "/instructor/settings", icon: Settings },
 ];
 
 const InstructorTopbar = () => {
@@ -33,24 +34,26 @@ const InstructorTopbar = () => {
     const [showLogout, setShowLogout] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+    const t = useTranslations("InstructorTopbar");
 
     // Derive page title from pathname
     const getPageTitle = () => {
         const segments = pathname.split("/").filter(Boolean);
         const lastSegment = segments[segments.length - 1] || "dashboard";
-        const titles: Record<string, string> = {
-            dashboard: "Dashboard",
-            "create-course": "Create New Course",
-            "my-courses": "My Courses",
-            "live-classes": "LIVE Classes",
-            earnings: "Earning",
-            messages: "Message",
-            accreditation: "Accreditation",
-            "ai-assistant": "AI Assistant",
-            settings: "Settings",
-            profile: "Profile",
+        const titleKeys: Record<string, string> = {
+            dashboard: "dashboard",
+            "create-course": "createNewCourse",
+            "my-courses": "myCourses",
+            "live-classes": "liveClasses",
+            earnings: "earning",
+            messages: "message",
+            accreditation: "accreditation",
+            "ai-assistant": "aiAssistant",
+            settings: "settings",
+            profile: "profile",
         };
-        return titles[lastSegment] || lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, " ");
+        const key = titleKeys[lastSegment];
+        return key ? t(key) : lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, " ");
     };
 
     const isActive = (href: string) => {
@@ -86,7 +89,7 @@ const InstructorTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">Good Morning</p>
+                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">{t("goodMorning")}</p>
                             <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>
@@ -105,10 +108,10 @@ const InstructorTopbar = () => {
                             {showNotifications && (
                                 <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[80vh] overflow-hidden">
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                                        <h3 className="text-lg font-bold text-title">Notifications</h3>
+                                        <h3 className="text-lg font-bold text-title">{t("notifications")}</h3>
                                         <div className="flex gap-2">
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">All</button>
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">Unread</button>
+                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("all")}</button>
+                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("unread")}</button>
                                         </div>
                                     </div>
                                     <div className="max-h-96 overflow-y-auto">
@@ -166,7 +169,7 @@ const InstructorTopbar = () => {
                                                 }`}
                                         >
                                             <Icon className="w-5 h-5 shrink-0" />
-                                            <span>{item.label}</span>
+                                            <span>{t(item.labelKey)}</span>
                                         </Link>
                                     );
                                 })}
@@ -178,7 +181,7 @@ const InstructorTopbar = () => {
                                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors w-full"
                                 >
                                     <LogOut className="w-5 h-5 shrink-0" />
-                                    <span>Sign-out</span>
+                                    <span>{t("signOut")}</span>
                                 </button>
                             </nav>
                         </div>

@@ -4,28 +4,30 @@ import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Bot, Settings, 
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
+import { useTranslations } from "next-intl";
 
 type SidebarItem = {
-  label: string;
+  labelKey: string;
   href: string;
   icon: React.ElementType;
 };
 
 const mainMenuItems: SidebarItem[] = [
-  { label: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
-  { label: "Create New Course", href: "/instructor/create-course", icon: PlusCircle },
-  { label: "My Courses", href: "/instructor/my-courses", icon: BookOpen },
-  { label: "LIVE Classes", href: "/instructor/live-classes", icon: Video },
-  { label: "Earning", href: "/instructor/earnings", icon: Wallet },
-  { label: "Message", href: "/instructor/messages", icon: MessageSquare },
-  { label: "Accreditation", href: "/instructor/accreditation", icon: Award },
-  { label: "AI Assistant", href: "/instructor/ai-assistant", icon: Bot },
-  { label: "Settings", href: "/instructor/settings", icon: Settings },
+  { labelKey: "dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
+  { labelKey: "createNewCourse", href: "/instructor/create-course", icon: PlusCircle },
+  { labelKey: "myCourses", href: "/instructor/my-courses", icon: BookOpen },
+  { labelKey: "liveClasses", href: "/instructor/live-classes", icon: Video },
+  { labelKey: "earning", href: "/instructor/earnings", icon: Wallet },
+  { labelKey: "message", href: "/instructor/messages", icon: MessageSquare },
+  { labelKey: "accreditation", href: "/instructor/accreditation", icon: Award },
+  { labelKey: "aiAssistant", href: "/instructor/ai-assistant", icon: Bot },
+  { labelKey: "settings", href: "/instructor/settings", icon: Settings },
 ];
 
 const InstructorSidebar = () => {
   const pathname = usePathname();
   const [showLogout, setShowLogout] = useState(false);
+  const t = useTranslations("InstructorSidebar");
 
   const isActive = (href: string) => {
     return pathname === href || pathname.startsWith(href + "/");
@@ -58,9 +60,9 @@ const InstructorSidebar = () => {
                 }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />
-                <span className="truncate">{item.label}</span>
-                {item.label === "Message" && (
-                  <span className={`ml-auto w-5 h-5 ${item.label === "Message" ? "bg-[#4F9BEF] text-white" : "bg-white text-[#4F9BEF] "} rounded-full flex items-center justify-center text-[10px] font-bold`}>
+                <span className="truncate">{t(item.labelKey)}</span>
+                {item.labelKey === "message" && (
+                  <span className={`ml-auto w-5 h-5 ${item.labelKey === "message" ? "bg-[#4F9BEF] text-white" : "bg-white text-[#4F9BEF] "} rounded-full flex items-center justify-center text-[10px] font-bold`}>
                     3
                   </span>
                 )}
@@ -76,7 +78,7 @@ const InstructorSidebar = () => {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors w-full"
           >
             <LogOut className="w-5 h-5 shrink-0" />
-            <span>Sign-out</span>
+            <span>{t("signOut")}</span>
           </button>
         </div>
       </aside>

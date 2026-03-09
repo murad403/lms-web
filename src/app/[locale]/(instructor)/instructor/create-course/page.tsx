@@ -10,15 +10,16 @@ import AdvanceInfoTab, { advanceInfoSchema } from "@/components/reusable/create-
 import PublishCourseTab from "@/components/reusable/create-course/PublishCourseTab";
 import { TCourseSection } from "@/lib/instructor";
 import CurriculumTab from "@/components/reusable/create-course/CurriculumTab";
+import { useTranslations } from "next-intl";
 
 const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
 type CourseFormData = z.infer<typeof courseFormSchema>;
 
-const tabs = [
-    { id: 0, label: "Basic Information", icon: Layers },
-    { id: 1, label: "Advance Information", icon: FileText },
-    { id: 2, label: "Curriculum", icon: Play },
-    { id: 3, label: "Publish Course", icon: Globe },
+const tabMeta = [
+    { id: 0, labelKey: "basicInformation", icon: Layers },
+    { id: 1, labelKey: "advanceInformation", icon: FileText },
+    { id: 2, labelKey: "curriculum", icon: Play },
+    { id: 3, labelKey: "publishCourse", icon: Globe },
 ];
 
 const defaultSections: TCourseSection[] = [
@@ -38,6 +39,9 @@ const CreateCoursePage = () => {
     const isEdit = !!editId;
 
     const [activeTab, setActiveTab] = useState(0);
+    const t = useTranslations("InstructorCreateCourse");
+
+    const tabs = tabMeta.map(tab => ({ ...tab, label: t(tab.labelKey) }));
     
     // React Hook Form
     const methods = useForm<CourseFormData>({

@@ -2,17 +2,19 @@
 
 import { TActiveCertificate } from "@/lib/instructor";
 import { SlBadge } from "react-icons/sl";
+import { useTranslations } from "next-intl";
 
 type Props = {
     certificates: TActiveCertificate[];
 };
 
 const CertificatesTab = ({ certificates }: Props) => {
+    const t = useTranslations("InstructorAccreditation");
     return (
         <div className="overflow-x-auto bg-white rounded-md p-5">
             <div>
-                <h2 className="text-lg font-semibold text-title">Active Certificates</h2>
-                <p className="text-sm text-description">Certificates being issued for your courses</p>
+                <h2 className="text-lg font-semibold text-title">{t("activeCertificates")}</h2>
+                <p className="text-sm text-description">{t("certificatesDesc")}</p>
             </div>
             <div className="mt-6 space-y-4">
                 {
@@ -31,11 +33,11 @@ const CertificatesTab = ({ certificates }: Props) => {
                                 <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
                                     <div>
                                         <h3 className="font-medium text-title">1,247</h3>
-                                        <p className="text-sm text-description">Issued</p>
+                                        <p className="text-sm text-description">{t("issued")}</p>
                                     </div>
                                     <div>
                                         <h3 className="font-medium text-title">{cert.validUntil}</h3>
-                                        <p className="text-sm text-description">Valid until</p>
+                                        <p className="text-sm text-description">{t("validUntil")}</p>
                                     </div>
                                     <span className="text-xs font-medium px-2.5 py-1 rounded-sm bg-[#C4EBFF] text-main">
                                         {cert.status}

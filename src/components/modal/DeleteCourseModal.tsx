@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useTranslations } from "next-intl";
 
 type DeleteCourseModalProps = {
   open: boolean;
@@ -17,6 +18,7 @@ type DeleteCourseModalProps = {
 };
 
 const DeleteCourseModal = ({ open, onClose, onConfirm, courseName }: DeleteCourseModalProps) => {
+  const t = useTranslations("InstructorMyCourses");
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent className="max-w-sm">
@@ -25,10 +27,10 @@ const DeleteCourseModal = ({ open, onClose, onConfirm, courseName }: DeleteCours
             <Trash2 className="w-6 h-6 text-red-500" />
           </div>
           <AlertDialogTitle className="text-lg font-bold text-title">
-            Delete Course
+            {t("deleteCourse")}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-sm text-description text-center">
-            Are you sure you want to delete {courseName ? `"${courseName}"` : "this course"}? This action cannot be undone.
+            {t("deleteConfirm", { courseName: courseName ? `"${courseName}"` : "this course" })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-row gap-3 sm:justify-center">
@@ -36,13 +38,13 @@ const DeleteCourseModal = ({ open, onClose, onConfirm, courseName }: DeleteCours
             onClick={onClose}
             className="flex-1 px-6 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-title hover:bg-gray-50 transition-colors"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 px-6 py-2.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
           >
-            Yes, Delete
+            {t("yesDelete")}
           </button>
         </AlertDialogFooter>
       </AlertDialogContent>

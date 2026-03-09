@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 const changePasswordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
@@ -21,6 +22,7 @@ const ChangePassword = () => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const t = useTranslations("InstructorSettings");
 
     const {
         register,
@@ -41,21 +43,21 @@ const ChangePassword = () => {
             className="bg-white rounded-md max-w-2xl border border-border-light p-4 sm:p-6"
         >
             <h3 className="text-base font-bold text-title mb-5">
-                Change password
+                {t("changePassword")}
             </h3>
 
             <div className="space-y-4">
                 {/* Current Password */}
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Current Password
+                        {t("currentPassword")}
                     </label>
                     <div className="relative">
                         <input
                             {...register("currentPassword")}
                             type={showCurrentPassword ? "text" : "password"}
                             className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-10"
-                            placeholder="Password"
+                            placeholder={t("passwordPlaceholder")}
                         />
                         <button
                             type="button"
@@ -77,7 +79,7 @@ const ChangePassword = () => {
                             href="/auth/forgot-password"
                             className="text-sm text-red-500 hover:underline"
                         >
-                            Forgot password?
+                            {t("forgotPassword")}
                         </Link>
                     </div>
                 </div>
@@ -85,14 +87,14 @@ const ChangePassword = () => {
                 {/* New Password */}
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        New Password
+                        {t("newPassword")}
                     </label>
                     <div className="relative">
                         <input
                             {...register("newPassword")}
                             type={showNewPassword ? "text" : "password"}
                             className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-10"
-                            placeholder="Password"
+                            placeholder={t("passwordPlaceholder")}
                         />
                         <button
                             type="button"
@@ -114,14 +116,14 @@ const ChangePassword = () => {
                 {/* Confirm Password */}
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Confirm Password
+                        {t("confirmPassword")}
                     </label>
                     <div className="relative">
                         <input
                             {...register("confirmPassword")}
                             type={showConfirmPassword ? "text" : "password"}
                             className="w-full border border-border-light px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-10"
-                            placeholder="Confirm new password"
+                            placeholder={t("confirmPasswordPlaceholder")}
                         />
                         <button
                             type="button"
@@ -145,7 +147,7 @@ const ChangePassword = () => {
                         type="submit"
                         className="px-6 py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
-                        Change Password
+                        {t("changePassword")}
                     </button>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { Star, Users, CirclePlay } from "lucide-react";
 import { instructorProfile, instructorCourses } from "@/lib/instructor";
 import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
 import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
+import { useTranslations } from "next-intl";
 
 const publicReviews = [
     {
@@ -65,6 +66,7 @@ const publicReviews = [
 const InstructorProfilePage = () => {
     const profile = instructorProfile;
     const publishedCourses = instructorCourses.filter((c) => c.status === "Published");
+    const t = useTranslations("InstructorProfile");
 
     return (
         <div>
@@ -94,16 +96,16 @@ const InstructorProfilePage = () => {
                                     </div>
                                     <span className="text-sm font-semibold text-title">4.8</span>
                                     <span className="text-xs text-description">
-                                        ({(134633).toLocaleString()} reviews)
+                                        ({(134633).toLocaleString()} {t("reviews")})
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <Users className="w-4 h-4 text-description" />
-                                    <span className="text-sm text-description">430,117 students</span>
+                                    <span className="text-sm text-description">430,117 {t("students")}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <CirclePlay className="w-4 h-4 text-main" />
-                                    <span className="text-sm text-description">7 courses</span>
+                                    <span className="text-sm text-description">7 {t("courses")}</span>
                                 </div>
                             </div>
                         </div>

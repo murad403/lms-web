@@ -2,6 +2,7 @@
 import { Eye, Pencil, Award, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 type CourseActionsModalProps = {
     isOpen: boolean;
@@ -12,6 +13,7 @@ type CourseActionsModalProps = {
 };
 
 const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: CourseActionsModalProps) => {
+    const t = useTranslations("InstructorCourseActions");
     const handleDelete = () => {
         onDelete(courseId);
         onClose();
@@ -28,7 +30,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                 <DialogHeader className="p-5 pb-3 border-b border-border-light">
                     <div className="flex items-center justify-between">
                         <DialogTitle className="text-lg font-bold text-title">
-                            Course Actions
+                            {t("courseActions")}
                         </DialogTitle>
                     </div>
                 </DialogHeader>
@@ -43,8 +45,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <Eye className="w-4 h-4 text-blue-600" />
                         </div>
                         <div className="flex-1">
-                            <p className="font-medium">View Details</p>
-                            <p className="text-xs text-description">See course information</p>
+                            <p className="font-medium">{t("viewDetails")}</p>
+                            <p className="text-xs text-description">{t("seeCourseInfo")}</p>
                         </div>
                     </Link>
 
@@ -57,8 +59,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <Pencil className="w-4 h-4 text-green-600" />
                         </div>
                         <div className="flex-1">
-                            <p className="font-medium">Edit Course</p>
-                            <p className="text-xs text-description">Update course content</p>
+                            <p className="font-medium">{t("editCourse")}</p>
+                            <p className="text-xs text-description">{t("updateContent")}</p>
                         </div>
                     </Link>
 
@@ -70,8 +72,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <Award className="w-4 h-4 text-purple-600" />
                         </div>
                         <div className="flex-1">
-                            <p className="font-medium">Request Accreditation</p>
-                            <p className="text-xs text-description">Get official certification</p>
+                            <p className="font-medium">{t("requestAccreditation")}</p>
+                            <p className="text-xs text-description">{t("getOfficialCert")}</p>
                         </div>
                     </button>
 
@@ -83,8 +85,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <Trash2 className="w-4 h-4 text-red-600" />
                         </div>
                         <div className="flex-1 text-left">
-                            <p className="font-medium">Delete Course</p>
-                            <p className="text-xs text-red-400">Permanently remove course</p>
+                            <p className="font-medium">{t("deleteCourse")}</p>
+                            <p className="text-xs text-red-400">{t("permanentlyRemove")}</p>
                         </div>
                     </button>
                 </div>

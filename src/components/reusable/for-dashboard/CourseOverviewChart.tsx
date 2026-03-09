@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { TCourseOverviewData } from "@/lib/instructor";
+import { useTranslations } from "next-intl";
 
 type CourseOverviewChartProps = {
   data: TCourseOverviewData[];
 };
 
 const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
+  const t = useTranslations("InstructorDashboard");
   // Extended demo data for smoother curves
   const chartData: TCourseOverviewData[] = [
     { label: "Sun", comments: 75000, views: 65000 },
@@ -59,11 +61,11 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
   return (
     <div className="bg-white p-4 sm:p-5">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
-        <h3 className="text-base sm:text-lg font-semibold text-title">Course Overview</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-title">{t("courseOverview")}</h3>
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <select className="text-xs sm:text-sm text-description px-2 sm:px-3 py-1 sm:py-1.5 bg-white focus:outline-none">
-            <option>This week</option>
-            <option>This month</option>
+            <option>{t("thisWeek")}</option>
+            <option>{t("thisMonth")}</option>
           </select>
         </div>
       </div>
