@@ -1170,7 +1170,10 @@
     "amount": "Montant",
     "latestQuizzes": "Derniers Quiz",
     "correctAnswer": "Réponse Correcte",
-    "date": "Date"
+    "date": "Date",
+    "paid": "Payé",
+    "pending": "En Attente",
+    "failed": "Échoué"
   },
   "EnrolledCoursesPage": {
     "title": "Cours Inscrits",

@@ -1170,7 +1170,10 @@
     "amount": "Amount",
     "latestQuizzes": "Latest Quizzes",
     "correctAnswer": "Correct Answer",
-    "date": "Date"
+    "date": "Date",
+    "paid": "Paid",
+    "pending": "Pending",
+    "failed": "Failed"
   },
   "EnrolledCoursesPage": {
     "title": "Enrolled Courses",

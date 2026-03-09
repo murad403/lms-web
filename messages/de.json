@@ -1170,7 +1170,10 @@
     "amount": "Betrag",
     "latestQuizzes": "Neueste Quizze",
     "correctAnswer": "Richtige Antwort",
-    "date": "Datum"
+    "date": "Datum",
+    "paid": "Bezahlt",
+    "pending": "Ausstehend",
+    "failed": "Fehlgeschlagen"
   },
   "EnrolledCoursesPage": {
     "title": "Eingeschriebene Kurse",

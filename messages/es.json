@@ -1170,7 +1170,10 @@
     "amount": "Monto",
     "latestQuizzes": "Últimos Quizzes",
     "correctAnswer": "Respuesta Correcta",
-    "date": "Fecha"
+    "date": "Fecha",
+    "paid": "Pagado",
+    "pending": "Pendiente",
+    "failed": "Fallido"
   },
   "EnrolledCoursesPage": {
     "title": "Cursos Inscritos",

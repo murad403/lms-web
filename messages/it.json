@@ -1170,7 +1170,10 @@
     "amount": "Importo",
     "latestQuizzes": "Ultimi Quiz",
     "correctAnswer": "Risposta Corretta",
-    "date": "Data"
+    "date": "Data",
+    "paid": "Pagato",
+    "pending": "In Attesa",
+    "failed": "Fallito"
   },
   "EnrolledCoursesPage": {
     "title": "Corsi Iscritti",

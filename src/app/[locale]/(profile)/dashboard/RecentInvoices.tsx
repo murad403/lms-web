@@ -88,7 +88,7 @@ const RecentInvoices = () => {
                         </div>
                         <div className="flex items-center gap-2 shrink-0 ml-3">
                             <span className="px-3 py-1 text-white bg-green-500 text-sm font-semibold rounded">
-                                {invoice.status}
+                                {t(invoice.status.toLowerCase() as "paid" | "pending" | "failed")}
                             </span>
                             <button
                                 onClick={() => handleDownload(invoice)}
