@@ -7,9 +7,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema, type ResetPasswordFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
 import { Lock, Eye, EyeOff } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
 
 const ResetPassword = () => {
+    const t = useTranslations('Auth');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,20 +44,20 @@ const ResetPassword = () => {
                         <span className="text-3xl font-bold text-main">Form-Cert</span>
                     </Link>
 
-                    <h1 className="text-3xl font-bold text-header mb-2">Reset Password</h1>
-                    <p className="text-description mb-8">Type a new password</p>
+                    <h1 className="text-3xl font-bold text-header mb-2">{t('resetPasswordTitle')}</h1>
+                    <p className="text-description mb-8">{t('resetPasswordSubtitle')}</p>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
                         {/* New Password */}
                         <div>
                             <label className="block text-sm font-semibold text-header mb-2">
-                                New Password
+                                {t('newPassword')}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
-                                    placeholder="Minimum 8 characters"
+                                    placeholder={t('passwordPlaceholder')}
                                     {...register('newPassword')}
                                     className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                                 />
@@ -75,13 +77,13 @@ const ResetPassword = () => {
                         {/* Confirm New Password */}
                         <div>
                             <label className="block text-sm font-semibold text-header mb-2">
-                                Confirm New Password
+                                {t('confirmNewPassword')}
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
-                                    placeholder="Re-enter your password"
+                                    placeholder={t('confirmPasswordPlaceholder')}
                                     {...register('confirmPassword')}
                                     className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                                 />
@@ -106,13 +108,13 @@ const ResetPassword = () => {
                                 className="size-4 rounded border-gray-300 accent-main mt-0.5"
                             />
                             <span className="text-sm text-description">
-                                I agree to the{' '}
+                                {t('iAgree')}{' '}
                                 <Link href="#" className="text-main hover:underline">
-                                    Terms of Service
+                                    {t('termsOfService')}
                                 </Link>
-                                <span> and </span>
+                                <span> {t('and')} </span>
                                 <Link href="#" className="text-main hover:underline">
-                                    Privacy Policy
+                                    {t('privacyPolicy')}
                                 </Link>
                             </span>
                         </label>
@@ -124,7 +126,7 @@ const ResetPassword = () => {
                             disabled={isSubmitting}
                             className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
-                            Reset Password
+                            {t('resetPasswordButton')}
                         </button>
                     </form>
                 </div>

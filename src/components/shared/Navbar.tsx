@@ -5,7 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import {
     Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard, Grid3x3,
 } from "lucide-react";
-import { categories, notifications, TCategory, TNotification } from "@/lib/header";
+import { notifications, TNotification } from "@/lib/header";
+import { categories as categoryList } from "@/lib/categories";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -15,6 +16,7 @@ import user from "@/assets/partnership/user2.png"
 const Navbar = () => {
     const t = useTranslations("Navbar");
     const tMenu = useTranslations("Menu");
+    const tCat = useTranslations("Categories");
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const [showBrowse, setShowBrowse] = useState(false);
@@ -29,6 +31,12 @@ const Navbar = () => {
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
+
+    const categories = categoryList.map((cat) => ({
+        slug: cat.slug,
+        name: tCat(`cat${cat.id}Title` as Parameters<typeof tCat>[0]),
+        desc: tCat(`cat${cat.id}Desc` as Parameters<typeof tCat>[0]),
+    }));
 
     const menuItems = [
         { label: tMenu("home"), href: "/" as const },
@@ -122,8 +130,8 @@ const Navbar = () => {
                                     </h3>
 
                                     <div className="space-y-4">
-                                        {categories.map((category: TCategory, index) => (
-                                            <Link onClick={() => setShowBrowse(false)} href={`/categories/${category.name}`}
+                                        {categories.map((category, index) => (
+                                            <Link onClick={() => setShowBrowse(false)} href={`/categories/${category.slug}`}
                                                 key={index}
                                                 className="pb-4 border-b block border-gray-100"
                                             >
@@ -131,7 +139,7 @@ const Navbar = () => {
                                                     {category.name}
                                                 </h4>
                                                 <p className="text-xs sm:text-sm text-description">
-                                                    {category.count}
+                                                    {category.desc}
                                                 </p>
                                             </Link>
                                         ))}
@@ -403,18 +411,18 @@ const Navbar = () => {
                                 </h3>
 
                                 <div className="space-y-3">
-                                    {categories.map((category: TCategory, index) => (
-                                        <div
+                                    {categories.map((category, index) => (
+                                        <Link onClick={() => setShowBrowse(false)} href={`/categories/${category.slug}`}
                                             key={index}
-                                            className="pb-3 border-b border-gray-100"
+                                            className="pb-3 border-b block border-gray-100"
                                         >
                                             <h4 className="font-semibold text-title text-xs sm:text-sm md:text-base mb-1">
                                                 {category.name}
                                             </h4>
                                             <p className="text-xs sm:text-sm text-description">
-                                                {category.count}
+                                                {category.desc}
                                             </p>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
 

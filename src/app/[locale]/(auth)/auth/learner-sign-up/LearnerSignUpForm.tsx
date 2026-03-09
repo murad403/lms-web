@@ -6,8 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { learnerSignUpSchema, type LearnerSignUpFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const LearnerSignUpForm = () => {
+    const t = useTranslations('Auth');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -36,7 +38,7 @@ const LearnerSignUpForm = () => {
                     href="/auth/sign-up"
                     className="text-sm text-description hover:text-main transition inline-flex items-center gap-1 mb-4"
                 >
-                    &larr; Back to account type
+                    {t('backToAccountType')}
                 </Link>
 
                 <Link href="/" className="flex items-center gap-2 mb-6">
@@ -44,18 +46,18 @@ const LearnerSignUpForm = () => {
                     <span className="text-3xl font-bold text-main">Form-Cert</span>
                 </Link>
 
-                <h1 className="text-3xl font-bold text-header mb-2">Learner Registration</h1>
-                <p className="text-description mb-6">Complete your registration to get started</p>
+                <h1 className="text-3xl font-bold text-header mb-2">{t('learnerRegistrationTitle')}</h1>
+                <p className="text-description mb-6">{t('registrationSubtitle')}</p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
                     {/* Full Name */}
                     <div>
-                        <label className="block text-sm font-semibold text-header mb-2">Full Name</label>
+                        <label className="block text-sm font-semibold text-header mb-2">{t('fullName')}</label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="John Doe"
+                                placeholder={t('fullNamePlaceholder')}
                                 {...register('fullName')}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
@@ -65,12 +67,12 @@ const LearnerSignUpForm = () => {
 
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-semibold text-header mb-2">Email Address</label>
+                        <label className="block text-sm font-semibold text-header mb-2">{t('emailAddress')}</label>
                         <div className="relative">
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type="email"
-                                placeholder="your.email@example.com"
+                                placeholder={t('emailPlaceholder')}
                                 {...register('email')}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
@@ -80,12 +82,12 @@ const LearnerSignUpForm = () => {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-semibold text-header mb-2">Password</label>
+                        <label className="block text-sm font-semibold text-header mb-2">{t('password')}</label>
                         <div className="relative">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                placeholder="Minimum 8 characters"
+                                placeholder={t('passwordPlaceholder')}
                                 {...register('password')}
                                 className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
@@ -102,12 +104,12 @@ const LearnerSignUpForm = () => {
 
                     {/* Confirm Password */}
                     <div>
-                        <label className="block text-sm font-semibold text-header mb-2">Confirm Password</label>
+                        <label className="block text-sm font-semibold text-header mb-2">{t('confirmPassword')}</label>
                         <div className="relative">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                             <input
                                 type={showConfirmPassword ? 'text' : 'password'}
-                                placeholder="Re-enter your password"
+                                placeholder={t('confirmPasswordPlaceholder')}
                                 {...register('confirmPassword')}
                                 className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
@@ -130,10 +132,10 @@ const LearnerSignUpForm = () => {
                             className="size-4 rounded border-gray-300 accent-main mt-0.5"
                         />
                         <span className="text-sm text-description">
-                            I agree to the{' '}
-                            <Link href="/terms-and-conditions" className="text-main hover:underline">Terms and Conditions</Link>
-                            <span> and </span>
-                            <Link href="/privacy-policy" className="text-main hover:underline">Privacy Policy</Link>
+                            {t('iAgree')}{' '}
+                            <Link href="/terms-and-conditions" className="text-main hover:underline">{t('termsAndConditions')}</Link>
+                            <span> {t('and')} </span>
+                            <Link href="/privacy-policy" className="text-main hover:underline">{t('privacyPolicy')}</Link>
                         </span>
                     </label>
                     {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms.message}</p>}
@@ -144,14 +146,14 @@ const LearnerSignUpForm = () => {
                         disabled={isSubmitting}
                         className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                     >
-                        Create Account
+                        {t('createAccount')}
                     </button>
                 </form>
 
                 <p className="text-sm text-description mt-6 text-center">
-                    Already have an account?{' '}
+                    {t('alreadyHaveAccount')}{' '}
                     <Link href="/auth/sign-in" className="text-main font-semibold hover:underline">
-                        Sign in
+                        {t('signIn')}
                     </Link>
                 </p>
             </div>

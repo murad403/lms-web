@@ -2,35 +2,38 @@ import { Link } from '@/i18n/navigation';
 import { PiGraduationCap, PiUsersThree, PiBuildingOffice } from 'react-icons/pi';
 import AuthBanner from '@/components/auth/AuthBanner';
 import { Handshake } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
-const accountTypes = [
-    {
-        title: "I'm a Learner",
-        description: 'Access courses, earn certifications, and advance your career',
-        icon: PiGraduationCap,
-        href: '/auth/learner-sign-up',
-    },
-    {
-        title: "I'm a Trainer",
-        description: 'Create courses, teach students, and earn income from your expertise',
-        icon: PiUsersThree,
-        href: '/auth/trainer-sign-up',
-    },
-    {
-        title: "I'm an Institution",
-        description: 'Offer courses, manage training programs, and expand your reach',
-        icon: PiBuildingOffice,
-        href: '/auth/organization-sign-up',
-    },
-    {
-        title: "Become a Partner",
-        description: 'Be the reference point and earn by providing guidance, collaborating with institutions and trainers',
-        icon: Handshake,
-        href: '/auth/affiliate-sign-up',
-    },
-];
+const SignUp = async () => {
+    const t = await getTranslations('Auth');
 
-const SignUp = () => {
+    const accountTypes = [
+        {
+            titleKey: 'learnerTitle',
+            descKey: 'learnerDesc',
+            icon: PiGraduationCap,
+            href: '/auth/learner-sign-up',
+        },
+        {
+            titleKey: 'trainerTitle',
+            descKey: 'trainerDesc',
+            icon: PiUsersThree,
+            href: '/auth/trainer-sign-up',
+        },
+        {
+            titleKey: 'institutionTitle',
+            descKey: 'institutionDesc',
+            icon: PiBuildingOffice,
+            href: '/auth/organization-sign-up',
+        },
+        {
+            titleKey: 'partnerTitle',
+            descKey: 'partnerDesc',
+            icon: Handshake,
+            href: '/auth/affiliate-sign-up',
+        },
+    ];
+
     return (
         <div className="min-h-screen flex">
             {/* Left Side */}
@@ -41,15 +44,15 @@ const SignUp = () => {
                         <span className="text-3xl font-bold text-main">Form-Cert</span>
                     </Link>
 
-                    <h1 className="text-3xl font-bold text-header mb-2">Create Your Account</h1>
+                    <h1 className="text-3xl font-bold text-header mb-2">{t('createAccountTitle')}</h1>
                     <p className="text-description mb-8">
-                        Choose the account type that best describes you
+                        {t('createAccountSubtitle')}
                     </p>
 
                     <div className="space-y-4 max-w-lg">
                         {accountTypes.map((type) => (
                             <Link
-                                key={type.title}
+                                key={type.href}
                                 href={type.href}
                                 className="flex items-center gap-4 p-5 border border-gray-200 rounded-xl hover:border-main/30 hover:shadow-md transition group"
                             >
@@ -58,18 +61,18 @@ const SignUp = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-header group-hover:text-main transition">
-                                        {type.title}
+                                        {t(type.titleKey as Parameters<typeof t>[0])}
                                     </h3>
-                                    <p className="text-sm text-description mt-1">{type.description}</p>
+                                    <p className="text-sm text-description mt-1">{t(type.descKey as Parameters<typeof t>[0])}</p>
                                 </div>
                             </Link>
                         ))}
                     </div>
 
                     <p className="text-sm text-description mt-8 text-center">
-                        Already have an account?{' '}
+                        {t('alreadyHaveAccount')}{' '}
                         <Link href="/auth/sign-in" className="text-main font-semibold hover:underline">
-                            Sign in
+                            {t('signIn')}
                         </Link>
                     </p>
                 </div>

@@ -10,10 +10,11 @@ import {
 } from "@/validation/auth.validation";
 import { PiGraduationCap } from "react-icons/pi";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-
+import { useTranslations } from "next-intl";
 import AuthBanner from "@/components/auth/AuthBanner";
 
 const SignIn = () => {
+  const t = useTranslations("Auth");
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -38,22 +39,22 @@ const SignIn = () => {
             <span className="text-3xl font-bold text-main">Form-Cert</span>
           </Link>
 
-          <h1 className="text-3xl font-bold text-header mb-2">Welcome Back</h1>
+          <h1 className="text-3xl font-bold text-header mb-2">{t("signInTitle")}</h1>
           <p className="text-description mb-8">
-            Sign in to access your courses and certifications
+            {t("signInSubtitle")}
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-header mb-2">
-                Email Address
+                {t("emailAddress")}
               </label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                 <input
                   type="email"
-                  placeholder="your.email@example.com"
+                  placeholder={t("emailPlaceholder")}
                   {...register("email")}
                   className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                 />
@@ -68,13 +69,13 @@ const SignIn = () => {
             {/* Password */}
             <div>
               <label className="block text-sm font-semibold text-header mb-2">
-                Password
+                {t("password")}
               </label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={t("passwordPlaceholder")}
                   {...register("password")}
                   className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                 />
@@ -104,13 +105,13 @@ const SignIn = () => {
                   type="checkbox"
                   className="size-4 rounded border-gray-300 accent-main"
                 />
-                <span className="text-sm text-description">Remember me</span>
+                <span className="text-sm text-description">{t("rememberMe")}</span>
               </label>
               <Link
                 href="/auth/forgot-password"
                 className="text-sm text-main font-semibold hover:underline"
               >
-                Forgot password?
+                {t("forgotPassword")}
               </Link>
             </div>
 
@@ -120,25 +121,25 @@ const SignIn = () => {
               disabled={isSubmitting}
               className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
             >
-              Sign In
+              {t("signInButton")}
             </button>
           </form>
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-sm text-description">or</span>
+            <span className="text-sm text-description">{t("or")}</span>
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
           {/* Sign up link */}
           <p className="text-sm text-description text-center">
-            Don&apos;t have an account?{" "}
+            {t("dontHaveAccount")}{" "}
             <Link
               href="/auth/sign-up"
               className="text-main font-semibold hover:underline"
             >
-              Sign up
+              {t("signUp")}
             </Link>
           </p>
         </div>

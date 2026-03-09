@@ -6,9 +6,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { verifyOtpSchema, type VerifyOtpFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
+import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
 
 const VerifyOtp = () => {
+    const t = useTranslations('Auth');
     const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
     const [countdown, setCountdown] = useState(49);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -82,16 +84,16 @@ const VerifyOtp = () => {
                         <span className="text-3xl font-bold text-main">Form-Cert</span>
                     </Link>
 
-                    <h1 className="text-3xl font-bold text-header mb-2">Verify your email</h1>
+                    <h1 className="text-3xl font-bold text-header mb-2">{t('verifyTitle')}</h1>
                     <p className="text-description mb-8">
-                        Enter your OTP we sent to your email address
+                        {t('verifySubtitle')}
                     </p>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
                         {/* OTP Inputs */}
                         <div>
                             <label className="block text-sm font-semibold text-header mb-3">
-                                Enter your OTP
+                                {t('enterOtp')}
                             </label>
                             <div className="flex gap-2 justify-between">
                                 {otp.map((digit, index) => (
@@ -115,16 +117,16 @@ const VerifyOtp = () => {
 
                         {/* Resend Link */}
                         <div className="text-center">
-                            <span className="text-sm text-description">Didn&apos;t Receive Code? </span>
+                            <span className="text-sm text-description">{t('didntReceiveCode')} </span>
                             {countdown > 0 ? (
-                                <span className="text-sm text-main font-semibold">Resend ({countdown}s)</span>
+                                <span className="text-sm text-main font-semibold">{t('resendWithTimer', { seconds: countdown })}</span>
                             ) : (
                                 <button
                                     type="button"
                                     onClick={handleResend}
                                     className="text-sm text-main font-semibold hover:underline"
                                 >
-                                    Resend
+                                    {t('resend')}
                                 </button>
                             )}
                         </div>
@@ -135,7 +137,7 @@ const VerifyOtp = () => {
                             disabled={isSubmitting || otp.join('').length !== 6}
                             className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
-                            Verify
+                            {t('verify')}
                         </button>
                     </form>
                 </div>
