@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { Plus, Upload, Image as ImageIcon, CirclePlay } from "lucide-react";
 import Image from "next/image";
@@ -28,6 +29,7 @@ type Props = {
 };
 
 const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
     const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
 
@@ -76,14 +78,14 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="space-y-6">
-            <h3 className="text-xl font-bold text-title">Advance Informations</h3>
+            <h3 className="text-xl font-bold text-title">{t("advanceInfoHeading")}</h3>
 
             {/* Thumbnail & Trailer */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Course Thumbnail */}
                 <div>
                     <label className="text-sm font-medium text-title mb-3 block">
-                        Course Thumbnail
+                        {t("courseThumbnail")}
                     </label>
                     <div className="flex gap-4">
                         <div className="w-32 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
@@ -101,10 +103,10 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                         </div>
                         <div className="flex-1">
                             <p className="text-sm text-description mb-2">
-                                Upload your course Thumbnail here. <span className="text-title font-medium">Important guidelines:</span> 1200×800 pixels or 12:8 Ratio. Supported format: <span className="text-title">.jpg, .jpeg,</span> or <span className="text-title">.png</span>
+                                {t("thumbnailGuidelines")}
                             </p>
                             <label className="inline-flex items-center gap-2 px-4 py-3 bg-[#EDF5FD] text-main rounded-md text-sm font-medium hover:bg-main/5 transition-colors cursor-pointer">
-                                <span>Upload Image</span>
+                                <span>{t("uploadImage")}</span>
                                 <Upload className="w-4 h-4" />
                                 <input
                                     type="file"
@@ -120,7 +122,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                 {/* Course Trailer */}
                 <div>
                     <label className="text-sm font-medium text-title mb-3 block">
-                        Course Trailer
+                        {t("courseTrailer")}
                     </label>
                     <div className="flex gap-4">
                         <div className="w-32 h-28 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden shrink-0">
@@ -137,10 +139,10 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                         </div>
                         <div className="flex-1">
                             <p className="text-sm text-description mb-2">
-                                Students who watch a well-made promo video are 5X more likely to enroll in your course.
+                                {t("trailerGuideline")}
                             </p>
                             <label className="inline-flex items-center gap-2 px-4 py-3 bg-[#EDF5FD] rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors cursor-pointer">
-                                <span>Upload Video</span>
+                                <span>{t("uploadVideo")}</span>
                                 <Upload className="w-4 h-4" />
                                 <input
                                     type="file"
@@ -157,13 +159,13 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
             {/* Course Description */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Course Descriptions
+                    {t("courseDescriptions")}
                 </label>
                 <div className="border border-border-light rounded-md overflow-hidden">
                     <textarea
                         {...register("description")}
                         rows={6}
-                        placeholder="Enter you course descriptions"
+                        placeholder={t("descriptionPlaceholder")}
                         className="w-full px-3 py-3.5 text-sm focus:outline-none resize-none"
                     />
                     
@@ -174,7 +176,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <label className="text-base font-medium text-title">
-                        What you will teach in this course ({teachFields.length}/{MAX_ITEMS})
+                        {t("whatYouWillTeach")} ({teachFields.length}/{MAX_ITEMS})
                     </label>
                     {teachFields.length < MAX_ITEMS && (
                         <button
@@ -183,7 +185,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                             className="flex items-center gap-1 text-sm text-main font-medium hover:text-main/80"
                         >
                             <Plus className="w-4 h-4" />
-                            Add new
+                            {t("addNew")}
                         </button>
                     )}
                 </div>
@@ -198,7 +200,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                                 <input
                                     {...register(`whatYouWillTeach.${index}.value`)}
                                     maxLength={ITEM_MAX_LENGTH}
-                                    placeholder="What you will teach in this course..."
+                                    placeholder={t("teachPlaceholder")}
                                     className="w-full border border-border-light rounded-md px-3 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
@@ -214,7 +216,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <label className="text-base font-medium text-title">
-                        Course requirements ({reqFields.length}/{MAX_ITEMS})
+                        {t("courseRequirements")} ({reqFields.length}/{MAX_ITEMS})
                     </label>
                     {reqFields.length < MAX_ITEMS && (
                         <button
@@ -223,7 +225,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                             className="flex items-center gap-1 text-sm text-main font-medium hover:text-main/80"
                         >
                             <Plus className="w-4 h-4" />
-                            Add new
+                            {t("addNew")}
                         </button>
                     )}
                 </div>
@@ -238,7 +240,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                                 <input
                                     {...register(`requirements.${index}.value`)}
                                     maxLength={ITEM_MAX_LENGTH}
-                                    placeholder="What is you course requirements..."
+                                    placeholder={t("requirementsPlaceholder")}
                                     className="w-full border border-border-light rounded-md px-3 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
@@ -257,13 +259,13 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                     onClick={onPrev}
                     className="px-5 py-3.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                 >
-                    Previous
+                    {t("previous")}
                 </button>
                 <button
                     type="submit"
                     className="px-5 py-3.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                 >
-                    Save & Next
+                    {t("saveAndNext")}
                 </button>
             </div>
         </form>

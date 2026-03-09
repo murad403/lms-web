@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Plus, Trash2, ChevronDown } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -81,12 +82,13 @@ const AddQuizModal = ({
     setCorrectOption,
     onSave,
 }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="w-[calc(100%-2rem)] max-w-full xl:max-w-285 max-h-[90vh] overflow-y-auto lg:left-[calc(50%+10rem)] lg:w-[calc(100%-20rem-2rem)] lg:max-w-285">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold text-main">Create Quiz Question</DialogTitle>
-                    <DialogDescription className="text-base text-description">Question for the lessons</DialogDescription>
+                    <DialogTitle className="text-xl font-semibold text-main">{t("createQuizTitle")}</DialogTitle>
+                    <DialogDescription className="text-base text-description">{t("questionForLessons")}</DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-6 mt-2">
@@ -95,26 +97,26 @@ const AddQuizModal = ({
                         {/* Left Side - Quiz Title & Description */}
                         <div className="space-y-4 border rounded-md border-border-light p-4">
                             <div>
-                                <h3 className="text-lg font-semibold text-title">Quiz</h3>
-                                <p className="text-sm text-description">Quiz details</p>
+                                <h3 className="text-lg font-semibold text-title">{t("quiz")}</h3>
+                                <p className="text-sm text-description">{t("quizDetails")}</p>
                             </div>
                             <div className="border border-border-light p-4 rounded-md">
                                 <div>
-                                    <label className="text-sm font-medium text-title mb-1.5 block">Question Title</label>
+                                    <label className="text-sm font-medium text-title mb-1.5 block">{t("questionTitle")}</label>
                                     <input
                                         value={quizData.title}
                                         onChange={(e) => updateQuizField("title", e.target.value)}
-                                        placeholder="Enter quiz title..."
+                                        placeholder={t("quizTitlePlaceholder")}
                                         className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-title mb-1.5 block">Enter a brief description</label>
+                                    <label className="text-sm font-medium text-title mb-1.5 block">{t("briefDescription")}</label>
                                     <textarea
                                         value={quizData.description}
                                         onChange={(e) => updateQuizField("description", e.target.value)}
                                         rows={4}
-                                        placeholder="Enter a brief description..."
+                                        placeholder={t("briefDescriptionPlaceholder")}
                                         className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main resize-none"
                                     />
                                 </div>
@@ -124,11 +126,11 @@ const AddQuizModal = ({
                         {/* Right Side - Quiz Settings */}
                         <div className="rounded-md border border-border-light p-4 space-y-4">
                             <div className="flex items-center justify-between">
-                                <h4 className="text-base font-bold text-title">Quiz Settings</h4>
-                                <button className="mt-2 px-3 py-3 bg-main text-white rounded-md text-sm hover:bg-main/90 transition-colors">Save Settings</button>
+                                <h4 className="text-base font-bold text-title">{t("quizSettings")}</h4>
+                                <button className="mt-2 px-3 py-3 bg-main text-white rounded-md text-sm hover:bg-main/90 transition-colors">{t("saveSettings")}</button>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-title mb-1 block">Time Limit</label>
+                                <label className="text-xs font-medium text-title mb-1 block">{t("timeLimit")}</label>
                                 <div className="relative">
                                     <select
                                         value={quizData.timeLimit}
@@ -143,7 +145,7 @@ const AddQuizModal = ({
                                 </div>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-title mb-1 block">Attempts Allowed</label>
+                                <label className="text-xs font-medium text-title mb-1 block">{t("attemptsAllowed")}</label>
                                 <div className="relative">
                                     <select
                                         value={quizData.attemptsAllowed}
@@ -158,7 +160,7 @@ const AddQuizModal = ({
                                 </div>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-title mb-1 block">Passing Score</label>
+                                <label className="text-xs font-medium text-title mb-1 block">{t("passingScore")}</label>
                                 <div className="relative">
                                     <select
                                         value={quizData.passingScore}
@@ -180,7 +182,7 @@ const AddQuizModal = ({
 
                     {/* Quiz Questions */}
                     <div className="space-y-4 border border-border-light rounded-md p-4">
-                        <h4 className="text-lg font-semibold text-main">Quiz Questions</h4>
+                        <h4 className="text-lg font-semibold text-main">{t("quizQuestions")}</h4>
 
                         {quizData.questions.map((question, qIndex) => (
                             <div
@@ -188,7 +190,7 @@ const AddQuizModal = ({
                                 className="bg-gray-50 rounded-md border border-border-light p-4 space-y-4"
                             >
                                 <div className="flex items-center justify-between">
-                                    <span className="text-base font-semibold text-title">Question {qIndex + 1}</span>
+                                    <span className="text-base font-semibold text-title">{t("question")} {qIndex + 1}</span>
                                     {quizData.questions.length > 1 && (
                                         <button
                                             type="button"
@@ -202,26 +204,26 @@ const AddQuizModal = ({
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     <div>
-                                        <label className="text-sm font-medium text-title mb-1 block">Question Type</label>
+                                        <label className="text-sm font-medium text-title mb-1 block">{t("questionType")}</label>
                                         <div className="relative">
                                             <select
                                                 value={question.type}
                                                 onChange={(e) => changeQuestionType(question.id, e.target.value as QuizQuestionType)}
                                                 className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main appearance-none bg-white pr-8"
                                             >
-                                                <option value="multiple-choice">Multiple Choice</option>
-                                                <option value="true-false">True or False</option>
-                                                <option value="short-answer">Question Answers</option>
+                                                <option value="multiple-choice">{t("multipleChoice")}</option>
+                                                <option value="true-false">{t("trueOrFalse")}</option>
+                                                <option value="short-answer">{t("questionAnswers")}</option>
                                             </select>
                                             <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                         </div>
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="text-sm font-medium text-title mb-1 block">Question</label>
+                                        <label className="text-sm font-medium text-title mb-1 block">{t("question")}</label>
                                         <input
                                             value={question.questionText}
                                             onChange={(e) => updateQuizQuestion(question.id, "questionText", e.target.value)}
-                                            placeholder="Write question here..."
+                                            placeholder={t("questionPlaceholder")}
                                             className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                         />
                                     </div>
@@ -229,7 +231,7 @@ const AddQuizModal = ({
 
                                 {question.type === "multiple-choice" && (
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-title block">Options</label>
+                                        <label className="text-sm font-medium text-title block">{t("options")}</label>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                             {question.options.map((option, oIndex) => (
                                                 <div key={oIndex} className="flex items-center gap-2">
@@ -257,7 +259,7 @@ const AddQuizModal = ({
 
                                 {question.type === "true-false" && (
                                     <div className="space-y-2">
-                                        <label className="text-xs font-medium text-title block">Select the correct answer</label>
+                                        <label className="text-xs font-medium text-title block">{t("selectCorrectAnswer")}</label>
                                         <div className="flex gap-3">
                                             {question.options.map((option, oIndex) => (
                                                 <button
@@ -278,11 +280,11 @@ const AddQuizModal = ({
 
                                 {question.type === "short-answer" && (
                                     <div className="space-y-2">
-                                        <label className="text-xs font-medium text-title block">Correct Answer</label>
+                                        <label className="text-xs font-medium text-title block">{t("correctAnswer")}</label>
                                         <input
                                             value={question.answer || ""}
                                             onChange={(e) => updateQuizQuestion(question.id, "answer", e.target.value)}
-                                            placeholder="Write the correct answer here..."
+                                            placeholder={t("correctAnswerPlaceholder")}
                                             className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
                                         />
                                     </div>
@@ -296,7 +298,7 @@ const AddQuizModal = ({
                             className="w-full flex items-center justify-center gap-1.5 px-4 py-3 border-2 border-dashed border-border-light rounded-md text-sm font-medium text-description hover:text-main hover:border-main transition-colors"
                         >
                             <Plus className="w-4 h-4" />
-                            Add Question
+                            {t("addQuestion")}
                         </button>
                     </div>
 
@@ -307,14 +309,14 @@ const AddQuizModal = ({
                             onClick={onClose}
                             className="px-4 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             type="button"
                             onClick={onSave}
                             className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Save Quiz
+                            {t("saveQuiz")}
                         </button>
                     </div>
                 </div>

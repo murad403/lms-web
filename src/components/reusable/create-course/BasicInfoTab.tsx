@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 
 const TITLE_MAX = 80;
@@ -69,6 +70,7 @@ type Props = {
 };
 
 const BasicInfoTab = ({ onNext, onCancel }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     const {
         register,
         trigger,
@@ -95,19 +97,19 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="space-y-6">
-            <h3 className="text-xl font-bold text-title">Basic Information</h3>
+            <h3 className="text-xl font-bold text-title">{t("basicInformation")}</h3>
             <div className="border-b border-border-light" />
 
             {/* Title */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Tittle
+                    {t("title")}
                 </label>
                 <div className="relative">
                     <input
                         {...register("title")}
                         maxLength={TITLE_MAX}
-                        placeholder="You course tittle"
+                        placeholder={t("titlePlaceholder")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
@@ -122,13 +124,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
             {/* Subtitle */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Subtittle
+                    {t("subtitle")}
                 </label>
                 <div className="relative">
                     <input
                         {...register("subtitle")}
                         maxLength={SUBTITLE_MAX}
-                        placeholder="You course subtittle"
+                        placeholder={t("subtitlePlaceholder")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main pr-16"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
@@ -141,13 +143,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Category
+                        {t("courseCategory")}
                     </label>
                     <select
                         {...register("category")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Course Category</option>
+                        <option value="">{t("courseCategoryPlaceholder")}</option>
                         {categoryOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
@@ -160,13 +162,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Sub-category
+                        {t("courseSubCategory")}
                     </label>
                     <select
                         {...register("subCategory")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Course Sub-category</option>
+                        <option value="">{t("courseSubCategoryPlaceholder")}</option>
                         {subCategoryOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
@@ -179,11 +181,11 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
             {/* Course Topic */}
             <div>
                 <label className="text-sm font-medium text-title mb-1.5 block">
-                    Course Topic
+                    {t("courseTopic")}
                 </label>
                 <input
                     {...register("topic")}
-                    placeholder="What is primarily taught in your course?"
+                    placeholder={t("courseTopicPlaceholder")}
                     className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                 />
             </div>
@@ -192,13 +194,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Language
+                        {t("courseLanguage")}
                     </label>
                     <select
                         {...register("language")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Select...</option>
+                        <option value="">{t("selectPlaceholder")}</option>
                         {languageOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
@@ -211,13 +213,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Level
+                        {t("courseLevel")}
                     </label>
                     <select
                         {...register("level")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
-                        <option value="">Select...</option>
+                        <option value="">{t("selectPlaceholder")}</option>
                         {levelOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}
@@ -234,23 +236,23 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Course Price
+                        {t("coursePrice")}
                     </label>
                     <input
                         {...register("price")}
-                        placeholder="$00.00"
+                        placeholder={t("pricePlaceholder")}
                         type="number"
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     />
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Create Coupon Code
+                        {t("createCouponCode")}
                     </label>
                     <div className="flex">
                         <input
                             {...register("couponCode")}
-                            placeholder="ABCUPON"
+                            placeholder={t("couponPlaceholder")}
                             className="flex-1 border border-border-light rounded-l-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                         />
                         <button
@@ -258,24 +260,24 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                             onClick={generateCouponCode}
                             className="p-3 bg-main text-white text-sm font-medium rounded-r-md hover:bg-main/90 transition-colors whitespace-nowrap"
                         >
-                            Generate Code
+                            {t("generateCode")}
                         </button>
                     </div>
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Discount Price ($)
+                        {t("discountPrice")}
                     </label>
                     <input
                         {...register("discountPrice")}
-                        placeholder="$00.00"
+                        placeholder={t("pricePlaceholder")}
                         type="number"
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     />
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        Expiry Period
+                        {t("expiryPeriod")}
                     </label>
                     <select
                         {...register("expiryPeriod")}
@@ -297,13 +299,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                     onClick={onCancel}
                     className="px-5 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                 >
-                    Cancel
+                    {t("cancel")}
                 </button>
                 <button
                     type="submit"
                     className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                 >
-                    Save & Next
+                    {t("saveAndNext")}
                 </button>
             </div>
         </form>

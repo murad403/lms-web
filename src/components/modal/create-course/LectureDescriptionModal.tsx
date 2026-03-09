@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Props = {
@@ -8,11 +9,12 @@ type Props = {
 };
 
 const LectureDescriptionModal = ({ open, onClose, lectureDescription, setLectureDescription }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold text-title">Add Lecture Description</DialogTitle>
+                    <DialogTitle className="text-lg font-bold text-title">{t("addLectureDescTitle")}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-2">
                     <div className="border-2 border-dashed border-main rounded-md p-4">
@@ -20,7 +22,7 @@ const LectureDescriptionModal = ({ open, onClose, lectureDescription, setLecture
                             value={lectureDescription}
                             onChange={(e) => setLectureDescription(e.target.value)}
                             rows={4}
-                            placeholder="Write your lecture description here..."
+                            placeholder={t("lectureDescPlaceholder")}
                             className="w-full text-sm focus:outline-none resize-none"
                         />
                     </div>
@@ -29,13 +31,13 @@ const LectureDescriptionModal = ({ open, onClose, lectureDescription, setLecture
                             onClick={onClose}
                             className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             onClick={onClose}
                             className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Add Description
+                            {t("addDescription")}
                         </button>
                     </div>
                 </div>

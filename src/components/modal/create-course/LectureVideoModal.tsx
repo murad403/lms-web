@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Upload } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -9,11 +10,12 @@ type Props = {
 };
 
 const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold text-title">Lecture Video</DialogTitle>
+                    <DialogTitle className="text-lg font-bold text-title">{t("lectureVideoTitle")}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-2">
                     {uploadedVideo ? (
@@ -23,7 +25,7 @@ const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo }: P
                             </div>
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-xs font-medium text-green-600 uppercase">FILE UPLOADED</span>
+                                    <span className="text-xs font-medium text-green-600 uppercase">{t("fileUploaded")}</span>
                                     <span className="text-xs text-description">• 1:55</span>
                                 </div>
                                 <p className="text-sm text-title truncate">{uploadedVideo.name}</p>
@@ -31,16 +33,16 @@ const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo }: P
                                     onClick={() => setUploadedVideo(null)}
                                     className="text-sm text-main mt-2"
                                 >
-                                    Replace Video
+                                    {t("replaceVideo")}
                                 </button>
                             </div>
                         </div>
                     ) : (
                         <div className="border-2 border-dashed border-border-light rounded-md p-6 text-center">
-                            <p className="text-sm text-description mb-2">Upload Files</p>
+                            <p className="text-sm text-description mb-2">{t("uploadFiles")}</p>
                             <label className="inline-flex items-center gap-2 px-4 py-2 text-main text-sm font-medium hover:text-main/80 cursor-pointer">
                                 <Upload className="w-4 h-4" />
-                                Upload File
+                                {t("uploadFile")}
                                 <input
                                     type="file"
                                     accept="video/*"
@@ -57,7 +59,7 @@ const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo }: P
                                 />
                             </label>
                             <p className="text-xs text-description mt-2">
-                                Note: All files should be at least 720p in a lesson
+                                {t("videoNote")}
                             </p>
                         </div>
                     )}
@@ -66,13 +68,13 @@ const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo }: P
                             onClick={onClose}
                             className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             onClick={onClose}
                             className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Upload Video
+                            {t("uploadVideo")}
                         </button>
                     </div>
                 </div>

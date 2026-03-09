@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, File, Menu, StickyNote, AlignLeft } from "lucide-react";
 import { TCourseSection, TCourseLecture } from "@/lib/instructor";
 import EditLectureModal from "@/components/modal/create-course/EditLectureModal";
@@ -59,6 +60,7 @@ const defaultTrueFalseOptions: QuizOption[] = [
 ];
 
 const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     const [expandedSections, setExpandedSections] = useState<string[]>(
         sections.map((s) => s.id)
     );
@@ -282,7 +284,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
 
     return (
         <div className="space-y-4">
-            <h3 className="text-xl font-bold text-title">Curriculum</h3>
+            <h3 className="text-xl font-bold text-title">{t("curriculum")}</h3>
             <div className="border-b border-border-light" />
 
             {sections.map((section) => (
@@ -343,7 +345,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     )}
 
                                     <span className="flex-1 min-w-0 text-sm text-title truncate">
-                                        Lecture {lIndex + 1}: {lecture.title}
+                                        {t("lecture")} {lIndex + 1}: {lecture.title}
                                     </span>
 
                                     {lecture.duration && (
@@ -412,7 +414,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     className="flex items-center gap-1 p-3 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
-                                    Add Lecture
+                                    {t("addLecture")}
                                 </button>
                                 <button
                                     type="button"
@@ -420,7 +422,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                                     className="flex items-center gap-1 p-3 border border-dashed border-border-light rounded-md text-xs font-medium text-description hover:text-title hover:border-main transition-colors"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
-                                    Add Quiz
+                                    {t("addQuiz")}
                                 </button>
                             </div>
                         </div>
@@ -435,7 +437,7 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                 className="w-full flex items-center justify-center gap-1.5 px-4 py-3 border-2 border-dashed border-border-light rounded-md text-sm font-medium text-description hover:text-main hover:border-main transition-colors"
             >
                 <Plus className="w-4 h-4" />
-                Add New Section
+                {t("addNewSection")}
             </button>
 
             {/* Navigation */}
@@ -445,14 +447,14 @@ const CurriculumTab = ({ sections, setSections, onNext, onPrev }: Props) => {
                     onClick={onPrev}
                     className="px-5 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                 >
-                    Previous
+                    {t("previous")}
                 </button>
                 <button
                     type="button"
                     onClick={onNext}
                     className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                 >
-                    Save & Next
+                    {t("saveAndNext")}
                 </button>
             </div>
 

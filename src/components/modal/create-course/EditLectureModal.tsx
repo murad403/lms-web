@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Props = {
@@ -9,19 +10,20 @@ type Props = {
 };
 
 const EditLectureModal = ({ open, onClose, editingLectureTitle, setEditingLectureTitle, onSave }: Props) => {
+    const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold text-title">Edit Lecture Name</DialogTitle>
+                    <DialogTitle className="text-lg font-bold text-title">{t("editLectureTitle")}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-2">
                     <div>
-                        <label className="text-sm font-medium text-title mb-1.5 block">Lecture Name</label>
+                        <label className="text-sm font-medium text-title mb-1.5 block">{t("lectureName")}</label>
                         <input
                             value={editingLectureTitle}
                             onChange={(e) => setEditingLectureTitle(e.target.value)}
-                            placeholder="Write your lecture name here..."
+                            placeholder={t("lectureNamePlaceholder")}
                             className="w-full border border-border-light rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                         />
                     </div>
@@ -30,13 +32,13 @@ const EditLectureModal = ({ open, onClose, editingLectureTitle, setEditingLectur
                             onClick={onClose}
                             className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             onClick={onSave}
                             className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                         >
-                            Save Changes
+                            {t("saveChanges")}
                         </button>
                     </div>
                 </div>
