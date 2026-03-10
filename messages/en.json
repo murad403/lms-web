@@ -2234,5 +2234,18 @@
     "taxIdVat": "Tax ID / VAT",
     "updatePaymentInfo": "Update Payment Info",
     "updating": "Updating..."
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "showLess": "Show less",
+    "viewAll": "View all notifications"
+  },
+  "UserProfile": {
+    "affiliateUser": "Affiliate User",
+    "affiliateAccount": "Affiliate Account",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logOut": "Log out"
   }
 }

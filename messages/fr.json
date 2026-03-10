@@ -2234,5 +2234,18 @@
     "taxIdVat": "N° fiscal / TVA",
     "updatePaymentInfo": "Mettre à jour les infos de paiement",
     "updating": "Mise à jour..."
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "showLess": "Voir moins",
+    "viewAll": "Voir toutes les notifications"
+  },
+  "UserProfile": {
+    "affiliateUser": "Utilisateur affilié",
+    "affiliateAccount": "Compte affilié",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logOut": "Se déconnecter"
   }
 }

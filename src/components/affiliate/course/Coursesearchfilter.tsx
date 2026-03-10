@@ -20,25 +20,30 @@ export interface CourseSearchFilterProps {
   className?: string;
 }
 
-const defaultCategories = [
-  "All Category",
-  "Developments",
-  "Design",
-  "Marketing",
-  "Business",
-  "Photography",
-  "Music",
-];
-
 export function CourseSearchFilter({
   search = "",
   onSearchChange,
   category = "all",
   onCategoryChange,
-  categories = defaultCategories,
+  categories,
   className = "",
 }: CourseSearchFilterProps) {
   const t = useTranslations("AffiliateCourses");
+
+  const categoryOptions = categories
+    ? categories.map((cat) => ({
+        value: cat === "All Category" ? "all" : cat.toLowerCase(),
+        label: cat,
+      }))
+    : [
+        { value: "all", label: t("allCategory") },
+        { value: "developments", label: t("developments") },
+        { value: "design", label: t("design") },
+        { value: "marketing", label: t("marketing") },
+        { value: "business", label: t("business") },
+        { value: "photography", label: t("photography") },
+        { value: "music", label: t("music") },
+      ];
   return (
     <div className={`flex flex-col sm:flex-row gap-4 ${className} justify-between`}>
       {/* Search */}
@@ -63,12 +68,9 @@ export function CourseSearchFilter({
             <SelectValue placeholder={t("allCategory")} />
           </SelectTrigger>
           <SelectContent>
-            {categories.map((cat) => (
-              <SelectItem
-                key={cat}
-                value={cat === "All Category" ? "all" : cat.toLowerCase()}
-              >
-                {cat}
+            {categoryOptions.map((cat) => (
+              <SelectItem key={cat.value} value={cat.value}>
+                {cat.label}
               </SelectItem>
             ))}
           </SelectContent>

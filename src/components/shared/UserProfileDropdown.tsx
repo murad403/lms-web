@@ -1,6 +1,7 @@
 "use client";
 
 import { UserCircle, Settings, LogOut, ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function UserProfileDropdown() {
+  const t = useTranslations("UserProfile");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,8 +31,8 @@ export function UserProfileDropdown() {
       >
         {/* User Info */}
         <div className="px-4 py-4">
-          <p className="text-base font-bold text-gray-900">Affiliate User</p>
-          <p className="text-sm text-gray-400">Affiliate Account</p>
+          <p className="text-base font-bold text-gray-900">{t("affiliateUser")}</p>
+          <p className="text-sm text-gray-400">{t("affiliateAccount")}</p>
         </div>
 
         <DropdownMenuSeparator className="my-0 bg-gray-100" />
@@ -38,13 +40,13 @@ export function UserProfileDropdown() {
         {/* Profile */}
         <button className="flex items-center gap-3 w-full px-4 py-3.5 text-left hover:bg-gray-50 transition-colors">
           <UserCircle className="w-5 h-5 text-gray-700" />
-          <span className="text-sm font-semibold text-gray-800">Profile</span>
+          <span className="text-sm font-semibold text-gray-800">{t("profile")}</span>
         </button>
 
         {/* Settings */}
         <button className="flex items-center gap-3 w-full px-4 py-3.5 text-left hover:bg-gray-50 transition-colors">
           <Settings className="w-5 h-5 text-gray-700" />
-          <span className="text-sm font-semibold text-gray-800">Settings</span>
+          <span className="text-sm font-semibold text-gray-800">{t("settings")}</span>
         </button>
 
         <DropdownMenuSeparator className="my-0 bg-gray-100" />
@@ -52,7 +54,7 @@ export function UserProfileDropdown() {
         {/* Log out */}
         <button className="flex items-center gap-3 w-full px-4 py-3.5 text-left hover:bg-red-50 transition-colors group">
           <LogOut className="w-5 h-5 text-red-500" />
-          <span className="text-sm font-semibold text-red-500">Log out</span>
+          <span className="text-sm font-semibold text-red-500">{t("logOut")}</span>
         </button>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -2234,5 +2234,18 @@
     "taxIdVat": "Steuer-ID / USt-IdNr.",
     "updatePaymentInfo": "Zahlungsinfo aktualisieren",
     "updating": "Aktualisierung..."
+  },
+  "Notifications": {
+    "title": "Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "showLess": "Weniger anzeigen",
+    "viewAll": "Alle Benachrichtigungen anzeigen"
+  },
+  "UserProfile": {
+    "affiliateUser": "Affiliate-Nutzer",
+    "affiliateAccount": "Affiliate-Konto",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logOut": "Abmelden"
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Bell } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   DropdownMenu,
@@ -72,6 +73,7 @@ const notifications = [
 const PREVIEW_COUNT = 3;
 
 export function NotificationsDropdown() {
+  const t = useTranslations("Notifications");
   const [items, setItems] = useState(notifications);
   const [showAll, setShowAll] = useState(false);
 
@@ -104,13 +106,13 @@ export function NotificationsDropdown() {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
           <span className="text-sm font-semibold text-gray-900">
-            Notifications
+            {t("title")}
           </span>
           <button
             onClick={handleMarkAllRead}
             className="text-xs text-blue-500 hover:text-blue-600 font-medium transition-colors"
           >
-            Mark all read
+            {t("markAllRead")}
           </button>
         </div>
 
@@ -153,7 +155,7 @@ export function NotificationsDropdown() {
             onClick={() => setShowAll((prev) => !prev)}
             className="w-full text-center text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors"
           >
-            {showAll ? "Show less" : "View all notifications"}
+            {showAll ? t("showLess") : t("viewAll")}
           </button>
         </div>
       </DropdownMenuContent>

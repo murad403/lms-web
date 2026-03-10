@@ -2234,5 +2234,18 @@
     "taxIdVat": "Codice fiscale / P.IVA",
     "updatePaymentInfo": "Aggiorna info pagamento",
     "updating": "Aggiornamento..."
+  },
+  "Notifications": {
+    "title": "Notifiche",
+    "markAllRead": "Segna tutto come letto",
+    "showLess": "Mostra meno",
+    "viewAll": "Visualizza tutte le notifiche"
+  },
+  "UserProfile": {
+    "affiliateUser": "Utente affiliato",
+    "affiliateAccount": "Account affiliato",
+    "profile": "Profilo",
+    "settings": "Impostazioni",
+    "logOut": "Esci"
   }
 }

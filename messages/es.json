@@ -2234,5 +2234,18 @@
     "taxIdVat": "NIF / IVA",
     "updatePaymentInfo": "Actualizar info de pago",
     "updating": "Actualizando..."
+  },
+  "Notifications": {
+    "title": "Notificaciones",
+    "markAllRead": "Marcar todo como leído",
+    "showLess": "Ver menos",
+    "viewAll": "Ver todas las notificaciones"
+  },
+  "UserProfile": {
+    "affiliateUser": "Usuario afiliado",
+    "affiliateAccount": "Cuenta de afiliado",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logOut": "Cerrar sesión"
   }
 }

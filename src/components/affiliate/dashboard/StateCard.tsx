@@ -18,7 +18,7 @@ export function AffiliateStatCard({
   title = "Total Clicks",
   value = "3,247",
   change = 12.5,
-  compareLabel = "vs last month",
+  compareLabel = "",
   icon: Icon = MousePointerClick,
   iconClassName = "text-blue-500",
   iconBgClassName = "bg-blue-50",
