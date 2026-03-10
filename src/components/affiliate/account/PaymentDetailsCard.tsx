@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { LayoutGrid } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,8 @@ export function PaymentDetailsCard({
     onSave?.(data);
   };
 
+  const t = useTranslations("AffiliateAccount");
+
   return (
     <div
       className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-6 ${className}`}
@@ -61,7 +64,7 @@ export function PaymentDetailsCard({
           <LayoutGrid className="w-5 h-5 text-green-500" />
         </div>
         <h2 className="text-[18px] font-bold text-background-base">
-          Payment Details
+          {t("paymentDetails")}
         </h2>
       </div>
 
@@ -78,7 +81,7 @@ export function PaymentDetailsCard({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm text-gray-700 font-medium">
-                  IBAN
+                  {t("iban")}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -99,7 +102,7 @@ export function PaymentDetailsCard({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm text-gray-700 font-medium">
-                  Tax ID / VAT
+                  {t("taxIdVat")}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -121,8 +124,8 @@ export function PaymentDetailsCard({
               className="px-6 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg h-11"
             >
               {form.formState.isSubmitting
-                ? "Updating..."
-                : "Update Payment Info"}
+                ? t("updating")
+                : t("updatePaymentInfo")}
             </Button>
           </div>
         </form>

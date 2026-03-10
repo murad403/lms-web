@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 interface CommissionWalletCardProps {
   totalEarned?: number;
   totalPayable?: number;
@@ -26,6 +28,7 @@ export function CommissionWalletCard({
 }: CommissionWalletCardProps) {
   const progress = totalEarned > 0 ? (totalPaid / totalEarned) * 100 : 0;
   const progressPercent = Math.min(Math.max(progress, 0), 100);
+  const t = useTranslations("AffiliateDashboard");
 
   return (
     <div
@@ -38,7 +41,7 @@ export function CommissionWalletCard({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Earned */}
         <div className="flex flex-col gap-1">
-          <p className="text-sm text-gray-400">Total Earned</p>
+          <p className="text-sm text-gray-400">{t("totalEarned")}</p>
           <p className="text-2xl font-bold text-gray-900">
             {formatAmount(totalEarned, currency)}
           </p>
@@ -46,7 +49,7 @@ export function CommissionWalletCard({
 
         {/* Total Payable */}
         <div className="flex flex-col gap-1">
-          <p className="text-sm text-gray-400">Total Payable</p>
+          <p className="text-sm text-gray-400">{t("totalPayable")}</p>
           <p className="text-2xl font-bold text-amber-500">
             {formatAmount(totalPayable, currency)}
           </p>
@@ -54,7 +57,7 @@ export function CommissionWalletCard({
 
         {/* Total Paid */}
         <div className="flex flex-col gap-1">
-          <p className="text-sm text-gray-400">Total Paid</p>
+          <p className="text-sm text-gray-400">{t("totalPaid")}</p>
           <p className="text-2xl font-bold text-green-500">
             {formatAmount(totalPaid, currency)}
           </p>
@@ -64,9 +67,9 @@ export function CommissionWalletCard({
       {/* Payment Progress */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-400">Payment Progress</p>
+          <p className="text-sm text-gray-400">{t("paymentProgress")}</p>
           <p className="text-sm text-gray-500 font-medium">
-            {progressPercent.toFixed(1)}% Paid
+            {progressPercent.toFixed(1)}% {t("paid")}
           </p>
         </div>
         {/* Track */}

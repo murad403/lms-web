@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,8 @@ export function ProfileInformationCard({
     onSave?.(data);
   };
 
+  const t = useTranslations("AffiliateAccount");
+
   return (
     <div
       className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-6 ${className}`}
@@ -58,7 +61,7 @@ export function ProfileInformationCard({
           <UserCircle className="w-5 h-5 text-blue-500" />
         </div>
         <h2 className="text-[18px] font-bold text-background-base">
-          Profile Information
+          {t("profileInformation")}
         </h2>
       </div>
 
@@ -77,12 +80,12 @@ export function ProfileInformationCard({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-gray-700 font-medium">
-                    Full Name
+                    {t("fullName")}
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Full Name"
+                      placeholder={t("fullName")}
                       className="h-11 border-gray-200 text-sm text-gray-800 rounded-lg focus-visible:ring-blue-500"
                     />
                   </FormControl>
@@ -98,13 +101,13 @@ export function ProfileInformationCard({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-gray-700 font-medium">
-                    Email
+                    {t("email")}
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
-                      placeholder="Email"
+                      placeholder={t("email")}
                       className="h-11 border-gray-200 text-sm text-gray-800 rounded-lg focus-visible:ring-blue-500"
                     />
                   </FormControl>
@@ -121,7 +124,7 @@ export function ProfileInformationCard({
               disabled={form.formState.isSubmitting}
               className="px-6 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg h-11"
             >
-              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
+              {form.formState.isSubmitting ? t("saving") : t("saveChanges")}
             </Button>
           </div>
         </form>

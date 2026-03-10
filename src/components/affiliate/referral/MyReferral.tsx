@@ -1,5 +1,7 @@
+"use client";
 import { AffiliateCardLink } from "./AffiliateCardLink";
 import { QuickShareCard } from "./QuickShare";
+import { useTranslations } from "next-intl";
 
 interface MyReferralLinkPageProps {
   affiliateCode?: string;
@@ -12,13 +14,14 @@ export function MyReferralLinkPage({
   referralLink = "https://platform.com/course?id=123&ref=AFF-83921",
   commissionPercent = 15,
 }: MyReferralLinkPageProps) {
+  const t = useTranslations("AffiliateReferral");
   return (
     <div className="flex flex-col gap-3 p-4 sm:p-6 w-full lg:w-2/3">
       {/* Page Title */}
       <div className="flex flex-col gap-1 mb-2">
-        <h1 className="text-xl font-bold text-gray-900">My Referral Link</h1>
+        <h1 className="text-xl font-bold text-gray-900">{t("myReferralLink")}</h1>
         <p className="text-sm text-gray-400">
-          Share your unique referral link to start earning commissions
+          {t("shareDescription")}
         </p>
       </div>
 

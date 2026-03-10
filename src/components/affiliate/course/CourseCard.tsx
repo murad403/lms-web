@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Star, Users, Copy, Check, MoreHorizontal } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface CourseCardProps {
   image: string;
@@ -28,6 +29,7 @@ export function CourseCard({
   className = "",
 }: CourseCardProps) {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations("AffiliateCourses");
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(affiliateUrl);
@@ -71,7 +73,7 @@ export function CourseCard({
           </span>
           <span className="flex items-center gap-1">
             <Users className="w-4 h-4 text-gray-400" />
-            <span>{students.toLocaleString()} students</span>
+            <span>{t("students", { count: students.toLocaleString() })}</span>
           </span>
         </div>
 
@@ -101,7 +103,7 @@ export function CourseCard({
           ) : (
             <Copy className="w-4 h-4" />
           )}
-          {copied ? "Copied!" : "Copy URL"}
+          {copied ? t("copied") : t("copyUrl")}
         </button>
       </div>
     </div>

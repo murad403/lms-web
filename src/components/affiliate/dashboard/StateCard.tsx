@@ -1,6 +1,7 @@
 "use client";
 
 import { MousePointerClick, LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AffiliateStatCardProps {
   title?: string;
@@ -24,6 +25,7 @@ export function AffiliateStatCard({
   className = "",
 }: AffiliateStatCardProps) {
   const isPositive = change >= 0;
+  const t = useTranslations("AffiliateDashboard");
 
   return (
     <div
@@ -50,7 +52,7 @@ export function AffiliateStatCard({
           {isPositive ? "+" : ""}
           {change}%
         </span>
-        <span className="text-gray-400 ml-1">{compareLabel}</span>
+        <span className="text-gray-400 ml-1">{compareLabel || t("vsLastMonth")}</span>
       </p>
     </div>
   );

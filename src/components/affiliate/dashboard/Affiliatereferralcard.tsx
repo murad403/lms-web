@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AffiliateReferralCardProps {
   affiliateCode?: string;
@@ -16,6 +17,7 @@ export function AffiliateReferralCard({
 }: AffiliateReferralCardProps) {
   const [codeCopied, setCodeCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const t = useTranslations("AffiliateDashboard");
 
   const handleCopy = async (text: string, type: "code" | "link") => {
     await navigator.clipboard.writeText(text);
@@ -34,7 +36,7 @@ export function AffiliateReferralCard({
     >
       {/* Affiliate Code */}
       <div className="flex flex-col gap-2">
-        <p className="text-sm text-gray-500 font-medium">Your Affiliate Code</p>
+        <p className="text-sm text-gray-500 font-medium">{t("yourAffiliateCode")}</p>
         <div className="flex items-center gap-3">
           <div className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 bg-white">
             <span className="text-gray-900 font-bold text-sm tracking-wide">
@@ -50,14 +52,14 @@ export function AffiliateReferralCard({
             ) : (
               <Copy className="w-4 h-4" />
             )}
-            {codeCopied ? "Copied!" : "Copy Code"}
+            {codeCopied ? t("copied") : t("copyCode")}
           </button>
         </div>
       </div>
 
       {/* Referral Link */}
       <div className="flex flex-col gap-2">
-        <p className="text-sm text-gray-500 font-medium">Your Referral Link</p>
+        <p className="text-sm text-gray-500 font-medium">{t("yourReferralLink")}</p>
         <div className="flex items-center gap-3">
           <div className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 bg-white overflow-hidden">
             <span className="text-gray-500 text-sm truncate block">
@@ -73,7 +75,7 @@ export function AffiliateReferralCard({
             ) : (
               <Copy className="w-4 h-4" />
             )}
-            {linkCopied ? "Copied!" : "Copy Link"}
+            {linkCopied ? t("copied") : t("copyLink")}
           </button>
         </div>
       </div>

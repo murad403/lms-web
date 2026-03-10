@@ -12,41 +12,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import React from "react";
-
-const demoData = [
-  {
-    title: "Total Clicks Sales",
-    value: "3,247",
-    change: 12.5,
-    icon: MousePointerClick,
-    iconClassName: "text-orange-500",
-    iconBgClassName: "bg-orange-50",
-  },
-  {
-    title: "Total Sales",
-    value: "1,245",
-    change: 8.2,
-    icon: BookOpen,
-    iconClassName: "text-blue-500",
-    iconBgClassName: "bg-blue-50",
-  },
-  {
-    title: "Total Earned",
-    value: "512",
-    change: -4.3,
-    icon: Link2,
-    iconClassName: "text-green-500",
-    iconBgClassName: "bg-green-50",
-  },
-  {
-    title: "Pending Commissions",
-    value: "$12,450",
-    change: 15.7,
-    icon: CreditCard,
-    iconClassName: "text-purple-500",
-    iconBgClassName: "bg-purple-50",
-  },
-];
+import { useTranslations } from "next-intl";
 
 const salesData: SaleRecord[] = [
   {
@@ -152,6 +118,43 @@ const salesData: SaleRecord[] = [
 ];
 
 const Page = () => {
+  const t = useTranslations("AffiliateDashboard");
+
+  const demoData = [
+    {
+      title: t("totalClicksSales"),
+      value: "3,247",
+      change: 12.5,
+      icon: MousePointerClick,
+      iconClassName: "text-orange-500",
+      iconBgClassName: "bg-orange-50",
+    },
+    {
+      title: t("totalSales"),
+      value: "1,245",
+      change: 8.2,
+      icon: BookOpen,
+      iconClassName: "text-blue-500",
+      iconBgClassName: "bg-blue-50",
+    },
+    {
+      title: t("totalEarned"),
+      value: "512",
+      change: -4.3,
+      icon: Link2,
+      iconClassName: "text-green-500",
+      iconBgClassName: "bg-green-50",
+    },
+    {
+      title: t("pendingCommissions"),
+      value: "$12,450",
+      change: 15.7,
+      icon: CreditCard,
+      iconClassName: "text-purple-500",
+      iconBgClassName: "bg-purple-50",
+    },
+  ];
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 xl:p-10 w-full space-y-6 sm:space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
@@ -172,7 +175,7 @@ const Page = () => {
 
       <div>
         <CommissionWalletCard
-          title="Sales Commission Wallet"
+          title={t("salesCommissionWallet")}
           totalEarned={2845.5}
           totalPayable={213.75}
           totalPaid={2631.75}

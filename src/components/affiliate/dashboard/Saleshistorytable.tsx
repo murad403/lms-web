@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Search, Download } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Table,
@@ -115,6 +116,7 @@ export function SalesHistoryTable({
 }: SalesHistoryTableProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const t = useTranslations("AffiliateDashboard");
 
   const filtered = data.filter((row) => {
     const matchesSearch =
@@ -164,14 +166,14 @@ export function SalesHistoryTable({
     >
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-[18px] font-bold  text-gray-900 ">Sales History</h2>
+        <h2 className="text-[18px] font-bold  text-gray-900 ">{t("salesHistory")}</h2>
 
         <div className="flex items-center gap-2 flex-wrap">
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
-              placeholder="Search sales..."
+              placeholder={t("searchSales")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9 h-9 w-full sm:w-40 lg:w-52 text-sm border-gray-200 focus-visible:ring-0"
@@ -181,13 +183,13 @@ export function SalesHistoryTable({
           {/* Status Filter */}
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="h-9 w-28 sm:w-32 lg:w-36 text-sm border-gray-200 focus:ring-0">
-              <SelectValue placeholder="All Status" />
+              <SelectValue placeholder={t("allStatus")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="all">{t("allStatus")}</SelectItem>
+              <SelectItem value="paid">{t("paid")}</SelectItem>
+              <SelectItem value="approved">{t("approved")}</SelectItem>
+              <SelectItem value="pending">{t("pending")}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -199,7 +201,7 @@ export function SalesHistoryTable({
             className="h-9 gap-2 text-sm border-gray-200 text-gray-700 hover:bg-gray-50"
           >
             <Download className="w-4 h-4" />
-            Export
+            {t("export")}
           </Button>
         </div>
       </div>
@@ -210,28 +212,28 @@ export function SalesHistoryTable({
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Order ID
+                {t("orderId")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Course
+                {t("course")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Customer
+                {t("customer")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Price
+                {t("price")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Commission %
+                {t("commissionPercent")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Commission Amount
+                {t("commissionAmount")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Status
+                {t("status")}
               </TableHead>
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
-                Date
+                {t("date")}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -242,7 +244,7 @@ export function SalesHistoryTable({
                   colSpan={8}
                   className="text-center text-sm text-gray-400 py-10"
                 >
-                  No results found.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             ) : (

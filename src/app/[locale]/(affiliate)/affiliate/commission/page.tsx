@@ -8,35 +8,38 @@ import {
   Wallet,
   DollarSign
 } from "lucide-react";
-
-const demoWalletData = [
-  {
-    label: "Total Earned",
-    amount: 213.75,
-    icon: CreditCard,
-    iconClassName: "text-green-500",
-    iconBgClassName: "bg-green-50",
-  },
-  {
-    label: "Pending Payment",
-    amount: 1240.5,
-    icon: Wallet,
-    iconClassName: "text-amber-500",
-    iconBgClassName: "bg-amber-50",
-  },
-  {
-    label: "Total Paid",
-    amount: 75.25,
-    icon: DollarSign,
-    iconClassName: "text-purple-500",
-    iconBgClassName: "bg-purple-50",
-  },
-];
+import { useTranslations } from "next-intl";
 
 const Page = () => {
+  const t = useTranslations("AffiliateCommission");
+
+  const demoWalletData = [
+    {
+      label: t("totalEarned"),
+      amount: 213.75,
+      icon: CreditCard,
+      iconClassName: "text-green-500",
+      iconBgClassName: "bg-green-50",
+    },
+    {
+      label: t("pendingPayment"),
+      amount: 1240.5,
+      icon: Wallet,
+      iconClassName: "text-amber-500",
+      iconBgClassName: "bg-amber-50",
+    },
+    {
+      label: t("totalPaid"),
+      amount: 75.25,
+      icon: DollarSign,
+      iconClassName: "text-purple-500",
+      iconBgClassName: "bg-purple-50",
+    },
+  ];
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
-      <h1 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Commission Wallet</h1>
+      <h1 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">{t("commissionWallet")}</h1>
 
       {/* Responsive grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -55,15 +58,15 @@ const Page = () => {
       </div>
       <div>
         <PaymentProgressCard
-          title="Payment Progress"
-          label="Paid vs Total Earned"
+          title={t("paymentProgress")}
+          label={t("paidVsTotalEarned")}
           percent={92.5}
           className="w-full"
         />
       </div>
       <div>
         <RecentTransactionsCard
-          title="Recent Transactions"
+          title={t("recentTransactions")}
           currency="€"
           className="w-full"
           transactions={[

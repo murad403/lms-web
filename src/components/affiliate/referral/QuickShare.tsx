@@ -1,6 +1,7 @@
 "use client";
 
 import { Share2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface SharePlatform {
   label: string;
@@ -34,11 +35,12 @@ export function QuickShareCard({
   referralLink = "https://platform.com/course?id=123&ref=AFF-83921",
   className = "",
 }: QuickShareCardProps) {
+  const t = useTranslations("AffiliateReferral");
   return (
     <div
       className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-4 ${className}`}
     >
-      <p className="text-[18px] font-bold text-gray-900">Quick Share</p>
+      <p className="text-[18px] font-bold text-gray-900">{t("quickShare")}</p>
 
       <div className="flex items-center gap-3 flex-wrap">
         {platforms.map((platform) => (

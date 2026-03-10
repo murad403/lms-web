@@ -3,12 +3,15 @@ import { PaymentMethodCard } from "@/components/affiliate/payment-status/Payment
 import { PayoutHistoryCard } from "@/components/affiliate/payment-status/Payouthistorycard";
 import { Building2 } from "lucide-react";
 import React from "react";
+import { useTranslations } from "next-intl";
 
-const page = () => {
+const Page = () => {
+  const t = useTranslations("AffiliatePaymentStatus");
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
       <div>
         <PaymentMethodCard
+          title={t("paymentMethod")}
           methodName="Bank Transfer (IBAN)"
           accountNumber="DE89 3704 0044 0532 0130 00"
           note="Payments are processed monthly on the 1st"
@@ -18,7 +21,7 @@ const page = () => {
       </div>
       <div>
         <PayoutHistoryCard
-          title="Payout History"
+          title={t("payoutHistory")}
           currency="€"
           className="w-full"
           payouts={[
@@ -50,4 +53,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

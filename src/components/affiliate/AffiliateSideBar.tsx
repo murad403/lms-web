@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setPageHeader } from "@/redux/slice/pageHeaderSlice";
 import LogoutModal from "../shared/LogoutModal";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function AffiliateSideBar() {
   const pathname = usePathname();
@@ -15,49 +16,50 @@ export function AffiliateSideBar() {
   const locale = params.locale;
   const dispatch = useDispatch();
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const t = useTranslations("AffiliateSidebar");
 
   const routes = [
     {
-      title: "Dashboard",
+      titleKey: "dashboard",
+      infoKey: "dashboardInfo",
       href: `/${locale}/affiliate/overview`,
       icon: LayoutDashboard,
-      info: "Overview of your affiliate stats and earnings",
     },
     {
-      title: "Course Lists",
+      titleKey: "courseLists",
+      infoKey: "courseListsInfo",
       href: `/${locale}/affiliate/courses`,
       icon: BookOpen,
-      info: "View all courses you are promoting",
     },
     {
-      title: "My Referral Link",
+      titleKey: "myReferralLink",
+      infoKey: "myReferralLinkInfo",
       href: `/${locale}/affiliate/my-referral`,
       icon: LinkIcon,
-      info: "Share your referral link and earn commissions",
     },
     {
-      title: "Sales History",
+      titleKey: "salesHistory",
+      infoKey: "salesHistoryInfo",
       href: `/${locale}/affiliate/sales-history`,
       icon: History,
-      info: "Track all your affiliate sales",
     },
     {
-      title: "Commission Wallet",
+      titleKey: "commissionWallet",
+      infoKey: "commissionWalletInfo",
       href: `/${locale}/affiliate/commission`,
       icon: Wallet,
-      info: "View your total commissions and payouts",
     },
     {
-      title: "Payment Status",
+      titleKey: "paymentStatus",
+      infoKey: "paymentStatusInfo",
       href: `/${locale}/affiliate/payment-status`,
       icon: CreditCard,
-      info: "Check your payment history and status",
     },
     {
-      title: "Account Settings",
+      titleKey: "accountSettings",
+      infoKey: "accountSettingsInfo",
       href: `/${locale}/affiliate/account-setting`,
       icon: Settings,
-      info: "Update your account and profile settings",
     },
   ];
 
@@ -67,18 +69,18 @@ export function AffiliateSideBar() {
     if (activeRoute) {
       dispatch(
         setPageHeader({
-          title: activeRoute.title,
-          info: activeRoute.info,
+          title: t(activeRoute.titleKey),
+          info: t(activeRoute.infoKey),
         }),
       );
     }
-  }, [pathname, dispatch]);
+  }, [pathname, dispatch, t]);
 
   return (
     <Sidebar className="border-r-0">
       <SidebarHeader className="bg-background-base py-4">
         <Link href={"/"} className="flex items-center gap-4 justify-center">
-          <div className="rounded-lg bg-[#042F54] p-2">
+          <div className="rounded-lg bg-navy-blue p-2">
             <GraduationCap className="w-8 h-8 text-nav-text-active" />
           </div>
           <span className="text-[28px] font-bold text-nav-text-active">
@@ -104,7 +106,7 @@ export function AffiliateSideBar() {
                   }`}
               >
                 <Icon size={18} />
-                {route.title}
+                {t(route.titleKey)}
               </Link>
             );
           })}
@@ -114,7 +116,7 @@ export function AffiliateSideBar() {
             className="flex items-center gap-3 px-4 py-3 rounded-md text-[14px] font-medium transition-all text-nav-text hover:bg-white/5 hover:text-white w-full"
           >
             <LogOut size={18} />
-            Logout
+            {t("logout")}
           </button>
         </div>
       </SidebarContent>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Link2, Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AffiliateCardProps {
   affiliateCode?: string;
@@ -17,6 +18,7 @@ export function AffiliateCardLink({
   className = "",
 }: AffiliateCardProps) {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations("AffiliateReferral");
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(referralLink);
@@ -35,9 +37,9 @@ export function AffiliateCardLink({
         </div>
         <div>
           <p className="text-[18px] font-bold text-gray-900">
-            Your Affiliate Link
+            {t("yourAffiliateLink")}
           </p>
-          <p className="text-sm text-gray-500">Code: {affiliateCode}</p>
+          <p className="text-sm text-gray-500">{t("code", { code: affiliateCode })}</p>
         </div>
       </div>
 
@@ -57,16 +59,14 @@ export function AffiliateCardLink({
           ) : (
             <Copy className="w-4 h-4" />
           )}
-          {copied ? "Copied!" : "Copy Link"}
+          {copied ? t("copied") : t("copyLink")}
         </button>
       </div>
 
       {/* Tip */}
       <div className="bg-blue-50 rounded-xl px-4 py-3 text-sm text-blue-600">
-        <span className="font-semibold">Tip:</span> Share this link on your
-        blog, social media, or email to start earning{" "}
-        <span className="font-semibold">{commissionPercent}% commission</span>{" "}
-        on every sale!
+        <span className="font-semibold">{t("tip")}</span>{" "}
+        {t("tipText", { percent: commissionPercent })}
       </div>
     </div>
   );
