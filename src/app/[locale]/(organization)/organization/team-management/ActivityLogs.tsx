@@ -1,14 +1,17 @@
+"use client";
 import { activityLogs } from '@/lib/organization'
 import { Clock } from 'lucide-react'
 import Image from 'next/image'
 import avatar from "@/assets/for-school/image1.png"
+import { useTranslations } from 'next-intl';
 
 const ActivityLogs = () => {
+    const t = useTranslations("OrganizationTeamManagement");
     return (
         <div className='bg-white border border-border-light p-5 rounded-md'>
             <div className='mb-6'>
-                <h3 className="text-lg font-semibold text-title">Recent Activity</h3>
-                <p className='text-sm text-description'>Track what your team members are doing</p>
+                <h3 className="text-lg font-semibold text-title">{t("recentActivity")}</h3>
+                <p className='text-sm text-description'>{t("trackDesc")}</p>
             </div>
             <div className="space-y-4">
                 {activityLogs.map((log) => (

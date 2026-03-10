@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ContractDetailsModal from '@/components/modal/ContractDetailsModal'
 import EditContractModal from '@/components/modal/EditContractModal'
+import { useTranslations } from 'next-intl';
 
 const statusColors: Record<string, string> = {
     Active: "bg-green-50 text-green-700",
@@ -13,6 +14,7 @@ const statusColors: Record<string, string> = {
 };
 
 const ContractList = () => {
+    const t = useTranslations("OrganizationContracts");
     const [openAction, setOpenAction] = useState<string | null>(null);
     const [roleFilter, setRoleFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
@@ -47,7 +49,7 @@ const ContractList = () => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
                     <input
                         type="text"
-                        placeholder="Search Courses ...."
+                        placeholder={t("searchPlaceholder")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-4 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title placeholder:text-description"
@@ -59,9 +61,9 @@ const ContractList = () => {
                         onChange={(e) => setRoleFilter(e.target.value)}
                         className="appearance-none pl-4 pr-9 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title cursor-pointer"
                     >
-                        <option>All Roles</option>
-                        <option>Instructors</option>
-                        <option>Managers</option>
+                        <option>{t("allRoles")}</option>
+                        <option>{t("instructors")}</option>
+                        <option>{t("managers")}</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description pointer-events-none" />
                 </div>
@@ -71,12 +73,12 @@ const ContractList = () => {
                 <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
-                            <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Course</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Revenue Share</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Expiry</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Status</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Actions</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("instructor")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("course")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("revenueShare")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("expiry")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("status")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("actions")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,18 +125,18 @@ const ContractList = () => {
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
                                                     <Eye className="w-4 h-4 inline mr-2"/>
-                                                    View Details
+                                                    {t("viewDetails")}
                                                 </button>
                                                 <button
                                                     onClick={() => handleEditContract(contract)}
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
                                                     <SquarePen className="w-4 h-4 inline mr-2"/>
-                                                    Edit Contract
+                                                    {t("editContract")}
                                                 </button>
                                                 <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
                                                     <ShieldX className="w-4 h-4 inline mr-2" />
-                                                    Terminate</button>
+                                                    {t("terminate")}</button>
                                             </div>
                                         )}
                                     </div>

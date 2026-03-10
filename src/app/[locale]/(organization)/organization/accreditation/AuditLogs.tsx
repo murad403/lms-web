@@ -3,8 +3,10 @@ import React from "react";
 import { Download, Clock } from "lucide-react";
 import { jsPDF } from "jspdf";
 import { auditLogs } from "@/lib/organization";
+import { useTranslations } from "next-intl";
 
 const AuditLogs = () => {
+  const t = useTranslations("OrganizationAccreditation");
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
 
@@ -57,15 +59,15 @@ const AuditLogs = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-title">Audit Logs</h3>
-          <p className="text-sm text-description mt-1">Track all accreditation and compliance activities</p>
+          <h3 className="text-lg font-semibold text-title">{t("auditLogs")}</h3>
+          <p className="text-sm text-description mt-1">{t("trackActivities")}</p>
         </div>
         <button
           onClick={handleDownloadPDF}
           className="flex items-center gap-2 px-5 py-2.5 bg-main text-white text-sm font-medium rounded-lg hover:bg-main/90 transition-colors"
         >
           <Download className="w-4 h-4" />
-          Audit Logs
+          {t("downloadAuditLogs")}
         </button>
       </div>
 
@@ -96,7 +98,7 @@ const AuditLogs = () => {
 
         {auditLogs.length === 0 && (
           <div className="text-center py-12 text-description text-sm">
-            No audit logs available.
+            {t("noLogs")}
           </div>
         )}
       </div>

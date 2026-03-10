@@ -6,6 +6,7 @@ import ContractStats from "./ContractStats";
 import ContractList from "./ContractList";
 import RevenueSplit from "./RevenueSplit";
 import AddContractModal, { AddContractForm } from "@/components/modal/AddContractModal";
+import { useTranslations } from "next-intl";
 
 type Tab = "list" | "revenue";
 
@@ -14,10 +15,11 @@ const ContractsPage = () => {
   const [showAddContract, setShowAddContract] = useState(false);
 
   const form = useForm<AddContractForm>();
+  const t = useTranslations("OrganizationContracts");
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "list", label: "Contracts List" },
-    { key: "revenue", label: "Revenue Split" },
+  const tabs: { key: Tab; labelKey: string }[] = [
+    { key: "list", labelKey: "contractsList" },
+    { key: "revenue", labelKey: "revenueSplit" },
   ];
 
   const handleAddContract = (data: AddContractForm) => {
@@ -31,14 +33,14 @@ const ContractsPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-title">Contracts</h1>
-          <p className="text-sm text-description mt-1">Manage instructor contracts and revenue splits</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-title">{t("title")}</h1>
+          <p className="text-sm text-description mt-1">{t("description")}</p>
         </div>
         <button
           onClick={() => setShowAddContract(true)}
           className="flex items-center gap-2 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors w-full sm:w-auto justify-center sm:justify-start"
         >
-          <Plus className="w-4 h-4" /> Add Contract
+          <Plus className="w-4 h-4" /> {t("addContract")}
         </button>
       </div>
 
@@ -58,7 +60,7 @@ const ContractsPage = () => {
                   : "text-description hover:bg-gray-100"
                   }`}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </div>

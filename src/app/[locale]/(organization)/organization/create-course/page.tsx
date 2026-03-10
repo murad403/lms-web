@@ -10,15 +10,16 @@ import AdvanceInfoTab, { advanceInfoSchema } from "@/components/reusable/create-
 import PublishCourseTab from "@/components/reusable/create-course/PublishCourseTab";
 import { TCourseSection } from "@/lib/instructor";
 import CurriculumTab from "@/components/reusable/create-course/CurriculumTab";
+import { useTranslations } from "next-intl";
 
 const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
 type CourseFormData = z.infer<typeof courseFormSchema>;
 
 const tabs = [
-    { id: 0, label: "Basic Information", icon: Layers },
-    { id: 1, label: "Advance Information", icon: FileText },
-    { id: 2, label: "Curriculum", icon: Play },
-    { id: 3, label: "Publish Course", icon: Globe },
+    { id: 0, labelKey: "basicInformation" as const, icon: Layers },
+    { id: 1, labelKey: "advanceInformation" as const, icon: FileText },
+    { id: 2, labelKey: "curriculum" as const, icon: Play },
+    { id: 3, labelKey: "publishCourse" as const, icon: Globe },
 ];
 
 const defaultSections: TCourseSection[] = [
@@ -33,6 +34,7 @@ const defaultSections: TCourseSection[] = [
 ];
 
 const CreateCoursePage = () => {
+    const t = useTranslations("InstructorCreateCourse");
     const searchParams = useSearchParams();
     const editId = searchParams.get("edit");
     const isEdit = !!editId;
@@ -182,7 +184,7 @@ const CreateCoursePage = () => {
                                 >
                                     <Icon className={`w-5 h-5 ${isActive ? 'text-main' : isCompleted ? 'text-green-500' : 'text-description'}`} />
                                     <span className={`text-sm font-medium hidden sm:block ${isActive ? 'text-main' : isCompleted ? 'text-title' : 'text-description'}`}>
-                                        {tab.label}
+                                        {t(tab.labelKey)}
                                     </span>
                                     {isCompleted && (
                                         <div className="flex items-center text-green-500">

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Upload } from "lucide-react";
 import { photoAndBannerSchema } from "@/validation/auth.validation";
+import { useTranslations } from "next-intl";
 
 type PhotoAndBannerFormData = z.infer<typeof photoAndBannerSchema>;
 
@@ -15,6 +16,7 @@ const PhotoAndBanner = () => {
 
   const photoInputRef = useRef<HTMLInputElement>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations("OrganizationSettings");
 
   const {
     setValue,
@@ -57,7 +59,7 @@ const PhotoAndBanner = () => {
           {/* Overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-black/50 py-2 flex items-center justify-center gap-1.5">
             <Upload className="w-3.5 h-3.5 text-white" />
-            <span className="text-white text-xs font-medium">Upload Photo</span>
+            <span className="text-white text-xs font-medium">{t("uploadPhoto")}</span>
           </div>
           <input
             ref={photoInputRef}
@@ -80,7 +82,7 @@ const PhotoAndBanner = () => {
           {/* Overlay */}
           <div className="absolute bottom-3 right-3 bg-black/50 rounded-md px-3 py-1.5 flex items-center gap-1.5">
             <Upload className="w-3.5 h-3.5 text-white" />
-            <span className="text-white text-xs font-medium">Upload Banner</span>
+            <span className="text-white text-xs font-medium">{t("uploadBanner")}</span>
           </div>
           <input
             ref={bannerInputRef}

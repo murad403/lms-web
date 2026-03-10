@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ChevronDown } from "lucide-react";
 import { accountSettingsSchema } from "@/validation/auth.validation";
+import { useTranslations } from "next-intl";
 
 type AccountSettingsFormData = z.infer<typeof accountSettingsSchema>;
 
@@ -21,6 +22,7 @@ const countryCodes = [
 const AccountSettings = () => {
     const [showCodeDropdown, setShowCodeDropdown] = useState(false);
     const [titleLength, setTitleLength] = useState(0);
+    const t = useTranslations("OrganizationSettings");
 
     const {
         register,
@@ -46,15 +48,15 @@ const AccountSettings = () => {
 
     return (
         <div className="bg-white border border-border-light p-6 mt-4 rounded-md">
-            <h2 className="text-lg font-bold text-title mb-6">Account Settings</h2>
+            <h2 className="text-lg font-bold text-title mb-6">{t("accountSettings")}</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 {/* School Name */}
                 <div>
-                    <label className="block text-sm text-description mb-1.5">School Name</label>
+                    <label className="block text-sm text-description mb-1.5">{t("schoolName")}</label>
                     <input
                         {...register("schoolName")}
-                        placeholder="Name of the School"
+                        placeholder={t("schoolNamePlaceholder")}
                         className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
                     />
                     {errors.schoolName && (
@@ -64,10 +66,10 @@ const AccountSettings = () => {
 
                 {/* Username */}
                 <div>
-                    <label className="block text-sm text-description mb-1.5">Username</label>
+                    <label className="block text-sm text-description mb-1.5">{t("username")}</label>
                     <input
                         {...register("username")}
-                        placeholder="Enter your username"
+                        placeholder={t("usernamePlaceholder")}
                         className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
                     />
                     {errors.username && (
@@ -77,7 +79,7 @@ const AccountSettings = () => {
 
                 {/* Phone Number */}
                 <div>
-                    <label className="block text-sm text-description mb-1.5">Phone Number</label>
+                    <label className="block text-sm text-description mb-1.5">{t("phoneNumber")}</label>
                     <div className="flex items-stretch border border-border-light focus-within:border-main overflow-visible">
                         {/* Country code selector */}
                         <div className="relative">
@@ -112,7 +114,7 @@ const AccountSettings = () => {
                         <input
                             {...register("phone")}
                             type="tel"
-                            placeholder="Your Phone number..."
+                            placeholder={t("phonePlaceholder")}
                             className="flex-1 px-4 py-2.5 text-sm focus:outline-none text-title placeholder:text-description bg-transparent"
                         />
                     </div>
@@ -123,14 +125,14 @@ const AccountSettings = () => {
 
                 {/* Title */}
                 <div>
-                    <label className="block text-sm text-description mb-1.5">Tittle</label>
+                    <label className="block text-sm text-description mb-1.5">{t("title")}</label>
                     <div className="relative">
                         <input
                             {...register("title", {
                                 onChange: (e) => setTitleLength(e.target.value.length),
                             })}
                             maxLength={50}
-                            placeholder="Your tittle, proffesion or small biography"
+                            placeholder={t("titlePlaceholder")}
                             className="w-full px-4 py-2.5 pr-14 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
                         />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
@@ -144,11 +146,11 @@ const AccountSettings = () => {
 
                 {/* Biography */}
                 <div>
-                    <label className="block text-sm text-description mb-1.5">Biography</label>
+                    <label className="block text-sm text-description mb-1.5">{t("biography")}</label>
                     <textarea
                         {...register("biography")}
                         rows={4}
-                        placeholder="small biography"
+                        placeholder={t("biographyPlaceholder")}
                         className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description resize-none"
                     />
                 </div>
@@ -160,7 +162,7 @@ const AccountSettings = () => {
                         disabled={isSubmitting}
                         className="px-6 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-60"
                     >
-                        {isSubmitting ? "Saving..." : "Save Changes"}
+                        {isSubmitting ? t("saving") : t("saveChanges")}
                     </button>
                 </div>
             </form>

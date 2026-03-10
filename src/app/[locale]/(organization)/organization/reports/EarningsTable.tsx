@@ -2,6 +2,7 @@
 import { Calendar } from 'lucide-react'
 import { earnings } from '@/lib/organization'
 import { useState, useRef, useEffect } from 'react'
+import { useTranslations } from 'next-intl';
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -17,6 +18,7 @@ function getMonthRange(year: number, month: number) {
 }
 
 const EarningsTable = () => {
+  const t = useTranslations("OrganizationReports");
   const [selectedYear, setSelectedYear] = useState(2025);
   const [selectedMonth, setSelectedMonth] = useState(0); // 0 = January
   const [open, setOpen] = useState(false);
@@ -38,7 +40,7 @@ const EarningsTable = () => {
   return (
     <div className="bg-white rounded-md">
       <div className="p-5 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-title">Earnings</h3>
+        <h3 className="text-lg font-semibold text-title">{t("earnings")}</h3>
 
         {/* Date Range Picker */}
         <div className="relative" ref={pickerRef}>
@@ -94,10 +96,10 @@ const EarningsTable = () => {
         <table className="w-full min-w-[600px] text-sm">
           <thead>
             <tr className="border-b border-border-light">
-              <th className="text-left py-3 font-semibold text-title">Order ID</th>
-              <th className="text-left py-3 font-semibold text-title">Date</th>
-              <th className="text-left py-3 font-semibold text-title">Course</th>
-              <th className="text-left py-3 font-semibold text-title">Amount</th>
+              <th className="text-left py-3 font-semibold text-title">{t("orderId")}</th>
+              <th className="text-left py-3 font-semibold text-title">{t("date")}</th>
+              <th className="text-left py-3 font-semibold text-title">{t("course")}</th>
+              <th className="text-left py-3 font-semibold text-title">{t("amount")}</th>
             </tr>
           </thead>
           <tbody>

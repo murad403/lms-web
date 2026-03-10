@@ -3,6 +3,7 @@ import { teamMembers, TTeamMember } from '@/lib/organization';
 import { MoreVertical, SquarePen, Trash2, UserRoundX } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl';
 
 const roleBadgeColors: Record<string, string> = {
     Admin: "bg-purple-50 text-purple-700",
@@ -23,18 +24,19 @@ type Props = {
 
 const TeamMembersTab = ({ onEditPermission }: Props) => {
     const [openAction, setOpenAction] = useState<string | null>(null);
+    const t = useTranslations("OrganizationTeamManagement");
     return (
         <div className="bg-white border border-border-light rounded-md">
             <div className="overflow-x-auto">
                 <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
-                            <th className="text-left py-3 px-4 font-semibold text-main">Member</th>
-                            <th className="text-left py-3 px-4 font-semibold text-main">Email</th>
-                            <th className="text-left py-3 px-4 font-semibold text-main">Role</th>
-                            <th className="text-left py-3 px-4 font-semibold text-main">Last Login</th>
-                            <th className="text-left py-3 px-4 font-semibold text-main">Status</th>
-                            <th className="text-left py-3 px-4 font-semibold text-main">Actions</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("member")}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("email")}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("role")}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("lastLogin")}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("status")}</th>
+                            <th className="text-left py-3 px-4 font-semibold text-main">{t("actions")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,15 +77,15 @@ const TeamMembersTab = ({ onEditPermission }: Props) => {
                                                     className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50"
                                                 >
                                                     <SquarePen className="w-4 h-4 mr-2 inline" />
-                                                    Edit Role
+                                                    {t("editRole")}
                                                 </button>
                                                 <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                     <UserRoundX className="w-4 h-4 mr-2 inline" />
-                                                    {member.status === "Suspended" ? "Activate" : "Suspend"}
+                                                    {member.status === "Suspended" ? t("activate") : t("suspend")}
                                                 </button>
                                                 <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
                                                     <Trash2 className="w-4 h-4 mr-2 inline" />
-                                                    Remove Member
+                                                    {t("removeMember")}
                                                 </button>
                                             </div>
                                         )}

@@ -5,6 +5,7 @@ import ProfileTabs from '@/components/reusable/for-dashboard/ProfileTabs'
 import { instructorProfile, instructorCourses } from '@/lib/instructor'
 import Image from 'next/image'
 import { Star, Upload, Users, CirclePlay } from 'lucide-react'
+import { useTranslations } from 'next-intl';
 
 const publicReviews = [
   {
@@ -70,6 +71,7 @@ const Page = () => {
   const [avatarSrc, setAvatarSrc] = useState(profile.avatar);
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations("OrganizationProfile");
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -106,7 +108,7 @@ const Page = () => {
               className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 hover:bg-white text-sm font-medium text-title px-4 py-2 rounded shadow transition-colors"
             >
               <Upload className="w-4 h-4" />
-              Upload Banner
+              {t("uploadBanner")}
             </button>
           </div>
 
@@ -137,7 +139,7 @@ const Page = () => {
 
             {/* Name, bio, stats */}
             <div className="mt-4 space-y-2">
-              <h1 className="text-2xl font-bold text-title">School Name</h1>
+              <h1 className="text-2xl font-bold text-title">{t("schoolName")}</h1>
               <p className="text-sm text-description max-w-md leading-relaxed">
                 {profile.bio.slice(0, 140)}
               </p>
@@ -145,17 +147,17 @@ const Page = () => {
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   <span className="text-sm font-semibold text-title">5.0</span>
-                  <span className="text-sm text-description">(500 review)</span>
+                  <span className="text-sm text-description">(500 {t("review")})</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-4 h-4 text-description" />
                   <span className="text-sm font-bold text-title">500</span>
-                  <span className="text-sm text-description">students</span>
+                  <span className="text-sm text-description">{t("students")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CirclePlay className="w-4 h-4 text-main" />
                   <span className="text-sm font-bold text-title">10</span>
-                  <span className="text-sm text-description">courses</span>
+                  <span className="text-sm text-description">{t("courses")}</span>
                 </div>
               </div>
             </div>

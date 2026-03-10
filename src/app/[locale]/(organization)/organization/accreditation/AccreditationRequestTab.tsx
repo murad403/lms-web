@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Search, ChevronDown, Eye } from "lucide-react";
 import { accreditationSubmissions, TAccreditationSubmission } from "@/lib/instructor";
 import ReviewCourseModal from "@/components/modal/ReviewCourseModal";
+import { useTranslations } from "next-intl";
 
 const statusColors: Record<string, string> = {
     Approved: "bg-green-50 text-green-700",
@@ -13,12 +14,19 @@ const statusColors: Record<string, string> = {
 };
 
 const AccreditationRequestTab = () => {
+    const t = useTranslations("OrganizationAccreditation");
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("All Status");
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState<TAccreditationSubmission | null>(null);
 
-    const statuses = ["All Status", "Approved", "Pending", "Needs Revision", "Rejected"];
+    const statuses = [
+        { value: "All Status", labelKey: "allStatus" as const },
+        { value: "Approved", labelKey: "approved" as const },
+        { value: "Pending", labelKey: "pending" as const },
+        { value: "Needs Revision", labelKey: "needsRevision" as const },
+        { value: "Rejected", labelKey: "rejected" as const },
+    ];
 
     const filtered = accreditationSubmissions.filter((s) => {
         const matchSearch =
@@ -42,7 +50,7 @@ const AccreditationRequestTab = () => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
                     <input
                         type="text"
-                        placeholder="Search Courses ...."
+                        placeholder={t("searchPlaceholder")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-4 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title placeholder:text-description"
@@ -53,21 +61,21 @@ const AccreditationRequestTab = () => {
                         onClick={() => setShowDropdown(!showDropdown)}
                         className="flex items-center gap-2 px-4 py-2.5 text-sm border border-border-light rounded-lg text-description bg-white min-w-36"
                     >
-                        {statusFilter}
+                        {statuses.find(s => s.value === statusFilter) ? t(statuses.find(s => s.value === statusFilter)!.labelKey) : statusFilter}
                         <ChevronDown className="w-4 h-4 ml-auto" />
                     </button>
                     {showDropdown && (
                         <div className="absolute right-0 top-11 bg-white shadow-lg border border-border-light rounded-lg z-10 w-44">
                             {statuses.map((s) => (
                                 <button
-                                    key={s}
+                                    key={s.value}
                                     onClick={() => {
-                                        setStatusFilter(s);
+                                        setStatusFilter(s.value);
                                         setShowDropdown(false);
                                     }}
-                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${statusFilter === s ? "text-main font-medium" : "text-title"}`}
+                                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${statusFilter === s.value ? "text-main font-medium" : "text-title"}`}
                                 >
-                                    {s}
+                                    {t(s.labelKey)}
                                 </button>
                             ))}
                         </div>
@@ -80,12 +88,12 @@ const AccreditationRequestTab = () => {
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
-                            <th className="text-left py-3 px-4 font-medium text-title">Course</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Accreditation Course</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Submitted</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Status</th>
-                            <th className="text-left py-3 px-4 font-medium text-title">Actions</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("course")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("instructor")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("accreditationCourse")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("submitted")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("status")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-title">{t("actions")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +127,7 @@ const AccreditationRequestTab = () => {
                                         className="flex items-center gap-1.5 text-main hover:text-main/80 text-sm font-medium"
                                     >
                                         <Eye className="w-4 h-4" />
-                                        Review
+                                        {t("review")}
                                     </button>
                                 </td>
                             </tr>
@@ -129,7 +137,7 @@ const AccreditationRequestTab = () => {
 
                 {filtered.length === 0 && (
                     <div className="text-center py-12 text-description text-sm">
-                        No accreditation requests found.
+                        {t("noRequests")}
                     </div>
                 )}
             </div>

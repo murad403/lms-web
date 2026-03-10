@@ -1,21 +1,23 @@
 "use client";
 import React from "react";
 import { CheckSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const CertificateRules = () => {
+    const t = useTranslations("OrganizationAccreditation");
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1: Attendance Requirements (left) */}
             <div className="border border-border-light rounded-md p-6 space-y-5">
                 <div>
-                    <h3 className="text-base font-semibold text-title">Attendance Requirements</h3>
-                    <p className="text-sm text-description mt-1">Minimum attendance for certification eligibility</p>
+                    <h3 className="text-base font-semibold text-title">{t("attendanceRequirements")}</h3>
+                    <p className="text-sm text-description mt-1">{t("minAttendanceDesc")}</p>
                 </div>
 
                 {/* Progress Bar */}
                 <div>
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-description">Minimum Attendance</span>
+                        <span className="text-sm text-description">{t("minimumAttendance")}</span>
                         <span className="text-sm font-semibold text-title">70%</span>
                     </div>
                     <div className="w-full h-2.5 bg-gray-100 rounded-full">
@@ -25,12 +27,12 @@ const CertificateRules = () => {
 
                 {/* Validation Rules */}
                 <div>
-                    <h4 className="text-sm font-semibold text-title mb-3">Validation Rules</h4>
+                    <h4 className="text-sm font-semibold text-title mb-3">{t("validationRules")}</h4>
                     <div className="space-y-3">
-                        {["Must attend live sessions", "Complete all assignments", "Pass mid-term assessment"].map((rule, i) => (
+                        {(["mustAttendLive", "completeAssignments", "passMidterm"] as const).map((ruleKey, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <CheckSquare className="w-5 h-5 text-[#042F54] shrink-0" />
-                                <span className="text-sm text-description">{rule}</span>
+                                <span className="text-sm text-description">{t(ruleKey)}</span>
                             </div>
                         ))}
                     </div>
@@ -40,14 +42,14 @@ const CertificateRules = () => {
             {/* Card 2: Attendance Requirements (right) */}
             <div className="border border-border-light rounded-md p-6 space-y-5">
                 <div>
-                    <h3 className="text-base font-semibold text-title">Attendance Requirements</h3>
-                    <p className="text-sm text-description mt-1">Examination and assessment criteria</p>
+                    <h3 className="text-base font-semibold text-title">{t("attendanceRequirements")}</h3>
+                    <p className="text-sm text-description mt-1">{t("examinationDesc")}</p>
                 </div>
 
                 {/* Progress Bar */}
                 <div>
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-description">Minimum Attendance</span>
+                        <span className="text-sm text-description">{t("minimumAttendance")}</span>
                         <span className="text-sm font-semibold text-title">70%</span>
                     </div>
                     <div className="w-full h-2.5 bg-gray-100 rounded-full">
@@ -57,12 +59,12 @@ const CertificateRules = () => {
 
                 {/* Validation Rules */}
                 <div>
-                    <h4 className="text-sm font-semibold text-title mb-3">Validation Rules</h4>
+                    <h4 className="text-sm font-semibold text-title mb-3">{t("validationRules")}</h4>
                     <div className="space-y-3">
-                        {["Final exam mandatory", "Practical assessment required", "Proctored exam environment"].map((rule, i) => (
+                        {(["finalExamMandatory", "practicalAssessment", "proctoredExam"] as const).map((ruleKey, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <CheckSquare className="w-5 h-5 text-[#042F54] shrink-0" />
-                                <span className="text-sm text-description">{rule}</span>
+                                <span className="text-sm text-description">{t(ruleKey)}</span>
                             </div>
                         ))}
                     </div>
@@ -72,14 +74,14 @@ const CertificateRules = () => {
             {/* Card 3: Certificate Validity */}
             <div className="border border-border-light rounded-md p-6 space-y-5">
                 <div>
-                    <h3 className="text-base font-semibold text-title">Certificate Validity</h3>
-                    <p className="text-sm text-description mt-1">Expiration and renewal policies</p>
+                    <h3 className="text-base font-semibold text-title">{t("certificateValidity")}</h3>
+                    <p className="text-sm text-description mt-1">{t("expirationDesc")}</p>
                 </div>
 
                 {/* Progress Bar */}
                 <div>
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-description">Minimum Attendance</span>
+                        <span className="text-sm text-description">{t("minimumAttendance")}</span>
                         <span className="text-sm font-semibold text-title">70%</span>
                     </div>
                     <div className="w-full h-2.5 bg-gray-100 rounded-full">
@@ -89,16 +91,16 @@ const CertificateRules = () => {
 
                 {/* Key-Value Pairs */}
                 <div className="space-y-3">
-                    {[
-                        { label: "Validity Period", value: "24 months" },
-                        { label: "Exclusions", value: "Non-transferable" },
-                        { label: "Coverage Limits", value: "Single program" },
-                        { label: "Claim Process", value: "Online portal" },
-                        { label: "Premium Payment", value: "Per certificate" },
-                    ].map((item, i) => (
+                    {([
+                        { labelKey: "validityPeriod", valueKey: "months24" },
+                        { labelKey: "exclusions", valueKey: "nonTransferable" },
+                        { labelKey: "coverageLimits", valueKey: "singleProgram" },
+                        { labelKey: "claimProcess", valueKey: "onlinePortal" },
+                        { labelKey: "premiumPayment", valueKey: "perCertificate" },
+                    ] as const).map((item, i) => (
                         <div key={i} className="flex items-center justify-between">
-                            <span className="text-sm text-description">{item.label}</span>
-                            <span className="text-sm font-medium text-title">{item.value}</span>
+                            <span className="text-sm text-description">{t(item.labelKey)}</span>
+                            <span className="text-sm font-medium text-title">{t(item.valueKey)}</span>
                         </div>
                     ))}
                 </div>
@@ -107,14 +109,14 @@ const CertificateRules = () => {
             {/* Card 4: Compliance Checklist */}
             <div className="border border-border-light rounded-md p-6 space-y-5">
                 <div>
-                    <h3 className="text-base font-semibold text-title">Compliance Checklist</h3>
-                    <p className="text-sm text-description mt-1">Requirements for accreditation approval</p>
+                    <h3 className="text-base font-semibold text-title">{t("complianceChecklist")}</h3>
+                    <p className="text-sm text-description mt-1">{t("complianceDesc")}</p>
                 </div>
 
                 {/* Progress Bar */}
                 <div>
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-description">Minimum Attendance</span>
+                        <span className="text-sm text-description">{t("minimumAttendance")}</span>
                         <span className="text-sm font-semibold text-title">70%</span>
                     </div>
                     <div className="w-full h-2.5 bg-gray-100 rounded-full">
@@ -124,16 +126,10 @@ const CertificateRules = () => {
 
                 {/* Checklist */}
                 <div className="space-y-3">
-                    {[
-                        "Course syllabus reviewed",
-                        "Learning objectives defined",
-                        "Assessment methods validated",
-                        "Instructor credentials verified",
-                        "Content quality approved",
-                    ].map((item, i) => (
+                    {(["courseSyllabusReviewed", "learningObjectivesDefined", "assessmentMethodsValidated", "instructorCredentialsVerified", "contentQualityApproved"] as const).map((itemKey, i) => (
                         <div key={i} className="flex items-center gap-3">
                             <CheckSquare className="w-5 h-5 text-[#042F54] shrink-0" />
-                            <span className="text-sm text-description">{item}</span>
+                            <span className="text-sm text-description">{t(itemKey)}</span>
                         </div>
                     ))}
                 </div>

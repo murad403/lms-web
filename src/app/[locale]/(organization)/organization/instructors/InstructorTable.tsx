@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import AddInstructorModal, { AddInstructorForm } from "@/components/modal/AddInstructorModal";
 import EditInstructorRoleModal from "@/components/modal/EditInstructorRoleModal";
 import ViewContractModal from "@/components/modal/ViewContractModal";
+import { useTranslations } from "next-intl";
 
 const roleBadgeColors: Record<string, string> = {
   "Lead Instructor": "bg-purple-50 text-purple-700",
@@ -26,6 +27,8 @@ type TProps = {
 }
 
 const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) => {
+
+    const t = useTranslations("OrganizationInstructors");
 
     const [openAction, setOpenAction] = useState<string | null>(null);
     
@@ -80,28 +83,28 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
             <div className="">
                 <div className="mb-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <h3 className="text-lg font-semibold text-title">Available Instructors</h3>
+                        <h3 className="text-lg font-semibold text-title">{t("availableInstructors")}</h3>
                         <div className="flex gap-2 w-full sm:w-auto">
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                                 className="px-4 py-2 text-sm border border-border-light text-description bg-white focus:outline-none"
                             >
-                                <option value="all">All Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Suspended">Suspended</option>
+                                <option value="all">{t("allStatus")}</option>
+                                <option value="Active">{t("active")}</option>
+                                <option value="Pending">{t("pending")}</option>
+                                <option value="Suspended">{t("suspended")}</option>
                             </select>
                             <select
                                 value={roleFilter}
                                 onChange={(e) => setRoleFilter(e.target.value)}
                                 className="px-4 py-2 text-sm border border-border-light text-description bg-white focus:outline-none"
                             >
-                                <option value="all">All Roles</option>
-                                <option value="Lead Instructor">Admin</option>
-                                <option value="Instructor">Manager</option>
-                                <option value="Assistant">Reviewer</option>
-                                <option value="Assistant">Finance</option>
+                                <option value="all">{t("allRoles")}</option>
+                                <option value="Lead Instructor">{t("admin")}</option>
+                                <option value="Instructor">{t("manager")}</option>
+                                <option value="Assistant">{t("reviewer")}</option>
+                                <option value="Assistant">{t("finance")}</option>
                             </select>
                         </div>
                     </div>
@@ -111,12 +114,12 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                     <table className="w-full min-w-175 text-sm">
                         <thead>
                             <tr className="border-b border-border-light">
-                                <th className="text-left py-3 px-4 font-medium text-title">Instructor</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">Email</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">Role</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">Last Login</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">Status</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">Actions</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("instructor")}</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("email")}</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("role")}</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("lastLogin")}</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("status")}</th>
+                                <th className="text-left py-3 px-4 font-medium text-title">{t("actions")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,21 +159,21 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                                                         onClick={() => handleEditRole(instructor)}
                                                         className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                         <SquarePen className="w-4 h-4 mr-2 inline" />
-                                                        Edit Role
+                                                        {t("editRole")}
                                                         </button>
                                                     <button
                                                         onClick={() => handleViewContract(instructor)}
                                                         className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                         <Eye className="w-4 h-4 mr-2 inline" />
-                                                        View Contract
+                                                        {t("viewContract")}
                                                         </button>
                                                     <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
                                                         <UserRoundX className="w-4 h-4 mr-2 inline" />
-                                                        {instructor.status === "Suspended" ? "Activate" : "Suspend"}
+                                                        {instructor.status === "Suspended" ? t("activate") : t("suspend")}
                                                     </button>
                                                     <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
                                                         <Trash2 className="w-4 h-4 mr-2 inline" />
-                                                        Remove Member</button>
+                                                        {t("removeMember")}</button>
                                                 </div>
                                             )}
                                         </div>

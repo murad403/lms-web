@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Pencil, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type TRoleRow = {
     id: string;
@@ -20,11 +21,24 @@ const allPermissions = [
     "Manage Billing", "Create Courses", "Manage Own Content", "Review Content", "Manage Comments",
 ];
 
+const permissionKeys: Record<string, string> = {
+    "Manage Users": "manageUsers",
+    "Manage Courses": "manageCourses",
+    "Manage Settings": "manageSettings",
+    "View Reports": "viewReports",
+    "Manage Billing": "manageBilling",
+    "Create Courses": "createCourses",
+    "Manage Own Content": "manageOwnContent",
+    "Review Content": "reviewContent",
+    "Manage Comments": "manageComments",
+};
+
 const RoleAndPermissions = () => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [editingRole, setEditingRole] = useState<TRoleRow | null>(null);
     const [selectedPerms, setSelectedPerms] = useState<string[]>([]);
+    const t = useTranslations("OrganizationTeamManagement");
 
     const openEdit = (row: TRoleRow) => {
         setEditingRole(row);
@@ -42,17 +56,17 @@ const RoleAndPermissions = () => {
         <>
             <div >
               
-                    <h3 className="text-base font-semibold text-title mb-4">Roles Permissions</h3>
+                    <h3 className="text-base font-semibold text-title mb-4">{t("rolesPermissions")}</h3>
              
 
                 <div className="overflow-x-auto bg-white rounded-md border border-border-light">
                     <table className="w-full min-w-[450px] text-sm">
                         <thead>
                             <tr className="border-b border-border-light">
-                                <th className="text-left py-3 px-6 font-semibold text-main">Role</th>
-                                <th className="text-left py-3 px-6 font-semibold text-main">Access</th>
-                                <th className="text-left py-3 px-6 font-semibold text-main">Permissions</th>
-                                <th className="text-left py-3 px-6 font-semibold text-main">Action</th>
+                                <th className="text-left py-3 px-6 font-semibold text-main">{t("role")}</th>
+                                <th className="text-left py-3 px-6 font-semibold text-main">{t("access")}</th>
+                                <th className="text-left py-3 px-6 font-semibold text-main">{t("permissions")}</th>
+                                <th className="text-left py-3 px-6 font-semibold text-main">{t("action")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,7 +88,7 @@ const RoleAndPermissions = () => {
                                                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-description bg-gray-100 hover:bg-gray-200 transition-colors rounded"
                                             >
                                                 <Pencil className="w-3.5 h-3.5" />
-                                                Edit Permission
+                                                {t("editPermission")}
                                             </button>
                                         </td>
                                     </tr>
@@ -91,7 +105,7 @@ const RoleAndPermissions = () => {
                     <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl">
                         <div className="flex items-center justify-between px-6 py-5 border-b border-border-light">
                             <div>
-                                <h2 className="text-base font-bold text-title">Edit Permission</h2>
+                                <h2 className="text-base font-bold text-title">{t("editPermission")}</h2>
                                 <p className="text-xs text-description mt-0.5">{editingRole.role}</p>
                             </div>
                             <button onClick={() => { setShowModal(false); setEditingRole(null); }}>
@@ -108,7 +122,7 @@ const RoleAndPermissions = () => {
 
                             {/* Permissions toggle */}
                             <div>
-                                <label className="block text-sm font-medium text-title mb-2">Permissions</label>
+                                <label className="block text-sm font-medium text-title mb-2">{t("permissions")}</label>
                                 <div className="flex flex-wrap gap-2">
                                     {allPermissions.map((perm) => (
                                         <button
@@ -120,7 +134,7 @@ const RoleAndPermissions = () => {
                                                     : "bg-gray-100 text-description hover:bg-gray-200"
                                                 }`}
                                         >
-                                            {perm}
+                                            {t(permissionKeys[perm])}
                                         </button>
                                     ))}
                                 </div>
@@ -131,13 +145,13 @@ const RoleAndPermissions = () => {
                                     onClick={() => { setShowModal(false); setEditingRole(null); }}
                                     className="flex-1 px-4 py-2.5 text-sm border border-border-light text-description rounded-lg hover:bg-gray-50"
                                 >
-                                    Cancel
+                                    {t("cancel")}
                                 </button>
                                 <button
                                     onClick={() => { setShowModal(false); setEditingRole(null); }}
                                     className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium rounded-lg hover:bg-main/90"
                                 >
-                                    Save Changes
+                                    {t("saveChanges")}
                                 </button>
                             </div>
                         </div>

@@ -4,33 +4,34 @@ import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Settings, LogOu
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
+import { useTranslations } from "next-intl";
 
 type SidebarItem = {
-  label: string;
+  labelKey: string;
   href: string;
   icon: React.ElementType;
 };
 
 const mainMenuItems: SidebarItem[] = [
-  { label: "Dashboard", href: "/organization/dashboard", icon: LayoutDashboard },
-  { label: "Create New Course", href: "/organization/create-course", icon: PlusCircle },
-  { label: "My Courses", href: "/organization/my-courses", icon: BookOpen },
-  { label: "Live Classes", href: "/organization/live-classes", icon: Video },
-  { label: "Earning", href: "/organization/earnings", icon: Wallet },
-  { label: "Team Management", href: "/organization/team-management", icon: Users },
-  { label: "Instructor", href: "/organization/instructors", icon: UserCheck },
-  { label: "contracts", href: "/organization/contracts", icon: ReceiptText },
-  { label: "reports", href: "/organization/reports", icon: ChartSpline },
-  { label: "white-label", href: "/organization/white-label", icon: NotebookPen },
-
-  { label: "Message", href: "/organization/messages", icon: MessageSquare },
-  { label: "Accreditation", href: "/organization/accreditation", icon: Award },
-  { label: "Settings", href: "/organization/settings", icon: Settings },
+  { labelKey: "dashboard", href: "/organization/dashboard", icon: LayoutDashboard },
+  { labelKey: "createNewCourse", href: "/organization/create-course", icon: PlusCircle },
+  { labelKey: "myCourses", href: "/organization/my-courses", icon: BookOpen },
+  { labelKey: "liveClasses", href: "/organization/live-classes", icon: Video },
+  { labelKey: "earning", href: "/organization/earnings", icon: Wallet },
+  { labelKey: "teamManagement", href: "/organization/team-management", icon: Users },
+  { labelKey: "instructor", href: "/organization/instructors", icon: UserCheck },
+  { labelKey: "contracts", href: "/organization/contracts", icon: ReceiptText },
+  { labelKey: "reports", href: "/organization/reports", icon: ChartSpline },
+  { labelKey: "whiteLabel", href: "/organization/white-label", icon: NotebookPen },
+  { labelKey: "message", href: "/organization/messages", icon: MessageSquare },
+  { labelKey: "accreditation", href: "/organization/accreditation", icon: Award },
+  { labelKey: "settings", href: "/organization/settings", icon: Settings },
 ];
 
 const OrganizationSidebar = () => {
   const pathname = usePathname();
   const [showLogout, setShowLogout] = useState(false);
+  const t = useTranslations("OrganizationSidebar");
 
   const isActive = (href: string) => {
     return pathname === href || pathname.startsWith(href + "/");
@@ -63,9 +64,9 @@ const OrganizationSidebar = () => {
                 }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />
-                <span className="truncate">{item.label}</span>
-                {item.label === "Message" && (
-                  <span className={`ml-auto w-5 h-5 ${item.label === "Message" ? "bg-[#4F9BEF] text-white" : "bg-white text-[#4F9BEF] "} rounded-full flex items-center justify-center text-[10px] font-bold`}>
+                <span className="truncate">{t(item.labelKey)}</span>
+                {item.labelKey === "message" && (
+                  <span className="ml-auto w-5 h-5 bg-[#4F9BEF] text-white rounded-full flex items-center justify-center text-[10px] font-bold">
                     3
                   </span>
                 )}
@@ -81,7 +82,7 @@ const OrganizationSidebar = () => {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors w-full"
           >
             <LogOut className="w-5 h-5 shrink-0" />
-            <span>Sign-out</span>
+            <span>{t("signOut")}</span>
           </button>
         </div>
       </aside>

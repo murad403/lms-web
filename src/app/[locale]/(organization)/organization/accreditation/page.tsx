@@ -4,24 +4,26 @@ import AccreditationStats from "./AccreditationStats";
 import AccreditationRequestTab from "./AccreditationRequestTab";
 import CertificateRules from "./CertificateRules";
 import AuditLogs from "./AuditLogs";
+import { useTranslations } from "next-intl";
 
 type Tab = "requests" | "rules" | "audit";
 
 const AccreditationPage = () => {
+  const t = useTranslations("OrganizationAccreditation");
   const [activeTab, setActiveTab] = useState<Tab>("requests");
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "requests", label: "Accreditation Requests" },
-    { key: "rules", label: "Certificate Rules" },
-    { key: "audit", label: "Audit Logs" },
+  const tabs: { key: Tab; labelKey: "accreditationRequests" | "certificateRules" | "auditLogs" }[] = [
+    { key: "requests", labelKey: "accreditationRequests" },
+    { key: "rules", labelKey: "certificateRules" },
+    { key: "audit", labelKey: "auditLogs" },
   ];
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-title">Accreditation</h1>
-        <p className="text-sm text-description mt-1">Manage accreditation requests and certificates</p>
+        <h1 className="text-2xl font-bold text-title">{t("title")}</h1>
+        <p className="text-sm text-description mt-1">{t("description")}</p>
       </div>
 
       {/* Stats */}
@@ -40,7 +42,7 @@ const AccreditationPage = () => {
                   : "text-description hover:bg-gray-100"
                   }`}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </div>

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { Eye, Search, ChevronDown } from 'lucide-react'
 import ContractDetailsModal from '@/components/modal/ContractDetailsModal'
+import { useTranslations } from 'next-intl';
 
 const statusColors: Record<string, string> = {
     Active: "bg-green-100 text-green-700",
@@ -20,6 +21,7 @@ const statusLabel: Record<string, string> = {
 };
 
 const RevenueSplit = () => {
+    const t = useTranslations("OrganizationContracts");
     const [showDetails, setShowDetails] = useState(false);
     const [selectedContract, setSelectedContract] = useState<TContract | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -43,7 +45,7 @@ const RevenueSplit = () => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description" />
                     <input
                         type="text"
-                        placeholder="Search Courses ...."
+                        placeholder={t("searchPlaceholder")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-4 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title placeholder:text-description"
@@ -55,9 +57,9 @@ const RevenueSplit = () => {
                         onChange={(e) => setRoleFilter(e.target.value)}
                         className="appearance-none pl-4 pr-9 py-2.5 text-sm border border-border-light rounded-md focus:outline-none focus:border-main bg-white text-title cursor-pointer"
                     >
-                        <option>All Roles</option>
-                        <option>Instructors</option>
-                        <option>Managers</option>
+                        <option>{t("allRoles")}</option>
+                        <option>{t("instructors")}</option>
+                        <option>{t("managers")}</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description pointer-events-none" />
                 </div>
@@ -68,12 +70,12 @@ const RevenueSplit = () => {
                 <table className="w-full min-w-[700px] text-sm">
                     <thead>
                         <tr className="border-b border-border-light">
-                            <th className="text-left py-3 px-4 font-medium text-description">Instructor</th>
-                            <th className="text-left py-3 px-4 font-medium text-description">Split Percentage</th>
-                            <th className="text-left py-3 px-4 font-medium text-description">Revenue Share</th>
-                            <th className="text-left py-3 px-4 font-medium text-description">Expiry</th>
-                            <th className="text-left py-3 px-4 font-medium text-description">Status</th>
-                            <th className="text-left py-3 px-4 font-medium text-description">Actions</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("instructor")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("splitPercentage")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("revenueShare")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("expiry")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("status")}</th>
+                            <th className="text-left py-3 px-4 font-medium text-description">{t("actions")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,7 +124,7 @@ const RevenueSplit = () => {
                         {filteredContracts.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="py-8 text-center text-description text-sm">
-                                    No contracts found.
+                                    {t("noContracts")}
                                 </td>
                             </tr>
                         )}

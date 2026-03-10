@@ -8,6 +8,7 @@ import TeamManagementStats from "./TeamManagementStats";
 import TeamMembersTab from "./TeamMembersTab";
 import ActivityLogs from "./ActivityLogs";
 import RoleAndPermissions from "./RoleAndPermissions";
+import { useTranslations } from "next-intl";
 
 type Tab = "members" | "permissions" | "activity";
 
@@ -32,8 +33,21 @@ const allPermissions = [
   "Manage Billing", "Create Courses", "Manage Own Content", "Review Content", "Manage Comments",
 ];
 
+const permissionKeys: Record<string, string> = {
+  "Manage Users": "manageUsers",
+  "Manage Courses": "manageCourses",
+  "Manage Settings": "manageSettings",
+  "View Reports": "viewReports",
+  "Manage Billing": "manageBilling",
+  "Create Courses": "createCourses",
+  "Manage Own Content": "manageOwnContent",
+  "Review Content": "reviewContent",
+  "Manage Comments": "manageComments",
+};
+
 const TeamManagementPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>("members");
+  const t = useTranslations("OrganizationTeamManagement");
 
   const [showAddUser, setShowAddUser] = useState(false);
   const [showEditPermission, setShowEditPermission] = useState(false);
@@ -45,10 +59,10 @@ const TeamManagementPage = () => {
 
 
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "members", label: "Team Members" },
-    { key: "permissions", label: "Role & Permissions" },
-    { key: "activity", label: "Activity Log" },
+  const tabs: { key: Tab; labelKey: string }[] = [
+    { key: "members", labelKey: "teamMembers" },
+    { key: "permissions", labelKey: "rolePermissions" },
+    { key: "activity", labelKey: "activityLog" },
   ];
 
   const handleAddUser = (data: AddUserForm) => {
@@ -85,14 +99,14 @@ const TeamManagementPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-title">Team Management</h1>
-          <p className="text-sm text-description mt-1">Manage your team members and permissions</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-title">{t("title")}</h1>
+          <p className="text-sm text-description mt-1">{t("description")}</p>
         </div>
         <button
           onClick={() => setShowAddUser(true)}
           className="flex items-center gap-2 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors w-full sm:w-auto justify-center sm:justify-start"
         >
-          <Plus className="w-4 h-4" /> Add User
+          <Plus className="w-4 h-4" /> {t("addUser")}
         </button>
       </div>
 
@@ -112,7 +126,7 @@ const TeamManagementPage = () => {
                   : "text-description hover:bg-gray-100"
                   }`}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </div>
@@ -141,7 +155,7 @@ const TeamManagementPage = () => {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between px-7 py-5 border-b border-border-light">
-              <h2 className="text-xl font-bold text-main">Add User</h2>
+              <h2 className="text-xl font-bold text-main">{t("addUser")}</h2>
               <button onClick={() => { setShowAddUser(false); addUserForm.reset(); }}>
                 <X className="w-5 h-5 text-description" />
               </button>
@@ -151,17 +165,17 @@ const TeamManagementPage = () => {
 
               {/* Full Name */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Full Name</label>
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">{t("fullName")}</label>
                 <input
                   {...addUserForm.register("fullName", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
-                  placeholder="Enter full name"
+                  placeholder={t("enterFullName")}
                 />
               </div>
 
               {/* Email */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Email address</label>
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">{t("emailAddress")}</label>
                 <div className="flex-1 relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -172,52 +186,52 @@ const TeamManagementPage = () => {
                     {...addUserForm.register("email", { required: true })}
                     type="email"
                     className="w-full pl-9 pr-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
-                    placeholder="Enter email address"
+                    placeholder={t("enterEmail")}
                   />
                 </div>
               </div>
 
               {/* Username */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Username</label>
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">{t("username")}</label>
                 <input
                   {...addUserForm.register("username", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
-                  placeholder="Enter username"
+                  placeholder={t("enterUsername")}
                 />
               </div>
 
               {/* Password + Confirm Password side by side */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">Password</label>
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">{t("password")}</label>
                 <div className="flex-1 flex gap-3">
                   <input
                     {...addUserForm.register("password", { required: true })}
                     type="password"
                     className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
-                    placeholder="password"
+                    placeholder={t("password")}
                   />
                   <input
                     {...addUserForm.register("confirmPassword", { required: true })}
                     type="password"
                     className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main"
-                    placeholder="confirm password"
+                    placeholder={t("confirmPassword")}
                   />
                 </div>
               </div>
 
               {/* User Permission */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">User Permission</label>
+                <label className="sm:w-36 shrink-0 text-sm font-medium text-title">{t("userPermission")}</label>
                 <select
                   {...addUserForm.register("permission", { required: true })}
                   className="flex-1 px-4 py-3 text-sm border border-border-light rounded-lg focus:outline-none focus:border-main bg-white"
                 >
-                  <option value="">Select permission</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Instructor">Instructor</option>
-                  <option value="Moderator">Moderator</option>
+                  <option value="">{t("selectPermission")}</option>
+                  <option value="Admin">{t("admin")}</option>
+                  <option value="Manager">{t("manager")}</option>
+                  <option value="Instructor">{t("instructor")}</option>
+                  <option value="Moderator">{t("moderator")}</option>
                 </select>
               </div>
 
@@ -228,13 +242,13 @@ const TeamManagementPage = () => {
                   onClick={() => { setShowAddUser(false); addUserForm.reset(); }}
                   className=" px-5 py-3 text-sm border border-border-light rounded-lg text-description hover:bg-gray-50"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-3 text-sm bg-main text-white font-medium rounded-lg hover:bg-main/90"
                 >
-                  Add User
+                  {t("addUser")}
                 </button>
               </div>
 
@@ -248,7 +262,7 @@ const TeamManagementPage = () => {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full rounded-xl max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border-light">
-              <h2 className="text-lg font-semibold text-title">Edit Permission</h2>
+              <h2 className="text-lg font-semibold text-title">{t("editPermission")}</h2>
               <button onClick={() => { setShowEditPermission(false); setEditingMember(null); }}>
                 <X className="w-5 h-5 text-description" />
               </button>
@@ -267,22 +281,22 @@ const TeamManagementPage = () => {
 
               {/* Role Select */}
               <div>
-                <label className="block text-sm font-medium text-title mb-1">Role</label>
+                <label className="block text-sm font-medium text-title mb-1">{t("role")}</label>
                 <select
                   {...editPermForm.register("role")}
                   defaultValue={editingMember.role}
                   className="w-full px-4 py-3 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
                 >
-                  <option value="Admin">Admin</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Instructor">Instructor</option>
-                  <option value="Moderator">Moderator</option>
+                  <option value="Admin">{t("admin")}</option>
+                  <option value="Manager">{t("manager")}</option>
+                  <option value="Instructor">{t("instructor")}</option>
+                  <option value="Moderator">{t("moderator")}</option>
                 </select>
               </div>
 
               {/* Permissions */}
               <div>
-                <label className="block text-sm font-medium text-title mb-2">Permissions</label>
+                <label className="block text-sm font-medium text-title mb-2">{t("permissions")}</label>
                 <div className="flex flex-wrap gap-2">
                   {allPermissions.map((perm) => (
                     <button
@@ -294,7 +308,7 @@ const TeamManagementPage = () => {
                         : "bg-gray-100 text-description hover:bg-gray-200"
                         }`}
                     >
-                      {perm}
+                      {t(permissionKeys[perm])}
                       {selectedPermissions.includes(perm) && (
                         <X className="w-3 h-3 inline ml-1" />
                       )}
@@ -309,14 +323,14 @@ const TeamManagementPage = () => {
                   onClick={() => { setShowEditPermission(false); setEditingMember(null); }}
                   className="flex-1 px-4 py-3 text-sm border border-border-light text-description hover:bg-gray-50"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={saveEditPermission}
                   className="flex-1 px-4 py-3 text-sm bg-main text-white font-medium hover:bg-main/90"
                 >
-                  Save Changes
+                  {t("saveChanges")}
                 </button>
               </div>
             </div>

@@ -8,27 +8,28 @@ import user from "@/assets/partnership/user2.png";
 import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Settings, LogOut, PlusCircle, Wallet, Users, UserCheck, ReceiptText, ChartSpline, NotebookPen } from "lucide-react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
+import { useTranslations } from "next-intl";
 
 type SidebarItem = {
-    label: string;
+    labelKey: string;
     href: string;
     icon: React.ElementType;
 };
 
 const mobileMenuItems: SidebarItem[] = [
-    { label: "Dashboard", href: "/organization/dashboard", icon: LayoutDashboard },
-    { label: "Create New Course", href: "/organization/create-course", icon: PlusCircle },
-    { label: "My Courses", href: "/organization/my-courses", icon: BookOpen },
-    { label: "Live Classes", href: "/organization/live-classes", icon: Video },
-    { label: "Earning", href: "/organization/earnings", icon: Wallet },
-    { label: "Team Management", href: "/organization/team-management", icon: Users },
-    { label: "Instructor", href: "/organization/instructors", icon: UserCheck },
-    { label: "Contracts", href: "/organization/contracts", icon: ReceiptText },
-    { label: "Reports", href: "/organization/reports", icon: ChartSpline },
-    { label: "White-Label", href: "/organization/white-label", icon: NotebookPen },
-    { label: "Message", href: "/organization/messages", icon: MessageSquare },
-    { label: "Accreditation", href: "/organization/accreditation", icon: Award },
-    { label: "Settings", href: "/organization/settings", icon: Settings },
+    { labelKey: "dashboard", href: "/organization/dashboard", icon: LayoutDashboard },
+    { labelKey: "createNewCourse", href: "/organization/create-course", icon: PlusCircle },
+    { labelKey: "myCourses", href: "/organization/my-courses", icon: BookOpen },
+    { labelKey: "liveClasses", href: "/organization/live-classes", icon: Video },
+    { labelKey: "earning", href: "/organization/earnings", icon: Wallet },
+    { labelKey: "teamManagement", href: "/organization/team-management", icon: Users },
+    { labelKey: "instructor", href: "/organization/instructors", icon: UserCheck },
+    { labelKey: "contracts", href: "/organization/contracts", icon: ReceiptText },
+    { labelKey: "reports", href: "/organization/reports", icon: ChartSpline },
+    { labelKey: "whiteLabel", href: "/organization/white-label", icon: NotebookPen },
+    { labelKey: "message", href: "/organization/messages", icon: MessageSquare },
+    { labelKey: "accreditation", href: "/organization/accreditation", icon: Award },
+    { labelKey: "settings", href: "/organization/settings", icon: Settings },
 ];
 
 const OrganizationTopbar = () => {
@@ -37,24 +38,30 @@ const OrganizationTopbar = () => {
     const [showLogout, setShowLogout] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+    const t = useTranslations("OrganizationTopbar");
 
     // Derive page title from pathname
     const getPageTitle = () => {
         const segments = pathname.split("/").filter(Boolean);
         const lastSegment = segments[segments.length - 1] || "dashboard";
-        const titles: Record<string, string> = {
-            dashboard: "Dashboard",
-            "create-course": "Create New Course",
-            "my-courses": "My Courses",
-            "live-classes": "Live Classes",
-            earnings: "Earning",
-            messages: "Message",
-            accreditation: "Accreditation",
-            "ai-assistant": "AI Assistant",
-            settings: "Settings",
-            profile: "Profile",
+        const titleKeys: Record<string, string> = {
+            dashboard: "dashboard",
+            "create-course": "createNewCourse",
+            "my-courses": "myCourses",
+            "live-classes": "liveClasses",
+            earnings: "earning",
+            messages: "message",
+            accreditation: "accreditation",
+            settings: "settings",
+            profile: "profile",
+            "team-management": "teamManagement",
+            instructors: "instructor",
+            contracts: "contracts",
+            reports: "reports",
+            "white-label": "whiteLabel",
         };
-        return titles[lastSegment] || lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, " ");
+        const key = titleKeys[lastSegment];
+        return key ? t(key) : lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/-/g, " ");
     };
 
     const isActive = (href: string) => {
@@ -90,7 +97,7 @@ const OrganizationTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">Good Morning</p>
+                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">{t("goodMorning")}</p>
                             <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>
@@ -109,10 +116,10 @@ const OrganizationTopbar = () => {
                             {showNotifications && (
                                 <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[80vh] overflow-hidden">
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                                        <h3 className="text-lg font-bold text-title">Notifications</h3>
+                                        <h3 className="text-lg font-bold text-title">{t("notifications")}</h3>
                                         <div className="flex gap-2">
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">All</button>
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">Unread</button>
+                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("all")}</button>
+                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("unread")}</button>
                                         </div>
                                     </div>
                                     <div className="max-h-96 overflow-y-auto">
@@ -170,7 +177,7 @@ const OrganizationTopbar = () => {
                                                 }`}
                                         >
                                             <Icon className="w-5 h-5 shrink-0" />
-                                            <span>{item.label}</span>
+                                            <span>{t(item.labelKey)}</span>
                                         </Link>
                                     );
                                 })}
@@ -182,7 +189,7 @@ const OrganizationTopbar = () => {
                                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors w-full"
                                 >
                                     <LogOut className="w-5 h-5 shrink-0" />
-                                    <span>Sign-out</span>
+                                    <span>{t("signOut")}</span>
                                 </button>
                             </nav>
                         </div>
