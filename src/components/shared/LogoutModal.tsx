@@ -26,7 +26,7 @@ const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
     clearAuthCookies();
     toast.success("Logged out successfully");
     onClose();
-    router.replace("/auth/sign-in");
+    router.push("/");
   };
 
   return (

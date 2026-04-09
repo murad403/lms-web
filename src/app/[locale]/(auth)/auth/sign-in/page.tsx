@@ -108,7 +108,7 @@ const SignIn = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder={t("passwordPlaceholder")}
+                  placeholder={"Enter your password"}
                   {...register("password")}
                   className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                 />

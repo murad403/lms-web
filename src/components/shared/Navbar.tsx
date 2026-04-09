@@ -12,10 +12,14 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
 import user from "@/assets/partnership/user2.png"
-import { getClientSession } from "@/utils/auth-client";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
+import type { AuthSessionSnapshot } from "@/utils/auth-server";
 
-const Navbar = () => {
+type NavbarProps = {
+    initialSession: AuthSessionSnapshot;
+};
+
+const Navbar = ({ initialSession }: NavbarProps) => {
     const t = useTranslations("Navbar");
     const tMenu = useTranslations("Menu");
     const tCat = useTranslations("Categories");
@@ -33,7 +37,7 @@ const Navbar = () => {
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
-    const session = getClientSession();
+    const session = initialSession;
 
     const categories = categoryList.map((cat) => ({
         slug: cat.slug,

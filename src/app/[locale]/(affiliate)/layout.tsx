@@ -2,8 +2,9 @@ import { AffiliateSideBar } from "@/components/affiliate/AffiliateSideBar";
 import { NotificationsDropdown } from "@/components/shared/NotificationDialog";
 
 import { PageHeader } from "@/components/shared/PageHeader";
-import { UserProfileDropdown } from "@/components/shared/UserProfileDropdown";
+import RoleProfileDropdown from "@/components/shared/RoleProfileDropdown";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +24,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <PageHeader></PageHeader>
           </div>
           <div className="flex items-center gap-4">
-            <NotificationsDropdown /> <UserProfileDropdown />
+            <NotificationsDropdown />
+            <RoleProfileDropdown
+              name="Affiliate User"
+              roleLabel="Affiliate account"
+              avatarSrc="/home/banner.jpg"
+              avatarAlt="Affiliate User"
+              profileHref={getProfilePathByRole("affiliate")}
+              dashboardHref={getDashboardPathByRole("affiliate")}
+              profileLabel="My Profile"
+              dashboardLabel="Go to Dashboard"
+              logoutLabel="Log Out"
+            />
           </div>
         </div>
         {children}

@@ -1,9 +1,12 @@
 import InstructorWrapper from "@/components/wrapper/InstructorWrapper";
+import { getServerAuthSession } from "@/utils/auth-server";
 
 
-const InstructorLayout = ({ children }: { children: React.ReactNode }) => {
+const InstructorLayout = async ({ children }: { children: React.ReactNode }) => {
+  const initialSession = await getServerAuthSession();
+
   return (
-    <InstructorWrapper>
+    <InstructorWrapper initialSession={initialSession}>
       {children}
     </InstructorWrapper>
   );

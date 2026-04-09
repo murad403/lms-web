@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation'
 import Menu from '../shared/Menu'
 import Navbar from '../shared/Navbar'
 import Footer from '../shared/Footer'
+import type { AuthSessionSnapshot } from '@/utils/auth-server'
 
-const InstructorWrapper = ({ children }: { children: React.ReactNode }) => {
+const InstructorWrapper = ({ children, initialSession }: { children: React.ReactNode; initialSession: AuthSessionSnapshot }) => {
     const pathname = usePathname();
     const isShowLayout = pathname.includes('/instructor/profile');
     // console.log(isShowLayout);
@@ -16,7 +17,7 @@ const InstructorWrapper = ({ children }: { children: React.ReactNode }) => {
             {
                 (isShowLayout == false) ? <InstructorSidebar /> : <div>
                     <Menu />
-                    <Navbar />
+                    <Navbar initialSession={initialSession} />
                 </div>
             }
             <div className={isShowLayout === false ? "lg:ml-64 xl:ml-80" : "lg:ml-0"}>

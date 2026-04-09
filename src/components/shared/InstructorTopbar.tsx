@@ -1,14 +1,15 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Bell, CreditCard, Menu as MenuIcon, X } from "lucide-react";
-import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
 import { notifications, TNotification } from "@/lib/header";
-import user from "@/assets/partnership/user2.png";
 import { LayoutDashboard, BookOpen, Video, DollarSign, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle } from "lucide-react";
+import RoleProfileDropdown from "./RoleProfileDropdown";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
+import { instructorProfile } from "@/lib/instructor";
+import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 
 type SidebarItem = {
     labelKey: string;
@@ -136,10 +137,19 @@ const InstructorTopbar = () => {
                             )}
                         </div>
 
-                        {/* Profile */}
-                        <Link href="/instructor/settings" className="size-10 sm:size-12 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors">
-                            <Image src={user} alt="User" width={48} height={48} className="w-full h-full object-cover" />
-                        </Link>
+                        <RoleProfileDropdown
+                            name={`${instructorProfile.firstName} ${instructorProfile.lastName}`}
+                            roleLabel={instructorProfile.title}
+                            avatarSrc={instructorProfile.avatar}
+                            avatarAlt={`${instructorProfile.firstName} ${instructorProfile.lastName}`}
+                            profileHref={getProfilePathByRole("instructor")}
+                            dashboardHref={getDashboardPathByRole("instructor")}
+                            profileLabel={t("profile")}
+                            dashboardLabel={t("dashboard")}
+                            logoutLabel={t("signOut")}
+                            triggerClassName="flex items-center gap-2 hover:opacity-80 transition-opacity outline-none"
+                            contentClassName="w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+                        />
                     </div>
                 </div>
 
