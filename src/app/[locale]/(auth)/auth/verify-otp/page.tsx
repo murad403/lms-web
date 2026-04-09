@@ -8,7 +8,7 @@ import { verifyOtpSchema, type VerifyOtpFormData } from '@/validation/auth.valid
 import { PiGraduationCap } from 'react-icons/pi';
 import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
-import { useResendVerificationCodeMutation, useVerifyEmailMutation } from '@/redux/features/auth/auth.api';
+import { useForgotPasswordMutation, useResendVerificationCodeMutation, useVerifyEmailMutation, useVerifyForgotPasswordMutation } from '@/redux/features/auth/auth.api';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { getCurrentTimestampMs } from '@/utils/time';
@@ -22,9 +22,13 @@ const VerifyOtp = () => {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const [verifyEmail, { isLoading: isVerifyLoading }] = useVerifyEmailMutation();
     const [resendVerificationCode, { isLoading: isResendLoading }] = useResendVerificationCodeMutation();
+    const [verifyForgotPassword, { isLoading: isVerifyResetLoading }] = useVerifyForgotPasswordMutation();
+    const [forgotPassword, { isLoading: isForgotResendLoading }] = useForgotPasswordMutation();
 
     const userId = searchParams.get('user_id') ?? '';
     const email = searchParams.get('email') ?? '';
+    const mode = searchParams.get('mode') ?? 'email';
+    const isResetMode = mode === 'reset';
 
     const {
         handleSubmit,
@@ -88,6 +92,17 @@ const VerifyOtp = () => {
         }
 
         try {
+            if (isResetMode) {
+                const response = await verifyForgotPassword({
+                    user_id: userId,
+                    code: data.otp,
+                }).unwrap();
+
+                toast.success(response.message || 'Code verified successfully');
+                router.replace(`/auth/reset-password?user_id=${encodeURIComponent(response.data.user_id)}&secret_key=${encodeURIComponent(response.data.secret_key)}`);
+                return;
+            }
+
             const response = await verifyEmail({
                 user_id: userId,
                 code: data.otp,
@@ -116,6 +131,15 @@ const VerifyOtp = () => {
         }
 
         try {
+            if (isResetMode) {
+                const response = await forgotPassword({ email }).unwrap();
+                const now = getCurrentTimestampMs();
+                const nextCountdown = Math.max(0, Math.floor((response.data.expires_at - now) / 1000));
+                setCountdown(nextCountdown || 49);
+                toast.success(response.message || 'Reset password code sent successfully');
+                return;
+            }
+
             const response = await resendVerificationCode({ email }).unwrap();
             const now = getCurrentTimestampMs();
             const nextCountdown = Math.max(0, Math.floor((response.data.expires_at - now) / 1000));
@@ -184,7 +208,7 @@ const VerifyOtp = () => {
                                 <button
                                     type="button"
                                     onClick={handleResend}
-                                    disabled={isResendLoading}
+                                    disabled={isResendLoading || isForgotResendLoading}
                                     className="text-sm text-main font-semibold hover:underline"
                                 >
                                     {t('resend')}
@@ -195,7 +219,7 @@ const VerifyOtp = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            disabled={isSubmitting || isVerifyLoading || otp.join('').length !== 6}
+                            disabled={isSubmitting || isVerifyLoading || isVerifyResetLoading || otp.join('').length !== 6}
                             className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
                             {t('verify')}

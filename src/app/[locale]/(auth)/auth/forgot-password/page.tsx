@@ -7,9 +7,14 @@ import { PiGraduationCap } from 'react-icons/pi';
 import { Mail } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
+import { useForgotPasswordMutation } from '@/redux/features/auth/auth.api';
+import { useRouter } from '@/i18n/navigation';
+import { toast } from 'sonner';
 
 const ForgotPassword = () => {
   const t = useTranslations('Auth');
+  const router = useRouter();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const {
     register,
     handleSubmit,
@@ -19,8 +24,25 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    console.log('Forgot password:', data);
-    // Navigate to verify OTP page after successful submission
+    try {
+      const response = await forgotPassword({ email: data.email }).unwrap();
+
+      toast.success(response.message || 'Reset password code sent successfully.');
+
+      router.push(
+        `/auth/verify-otp?mode=reset&user_id=${encodeURIComponent(response.data.user_id)}&email=${encodeURIComponent(data.email)}&expires_at=${encodeURIComponent(String(response.data.expires_at))}`
+      );
+    } catch (error: unknown) {
+      const message =
+        typeof error === 'object' &&
+        error !== null &&
+        'data' in error &&
+        typeof (error as { data?: { message?: string } }).data?.message === 'string'
+          ? (error as { data?: { message?: string } }).data?.message
+          : 'Failed to send reset code';
+
+      toast.error(message);
+    }
   };
 
   return (
@@ -61,7 +83,7 @@ const ForgotPassword = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoading}
               className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
             >
               {t('sendOtp')}

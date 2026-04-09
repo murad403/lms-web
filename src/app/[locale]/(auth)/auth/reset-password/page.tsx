@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema, type ResetPasswordFormData } from '@/validation/auth.validation';
@@ -9,11 +9,19 @@ import { PiGraduationCap } from 'react-icons/pi';
 import { Lock, Eye, EyeOff } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
+import { useResetPasswordMutation } from '@/redux/features/auth/auth.api';
+import { useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 const ResetPassword = () => {
     const t = useTranslations('Auth');
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
+    const userId = searchParams.get('user_id') ?? '';
+    const secretKey = searchParams.get('secret_key') ?? '';
 
     const {
         register,
@@ -30,8 +38,33 @@ const ResetPassword = () => {
             setError('terms', { message: 'You must agree to the terms' });
             return;
         }
-        console.log('Reset password:', data);
-        // Navigate to sign-in page after successful reset
+
+        if (!userId || !secretKey) {
+            toast.error('Missing reset context. Please restart the forgot password flow.');
+            return;
+        }
+
+        try {
+            const response = await resetPassword({
+                secret_key: secretKey,
+                user_id: userId,
+                new_password: data.newPassword,
+                confirm_password: data.confirmPassword,
+            }).unwrap();
+
+            toast.success(response.message || 'Password Reset Successful!');
+            router.replace('/auth/sign-in');
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' &&
+                error !== null &&
+                'data' in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : 'Failed to reset password';
+
+            toast.error(message);
+        }
     };
 
     return (
@@ -123,7 +156,7 @@ const ResetPassword = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || isLoading}
                             className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
                             {t('resetPasswordButton')}

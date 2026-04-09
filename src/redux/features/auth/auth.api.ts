@@ -66,6 +66,48 @@ export type ResendVerificationResponse = {
   };
 };
 
+export type ForgotPasswordPayload = {
+  email: string;
+};
+
+export type ForgotPasswordResponse = {
+  success: boolean;
+  status: number;
+  message: string;
+  data: {
+    user_id: string;
+    expires_at: number;
+  };
+};
+
+export type VerifyForgotPasswordPayload = {
+  user_id: string;
+  code: string;
+};
+
+export type VerifyForgotPasswordResponse = {
+  success: boolean;
+  status: number;
+  message: string;
+  data: {
+    secret_key: string;
+    user_id: string;
+  };
+};
+
+export type ResetPasswordPayload = {
+  secret_key: string;
+  user_id: string;
+  new_password: string;
+  confirm_password: string;
+};
+
+export type ResetPasswordResponse = {
+  success: boolean;
+  status: number;
+  message: string;
+};
+
 const authApi = baseApi1.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation<SignInResponse, SignInPayload>({
@@ -89,11 +131,30 @@ const authApi = baseApi1.injectEndpoints({
         body: data,
       }),
     }),
-    resendVerificationCode: builder.mutation<
-      ResendVerificationResponse,
-      ResendVerificationPayload>({
+    resendVerificationCode: builder.mutation<ResendVerificationResponse, ResendVerificationPayload>({
       query: (data) => ({
         url: "/users/resend-verification/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    forgotPassword: builder.mutation<ForgotPasswordResponse, ForgotPasswordPayload>({
+      query: (data) => ({
+        url: "/users/forgot-password/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    verifyForgotPassword: builder.mutation<VerifyForgotPasswordResponse, VerifyForgotPasswordPayload>({
+      query: (data) => ({
+        url: "/users/verify-reset-code/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordPayload>({
+      query: (data) => ({
+        url: "/users/reset-password/",
         method: "POST",
         body: data,
       }),
@@ -101,4 +162,4 @@ const authApi = baseApi1.injectEndpoints({
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useVerifyEmailMutation, useResendVerificationCodeMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation, useVerifyEmailMutation, useResendVerificationCodeMutation, useForgotPasswordMutation, useVerifyForgotPasswordMutation, useResetPasswordMutation } = authApi;
