@@ -3,7 +3,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import {
-    Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard, Grid3x3,
+    Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard,
 } from "lucide-react";
 import { notifications, TNotification } from "@/lib/header";
 import { categories as categoryList } from "@/lib/categories";
@@ -13,7 +13,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
 import user from "@/assets/partnership/user2.png"
 import { getClientSession } from "@/utils/auth-client";
-import { getDashboardPathByRole } from "@/utils/auth-shared";
+import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 
 const Navbar = () => {
     const t = useTranslations("Navbar");
@@ -52,7 +52,7 @@ const Navbar = () => {
 
     const isLoggedIn = Boolean(session.accessToken);
     const dashboardHref = getDashboardPathByRole(session.rawRole);
-    const profileHref = session.role === "student" ? "/profile" : dashboardHref;
+    const profileHref = getProfilePathByRole(session.rawRole);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -342,15 +342,6 @@ const Navbar = () => {
                                             >
                                                 <User className="w-5 h-5" />
                                                 <span className="font-medium text-xs sm:text-sm md:text-base">{t("myProfile")}</span>
-                                            </Link>
-
-                                            <Link
-                                                href="/enrolled-courses"
-                                                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
-                                                onClick={() => setShowProfile(false)}
-                                            >
-                                                <Grid3x3 className="w-5 h-5" />
-                                                <span className="font-medium text-xs sm:text-sm md:text-base">{t("courses")}</span>
                                             </Link>
 
                                             <Link

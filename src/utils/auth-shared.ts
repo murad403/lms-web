@@ -47,3 +47,21 @@ export const getDashboardPathByRole = (rawRole?: string | null): string => {
 
   return "/dashboard";
 };
+
+export const getProfilePathByRole = (rawRole?: string | null): string => {
+  const role = normalizeUserRole(rawRole);
+
+  if (role === "instructor") {
+    return "/instructor/profile";
+  }
+
+  if (role === "organization") {
+    return "/organization/profile";
+  }
+
+  if (role === "affiliate") {
+    return "/affiliate/profile";
+  }
+
+  return "/profile";
+};
