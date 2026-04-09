@@ -8,11 +8,16 @@ import { trainerSignUpSchema, type TrainerSignUpFormData } from '@/validation/au
 import { PiGraduationCap } from 'react-icons/pi';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useSignUpMutation } from '@/redux/features/auth/auth.api';
+import { useRouter } from '@/i18n/navigation';
+import { toast } from 'sonner';
 
 const TrainerSignUpForm = () => {
     const t = useTranslations('Auth');
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [signUp, { isLoading }] = useSignUpMutation();
 
     const {
         register,
@@ -29,7 +34,32 @@ const TrainerSignUpForm = () => {
             setError('terms', { message: 'You must agree to the terms' });
             return;
         }
-        console.log('Trainer sign up:', data);
+
+        try {
+            const response = await signUp({
+                name: data.fullName,
+                email: data.email,
+                password: data.password,
+                confirm_password: data.confirmPassword,
+                accepted_terms: data.terms,
+                type: 'instructor',
+            }).unwrap();
+
+            toast.success(response.message || 'Registration completed successfully.');
+
+            const verifyUrl = `/auth/verify-otp?user_id=${encodeURIComponent(response.data.id)}&email=${encodeURIComponent(data.email)}`;
+            router.push(verifyUrl);
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' &&
+                error !== null &&
+                'data' in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : 'Registration failed';
+
+            toast.error(message);
+        }
     };
 
     return (
@@ -144,7 +174,7 @@ const TrainerSignUpForm = () => {
                     {/* Submit */}
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isLoading}
                         className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                     >
                         {t('createAccount')}

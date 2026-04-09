@@ -7,18 +7,23 @@ import { partnerSignUpSchema, type PartnerSignUpFormData } from '@/validation/au
 import { PiGraduationCap } from 'react-icons/pi';
 import { Mail, Lock, Eye, EyeOff, User, Building2, ChevronDown, CreditCard, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useSignUpMutation } from '@/redux/features/auth/auth.api';
+import { useRouter } from '@/i18n/navigation';
+import { toast } from 'sonner';
 
 const PartnerSignUpForm = () => {
     const t = useTranslations('Auth');
+    const router = useRouter();
     const affiliateTypes = [
-        { label: t('affiliateTypeAffiliate'), value: 'Affiliate' },
-        { label: t('affiliateTypeExternal'), value: 'External Affiliate' },
-        { label: t('affiliateTypeTOC'), value: 'Territorial Orientation Center' },
+        { label: t('affiliateTypeAffiliate'), value: 'affiliate' },
+        { label: t('affiliateTypeExternal'), value: 'external_affiliate' },
+        { label: t('affiliateTypeTOC'), value: 'territorial_orientation_center' },
     ];
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [typeOpen, setTypeOpen] = useState(false);
     const [selectedType, setSelectedType] = useState('');
+    const [signUp, { isLoading }] = useSignUpMutation();
 
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, setError} = useForm<PartnerSignUpFormData>({
         resolver: zodResolver(partnerSignUpSchema),
@@ -30,7 +35,36 @@ const PartnerSignUpForm = () => {
             setError('terms', { message: 'You must agree to the terms' });
             return;
         }
-        console.log('Affiliate sign up:', data);
+
+        try {
+            const response = await signUp({
+                name: data.fullName,
+                email: data.email,
+                password: data.password,
+                confirm_password: data.confirmPassword,
+                affiliate_type: data.affiliateType,
+                iban: data.iban,
+                tax_id: data.taxId,
+                address: data.address,
+                accepted_terms: data.terms,
+                type: 'affiliate',
+            }).unwrap();
+
+            toast.success(response.message || 'Registration completed successfully.');
+
+            const verifyUrl = `/auth/verify-otp?user_id=${encodeURIComponent(response.data.id)}&email=${encodeURIComponent(data.email)}`;
+            router.push(verifyUrl);
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' &&
+                error !== null &&
+                'data' in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : 'Registration failed';
+
+            toast.error(message);
+        }
     };
 
     const selectType = (label: string, value: string) => {
@@ -235,7 +269,7 @@ const PartnerSignUpForm = () => {
                     {/* Submit */}
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isLoading}
                         className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                     >
                         {t('createAccount')}

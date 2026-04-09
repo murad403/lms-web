@@ -1,19 +1,30 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { verifyOtpSchema, type VerifyOtpFormData } from '@/validation/auth.validation';
 import { PiGraduationCap } from 'react-icons/pi';
 import { useTranslations } from 'next-intl';
 import AuthBanner from '@/components/auth/AuthBanner';
+import { useResendVerificationCodeMutation, useVerifyEmailMutation } from '@/redux/features/auth/auth.api';
+import { useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import { getCurrentTimestampMs } from '@/utils/time';
 
 const VerifyOtp = () => {
     const t = useTranslations('Auth');
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
     const [countdown, setCountdown] = useState(49);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const [verifyEmail, { isLoading: isVerifyLoading }] = useVerifyEmailMutation();
+    const [resendVerificationCode, { isLoading: isResendLoading }] = useResendVerificationCodeMutation();
+
+    const userId = searchParams.get('user_id') ?? '';
+    const email = searchParams.get('email') ?? '';
 
     const {
         handleSubmit,
@@ -29,6 +40,12 @@ const VerifyOtp = () => {
             return () => clearTimeout(timer);
         }
     }, [countdown]);
+
+    useEffect(() => {
+        if (!userId || !email) {
+            toast.error('Missing verification context. Please sign up again.');
+        }
+    }, [userId, email]);
 
     const handleChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return;
@@ -65,13 +82,56 @@ const VerifyOtp = () => {
     };
 
     const onSubmit = async (data: VerifyOtpFormData) => {
-        console.log('Verify OTP:', data);
-        // Navigate to reset password page after successful verification
+        if (!userId) {
+            toast.error('Missing user id. Please sign up again.');
+            return;
+        }
+
+        try {
+            const response = await verifyEmail({
+                user_id: userId,
+                code: data.otp,
+            }).unwrap();
+
+            toast.success(response.message || 'Email verified successfully');
+            router.replace('/auth/sign-in');
+        } catch (error: unknown) {
+            console.log(error)
+            const message =
+                typeof error === 'object' &&
+                error !== null &&
+                'data' in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : 'OTP verification failed';
+
+            toast.error(message);
+        }
     };
 
-    const handleResend = () => {
-        setCountdown(49);
-        console.log('Resend OTP');
+    const handleResend = async () => {
+        if (!email) {
+            toast.error('Missing email. Please sign up again.');
+            return;
+        }
+
+        try {
+            const response = await resendVerificationCode({ email }).unwrap();
+            const now = getCurrentTimestampMs();
+            const nextCountdown = Math.max(0, Math.floor((response.data.expires_at - now) / 1000));
+            setCountdown(nextCountdown || 49);
+            toast.success(response.message || 'Verification code sent successfully');
+        } catch (error: unknown) {
+            const message =
+                typeof error === 'object' &&
+                error !== null &&
+                'data' in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : 'Failed to resend verification code';
+
+            toast.error(message);
+        }
     };
 
     return (
@@ -124,6 +184,7 @@ const VerifyOtp = () => {
                                 <button
                                     type="button"
                                     onClick={handleResend}
+                                    disabled={isResendLoading}
                                     className="text-sm text-main font-semibold hover:underline"
                                 >
                                     {t('resend')}
@@ -134,7 +195,7 @@ const VerifyOtp = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            disabled={isSubmitting || otp.join('').length !== 6}
+                            disabled={isSubmitting || isVerifyLoading || otp.join('').length !== 6}
                             className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
                             {t('verify')}
