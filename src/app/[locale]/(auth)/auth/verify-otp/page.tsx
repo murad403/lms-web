@@ -96,7 +96,7 @@ const VerifyOtp = () => {
             toast.success(response.message || 'Email verified successfully');
             router.replace('/auth/sign-in');
         } catch (error: unknown) {
-            console.log(error)
+            // console.log(error)
             const message =
                 typeof error === 'object' &&
                 error !== null &&

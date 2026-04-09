@@ -55,6 +55,7 @@ const PartnerSignUpForm = () => {
             const verifyUrl = `/auth/verify-otp?user_id=${encodeURIComponent(response.data.id)}&email=${encodeURIComponent(data.email)}`;
             router.push(verifyUrl);
         } catch (error: unknown) {
+            console.log(error);
             const message =
                 typeof error === 'object' &&
                 error !== null &&
