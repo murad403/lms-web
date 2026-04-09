@@ -12,10 +12,17 @@ import { PiGraduationCap } from "react-icons/pi";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 import AuthBanner from "@/components/auth/AuthBanner";
+import { useSignInMutation } from "@/redux/features/auth/auth.api";
+import { saveAuthCookies } from "@/utils/auth-client";
+import { getDashboardPathByRole } from "@/utils/auth-shared";
+import { useRouter } from "@/i18n/navigation";
+import { toast } from "sonner";
 
 const SignIn = () => {
   const t = useTranslations("Auth");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [signIn, { isLoading }] = useSignInMutation();
 
   const {
     register,
@@ -26,7 +33,33 @@ const SignIn = () => {
   });
 
   const onSubmit = async (data: SignInFormData) => {
-    console.log("Sign in:", data);
+    try {
+      const response = await signIn(data).unwrap();
+
+      if (!response?.success || !response?.data?.access_token) {
+        toast.error(response?.message || "Unable to sign in");
+        return;
+      }
+
+      saveAuthCookies({
+        accessToken: response.data.access_token,
+        refreshToken: response.data.refresh_token,
+        role: response.data.role,
+      });
+
+      toast.success(response.message || "Login successful");
+      router.replace(getDashboardPathByRole(response.data.role));
+    } catch (error: unknown) {
+      const message =
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        typeof (error as { data?: { message?: string } }).data?.message === "string"
+          ? (error as { data?: { message?: string } }).data?.message
+          : "Invalid email or password";
+
+      toast.error(message || "Sign in failed");
+    }
   };
 
   return (
@@ -118,7 +151,7 @@ const SignIn = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLoading}
               className="w-full py-3 bg-main text-white font-semibold rounded-md hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
             >
               {t("signInButton")}

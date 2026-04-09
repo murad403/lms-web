@@ -12,6 +12,8 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
 import user from "@/assets/partnership/user2.png"
+import { getClientSession } from "@/utils/auth-client";
+import { getDashboardPathByRole } from "@/utils/auth-shared";
 
 const Navbar = () => {
     const t = useTranslations("Navbar");
@@ -31,6 +33,7 @@ const Navbar = () => {
     const profileRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
+    const session = getClientSession();
 
     const categories = categoryList.map((cat) => ({
         slug: cat.slug,
@@ -47,8 +50,9 @@ const Navbar = () => {
         { label: tMenu("partnerships"), href: "/partnerships" as const },
     ];
 
-    // Change this to true if user is logged in
-    const isLoggedIn = true;
+    const isLoggedIn = Boolean(session.accessToken);
+    const dashboardHref = getDashboardPathByRole(session.rawRole);
+    const profileHref = session.role === "student" ? "/profile" : dashboardHref;
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -79,7 +83,6 @@ const Navbar = () => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-
 
     return (
         <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
@@ -325,7 +328,7 @@ const Navbar = () => {
                                                         alexmarcel@gmail.com
                                                     </p>
                                                     <p className="text-[10px] sm:text-xs text-description">
-                                                        Student Account
+                                                        {session.role ? `${session.role} account` : "Account"}
                                                     </p>
                                                 </div>
                                             </div>
@@ -333,7 +336,7 @@ const Navbar = () => {
 
                                         <div className="py-2">
                                             <Link
-                                                href="/profile"
+                                                href={profileHref}
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
                                                 onClick={() => setShowProfile(false)}
                                             >
@@ -351,7 +354,7 @@ const Navbar = () => {
                                             </Link>
 
                                             <Link
-                                                href="/dashboard"
+                                                href={dashboardHref}
                                                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-title"
                                                 onClick={() => setShowProfile(false)}
                                             >

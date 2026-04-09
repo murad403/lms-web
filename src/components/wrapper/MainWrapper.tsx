@@ -8,9 +8,7 @@ const MainWrapper = ({ children }: { children: React.ReactNode }) => {
         <main>
             <Menu />
             <Navbar />
-            <div>
                 {children}
-            </div>
             <Footer />
         </main>
     )

@@ -1,6 +1,9 @@
 "use client";
 import { LogOut } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import { clearAuthCookies } from "@/utils/auth-client";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,9 +20,13 @@ type LogoutModalProps = {
 
 const LogoutModal = ({ open, onClose }: LogoutModalProps) => {
   const t = useTranslations("LogoutModal");
+  const router = useRouter();
+
   const handleLogout = () => {
-    // TODO: API call for logout
+    clearAuthCookies();
+    toast.success("Logged out successfully");
     onClose();
+    router.replace("/auth/sign-in");
   };
 
   return (
