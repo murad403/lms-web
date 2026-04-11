@@ -128,6 +128,53 @@ export type JoinLiveClassResponse = ApiResponse<{
     class_link: string;
 }>;
 
+export type StudentReviewItem = {
+    id: number;
+    course: number;
+    course_title: string;
+    user: string;
+    student_name: string;
+    rating: number;
+    comment: string;
+    avatar: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type StudentReviewListResponse = ApiResponse<StudentReviewItem[]> & {
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+};
+
+export type UpdateReviewPayload = {
+    id: number;
+    rating: number;
+    comment: string;
+};
+
+export type StudentPurchaseHistoryItem = {
+    id: number;
+    course: number;
+    instructor: string;
+    course_title: string;
+    course_price: string;
+    course_thumbnail: string;
+    enrolled_at: string;
+};
+
+export type StudentPurchaseHistoryResponse = ApiResponse<StudentPurchaseHistoryItem[]> & {
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+};
+
 const studentApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getStudentDashboard: builder.query<ApiResponse<StudentDashboardData>, void>({
@@ -189,9 +236,45 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        reviewList: builder.query<StudentReviewListResponse, { page?: number }>({
+            query: ({ page = 1 }) => {
+                return {
+                    url: `/students/review-list/?page=${page}`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["reviews"]
+        }),
+        editReview: builder.mutation<ApiResponse<StudentReviewItem>, UpdateReviewPayload>({
+            query: ({ id, ...data }) => {
+                return {
+                    url: `/students/reviews-updated/${id}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            },
+            invalidatesTags: ["reviews"]
+        }),
+        deleteReview: builder.mutation<ApiResponse<null>, number>({
+            query: (id) => {
+                return {
+                    url: `/students/reviews-deleted/${id}/`,
+                    method: "DELETE"
+                }
+            },
+            invalidatesTags: ["reviews"]
+        }),
+        purchaseHistory: builder.query<StudentPurchaseHistoryResponse, { page?: number }>({
+            query: ({ page = 1 }) => {
+                return {
+                    url: `/students/student/purchase-history/?page=${page}`,
+                    method: "GET"
+                }
+            }
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery } = studentApi;

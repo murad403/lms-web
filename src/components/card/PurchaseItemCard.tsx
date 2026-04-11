@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { TPurchaseItem } from "@/lib/profile";
 import { useTranslations } from "next-intl";
+import { resolveImageUrl } from "@/utils/image";
 
 type PurchaseItemCardProps = {
     item: TPurchaseItem;
@@ -16,7 +17,7 @@ const PurchaseItemCard = ({ item, purchaseDate }: PurchaseItemCardProps) => {
             {/* Image */}
             <div className="relative w-full sm:w-32 h-25 rounded-md overflow-hidden shrink-0">
                 <Image
-                    src={item.image}
+                    src={resolveImageUrl(item.image)}
                     alt={item.title}
                     fill
                     className="object-cover"

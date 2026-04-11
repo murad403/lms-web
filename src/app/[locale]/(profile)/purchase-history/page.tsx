@@ -1,11 +1,60 @@
 "use client";
 import { CreditCard, ShoppingCart } from "lucide-react";
 import PurchaseItemCard from "@/components/card/PurchaseItemCard";
-import { purchaseHistory } from "@/lib/profile";
+import { type TPurchaseGroup } from "@/lib/profile";
+import { usePurchaseHistoryQuery, type StudentPurchaseHistoryItem } from "@/redux/features/student/student.api";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
+
+const formatGroupDate = (value: string) => {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return value;
+    return date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+    });
+};
 
 const PurchaseHistoryPage = () => {
     const t = useTranslations("PurchaseHistoryPage");
+    const { data } = usePurchaseHistoryQuery({ page: 1 });
+
+    const groupedPurchases = useMemo<TPurchaseGroup[]>(() => {
+        const groups = new Map<string, TPurchaseGroup>();
+
+        (data?.data ?? []).forEach((item: StudentPurchaseHistoryItem) => {
+            const groupDate = formatGroupDate(item.enrolled_at);
+
+            if (!groups.has(groupDate)) {
+                groups.set(groupDate, {
+                    id: groupDate,
+                    date: groupDate,
+                    courses: 0,
+                    totalPrice: 0,
+                    paymentMethod: "N/A",
+                    items: [],
+                });
+            }
+
+            const currentGroup = groups.get(groupDate)!;
+            const numericPrice = Number.parseFloat(item.course_price) || 0;
+
+            currentGroup.courses += 1;
+            currentGroup.totalPrice += numericPrice;
+            currentGroup.items.push({
+                id: String(item.id),
+                title: item.course_title,
+                image: item.course_thumbnail,
+                instructor: item.instructor,
+                price: numericPrice,
+                rating: 5,
+            });
+        });
+
+        return Array.from(groups.values());
+    }, [data]);
+
     return (
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
@@ -13,7 +62,7 @@ const PurchaseHistoryPage = () => {
             </h2>
 
             <div className="space-y-6">
-                {purchaseHistory.map((group) => (
+                {groupedPurchases.map((group) => (
                     <div
                         key={group.id}
                         className="bg-white rounded-md border border-border-light overflow-hidden"

@@ -4,14 +4,44 @@ import { useState } from "react";
 import Image from "next/image";
 import { Star, Pencil, Trash2 } from "lucide-react";
 import { TReview } from "@/lib/profile";
+import { StudentReviewItem } from "@/redux/features/student/student.api";
 import EditReviewModal from "../modal/EditReviewModal";
 import DeleteReviewModal from "../modal/DeleteReviewModal";
 import { useTranslations } from "next-intl";
+import { resolveImageUrl } from "@/utils/image";
 
 type ReviewCardProps = {
-    review: TReview;
+    review: TReview | StudentReviewItem;
     onEdit?: (reviewId: string, data: { rating: number; comment: string }) => Promise<void>;
     onDelete?: (reviewId: string) => Promise<void>;
+};
+
+const formatRelativeTime = (createdAt?: string) => {
+    if (!createdAt) return "-";
+
+    const createdAtDate = new Date(createdAt);
+    if (!Number.isFinite(createdAtDate.getTime())) return "-";
+
+    const diffInSeconds = Math.floor((Date.now() - createdAtDate.getTime()) / 1000);
+    if (diffInSeconds < 60) return "just now";
+
+    const minutes = Math.floor(diffInSeconds / 60);
+    if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+
+    const weeks = Math.floor(days / 7);
+    if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
+
+    const years = Math.floor(days / 365);
+    return `${years} year${years === 1 ? "" : "s"} ago`;
 };
 
 const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
@@ -19,10 +49,20 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const t = useTranslations("ReviewCard");
+    const normalizedReview: TReview = {
+        id: String(review.id),
+        userName: "userName" in review ? review.userName : review.student_name,
+        avatar: review.avatar,
+        rating: review.rating,
+        timeAgo: "timeAgo" in review ? review.timeAgo : formatRelativeTime(review.created_at),
+        comment: review.comment,
+        isOwn: "isOwn" in review ? review.isOwn : true,
+    };
+    const reviewerName = normalizedReview.userName || "Reviewer";
 
     const handleEdit = async (data: { rating: number; comment: string }) => {
         try {
-            await onEdit?.(review.id, data);
+            await onEdit?.(String(review.id), data);
             setIsEditModalOpen(false);
         } catch (error) {
             console.error("Failed to edit review:", error);
@@ -32,7 +72,7 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
     const handleDelete = async () => {
         try {
             setIsDeleting(true);
-            await onDelete?.(review.id);
+            await onDelete?.(String(review.id));
             setIsDeleteModalOpen(false);
         } catch (error) {
             console.error("Failed to delete review:", error);
@@ -47,8 +87,8 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
                 <div className="flex items-start gap-3">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
                         <Image
-                            src={review.avatar}
-                            alt={review.userName}
+                            src={resolveImageUrl(normalizedReview.avatar)}
+                            alt={reviewerName}
                             fill
                             className="object-cover"
                         />
@@ -56,14 +96,14 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between flex-wrap gap-2">
                             <div className="flex items-center gap-2">
-                                <h4 className="text-sm font-semibold text-title">{review.userName}</h4>
-                                <span className="text-xs text-description">• {review.timeAgo}</span>
+                                <h4 className="text-sm font-semibold text-title">{reviewerName}</h4>
+                                <span className="text-xs text-description">• {normalizedReview.timeAgo}</span>
                             </div>
                             <div className="flex items-center gap-0.5">
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <Star
                                         key={i}
-                                        className={`w-4 h-4 ${i < review.rating
+                                        className={`w-4 h-4 ${i < normalizedReview.rating
                                                 ? "text-yellow-500 fill-yellow-500"
                                                 : "text-gray-300"
                                             }`}
@@ -72,9 +112,9 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
                             </div>
                         </div>
                         <p className="text-sm text-description mt-2 leading-relaxed">
-                            {review.comment}
+                            {normalizedReview.comment}
                         </p>
-                        {review.isOwn && (
+                        {normalizedReview.isOwn && (
                             <div className="flex items-center gap-4 mt-3">
                                 <button
                                     onClick={() => setIsEditModalOpen(true)}
@@ -98,7 +138,7 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
 
             {/* Modals */}
             <EditReviewModal
-                review={review}
+                review={normalizedReview}
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 onSubmit={handleEdit}

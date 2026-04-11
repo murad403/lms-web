@@ -32,7 +32,7 @@ const UpcomingLiveClasses = ({ classes }: UpcomingLiveClassesProps) => {
                 {classes.map((cls) => (
                     <div
                         key={cls.id}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-md"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 border border-border-light rounded-md"
                     >
                         <div className="min-w-0 flex-1">
                             <h4 className="text-lg font-medium text-main">{cls.title}</h4>
@@ -56,7 +56,7 @@ const UpcomingLiveClasses = ({ classes }: UpcomingLiveClassesProps) => {
                             type="button"
                             onClick={() => handleJoinNow(cls.id)}
                             disabled={isJoining}
-                            className="px-4 py-3 bg-[#1B2E5A] text-white rounded-md text-xs sm:text-sm font-medium hover:bg-[#1B2E5A]/90 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
+                            className="px-4 py-3 bg-[#1B2E5A] cursor-pointer text-white rounded-md text-xs sm:text-sm font-medium hover:bg-[#1B2E5A]/90 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
                         >
                             <ExternalLink className="size-4" />
                             {t("joinNow")}

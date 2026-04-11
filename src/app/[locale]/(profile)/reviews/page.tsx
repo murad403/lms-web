@@ -1,23 +1,42 @@
 "use client";
 import ReviewCard from "@/components/card/ReviewCard";
-import { reviews } from "@/lib/profile";
+import Pagination from "@/components/reusable/Pagination";
+import { useDeleteReviewMutation, useEditReviewMutation, useReviewListQuery } from "@/redux/features/student/student.api";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const ReviewsPage = () => {
   const t = useTranslations("ReviewsPage");
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading } = useReviewListQuery({ page: currentPage });
+  const [editReview] = useEditReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
 
 
   const handleEditReview = async (
     reviewId: string,
     data: { rating: number; comment: string }
   ) => {
-    // TODO: API call to edit review
-    console.log("Edit review:", reviewId, data);
+    try {
+      const response = await editReview({ id: Number(reviewId), rating: data.rating, comment: data.comment }).unwrap();
+      toast.success(response.message || "Review updated successfully.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to update review.";
+      toast.error(message);
+      throw error;
+    }
   };
 
   const handleDeleteReview = async (reviewId: string) => {
-    // TODO: API call to delete review
-    console.log("Delete review:", reviewId);
+    try {
+      const response = await deleteReview(Number(reviewId)).unwrap();
+      toast.success(response.message || "Review deleted successfully.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to delete review.";
+      toast.error(message);
+      throw error;
+    }
   };
 
   return (
@@ -27,7 +46,7 @@ const ReviewsPage = () => {
       </div>
 
       <div className="bg-white space-y-4">
-        {reviews.map((review) => (
+        {isLoading ? null : (data?.data ?? []).map((review) => (
           <ReviewCard
             key={review.id}
             review={review}
@@ -36,6 +55,12 @@ const ReviewsPage = () => {
           />
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={data?.total_pages || 1}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
