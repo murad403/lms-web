@@ -1,10 +1,14 @@
 import { Badge } from '@/components/ui/badge'
-import { pastSessions } from '@/lib/profile'
 import { CalendarIcon, Clock, User } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import React from 'react'
+import type { LiveClassItem } from '@/redux/features/student/student.api'
 
-const PastSessions = () => {
+type PastSessionsProps = {
+    sessions: LiveClassItem[];
+};
+
+const PastSessions = ({ sessions }: PastSessionsProps) => {
     const t = useTranslations("LiveClasses");
     return (
         <div>
@@ -14,7 +18,7 @@ const PastSessions = () => {
                     {t("pastSessions")}
                 </h3>
                 <div className="space-y-3">
-                    {pastSessions.map((session) => (
+                    {sessions.map((session) => (
                         <div
                             key={session.id}
                             className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border border-border-light rounded-md p-4"
@@ -32,19 +36,19 @@ const PastSessions = () => {
                                         {session.status}
                                     </Badge>
                                 </div>
-                                <p className="text-xs text-description mt-0.5">{session.courseName}</p>
+                                <p className="text-xs text-description mt-0.5">{session.course_title}</p>
                                 <div className="flex flex-wrap items-center gap-3 mt-1 text-sm text-description">
                                     <span className="flex items-center gap-1">
                                         <User className="w-3 h-3" />
-                                        {session.instructor}
+                                        {session.instructor_name}
                                     </span>
                                     <span className="flex items-center gap-1">
                                         <CalendarIcon className="w-3 h-3" />
-                                        {session.date}
+                                        {session.scheduled_date}
                                     </span>
                                     <span className="flex items-center gap-1">
                                         <Clock className="w-3 h-3" />
-                                        {session.time}
+                                        {session.scheduled_time}
                                     </span>
                                 </div>
                             </div>

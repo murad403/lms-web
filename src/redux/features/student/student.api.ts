@@ -70,6 +70,64 @@ export type UpdateStudentProfilePayload = {
     avatar?: File;
 };
 
+export type EnrolledCourse = {
+    id: number;
+    course: number;
+    course_title: string;
+    category: string;
+    course_thumbnail: string;
+    instructor_profile: string | null;
+    course_price: string;
+    ratings: string;
+    instructor: string;
+    is_active: boolean;
+    is_completed: boolean;
+    is_started: boolean;
+    enrolled_at: string;
+    total_lectures: number;
+    completed_lectures: number;
+    progress_percentage: number;
+};
+
+export type EnrolledCoursesResponse = ApiResponse<EnrolledCourse[]> & {
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+};
+
+export type LiveClassItem = {
+    id: number;
+    title: string;
+    topic: string;
+    instructor: string;
+    instructor_name: string;
+    course: number;
+    course_title: string;
+    scheduled_date: string;
+    scheduled_time: string;
+    duration_minutes: number;
+    platform: string;
+    class_link: string;
+    is_recorded: boolean;
+    recording_link: string | null;
+    status: "Attended" | "Missed" | string;
+    created_at: string;
+};
+
+export type LiveClassesData = {
+    upcoming_live_classes: LiveClassItem[];
+    past_live_classes: LiveClassItem[];
+};
+
+export type LiveClassesResponse = ApiResponse<LiveClassesData>;
+
+export type JoinLiveClassResponse = ApiResponse<{
+    class_link: string;
+}>;
+
 const studentApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getStudentDashboard: builder.query<ApiResponse<StudentDashboardData>, void>({
@@ -87,7 +145,6 @@ const studentApi = baseApi.injectEndpoints({
         }),
         updateStudentProfile: builder.mutation<ApiResponse<StudentProfileData>, FormData>({
             query: (data) => {
-                console.log(data)
                 return {
                     url: "/students/profile/",
                     method: "PATCH",
@@ -96,9 +153,45 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["student"]
         }),
+        getEnrolledCourses: builder.query<EnrolledCoursesResponse, { page?: number; status?: string }>({
+            query: ({ page = 1, status }) => {
+                const params = new URLSearchParams();
+                params.append("page", page.toString());
+                if (status) params.append("status", status);
+                return {
+                    url: `/students/enroll-courses/?${params.toString()}`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["student"]
+        }),
+        enrollStudentInCourse: builder.query({
+            query: () => {
+                return {
+                    url: "/students/enroll-courses/",
+                    method: "GET"
+                }
+            }
+        }),
+        upcomingLiveClass: builder.query<LiveClassesResponse, void>({
+            query: () => {
+                return {
+                    url: "/students/student/live-classes/upcoming/",
+                    method: "GET"
+                }
+            }
+        }),
+        joinLiveClass: builder.mutation<JoinLiveClassResponse, number>({
+            query: (id) => {
+                return {
+                    url: `/students/join-live-class/${id}/`,
+                    method: "POST"
+                }
+            }
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation } = studentApi;
