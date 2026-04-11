@@ -11,7 +11,7 @@ const publicReviews = [
   {
     id: 1,
     name: "Guy Hawkins",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 week ago",
     rating: 5,
     comment:
@@ -20,7 +20,7 @@ const publicReviews = [
   {
     id: 2,
     name: "Dianna Russell",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "30 mins ago",
     rating: 5,
     comment:
@@ -29,7 +29,7 @@ const publicReviews = [
   {
     id: 3,
     name: "Bessie Cooper",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "2 hours ago",
     rating: 5,
     comment:
@@ -38,7 +38,7 @@ const publicReviews = [
   {
     id: 4,
     name: "Eleanor Pena",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 day ago",
     rating: 5,
     comment:
@@ -47,7 +47,7 @@ const publicReviews = [
   {
     id: 5,
     name: "Ralph Edwards",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "2 days ago",
     rating: 5,
     comment:
@@ -56,7 +56,7 @@ const publicReviews = [
   {
     id: 6,
     name: "Arlene McCoy",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 week ago",
     rating: 5,
     comment:
@@ -67,7 +67,7 @@ const publicReviews = [
 const Page = () => {
   const profile = instructorProfile;
   const publishedCourses = instructorCourses.filter((c) => c.status === "Published");
-  const [bannerSrc, setBannerSrc] = useState("/home/banner.jpg");
+  const [bannerSrc, setBannerSrc] = useState("/home/user1.png");
   const [avatarSrc, setAvatarSrc] = useState(profile.avatar);
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);

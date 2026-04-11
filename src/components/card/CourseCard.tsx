@@ -23,7 +23,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
                 />
                 {/* Wishlist Heart Icon */}
                 <button className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors">
-                    <Heart className="w-5 h-5  " />
+                    <Heart className="w-5 h-5" />
                 </button>
             </div>
 

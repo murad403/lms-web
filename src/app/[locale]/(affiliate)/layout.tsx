@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <RoleProfileDropdown
               name="Affiliate User"
               roleLabel="Affiliate account"
-              avatarSrc="/home/banner.jpg"
+              avatarSrc="/home/user1.png"
               avatarAlt="Affiliate User"
               profileHref={getProfilePathByRole("affiliate")}
               dashboardHref={getDashboardPathByRole("affiliate")}

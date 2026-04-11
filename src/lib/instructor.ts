@@ -239,7 +239,7 @@ export const instructorProfile: TInstructorProfile = {
   lastName: "Franzies",
   title: "Web Designer & Best-Selling Instructor",
   bio: "I'm a passionate educator who loves to share knowledge in a fun, engaging way. I created some of the world's most popular online learning programs and have helped millions of students master new skills. I'm originally from Italy, but I've been living and teaching internationally for over 10 years, traveling the world and creating content that makes complex topics approachable and enjoyable.\n\nMy teaching philosophy centers on practical, real-world skills. By combining theory with hands-on projects, I help students build confidence and competence. I believe that anyone can learn anything if the concepts are broken down clearly. Digital platforms have democratized education in a world-changing way.\n\nI'm always eager to connect with my students via social media and here on the platform. Drop me a message, leave a review, or just say hi—your feedback makes my day.",
-  avatar: "/home/banner.jpg",
+  avatar: "/home/user1.png",
   rating: 0.0,
   reviewCount: 0,
   studentCount: 0,
@@ -622,3 +622,4 @@ export const courseLanguageOptions = [
   { value: "french", label: "French" },
   { value: "german", label: "German" },
 ];
+

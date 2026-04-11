@@ -143,7 +143,7 @@ const CoursePlayerTabs = ({
                                     className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white overflow-hidden"
                                 >
                                     <Image
-                                        src="/home/banner.jpg"
+                                        src="/home/user1.png"
                                         alt="Student"
                                         fill
                                         className="object-cover"

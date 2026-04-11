@@ -148,7 +148,7 @@ const OrganizationTopbar = () => {
                         <RoleProfileDropdown
                             name="Organization Admin"
                             roleLabel="Organization account"
-                            avatarSrc="/home/banner.jpg"
+                            avatarSrc="/home/user1.png"
                             avatarAlt="Organization Admin"
                             profileHref={getProfilePathByRole("organization")}
                             dashboardHref={getDashboardPathByRole("organization")}
@@ -213,3 +213,4 @@ const OrganizationTopbar = () => {
 };
 
 export default OrganizationTopbar;
+

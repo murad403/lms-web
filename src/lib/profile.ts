@@ -214,7 +214,7 @@ export const userProfile: TUserProfile = {
   registrationDate: "07 February 2026, 10:16 AM",
   title: "Web Designer student",
   bio: "Hello! I'm Kevin Gilbert. I'm passionate about developing innovative software solutions, analyzing classic literature. I aspire to become a software developer, work as an editor. In my free time, I enjoy coding, reading, hiking etc.",
-  avatar: "/home/banner.jpg",
+  avatar: "/home/user1.png",
 };
 
 export const certificates: TCertificate[] = [
@@ -261,7 +261,7 @@ export const reviews: TReview[] = [
   {
     id: "1",
     userName: "Kevin Gilbert",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 4,
     timeAgo: "4 months ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
@@ -270,7 +270,7 @@ export const reviews: TReview[] = [
   {
     id: "2",
     userName: "Kevin Gilbert",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 5,
     timeAgo: "7 months ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
@@ -279,7 +279,7 @@ export const reviews: TReview[] = [
   {
     id: "3",
     userName: "Kevin Gilbert",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 3,
     timeAgo: "6 weeks ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
@@ -288,7 +288,7 @@ export const reviews: TReview[] = [
   {
     id: "4",
     userName: "Kevin Gilbert",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 4,
     timeAgo: "3 weeks ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
@@ -297,7 +297,7 @@ export const reviews: TReview[] = [
   {
     id: "5",
     userName: "Kevin Gilbert",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 4,
     timeAgo: "2 weeks ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
@@ -306,7 +306,7 @@ export const reviews: TReview[] = [
   {
     id: "6",
     userName: "Arya Petrova",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     rating: 5,
     timeAgo: "1 week ago",
     comment: "This course was exactly what I needed to level up my skills. The instructor was very knowledgeable and explained things clearly.",
@@ -377,11 +377,11 @@ export const purchaseHistory: TPurchaseGroup[] = [
 ];
 
 export const chatUsers: TChatUser[] = [
-  { id: "1", name: "Jane Cooper", avatar: "/home/banner.jpg", lastMessage: "Yeah sure, tell me...", time: "Just now", unread: 1, online: true },
-  { id: "2", name: "Jenny Wilson", avatar: "/home/banner.jpg", lastMessage: "Thank you so much, sir", time: "2 d", online: false },
-  { id: "3", name: "Marvin McKinney", avatar: "/home/banner.jpg", lastMessage: "You're Welcome", time: "1 m", online: true },
-  { id: "4", name: "Eleanor Pena", avatar: "/home/banner.jpg", lastMessage: "Thank you so much, sir", time: "1 m", online: false },
-  { id: "5", name: "Ronald Richards", avatar: "/home/banner.jpg", lastMessage: "Sorry, I can't help you", time: "3 m", online: false },
+  { id: "1", name: "Jane Cooper", avatar: "/home/user1.png", lastMessage: "Yeah sure, tell me...", time: "Just now", unread: 1, online: true },
+  { id: "2", name: "Jenny Wilson", avatar: "/home/user1.png", lastMessage: "Thank you so much, sir", time: "2 d", online: false },
+  { id: "3", name: "Marvin McKinney", avatar: "/home/user1.png", lastMessage: "You're Welcome", time: "1 m", online: true },
+  { id: "4", name: "Eleanor Pena", avatar: "/home/user1.png", lastMessage: "Thank you so much, sir", time: "1 m", online: false },
+  { id: "5", name: "Ronald Richards", avatar: "/home/user1.png", lastMessage: "Sorry, I can't help you", time: "3 m", online: false },
 ];
 
 export const chatMessages: TChatMessage[] = [
@@ -413,7 +413,7 @@ export const enrolledCourses: TEnrolledCourse[] = Array.from({ length: 9 }, (_, 
   title: "Information About UI/UX Design Degree",
   image: "/courses/Course Images (3).png",
   instructor: "David Benitez",
-  instructorAvatar: "/home/banner.jpg",
+  instructorAvatar: "/home/user1.png",
   category: "Design",
   rating: 4.9,
   reviews: "200 Reviews",
@@ -724,28 +724,28 @@ export const courseComments: TCourseComment[] = [
   {
     id: "c1",
     userName: "Ronald Richards",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 week ago",
     comment: "Maecenas rhus tortor, tincidunt nec purus eu, gravida suscipit tortor.",
   },
   {
     id: "c2",
     userName: "Cody Fisher",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 week ago",
     comment: "Thank You so much sir, you're a great mentor. 🔥🔥🔥",
   },
   {
     id: "c3",
     userName: "Guy Hawkins",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "2 weeks ago",
     comment: "Thank you for your helpful video. May I ask what is the application use to demo the animation at [4:24], is it the runnable mobile application?\n\nAs what I know, Figma Mirror app cannot do that. Please help me.\n\nGreat thanks",
     replies: [
       {
         id: "c3r1",
         userName: "Kevin Gilbert",
-        avatar: "/home/banner.jpg",
+        avatar: "/home/user1.png",
         timeAgo: "1 week ago",
         comment: "You're welcome! The app shown at 4:24 is a custom prototype built with ProtoPie. It allows more advanced interactions than Figma Mirror.",
       },
@@ -754,49 +754,49 @@ export const courseComments: TCourseComment[] = [
   {
     id: "c4",
     userName: "Esther Howard",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "2 weeks ago",
     comment: "Quality content 🔥",
   },
   {
     id: "c5",
     userName: "Theresa Webb",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "3 weeks ago",
     comment: "Now I know that I will spent that 5 minutes of my life with pure pleasure",
   },
   {
     id: "c6",
     userName: "Marvin McKinney",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "3 weeks ago",
     comment: "Great tutorial! I'm subscribing. I'm just wondering if is this feasible to be materialized in a real project or can be integrated in an actual app code?",
   },
   {
     id: "c7",
     userName: "Darrell Steward",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 month ago",
     comment: "Awesome video. Sometimes, we have got to try and push the possibilities of designs and not be bounded by codes. The fact that the design itself is a push from the norm, it is only expected that to code it would require some level of thinking out of the box. That is what differentiates yourself from others who are just building on top of someone else's code.",
   },
   {
     id: "c8",
     userName: "Floyd Miles",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 month ago",
     comment: "I really hope you create more series of this UI + AE tutorials :)",
   },
   {
     id: "c9",
     userName: "Courtney Henry",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 month ago",
     comment: "Imagine seeing this while being a front end programmer.",
   },
   {
     id: "c10",
     userName: "Brooklyn Simmons",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "2 months ago",
     comment: "This is one of the best courses I've ever taken online. Highly recommended!",
   },

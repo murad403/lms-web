@@ -1,4 +1,4 @@
-import baseApi1 from "@/redux/api/baseApi";
+import baseApi from "@/redux/api/baseApi";
 
 export type SignInPayload = {
   email: string;
@@ -108,7 +108,7 @@ export type ResetPasswordResponse = {
   message: string;
 };
 
-const authApi = baseApi1.injectEndpoints({
+const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation<SignInResponse, SignInPayload>({
       query: (data) => ({

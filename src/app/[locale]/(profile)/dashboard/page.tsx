@@ -1,6 +1,5 @@
 "use client";
 import DashboardCourseCard from "@/components/card/DashboardCourseCard";
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import DashboardStats from "./DashboardStats";
 import RecentInvoices from "./RecentInvoices";
@@ -16,22 +15,6 @@ const DashboardPage = () => {
     const t = useTranslations("Dashboard");
     return (
         <div className="space-y-6">
-            {/* Quiz Banner */}
-            <div className="bg-[#F4F6F9] rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div>
-                    <h3 className="text-title font-bold text-sm sm:text-base">
-                        {t("quizTitle")}
-                    </h3>
-                    <p className="text-description text-xs sm:text-sm mt-1">{t("answered")}</p>
-                </div>
-                <Link
-                    href="/quiz-attempts"
-                    className="px-5 py-3 bg-main text-white rounded-3xl text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap"
-                >
-                    {t("continueQuiz")}
-                </Link>
-            </div>
-
             {/* Stats */}
             <DashboardStats />
 

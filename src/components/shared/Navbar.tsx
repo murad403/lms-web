@@ -255,7 +255,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                     <div className="flex gap-4 pb-6 border-b border-gray-200">
                                         <div className="w-32 h-24 bg-gray-200 rounded-lg overflow-hidden shrink-0">
                                             <Image
-                                                src="/home/banner.jpg"
+                                                src="/home/user1.png"
                                                 alt="Course"
                                                 width={128}
                                                 height={96}
@@ -501,3 +501,4 @@ const Navbar = ({ initialSession }: NavbarProps) => {
 };
 
 export default Navbar;
+

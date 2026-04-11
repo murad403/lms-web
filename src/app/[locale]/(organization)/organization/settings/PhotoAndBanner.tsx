@@ -11,8 +11,8 @@ import { useTranslations } from "next-intl";
 type PhotoAndBannerFormData = z.infer<typeof photoAndBannerSchema>;
 
 const PhotoAndBanner = () => {
-  const [photoPreview, setPhotoPreview] = useState<string>("/home/banner.jpg");
-  const [bannerPreview, setBannerPreview] = useState<string>("/home/banner.jpg");
+  const [photoPreview, setPhotoPreview] = useState<string>("/home/user1.png");
+  const [bannerPreview, setBannerPreview] = useState<string>("/home/user1.png");
 
   const photoInputRef = useRef<HTMLInputElement>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);

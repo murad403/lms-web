@@ -10,7 +10,7 @@ const affiliateProfile = {
   ...instructorProfile,
   firstName: "John",
   lastName: "Doe",
-  avatar: "/home/banner.jpg",
+  avatar: "/home/user1.png",
   title: "Affiliate Partner",
   bio: "Helping learners discover the right courses and grow with trusted learning paths.",
 };
@@ -19,7 +19,7 @@ const publicReviews = [
   {
     id: 1,
     name: "Guy Hawkins",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "1 week ago",
     rating: 5,
     comment:
@@ -28,7 +28,7 @@ const publicReviews = [
   {
     id: 2,
     name: "Dianna Russell",
-    avatar: "/home/banner.jpg",
+    avatar: "/home/user1.png",
     timeAgo: "3 days ago",
     rating: 5,
     comment:

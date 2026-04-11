@@ -138,11 +138,11 @@ export const teamStats: TTeamStats = {
 };
 
 export const teamMembers: TTeamMember[] = [
-  { id: "1", name: "Sarah Johnson", avatar: "/home/banner.jpg", email: "sarah@org.com", role: "Admin", lastLogin: "2 hours ago", status: "Active" },
-  { id: "2", name: "Michael Chen", avatar: "/home/banner.jpg", email: "michael@org.com", role: "Manager", lastLogin: "5 hours ago", status: "Active" },
-  { id: "3", name: "Emily Davis", avatar: "/home/banner.jpg", email: "emily@org.com", role: "Instructor", lastLogin: "1 day ago", status: "Active" },
-  { id: "4", name: "James Wilson", avatar: "/home/banner.jpg", email: "james@org.com", role: "Moderator", lastLogin: "3 days ago", status: "Suspended" },
-  { id: "5", name: "Lisa Anderson", avatar: "/home/banner.jpg", email: "lisa@org.com", role: "Instructor", lastLogin: "6 hours ago", status: "Active" },
+  { id: "1", name: "Sarah Johnson", avatar: "/home/user1.png", email: "sarah@org.com", role: "Admin", lastLogin: "2 hours ago", status: "Active" },
+  { id: "2", name: "Michael Chen", avatar: "/home/user1.png", email: "michael@org.com", role: "Manager", lastLogin: "5 hours ago", status: "Active" },
+  { id: "3", name: "Emily Davis", avatar: "/home/user1.png", email: "emily@org.com", role: "Instructor", lastLogin: "1 day ago", status: "Active" },
+  { id: "4", name: "James Wilson", avatar: "/home/user1.png", email: "james@org.com", role: "Moderator", lastLogin: "3 days ago", status: "Suspended" },
+  { id: "5", name: "Lisa Anderson", avatar: "/home/user1.png", email: "lisa@org.com", role: "Instructor", lastLogin: "6 hours ago", status: "Active" },
 ];
 
 export const rolePermissions: TRolePermission[] = [
@@ -153,14 +153,14 @@ export const rolePermissions: TRolePermission[] = [
 ];
 
 export const activityLogs: TActivityLog[] = [
-  { id: "1", user: "Sarah Johnson", avatar: "/home/banner.jpg", action: "added new member", target: "Lisa Anderson", time: "2 hours ago" },
-  { id: "2", user: "Michael Chen", avatar: "/home/banner.jpg", action: "updated role for", target: "Emily Davis", time: "5 hours ago" },
-  { id: "3", user: "Sarah Johnson", avatar: "/home/banner.jpg", action: "suspended member", target: "James Wilson", time: "1 day ago" },
-  { id: "4", user: "Emily Davis", avatar: "/home/banner.jpg", action: "created a new course", target: "React Masterclass", time: "2 days ago" },
-  { id: "5", user: "Michael Chen", avatar: "/home/banner.jpg", action: "updated permissions for", target: "Moderator role", time: "3 days ago" },
-  { id: "6", user: "Sarah Johnson", avatar: "/home/banner.jpg", action: "approved accreditation for", target: "Advanced ML Course", time: "4 days ago" },
-  { id: "7", user: "Lisa Anderson", avatar: "/home/banner.jpg", action: "uploaded contract for", target: "Data Science Course", time: "5 days ago" },
-  { id: "8", user: "Michael Chen", avatar: "/home/banner.jpg", action: "generated report for", target: "Q4 2024", time: "1 week ago" }
+  { id: "1", user: "Sarah Johnson", avatar: "/home/user1.png", action: "added new member", target: "Lisa Anderson", time: "2 hours ago" },
+  { id: "2", user: "Michael Chen", avatar: "/home/user1.png", action: "updated role for", target: "Emily Davis", time: "5 hours ago" },
+  { id: "3", user: "Sarah Johnson", avatar: "/home/user1.png", action: "suspended member", target: "James Wilson", time: "1 day ago" },
+  { id: "4", user: "Emily Davis", avatar: "/home/user1.png", action: "created a new course", target: "React Masterclass", time: "2 days ago" },
+  { id: "5", user: "Michael Chen", avatar: "/home/user1.png", action: "updated permissions for", target: "Moderator role", time: "3 days ago" },
+  { id: "6", user: "Sarah Johnson", avatar: "/home/user1.png", action: "approved accreditation for", target: "Advanced ML Course", time: "4 days ago" },
+  { id: "7", user: "Lisa Anderson", avatar: "/home/user1.png", action: "uploaded contract for", target: "Data Science Course", time: "5 days ago" },
+  { id: "8", user: "Michael Chen", avatar: "/home/user1.png", action: "generated report for", target: "Q4 2024", time: "1 week ago" }
 ];
 
 export const instructorStats: TInstructorStats = {
@@ -171,13 +171,13 @@ export const instructorStats: TInstructorStats = {
 };
 
 export const instructorMembers: TInstructorMember[] = [
-  { id: "1", name: "Sarah Johnson", avatar: "/home/banner.jpg", email: "sarah@org.com", role: "Lead Instructor", lastLogin: "2 hours ago", status: "Active", courses: 5 },
-  { id: "2", name: "Michael Chen", avatar: "/home/banner.jpg", email: "michael@org.com", role: "Instructor", lastLogin: "5 hours ago", status: "Active", courses: 3 },
-  { id: "3", name: "Emily Davis", avatar: "/home/banner.jpg", email: "emily@org.com", role: "Instructor", lastLogin: "1 day ago", status: "Pending", courses: 2 },
-  { id: "4", name: "James Wilson", avatar: "/home/banner.jpg", email: "james@org.com", role: "Assistant", lastLogin: "3 days ago", status: "Active", courses: 1 },
-  { id: "5", name: "Lisa Anderson", avatar: "/home/banner.jpg", email: "lisa@org.com", role: "Lead Instructor", lastLogin: "6 hours ago", status: "Active", courses: 4 },
-  { id: "6", name: "David Miller", avatar: "/home/banner.jpg", email: "david@org.com", role: "Assistant", lastLogin: "1 week ago", status: "Active", courses: 2 },
-  { id: "7", name: "Sophia Garcia", avatar: "/home/banner.jpg", email: "sophia@org.com", role: "Instructor", lastLogin: "2 weeks ago", status: "Active", courses: 3 },
+  { id: "1", name: "Sarah Johnson", avatar: "/home/user1.png", email: "sarah@org.com", role: "Lead Instructor", lastLogin: "2 hours ago", status: "Active", courses: 5 },
+  { id: "2", name: "Michael Chen", avatar: "/home/user1.png", email: "michael@org.com", role: "Instructor", lastLogin: "5 hours ago", status: "Active", courses: 3 },
+  { id: "3", name: "Emily Davis", avatar: "/home/user1.png", email: "emily@org.com", role: "Instructor", lastLogin: "1 day ago", status: "Pending", courses: 2 },
+  { id: "4", name: "James Wilson", avatar: "/home/user1.png", email: "james@org.com", role: "Assistant", lastLogin: "3 days ago", status: "Active", courses: 1 },
+  { id: "5", name: "Lisa Anderson", avatar: "/home/user1.png", email: "lisa@org.com", role: "Lead Instructor", lastLogin: "6 hours ago", status: "Active", courses: 4 },
+  { id: "6", name: "David Miller", avatar: "/home/user1.png", email: "david@org.com", role: "Assistant", lastLogin: "1 week ago", status: "Active", courses: 2 },
+  { id: "7", name: "Sophia Garcia", avatar: "/home/user1.png", email: "sophia@org.com", role: "Instructor", lastLogin: "2 weeks ago", status: "Active", courses: 3 },
 ];
 
 export const contractStats: TContractStats = {
@@ -188,11 +188,11 @@ export const contractStats: TContractStats = {
 };
 
 export const contracts: TContract[] = [
-  { id: "CON-001", instructor: "Sarah Johnson", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", revenueShare: 70, expiry: "Dec 31, 2025", status: "Active", signedDate: "Jan 01, 2024", splitPercentage: 70 },
-  { id: "CON-002", instructor: "Michael Chen", avatar: "/home/banner.jpg", course: "Deep Learning Fundamentals", revenueShare: 60, expiry: "Jun 30, 2025", status: "Active", signedDate: "Feb 15, 2024", splitPercentage: 60 },
-  { id: "CON-003", instructor: "Emily Davis", avatar: "/home/banner.jpg", course: "UX Design Masterclass", revenueShare: 65, expiry: "Mar 15, 2025", status: "Pending", signedDate: "Mar 01, 2024", splitPercentage: 65 },
-  { id: "CON-004", instructor: "James Wilson", avatar: "/home/banner.jpg", course: "React Development", revenueShare: 55, expiry: "Jan 15, 2024", status: "Expired", signedDate: "Jan 15, 2023", splitPercentage: 55 },
-  { id: "CON-005", instructor: "Lisa Anderson", avatar: "/home/banner.jpg", course: "Data Science Bootcamp", revenueShare: 75, expiry: "Sep 30, 2025", status: "Active", signedDate: "Apr 01, 2024", splitPercentage: 75 },
+  { id: "CON-001", instructor: "Sarah Johnson", avatar: "/home/user1.png", course: "Advanced Machine Learning", revenueShare: 70, expiry: "Dec 31, 2025", status: "Active", signedDate: "Jan 01, 2024", splitPercentage: 70 },
+  { id: "CON-002", instructor: "Michael Chen", avatar: "/home/user1.png", course: "Deep Learning Fundamentals", revenueShare: 60, expiry: "Jun 30, 2025", status: "Active", signedDate: "Feb 15, 2024", splitPercentage: 60 },
+  { id: "CON-003", instructor: "Emily Davis", avatar: "/home/user1.png", course: "UX Design Masterclass", revenueShare: 65, expiry: "Mar 15, 2025", status: "Pending", signedDate: "Mar 01, 2024", splitPercentage: 65 },
+  { id: "CON-004", instructor: "James Wilson", avatar: "/home/user1.png", course: "React Development", revenueShare: 55, expiry: "Jan 15, 2024", status: "Expired", signedDate: "Jan 15, 2023", splitPercentage: 55 },
+  { id: "CON-005", instructor: "Lisa Anderson", avatar: "/home/user1.png", course: "Data Science Bootcamp", revenueShare: 75, expiry: "Sep 30, 2025", status: "Active", signedDate: "Apr 01, 2024", splitPercentage: 75 },
 ];
 
 export const reportStats: TReportStats = {
@@ -250,12 +250,13 @@ export const examRules: TExamRule[] = [
 ];
 
 export const attendanceRecords: TAttendanceRecord[] = [
-  { id: "1", studentName: "John Smith", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:00 AM", logoutTime: "11:30 AM", sessionDuration: "2h 30m", status: "Present" },
-  { id: "2", studentName: "Emma Watson", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:15 AM", logoutTime: "11:45 AM", sessionDuration: "2h 30m", status: "Present" },
-  { id: "3", studentName: "David Brown", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
-  { id: "4", studentName: "Sophie Turner", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:05 AM", logoutTime: "11:35 AM", sessionDuration: "2h 30m", status: "Present" },
-  { id: "5", studentName: "Alex Johnson", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
-  { id: "6", studentName: "Olivia Martinez", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:10 AM", logoutTime: "11:40 AM", sessionDuration: "2h 30m", status: "Present" },
-  { id: "7", studentName: "Ryan Cooper", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:20 AM", logoutTime: "11:50 AM", sessionDuration: "2h 30m", status: "Present" },
-  { id: "8", studentName: "Mia Thompson", avatar: "/home/banner.jpg", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
+  { id: "1", studentName: "John Smith", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:00 AM", logoutTime: "11:30 AM", sessionDuration: "2h 30m", status: "Present" },
+  { id: "2", studentName: "Emma Watson", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:15 AM", logoutTime: "11:45 AM", sessionDuration: "2h 30m", status: "Present" },
+  { id: "3", studentName: "David Brown", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
+  { id: "4", studentName: "Sophie Turner", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:05 AM", logoutTime: "11:35 AM", sessionDuration: "2h 30m", status: "Present" },
+  { id: "5", studentName: "Alex Johnson", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
+  { id: "6", studentName: "Olivia Martinez", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:10 AM", logoutTime: "11:40 AM", sessionDuration: "2h 30m", status: "Present" },
+  { id: "7", studentName: "Ryan Cooper", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: true, loginTime: "09:20 AM", logoutTime: "11:50 AM", sessionDuration: "2h 30m", status: "Present" },
+  { id: "8", studentName: "Mia Thompson", avatar: "/home/user1.png", course: "Advanced Machine Learning", instructor: "Sarah Johnson", attendance: false, loginTime: "—", logoutTime: "—", sessionDuration: "—", status: "Absent" },
 ];
+
