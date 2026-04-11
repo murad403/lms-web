@@ -11,9 +11,11 @@ import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
-import user from "@/assets/partnership/user2.png"
+import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
+import { useGetStudentProfileQuery } from "@/redux/features/student/student.api";
+import { resolveImageUrl } from "@/utils/image";
 
 type NavbarProps = {
     initialSession: AuthSessionSnapshot;
@@ -38,6 +40,13 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
     const session = initialSession;
+
+    const { data: profileData } = useGetStudentProfileQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const userAvatar = profileData?.data?.user?.avatar ? resolveImageUrl(profileData.data.user.avatar) : defaultUserImage;
+    const userName = profileData?.data?.user?.name || "User";
+    const userEmail = profileData?.data?.user?.email || "";
 
     const categories = categoryList.map((cat) => ({
         slug: cat.slug,
@@ -305,7 +314,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                     className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors"
                                 >
                                     <Image
-                                        src={user}
+                                        src={userAvatar}
                                         alt="User"
                                         width={40}
                                         height={40}
@@ -320,7 +329,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full overflow-hidden">
                                                     <Image
-                                                        src={user}
+                                                        src={userAvatar}
                                                         alt="User"
                                                         width={40}
                                                         height={40}
@@ -329,7 +338,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-xs sm:text-sm md:text-base text-title">
-                                                        alexmarcel@gmail.com
+                                                        {userEmail}
                                                     </p>
                                                     <p className="text-[10px] sm:text-xs text-description">
                                                         {session.role ? `${session.role} account` : "Account"}

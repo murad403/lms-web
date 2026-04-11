@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { shouldBypassImageOptimization } from "@/utils/image";
 
 type DashboardCourseCardProps = {
     course: {
@@ -25,6 +26,7 @@ const DashboardCourseCard = ({ course }: DashboardCourseCardProps) => {
                     alt={course.title}
                     fill
                     className="object-cover"
+                    unoptimized={shouldBypassImageOptimization(course.image)}
                 />
             </div>
             <div className="p-3 sm:p-4">

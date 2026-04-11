@@ -5,6 +5,7 @@ import DashboardStats from "./DashboardStats";
 import RecentInvoices from "./RecentInvoices";
 import LatestQuizzes from "./LatestQuizzes";
 import { useGetStudentDashboardQuery } from "@/redux/features/student/student.api";
+import { resolveImageUrl } from "@/utils/image";
 
 const DashboardPage = () => {
     const t = useTranslations("Dashboard");
@@ -15,7 +16,7 @@ const DashboardPage = () => {
     const recentCourses = dashboardData?.recently_enrolled?.map((course) => ({
         id: course.id,
         title: course.title,
-        image: course.thumbnail,
+        image: resolveImageUrl(course.thumbnail),
         lessonNumber: 1,
         lessonTitle: course.subtitle,
         progress: Math.round(course.course_progress),

@@ -1,18 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Upload, Trash2, X } from "lucide-react";
-import { userProfile } from "@/lib/profile";
+import { Upload, Trash2, User, X } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
 import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
 import { useGetStudentProfileQuery, useUpdateStudentProfileMutation } from "@/redux/features/student/student.api";
 import { toast } from "sonner";
+import { appendImageVersion, resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
 
 type ProfileFormData = {
     firstName: string;
     lastName: string;
+    phoneNumber: string;
     username: string;
     email: string;
     title: string;
@@ -24,25 +25,14 @@ const SettingsPage = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const { data: profileData } = useGetStudentProfileQuery();
+    const [avatarVersion, setAvatarVersion] = useState(0);
+    const selectedFileRef = useRef<File | null>(null);
+
+    const { data: profileData, refetch } = useGetStudentProfileQuery();
     const [updateStudentProfile, { isLoading: isUpdatingProfile }] = useUpdateStudentProfileMutation();
     const t = useTranslations("SettingsPage");
 
-    const {
-        register: registerProfile,
-        handleSubmit: handleProfileSubmit,
-        setValue,
-        reset,
-    } = useForm<ProfileFormData>({
-        defaultValues: {
-            firstName: userProfile.firstName,
-            lastName: userProfile.lastName,
-            username: userProfile.username,
-            email: userProfile.email,
-            title: userProfile.title,
-            bio: userProfile.bio,
-        },
-    });
+    const { register: registerProfile, handleSubmit: handleProfileSubmit, setValue, reset } = useForm<ProfileFormData>();
 
     useEffect(() => {
         const profile = profileData?.data;
@@ -55,6 +45,7 @@ const SettingsPage = () => {
         reset({
             firstName: profile.first_name || fallbackFirstName,
             lastName: profile.last_name || fallbackLastName,
+            phoneNumber: profile.user?.phone || "",
             username: profile.user?.name || "",
             email: profile.user?.email || "",
             title: profile.title || "",
@@ -63,26 +54,24 @@ const SettingsPage = () => {
         });
     }, [profileData, reset]);
 
-    
-
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-
         if (!file) return;
-        const reader = new FileReader();
 
+        const reader = new FileReader();
         reader.onload = (event) => {
             setPreviewImage(event.target?.result as string);
             setSelectedFile(file);
+            selectedFileRef.current = file;
             setValue("avatar", file);
         };
-
         reader.readAsDataURL(file);
     };
 
     const handleRemoveImage = () => {
         setPreviewImage(null);
         setSelectedFile(null);
+        selectedFileRef.current = null;
         setValue("avatar", null);
     };
 
@@ -91,22 +80,51 @@ const SettingsPage = () => {
             const formData = new FormData();
             formData.append("first_name", data.firstName);
             formData.append("last_name", data.lastName);
+            formData.append("phone", data.phoneNumber);
             formData.append("title", data.title);
             formData.append("bio", data.bio);
 
-            if (selectedFile) {
-                formData.append("avatar", selectedFile);
+            // selectedFileRef দিয়ে সবসময় latest file নেওয়া হচ্ছে
+            if (selectedFileRef.current) {
+                formData.append("avatar", selectedFileRef.current);
             }
 
             const response = await updateStudentProfile(formData).unwrap();
             toast.success(response.message || "Profile updated successfully.");
 
+            const updatedProfile = response.data;
+            const fullNameParts = (updatedProfile.user?.name || "").trim().split(/\s+/).filter(Boolean);
+            const fallbackFirstName = fullNameParts[0] || "";
+            const fallbackLastName = fullNameParts.slice(1).join(" ");
+
+            reset({
+                firstName: updatedProfile.first_name || fallbackFirstName,
+                lastName: updatedProfile.last_name || fallbackLastName,
+                phoneNumber: updatedProfile.user?.phone || "",
+                username: updatedProfile.user?.name || "",
+                email: updatedProfile.user?.email || "",
+                title: updatedProfile.title || "",
+                bio: updatedProfile.bio || "",
+                avatar: null,
+            });
+
+            setPreviewImage(null);
+            setSelectedFile(null);
+            selectedFileRef.current = null;
+            setValue("avatar", null);
+
+            if (selectedFileRef.current) {
+                setAvatarVersion((prev) => prev + 1);
+            }
+
+            await refetch();
+
         } catch (error) {
             const message =
                 typeof error === "object" &&
-                error !== null &&
-                "data" in error &&
-                typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
                     ? (error as { data?: { message?: string } }).data?.message
                     : "Failed to update profile";
 
@@ -114,20 +132,21 @@ const SettingsPage = () => {
         }
     };
 
-    
-
     const handleDeleteAccount = () => {
-        // TODO: API call to delete account
         setShowDeleteModal(false);
     };
 
-    const currentAvatar = previewImage || profileData?.data?.user?.avatar || userProfile.avatar;
+    const resolvedApiAvatar = resolveImageUrl(profileData?.data?.user?.avatar);
+    const currentAvatar =
+        previewImage ||
+        (resolvedApiAvatar && resolvedApiAvatar.trim()
+            ? appendImageVersion(resolvedApiAvatar, avatarVersion)
+            : null);
 
     return (
         <div className="space-y-6">
             <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
 
-            {/* Profile Settings */}
             <form
                 onSubmit={handleProfileSubmit(onProfileSubmit)}
                 className="bg-white rounded-md border border-border-light p-4 sm:p-6"
@@ -136,12 +155,19 @@ const SettingsPage = () => {
                     {/* Avatar Upload */}
                     <div className="flex flex-col items-center gap-3 shrink-0">
                         <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-md overflow-hidden border border-border-light group">
-                            <Image
-                                src={currentAvatar}
-                                alt="Profile"
-                                fill
-                                className="object-cover"
-                            />
+                            {currentAvatar ? (
+                                <Image
+                                    src={currentAvatar}
+                                    alt="Profile"
+                                    fill
+                                    className="object-cover"
+                                    unoptimized={shouldBypassImageOptimization(currentAvatar)}
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                                    <User className="w-10 h-10 text-gray-400" />
+                                </div>
+                            )}
                             {previewImage && (
                                 <button
                                     type="button"
@@ -183,21 +209,39 @@ const SettingsPage = () => {
                     {/* Form Fields */}
                     <div className="flex-1 space-y-4">
                         <div>
-                            <label className="text-xs font-medium text-title mb-1 block">
-                                {t("fullName")}
-                            </label>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <input
-                                    {...registerProfile("firstName")}
-                                    placeholder={t("firstNamePlaceholder")}
-                                    className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
-                                />
-                                <input
-                                    {...registerProfile("lastName")}
-                                    placeholder={t("lastNamePlaceholder")}
-                                    className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
-                                />
+                                <div>
+                                    <label className="text-xs font-medium text-title mb-1 block">
+                                        {t("firstNameLabel")}
+                                    </label>
+                                    <input
+                                        {...registerProfile("firstName")}
+                                        placeholder={t("firstNamePlaceholder")}
+                                        className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-medium text-title mb-1 block">
+                                        {t("lastNameLabel")}
+                                    </label>
+                                    <input
+                                        {...registerProfile("lastName")}
+                                        placeholder={t("lastNamePlaceholder")}
+                                        className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
+                                    />
+                                </div>
                             </div>
+                        </div>
+
+                        <div>
+                            <label className="text-xs font-medium text-title mb-1 block">
+                                {t("phoneNumber")}
+                            </label>
+                            <input
+                                {...registerProfile("phoneNumber")}
+                                placeholder={t("phoneNumberPlaceholder")}
+                                className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
+                            />
                         </div>
 
                         <div>
@@ -257,20 +301,15 @@ const SettingsPage = () => {
                 </div>
             </form>
 
-            {/* Change Password */}
-            <ChangePassword/>
+            <ChangePassword />
 
             {/* Delete Account */}
             <div className="bg-red-50 rounded-xl border border-red-200 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h3 className="text-base font-bold text-red-700">{t("deleteAccount")}</h3>
-                        <p className="text-sm text-red-600 mt-1">
-                            {t("deleteAccountDesc")}
-                        </p>
-                        <p className="text-xs text-red-500 mt-1 font-medium">
-                            {t("deleteAccountWarning")}
-                        </p>
+                        <p className="text-sm text-red-600 mt-1">{t("deleteAccountDesc")}</p>
+                        <p className="text-xs text-red-500 mt-1 font-medium">{t("deleteAccountWarning")}</p>
                     </div>
                     <button
                         onClick={() => setShowDeleteModal(true)}
@@ -282,7 +321,6 @@ const SettingsPage = () => {
                 </div>
             </div>
 
-            {/* Delete Account Modal */}
             <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
                 <AlertDialogContent className="max-w-sm">
                     <AlertDialogHeader className="items-center">

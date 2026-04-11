@@ -200,23 +200,6 @@ export type TCheckoutCourse = {
   originalPrice?: number;
 };
 
-// Mock Data
-export const userProfile: TUserProfile = {
-  id: "1",
-  firstName: "Kevin",
-  lastName: "Gilbert",
-  username: "kevingilj",
-  email: "example@email.com",
-  phone: "+8801633012838",
-  gender: "Male",
-  dateOfBirth: "02 February 2004",
-  age: 22,
-  registrationDate: "07 February 2026, 10:16 AM",
-  title: "Web Designer student",
-  bio: "Hello! I'm Kevin Gilbert. I'm passionate about developing innovative software solutions, analyzing classic literature. I aspire to become a software developer, work as an editor. In my free time, I enjoy coding, reading, hiking etc.",
-  avatar: "/home/user1.png",
-};
-
 export const certificates: TCertificate[] = [
   { id: "01", courseName: "UI/UX Design Certificate", date: "22 Aug 2025", marks: 20, outOf: 20 },
   { id: "02", courseName: "Wordpress Certificate", date: "10 Aug 2025", marks: 18, outOf: 20 },

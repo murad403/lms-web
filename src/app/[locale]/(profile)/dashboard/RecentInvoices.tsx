@@ -1,7 +1,6 @@
 import { StudentDashboardInvoice } from '@/redux/features/student/student.api';
-import { Download } from 'lucide-react'
+import { FileDown } from 'lucide-react'
 import { useTranslations } from 'next-intl';
-import React from 'react'
 
 type RecentInvoicesProps = {
     invoices: StudentDashboardInvoice[];
@@ -98,7 +97,7 @@ const RecentInvoices = ({ invoices }: RecentInvoicesProps) => {
                                 onClick={() => handleDownload(invoice)}
                                 className="p-1 text-description hover:text-title transition-colors"
                             >
-                                <Download className="w-4 h-4" />
+                                <FileDown className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
