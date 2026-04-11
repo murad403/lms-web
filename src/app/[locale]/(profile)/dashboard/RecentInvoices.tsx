@@ -1,9 +1,13 @@
-import { invoices, TInvoice } from '@/lib/profile'
+import { StudentDashboardInvoice } from '@/redux/features/student/student.api';
 import { Download } from 'lucide-react'
 import { useTranslations } from 'next-intl';
 import React from 'react'
 
-const handleDownload = (invoice: TInvoice) => {
+type RecentInvoicesProps = {
+    invoices: StudentDashboardInvoice[];
+};
+
+const handleDownload = (invoice: StudentDashboardInvoice) => {
     import('jspdf').then(({ jsPDF }) => {
         const doc = new jsPDF();
 
@@ -19,7 +23,7 @@ const handleDownload = (invoice: TInvoice) => {
 
         doc.setFontSize(11);
         doc.setFont('helvetica', 'normal');
-        doc.text(invoice.invoiceNo, 196, 22, { align: 'right' });
+        doc.text(invoice.invoice_id, 196, 22, { align: 'right' });
 
         // Reset text color
         doc.setTextColor(30, 30, 30);
@@ -32,7 +36,7 @@ const handleDownload = (invoice: TInvoice) => {
         doc.setFont('helvetica', 'bold');
         doc.text('Course / Title', 14, startY);
         doc.setFont('helvetica', 'normal');
-        doc.text(invoice.title, 14, startY + lineH);
+        doc.text(invoice.name, 14, startY + lineH);
 
         // Divider
         doc.setDrawColor(220, 220, 220);
@@ -53,18 +57,18 @@ const handleDownload = (invoice: TInvoice) => {
         doc.roundedRect(108, detailY + lineH - 6, 28, 9, 2, 2, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(10);
-        doc.text(invoice.status, 122, detailY + lineH, { align: 'center' });
+        doc.text(invoice.status.toUpperCase(), 122, detailY + lineH, { align: 'center' });
 
         // Footer
         doc.setTextColor(160, 160, 160);
         doc.setFontSize(9);
         doc.text(`Generated on ${new Date().toLocaleDateString()}`, 14, 285);
 
-        doc.save(`${invoice.invoiceNo.replace('#', '')}.pdf`);
+        doc.save(`${invoice.invoice_id}.pdf`);
     });
 };
 
-const RecentInvoices = () => {
+const RecentInvoices = ({ invoices }: RecentInvoicesProps) => {
     const t = useTranslations("Dashboard");
     return (
         <div className="rounded-md border border-border-light p-4 sm:p-5">
@@ -79,10 +83,10 @@ const RecentInvoices = () => {
                     >
                         <div className="min-w-0 flex-1">
                             <h4 className="text-base font-semibold text-title truncate">
-                                {invoice.title}
+                                {invoice.name}
                             </h4>
                             <p className="text-sm text-description">
-                                {invoice.invoiceNo} • {t("amount")} :{" "}
+                                {invoice.invoice_id} • {t("amount")} :{" "}
                                 <span className=" text-[#5625E8]">${invoice.amount}</span>
                             </p>
                         </div>

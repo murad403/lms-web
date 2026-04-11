@@ -4,19 +4,31 @@ import { useTranslations } from "next-intl";
 import DashboardStats from "./DashboardStats";
 import RecentInvoices from "./RecentInvoices";
 import LatestQuizzes from "./LatestQuizzes";
-
-const recentCourses = [
-    { id: 1, title: "Reiki Level I, II and MasterTeacher Program", image: "/courses/Course Images (3).png", lessonNumber: 1, lessonTitle: "Introductions", progress: 0 },
-    { id: 2, title: "The Complete 2021 Web Development Bootcamp", image: "/courses/Course Images (4).png", lessonNumber: 167, lessonTitle: "What You'll Need to Get Started - Se...", progress: 61 },
-    { id: 3, title: "2021 Complete Python Bootcamp From Zero to...", image: "/courses/Course Images (5).png", lessonNumber: 9, lessonTitle: "Advanced CSS - Selector Priority", progress: 12 },
-];
+import { useGetStudentDashboardQuery } from "@/redux/features/student/student.api";
 
 const DashboardPage = () => {
     const t = useTranslations("Dashboard");
+    const { data } = useGetStudentDashboardQuery();
+
+    const dashboardData = data?.data;
+
+    const recentCourses = dashboardData?.recently_enrolled?.map((course) => ({
+        id: course.id,
+        title: course.title,
+        image: course.thumbnail,
+        lessonNumber: 1,
+        lessonTitle: course.subtitle,
+        progress: Math.round(course.course_progress),
+    })) || [];
+
     return (
         <div className="space-y-6">
             {/* Stats */}
-            <DashboardStats />
+            <DashboardStats
+                enrolledCoursesCount={dashboardData?.enrolled_courses_count || 0}
+                activeCoursesCount={dashboardData?.active_courses_count || 0}
+                completedCoursesCount={dashboardData?.completed_courses_count || 0}
+            />
 
             {/* Recently Enrolled Courses */}
             <div>
@@ -33,10 +45,10 @@ const DashboardPage = () => {
             {/* Recent Invoices & Latest Quizzes */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Invoices */}
-                <RecentInvoices />
+                <RecentInvoices invoices={dashboardData?.recent_invoices || []} />
 
                 {/* Latest Quizzes */}
-                <LatestQuizzes />
+                <LatestQuizzes quizzes={dashboardData?.recent_quizes || []} />
             </div>
         </div>
     );

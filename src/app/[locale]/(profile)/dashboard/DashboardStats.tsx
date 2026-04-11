@@ -2,7 +2,13 @@ import { BookOpen, CheckCircle, MonitorPlay } from 'lucide-react'
 import { useTranslations } from 'next-intl';
 import React from 'react'
 
-const DashboardStats = () => {
+type DashboardStatsProps = {
+    enrolledCoursesCount: number;
+    activeCoursesCount: number;
+    completedCoursesCount: number;
+};
+
+const DashboardStats = ({ enrolledCoursesCount, activeCoursesCount, completedCoursesCount }: DashboardStatsProps) => {
     const t = useTranslations("Dashboard");
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -12,7 +18,7 @@ const DashboardStats = () => {
                 </div>
                 <div>
                     <p className="text-base text-description">{t("enrolledCourses")}</p>
-                    <p className="text-xl sm:text-2xl font-bold text-title">12</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">{enrolledCoursesCount}</p>
                 </div>
             </div>
             <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 flex items-center gap-4">
@@ -21,7 +27,7 @@ const DashboardStats = () => {
                 </div>
                 <div>
                     <p className="text-base text-description">{t("activeCourses")}</p>
-                    <p className="text-xl sm:text-2xl font-bold text-title">03</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">{activeCoursesCount}</p>
                 </div>
             </div>
             <div className="bg-white rounded-xl border border-border-light p-4 sm:p-5 flex items-center gap-4">
@@ -30,7 +36,7 @@ const DashboardStats = () => {
                 </div>
                 <div>
                     <p className="text-base text-description">{t("completedCourses")}</p>
-                    <p className="text-xl sm:text-2xl font-bold text-title">10</p>
+                    <p className="text-xl sm:text-2xl font-bold text-title">{completedCoursesCount}</p>
                 </div>
             </div>
         </div>

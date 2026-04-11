@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Upload, Trash2, X } from "lucide-react";
@@ -7,6 +7,8 @@ import { userProfile } from "@/lib/profile";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
 import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
+import { useGetStudentProfileQuery, useUpdateStudentProfileMutation } from "@/redux/features/student/student.api";
+import { toast } from "sonner";
 
 type ProfileFormData = {
     firstName: string;
@@ -14,6 +16,7 @@ type ProfileFormData = {
     username: string;
     email: string;
     title: string;
+    bio: string;
     avatar?: File | null;
 };
 
@@ -21,13 +24,15 @@ const SettingsPage = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [uploadError, setUploadError] = useState<string>("");
+    const { data: profileData } = useGetStudentProfileQuery();
+    const [updateStudentProfile, { isLoading: isUpdatingProfile }] = useUpdateStudentProfileMutation();
     const t = useTranslations("SettingsPage");
 
     const {
         register: registerProfile,
         handleSubmit: handleProfileSubmit,
         setValue,
+        reset,
     } = useForm<ProfileFormData>({
         defaultValues: {
             firstName: userProfile.firstName,
@@ -35,47 +40,41 @@ const SettingsPage = () => {
             username: userProfile.username,
             email: userProfile.email,
             title: userProfile.title,
+            bio: userProfile.bio,
         },
     });
+
+    useEffect(() => {
+        const profile = profileData?.data;
+        if (!profile) return;
+
+        const fullNameParts = (profile.user?.name || "").trim().split(/\s+/).filter(Boolean);
+        const fallbackFirstName = fullNameParts[0] || "";
+        const fallbackLastName = fullNameParts.slice(1).join(" ");
+
+        reset({
+            firstName: profile.first_name || fallbackFirstName,
+            lastName: profile.last_name || fallbackLastName,
+            username: profile.user?.name || "",
+            email: profile.user?.email || "",
+            title: profile.title || "",
+            bio: profile.bio || "",
+            avatar: null,
+        });
+    }, [profileData, reset]);
 
     
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        setUploadError("");
 
         if (!file) return;
-
-        // Validate file size (1MB = 1048576 bytes)
-        if (file.size > 1048576) {
-            setUploadError(t("imageSizeError"));
-            return;
-        }
-
-        // Validate file type
-        if (!file.type.startsWith("image/")) {
-            setUploadError(t("invalidImageError"));
-            return;
-        }
-
-        // Create image to check dimensions
-        const img = new window.Image();
         const reader = new FileReader();
 
         reader.onload = (event) => {
-            img.src = event.target?.result as string;
-
-            img.onload = () => {
-                // Optional: Check if image is square (1:1 ratio)
-                const aspectRatio = img.width / img.height;
-                if (Math.abs(aspectRatio - 1) > 0.1) {
-                    setUploadError(t("imageRatioError"));
-                    return;
-                }
-                setPreviewImage(event.target?.result as string);
-                setSelectedFile(file);
-                setValue("avatar", file);
-            };
+            setPreviewImage(event.target?.result as string);
+            setSelectedFile(file);
+            setValue("avatar", file);
         };
 
         reader.readAsDataURL(file);
@@ -85,26 +84,33 @@ const SettingsPage = () => {
         setPreviewImage(null);
         setSelectedFile(null);
         setValue("avatar", null);
-        setUploadError("");
     };
 
     const onProfileSubmit = async (data: ProfileFormData) => {
         try {
             const formData = new FormData();
-            formData.append("firstName", data.firstName);
-            formData.append("lastName", data.lastName);
-            formData.append("username", data.username);
+            formData.append("first_name", data.firstName);
+            formData.append("last_name", data.lastName);
             formData.append("title", data.title);
+            formData.append("bio", data.bio);
 
             if (selectedFile) {
                 formData.append("avatar", selectedFile);
             }
 
-            console.log("Profile update:", data);
-            console.log("Selected file:", selectedFile);
+            const response = await updateStudentProfile(formData).unwrap();
+            toast.success(response.message || "Profile updated successfully.");
 
         } catch (error) {
-            console.error("Failed to update profile:", error);
+            const message =
+                typeof error === "object" &&
+                error !== null &&
+                "data" in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to update profile";
+
+            toast.error(message);
         }
     };
 
@@ -115,7 +121,7 @@ const SettingsPage = () => {
         setShowDeleteModal(false);
     };
 
-    const currentAvatar = previewImage || userProfile.avatar;
+    const currentAvatar = previewImage || profileData?.data?.user?.avatar || userProfile.avatar;
 
     return (
         <div className="space-y-6">
@@ -167,13 +173,7 @@ const SettingsPage = () => {
                             {t("imageSizeHint")}
                         </p>
 
-                        {uploadError && (
-                            <p className="text-[10px] text-red-500 text-center max-w-35">
-                                {uploadError}
-                            </p>
-                        )}
-
-                        {selectedFile && !uploadError && (
+                        {selectedFile && (
                             <p className="text-[10px] text-green-600 text-center max-w-35">
                                 {t("imageReady")}
                             </p>
@@ -207,7 +207,8 @@ const SettingsPage = () => {
                             <input
                                 {...registerProfile("username")}
                                 placeholder={t("usernamePlaceholder")}
-                                className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
+                                readOnly
+                                className="w-full px-3 py-3 border border-gray-200 text-sm bg-gray-50 text-description cursor-not-allowed"
                             />
                         </div>
 
@@ -234,11 +235,23 @@ const SettingsPage = () => {
                             />
                         </div>
 
+                        <div>
+                            <label className="text-xs font-medium text-title mb-1 block">
+                                Bio
+                            </label>
+                            <textarea
+                                {...registerProfile("bio")}
+                                rows={4}
+                                className="w-full px-3 py-3 border border-gray-300 text-sm focus:outline-none focus:border-main"
+                            />
+                        </div>
+
                         <button
                             type="submit"
+                            disabled={isUpdatingProfile}
                             className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors"
                         >
-                            {t("saveChanges")}
+                            {isUpdatingProfile ? "Saving..." : t("saveChanges")}
                         </button>
                     </div>
                 </div>

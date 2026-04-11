@@ -6,6 +6,8 @@ import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useChangePasswordMutation } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 const changePasswordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
@@ -23,18 +25,38 @@ const ChangePassword = () => {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const t = useTranslations("InstructorSettings");
+    const [changePassword, { isLoading }] = useChangePasswordMutation();
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<ChangePasswordForm>({
         resolver: zodResolver(changePasswordSchema),
     });
 
-    const onSubmit = (data: ChangePasswordForm) => {
-        // TODO: API call
-        console.log("Password change:", data);
+    const onSubmit = async (data: ChangePasswordForm) => {
+        try {
+            const response = await changePassword({
+                old_password: data.currentPassword,
+                new_password: data.newPassword,
+                confirm_password: data.confirmPassword,
+            }).unwrap();
+
+            toast.success(response.message || "Password changed successfully.");
+            reset();
+        } catch (error: unknown) {
+            const message =
+                typeof error === "object" &&
+                error !== null &&
+                "data" in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to change password";
+
+            toast.error(message);
+        }
     };
 
     return (
@@ -145,9 +167,10 @@ const ChangePassword = () => {
                 <div>
                     <button
                         type="submit"
+                        disabled={isLoading}
                         className="px-6 py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
-                        {t("changePassword")}
+                        {isLoading ? "Updating..." : t("changePassword")}
                     </button>
                 </div>
             </div>

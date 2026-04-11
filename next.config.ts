@@ -7,16 +7,25 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    // Option 1: Allow all domains (wildcard)
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8002",
+        pathname: "/media/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8002",
+        pathname: "/media/**",
+      },
       {
         protocol: "https",
         hostname: "**",
       },
     ],
-
-    // Option 2: Or explicitly allow domains
-    // domains: ["example.com", "anotherdomain.com"],
   },
 };
 

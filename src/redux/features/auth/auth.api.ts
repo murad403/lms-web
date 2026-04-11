@@ -108,6 +108,18 @@ export type ResetPasswordResponse = {
   message: string;
 };
 
+export type ChangePasswordPayload = {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
+};
+
+export type ChangePasswordResponse = {
+  success: boolean;
+  status: number;
+  message: string;
+};
+
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation<SignInResponse, SignInPayload>({
@@ -159,7 +171,14 @@ const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    changePassword: builder.mutation<ChangePasswordResponse, ChangePasswordPayload>({
+      query: (data) => ({
+        url: "/students/password-reset/",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useVerifyEmailMutation, useResendVerificationCodeMutation, useForgotPasswordMutation, useVerifyForgotPasswordMutation, useResetPasswordMutation } = authApi;
+export const { useSignInMutation, useSignUpMutation, useVerifyEmailMutation, useResendVerificationCodeMutation, useForgotPasswordMutation, useVerifyForgotPasswordMutation, useResetPasswordMutation, useChangePasswordMutation } = authApi;
