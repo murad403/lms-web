@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveWishlistResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewWishlistResponse } from "./student.type";
+import { AddCartResponse, AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
 
 
 
@@ -64,6 +64,7 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+
         reviewList: builder.query<StudentReviewListResponse, { page?: number }>({
             query: ({ page = 1 }) => {
                 return {
@@ -92,6 +93,7 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["reviews"]
         }),
+
         purchaseHistory: builder.query<StudentPurchaseHistoryResponse, { page?: number }>({
             query: ({ page = 1 }) => {
                 return {
@@ -100,7 +102,6 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
-
 
         addWishlist: builder.mutation<AddWishlistResponse, number>({
             query: (id) => {
@@ -129,9 +130,38 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["wishlist"]
         }),
+
+        addCart: builder.mutation<AddCartResponse, { course_id: number }>({
+            query: (data) => {
+                return {
+                    url: `/orders/cart/add/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["cart"]
+        }),
+        viewCart: builder.query<ViewCartResponse, void>({
+            query: () => {
+                return {
+                    url: `/orders/cart-view/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["cart"]
+        }),
+        removeCart: builder.mutation<RemoveCartResponse, number>({
+            query: (id) => {
+                return {
+                    url: `/orders/cart-remove/${id}/`,
+                    method: "DELETE"
+                }
+            },
+            invalidatesTags: ["cart"]
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation } = studentApi;

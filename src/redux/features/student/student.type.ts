@@ -202,3 +202,32 @@ export type WishlistData = {
 export type ViewWishlistResponse = ApiResponse<WishlistData>;
 
 export type RemoveWishlistResponse = ApiResponse<Record<string, never>>;
+
+export type AddCartData = {
+    course_id: number;
+    course_title: string;
+    course_amount: string;
+};
+
+export type AddCartResponse = ApiResponse<AddCartData>;
+
+export type CartItem = {
+    id: number;
+    course_id: number;
+    course_title: string;
+    course_price: string;
+    course_discount_price: string;
+    course_amount: string;
+    created_at: string;
+};
+
+export type CartData = {
+    cart_id: number;
+    total_items: number;
+    subtotal: string;
+    items: CartItem[];
+};
+
+export type ViewCartResponse = ApiResponse<CartData>;
+
+export type RemoveCartResponse = ApiResponse<Record<string, never>>;

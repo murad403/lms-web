@@ -1303,7 +1303,11 @@
     "title": "Wishlist",
     "course": "Course",
     "prices": "Prices",
-    "action": "Action"
+    "action": "Action",
+    "loading": "Loading wishlist...",
+    "emptyTitle": "Wishlist is empty",
+    "emptyDescription": "No course added yet. Add a course to your wishlist.",
+    "addCourse": "Add Course"
   },
   "AITutor": {
     "title": "AI Tutor",

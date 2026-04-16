@@ -1303,7 +1303,11 @@
     "title": "Wunschliste",
     "course": "Kurs",
     "prices": "Preise",
-    "action": "Aktion"
+    "action": "Aktion",
+    "loading": "Wunschliste wird geladen...",
+    "emptyTitle": "Ihre Wunschliste ist leer",
+    "emptyDescription": "Noch kein Kurs hinzugefugt. Fugen Sie einen Kurs zu Ihrer Wunschliste hinzu.",
+    "addCourse": "Kurs hinzufugen"
   },
   "AITutor": {
     "title": "KI-Tutor",

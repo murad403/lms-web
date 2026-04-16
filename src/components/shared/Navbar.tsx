@@ -14,8 +14,10 @@ import LogoutModal from "./LogoutModal";
 import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
-import { useGetStudentProfileQuery } from "@/redux/features/student/student.api";
+import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery } from "@/redux/features/student/student.api";
 import { resolveImageUrl } from "@/utils/image";
+import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 type NavbarProps = {
     initialSession: AuthSessionSnapshot;
@@ -40,6 +42,10 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const pathname = usePathname();
     const [showLogout, setShowLogout] = useState(false);
     const session = initialSession;
+    const { data: cartData } = useViewCartQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const [removeCart, { isLoading: isRemovingCart }] = useRemoveCartMutation();
 
     const { data: profileData } = useGetStudentProfileQuery(undefined, {
         skip: !session.accessToken,
@@ -47,6 +53,8 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const userAvatar = profileData?.data?.user?.avatar ? resolveImageUrl(profileData.data.user.avatar) : defaultUserImage;
     const userName = profileData?.data?.user?.name || "User";
     const userEmail = profileData?.data?.user?.email || "";
+    const cartItems = cartData?.data?.items || [];
+    const cartSubtotal = cartData?.data?.subtotal || "0.00";
 
     const categories = categoryList.map((cat) => ({
         slug: cat.slug,
@@ -66,6 +74,22 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const isLoggedIn = Boolean(session.accessToken);
     const dashboardHref = getDashboardPathByRole(session.rawRole);
     const profileHref = getProfilePathByRole(session.rawRole);
+
+    const handleRemoveCartItem = async (id: number) => {
+        try {
+            const response = await removeCart(id).unwrap();
+            toast.success(response.message || "Cart item removed successfully.");
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to remove cart item.";
+            toast.error(message);
+        }
+    };
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -260,48 +284,50 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                 <div className="absolute left-0 right-0 mx-4 sm:left-auto sm:mx-0 sm:right-0 top-full mt-2 sm:w-96 md:w-115 bg-white border border-gray-200 rounded-lg shadow-xl p-4 sm:p-6 z-50">
                                     <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-header mb-6">{t("cart")}</h3>
 
-                                    {/* Cart Item */}
-                                    <div className="flex gap-4 pb-6 border-b border-gray-200">
-                                        <div className="w-32 h-24 bg-gray-200 rounded-lg overflow-hidden shrink-0">
-                                            <Image
-                                                src="/home/user1.png"
-                                                alt="Course"
-                                                width={128}
-                                                height={96}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex items-start gap-2 mb-2">
-                                                <Star className="w-4 h-4 text-orange-500 fill-orange-500 mt-0.5" />
-                                                <span className="text-xs sm:text-sm font-semibold">
-                                                    4.6{" "}
-                                                    <span className="text-gray-400 font-normal">
-                                                        (451,444 Review)
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <h4 className="text-xs sm:text-sm md:text-base font-semibold text-title mb-2">
-                                                The Ultimate Drawing Course - Beginner to Advanced
-                                            </h4>
-                                            <p className="text-base sm:text-lg md:text-xl font-bold text-title">$37.00</p>
-                                        </div>
-                                    </div>
+                                    {cartItems.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {cartItems.map((item) => (
+                                                <div key={item.id} className="flex gap-4 pb-4 border-b border-gray-200 last:border-b-0 last:pb-0">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-start justify-between gap-3">
+                                                            <div>
+                                                                <h4 className="text-xs sm:text-sm md:text-base font-semibold text-title mb-2">
+                                                                    {item.course_title}
+                                                                </h4>
+                                                                <p className="text-base sm:text-lg md:text-xl font-bold text-title">${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}</p>
+                                                            </div>
+                                                            <button
+                                                                onClick={() => handleRemoveCartItem(item.id)}
+                                                                disabled={isRemovingCart}
+                                                                className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
 
-                                    {/* Total */}
-                                    <div className="mt-6 mb-4">
-                                        <div className="flex justify-between items-center mb-4">
-                                            <span className="text-base sm:text-lg md:text-xl font-bold text-header">
-                                                {t("total")}:
-                                            </span>
-                                            <span className="text-base sm:text-lg md:text-xl font-bold text-header">
-                                                $37.00
-                                            </span>
+                                            {/* Total */}
+                                            <div className="mt-6 mb-4">
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="text-base sm:text-lg md:text-xl font-bold text-header">
+                                                        {t("total")}:
+                                                    </span>
+                                                    <span className="text-base sm:text-lg md:text-xl font-bold text-header">
+                                                        ${Number.parseFloat(cartSubtotal || "0").toFixed(2)}
+                                                    </span>
+                                                </div>
+                                                <Link href="/checkout" className="block w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors text-center">
+                                                    {t("goToCheckout")}
+                                                </Link>
+                                            </div>
                                         </div>
-                                        <Link href="/checkout" className="block w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors text-center">
-                                            {t("goToCheckout")}
-                                        </Link>
-                                    </div>
+                                    ) : (
+                                        <div className="py-10 text-center text-description">
+                                            Cart is empty
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

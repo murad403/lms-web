@@ -1303,7 +1303,11 @@
     "title": "Lista Desideri",
     "course": "Corso",
     "prices": "Prezzi",
-    "action": "Azione"
+    "action": "Azione",
+    "loading": "Caricamento lista desideri...",
+    "emptyTitle": "La lista desideri è vuota",
+    "emptyDescription": "Nessun corso aggiunto finora. Aggiungi un corso alla tua lista desideri.",
+    "addCourse": "Aggiungi Corso"
   },
   "AITutor": {
     "title": "Tutor IA",

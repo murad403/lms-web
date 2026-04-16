@@ -4,8 +4,9 @@ import { Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRemoveWishlistMutation } from "@/redux/features/student/student.api";
+import { useAddCartMutation, useRemoveWishlistMutation, useViewCartQuery } from "@/redux/features/student/student.api";
 import { toast } from "sonner";
+import { getClientSession } from "@/utils/auth-client";
 
 type TWishlistCourse = {
     id: number;
@@ -25,7 +26,13 @@ type WishlistCardProps = {
 
 const WishlistCard = ({ course }: WishlistCardProps) => {
     const t = useTranslations("WishlistCard");
+    const session = getClientSession();
     const [removeWishlist, { isLoading: isRemovingWishlist }] = useRemoveWishlistMutation();
+    const [addCart, { isLoading: isAddingCart }] = useAddCartMutation();
+    const { data: cartData } = useViewCartQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const cartItems = cartData?.data?.items || [];
 
     const handleRemoveWishlist = async (id: number) => {
         try {
@@ -39,6 +46,27 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                     typeof (error as { data?: { message?: string } }).data?.message === "string"
                     ? (error as { data?: { message?: string } }).data?.message
                     : "Failed to remove wishlist.";
+            toast.error(message);
+        }
+    };
+
+    const handleAddToCart = async () => {
+        if (cartItems.length > 0) {
+            toast.error("Remove the existing cart item first, then you can add another course.");
+            return;
+        }
+
+        try {
+            const response = await addCart({ course_id: course.courseId }).unwrap();
+            toast.success(response.message || "Course added to cart successfully.");
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to add cart.";
             toast.error(message);
         }
     };
@@ -86,15 +114,19 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                 >
                     {t("buyNow")}
                 </Link>
-                <button className="px-4 cursor-pointer py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap">
+                <button
+                    onClick={handleAddToCart}
+                    disabled={isAddingCart}
+                    className="px-4 cursor-pointer py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                     {t("addToCart")}
                 </button>
                 <button
                     onClick={() => handleRemoveWishlist(course.courseId)}
                     disabled={isRemovingWishlist}
-                    className="p-3 cursor-pointer text-main bg-main-light rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-3 cursor-pointer group text-main bg-main-light rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <Heart className="w-4 h-4 fill-main" />
+                    <Heart className="w-4 h-4 fill-main group-hover:fill-none duration-300 transition-colors" />
                 </button>
             </div>
         </div>
