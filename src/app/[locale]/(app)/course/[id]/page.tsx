@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { useParams, useRouter } from 'next/navigation';
 import { useCourseDetailsQuery } from '@/redux/features/landing/landing.api';
 import { resolveImageUrl } from '@/utils/image';
+import Image from 'next/image';
 
 const CourseDetails = () => {
     const params = useParams<{ id: string }>();
@@ -123,6 +124,14 @@ const CourseDetails = () => {
                             {apiCourse?.level}
                         </span>
 
+                    </div>
+
+                    <div className='flex items-center gap-2 mb-4'>
+                        <Image src={resolveImageUrl(apiCourse?.instructor?.avatar)} alt={apiCourse?.instructor?.name as string} width={500} height={500} className='rounded-full size-12'/>
+                        <div>
+                            <h2 className="font-bold text-header">{apiCourse?.instructor?.name}</h2>
+                            <p className="text-sm sm:text-base text-description">{apiCourse?.instructor?.get_biography}</p>
+                        </div>
                     </div>
 
                     {/* Description */}
