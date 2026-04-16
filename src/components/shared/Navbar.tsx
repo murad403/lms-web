@@ -290,11 +290,15 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                 <div key={item.id} className="flex gap-4 pb-4 border-b border-gray-200 last:border-b-0 last:pb-0">
                                                     <div className="flex-1">
                                                         <div className="flex items-start justify-between gap-3">
-                                                            <div>
-                                                                <h4 className="text-xs sm:text-sm md:text-base font-semibold text-title mb-2">
-                                                                    {item.course_title}
-                                                                </h4>
-                                                                <p className="text-base sm:text-lg md:text-xl font-bold text-title">${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}</p>
+                                                            <div className="flex items-center gap-4">
+                                                                <Image src={resolveImageUrl(item?.thumbnail)} alt={item.course_title} width={100} height={100} />
+                                                                <div>
+                                                                    <p className="text-title flex items-center gap-1"><Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />{item?.rating} <span className="text-description">({item?.reviews_count} reviews)</span></p>
+                                                                    <h4 className="text-xs sm:text-sm md:text-base font-semibold text-title mb-2">
+                                                                        {item.course_title}
+                                                                    </h4>
+                                                                    <p className="text-base sm:text-lg md:text-xl font-bold text-title">${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}</p>
+                                                                </div>
                                                             </div>
                                                             <button
                                                                 onClick={() => handleRemoveCartItem(item.id)}

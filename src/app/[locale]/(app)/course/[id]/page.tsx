@@ -5,6 +5,7 @@ import { Star, Lock, Clock, FileText, Award, Globe, Smartphone, ChevronDown, Che
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { MdSlowMotionVideo } from 'react-icons/md';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 
 // Mock data (in real app, fetch based on id param)
@@ -93,6 +94,8 @@ Lorem ipsum is typically a corrupted version of De finibus bonorum et malorum, a
 };
 
 const CourseDetails = () => {
+    const {id}  = useParams();
+    console.log(id)
     const t = useTranslations("CourseDetail");
     const [expandedSections, setExpandedSections] = useState<number[]>([1]);
     const [showFullDescription, setShowFullDescription] = useState(false);

@@ -9,10 +9,18 @@ const landingApi = baseApi.injectEndpoints({
                 url: "/courses/home/courses/",
                 method: "GET"
             }),
+            providesTags: ["courses"]
+        }),
+        courseDetails: builder.query({
+            query: (id) => ({
+                url: `/courses/courses-list/${id}/`,
+                method: "GET"
+            }),
+            providesTags: ["courses"]
         }),
     }),
 });
 
 
 
-export const { useHomeCoursesQuery } = landingApi;
+export const { useHomeCoursesQuery, useCourseDetailsQuery } = landingApi;

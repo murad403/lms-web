@@ -23,6 +23,7 @@ const  Courses = () => {
         reviews: `${course.lectures || 0} Lectures`,
         price: Number.parseFloat(course.price || "0") || 0,
         image: course.advance_info?.thumbnail || "/courses/Course Images.png",
+        is_wishlisted: course.is_wishlisted
     });
 
     const trendingCourses = (homeData?.trending_courses || []).map(mapApiCourseToCardCourse);

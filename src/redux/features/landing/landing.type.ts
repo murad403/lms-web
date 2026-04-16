@@ -41,6 +41,7 @@ export type LandingCourse = {
 	quizes: number;
 	instructor: LandingInstructor;
 	advance_info: LandingCourseAdvanceInfo;
+	is_wishlisted: boolean;
 };
 
 export type HomeCoursesData = {

@@ -34,6 +34,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
         }
     };
 
+    // console.log(course?.is_wishlisted)
     return (
         <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
             {/* Image Section */}
@@ -48,9 +49,9 @@ const CourseCard = ({ course }: CourseCardProps) => {
                 <button
                     onClick={() => handleAddWishlist(course?.id)}
                     disabled={isAddingWishlist}
-                    className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={`absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                    <Heart className="w-5 h-5" />
+                    <Heart className={`w-5 h-5 ${course.is_wishlisted && "fill-red-500 text-red-500"}`} />
                 </button>
             </div>
 

@@ -110,7 +110,7 @@ const studentApi = baseApi.injectEndpoints({
                     method: "POST"
                 }
             },
-            invalidatesTags: ["wishlist"]
+            invalidatesTags: ["wishlist", "courses"]
         }),
         viewWishlist: builder.query<ViewWishlistResponse, void>({
             query: () => {
@@ -128,7 +128,7 @@ const studentApi = baseApi.injectEndpoints({
                     method: "DELETE"
                 }
             },
-            invalidatesTags: ["wishlist"]
+            invalidatesTags: ["wishlist", "courses"]
         }),
 
         addCart: builder.mutation<AddCartResponse, { course_id: number }>({

@@ -219,6 +219,9 @@ export type CartItem = {
     course_discount_price: string;
     course_amount: string;
     created_at: string;
+    rating: string;
+    reviews_count: string;
+    thumbnail: string;
 };
 
 export type CartData = {

@@ -6,6 +6,7 @@ export type TCourse = {
     reviews: string;
     price: number;
     image: string;
+    is_wishlisted: boolean;
 };
 
 export const trendingCourses: TCourse[] = [
@@ -17,6 +18,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 149.99,
         image: "/courses/Course Images.png",
+        is_wishlisted: false
     },
     {
         id: 2,
@@ -26,6 +28,8 @@ export const trendingCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 132.99,
         image: "/courses/Course Images (1).png",
+        is_wishlisted: false
+
     },
     {
         id: 3,
@@ -35,6 +39,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 99.99,
         image: "/courses/Course Images (2).png",
+        is_wishlisted: false
     },
     {
         id: 4,
@@ -44,6 +49,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 491.99,
         image: "/courses/Course Images (3).png",
+        is_wishlisted: false
     },
     {
         id: 5,
@@ -53,6 +59,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 6,
@@ -62,6 +69,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 7,
@@ -71,6 +79,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 12,
@@ -80,6 +89,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 13,
@@ -89,6 +99,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 14,
@@ -98,6 +109,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 16,
@@ -107,6 +119,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 100,
@@ -116,6 +129,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
     {
         id: 11,
@@ -125,6 +139,7 @@ export const trendingCourses: TCourse[] = [
         reviews: "2k+ Reviews",
         price: 199.99,
         image: "/courses/Course Images (4).png",
+        is_wishlisted: true
     },
 ];
 
@@ -137,6 +152,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 132.99,
         image: "/courses/Course Images (5).png",
+        is_wishlisted: true
     },
     {
         id: 7,
@@ -146,6 +162,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 132.99,
         image: "/courses/Course Images (6).png",
+        is_wishlisted: true
     },
     {
         id: 8,
@@ -155,6 +172,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 99.99,
         image: "/courses/Course Images (7).png",
+        is_wishlisted: true
     },
     {
         id: 9,
@@ -164,6 +182,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 491.99,
         image: "/courses/Course Images (8).png",
+        is_wishlisted: true
     },
     {
         id: 10,
@@ -173,6 +192,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "3k+ Reviews",
         price: 249.99,
         image: "/courses/Course Images (9).png",
+        is_wishlisted: true
     },
     {
         id: 11,
@@ -182,6 +202,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "3k+ Reviews",
         price: 249.99,
         image: "/courses/Course Images (9).png",
+        is_wishlisted: true
     },
     {
         id: 12,
@@ -191,6 +212,7 @@ export const featuredCourses: TCourse[] = [
         reviews: "3k+ Reviews",
         price: 249.99,
         image: "/courses/Course Images (9).png",
+        is_wishlisted: true
     },
 ];
 
@@ -203,6 +225,7 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 132.99,
         image: "/courses/Course Images (10).png",
+        is_wishlisted: true
     },
     {
         id: 12,
@@ -212,6 +235,7 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 132.99,
         image: "/courses/Course Images.png",
+        is_wishlisted: true
     },
     {
         id: 13,
@@ -221,6 +245,8 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 99.99,
         image: "/courses/Course Images (1).png",
+        is_wishlisted: true
+
     },
     {
         id: 14,
@@ -230,6 +256,7 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "1k+ Reviews",
         price: 491.99,
         image: "/courses/Course Images (2).png",
+is_wishlisted: true
     },
     {
         id: 15,
@@ -239,6 +266,8 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "5k+ Reviews",
         price: 179.99,
         image: "/courses/Course Images (3).png",
+        is_wishlisted: true
+
     },
     {
         id: 16,
@@ -248,6 +277,7 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "5k+ Reviews",
         price: 179.99,
         image: "/courses/Course Images (3).png",
+        is_wishlisted: true
     },
     {
         id: 17,
@@ -257,6 +287,7 @@ export const mostRequestedCourses: TCourse[] = [
         reviews: "5k+ Reviews",
         price: 179.99,
         image: "/courses/Course Images (3).png",
+        is_wishlisted: true
     },
 ];
 
