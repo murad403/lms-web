@@ -8,7 +8,7 @@ import { LandingCourse } from "@/redux/features/landing/landing.type";
 import { useHomeLandingData } from "./HomeLandingDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const Courses = () => {
+const  Courses = () => {
     const t = useTranslations("Home");
     const { homeData, isLoading } = useHomeLandingData();
     const trendingRef = useRef<HTMLDivElement>(null);

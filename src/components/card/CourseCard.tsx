@@ -5,6 +5,8 @@ import { TCourse } from "@/lib/courses";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { resolveImageUrl } from "@/utils/image";
+import { useAddWishlistMutation } from "@/redux/features/student/student.api";
+import { toast } from "sonner";
 
 type CourseCardProps = {
     course: TCourse;
@@ -14,6 +16,24 @@ const COURSE_FALLBACK_IMAGE = "/courses/Course Images.png";
 
 const CourseCard = ({ course }: CourseCardProps) => {
     const t = useTranslations("CourseCard");
+    const [addWishlist, { isLoading: isAddingWishlist }] = useAddWishlistMutation();
+
+    const handleAddWishlist = async (id: number) => {
+        try {
+            const response = await addWishlist(id).unwrap();
+            toast.success(response.message || "Course added to wishlist successfully.");
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to add wishlist.";
+            toast.error(message);
+        }
+    };
+
     return (
         <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
             {/* Image Section */}
@@ -25,7 +45,11 @@ const CourseCard = ({ course }: CourseCardProps) => {
                     className="object-cover"
                 />
                 {/* Wishlist Heart Icon */}
-                <button className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                <button
+                    onClick={() => handleAddWishlist(course?.id)}
+                    disabled={isAddingWishlist}
+                    className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                     <Heart className="w-5 h-5" />
                 </button>
             </div>

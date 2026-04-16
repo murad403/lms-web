@@ -1,10 +1,23 @@
 "use client";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { TWishlistCourse } from "@/lib/profile";
 import { Link } from "@/i18n/navigation";
 import { Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRemoveWishlistMutation } from "@/redux/features/student/student.api";
+import { toast } from "sonner";
+
+type TWishlistCourse = {
+    id: number;
+    courseId: number;
+    title: string;
+    image: string;
+    rating: number;
+    reviews: string;
+    price: number;
+    originalPrice?: number;
+    instructor: string;
+};
 
 type WishlistCardProps = {
     course: TWishlistCourse;
@@ -12,6 +25,24 @@ type WishlistCardProps = {
 
 const WishlistCard = ({ course }: WishlistCardProps) => {
     const t = useTranslations("WishlistCard");
+    const [removeWishlist, { isLoading: isRemovingWishlist }] = useRemoveWishlistMutation();
+
+    const handleRemoveWishlist = async (id: number) => {
+        try {
+            const response = await removeWishlist(id).unwrap();
+            toast.success(response.message || "Course removed from wishlist successfully.");
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to remove wishlist.";
+            toast.error(message);
+        }
+    };
+
     return (
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4 border-b border-gray-100 last:border-b-0">
             {/* Course Info */}
@@ -55,10 +86,14 @@ const WishlistCard = ({ course }: WishlistCardProps) => {
                 >
                     {t("buyNow")}
                 </Link>
-                <button className="px-4 py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap">
+                <button className="px-4 cursor-pointer py-2.5 bg-main text-white rounded text-xs sm:text-sm hover:bg-main/90 transition-colors whitespace-nowrap">
                     {t("addToCart")}
                 </button>
-                <button className="p-3 text-main bg-main-light rounded transition-colors">
+                <button
+                    onClick={() => handleRemoveWishlist(course.courseId)}
+                    disabled={isRemovingWishlist}
+                    className="p-3 cursor-pointer text-main bg-main-light rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                     <Heart className="w-4 h-4 fill-main" />
                 </button>
             </div>

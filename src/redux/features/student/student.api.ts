@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload } from "./student.type";
+import { AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveWishlistResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewWishlistResponse } from "./student.type";
 
 
 
@@ -100,9 +100,38 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+
+
+        addWishlist: builder.mutation<AddWishlistResponse, number>({
+            query: (id) => {
+                return {
+                    url: `/orders/wishlist/add/${id}/`,
+                    method: "POST"
+                }
+            },
+            invalidatesTags: ["wishlist"]
+        }),
+        viewWishlist: builder.query<ViewWishlistResponse, void>({
+            query: () => {
+                return {
+                    url: `/orders/wishlist/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["wishlist"]
+        }),
+        removeWishlist: builder.mutation<RemoveWishlistResponse, number>({
+            query: (id) => {
+                return {
+                    url: `/orders/wishlist/${id}/`,
+                    method: "DELETE"
+                }
+            },
+            invalidatesTags: ["wishlist"]
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation } = studentApi;

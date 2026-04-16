@@ -1,10 +1,27 @@
 "use client";
 import WishlistCard from "@/components/reusable/WishlistCard";
-import { wishlistCourses } from "@/lib/profile";
 import { useTranslations } from "next-intl";
+import { useViewWishlistQuery } from "@/redux/features/student/student.api";
+import { resolveImageUrl } from "@/utils/image";
+
+const WISHLIST_FALLBACK_IMAGE = "/courses/Course Images.png";
 
 const WishlistPage = () => {
     const t = useTranslations("WishlistPage");
+    const { data } = useViewWishlistQuery();
+
+    const wishlistCourses = (data?.data?.items || []).map((item) => ({
+        id: item.id,
+        courseId: item.course_id,
+        title: item.course_title,
+        image: resolveImageUrl(item.thumbnail) || WISHLIST_FALLBACK_IMAGE,
+        rating: Number.parseFloat(item.rating || "0") || 0,
+        reviews: String(item.reviews_count),
+        price: Number.parseFloat(item.original_price || "0") || 0,
+        originalPrice: undefined,
+        instructor: item.instructor,
+    }));
+
     return (
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6">{t("title")}</h2>

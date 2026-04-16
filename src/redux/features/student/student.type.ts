@@ -172,3 +172,33 @@ export type StudentPurchaseHistoryResponse = ApiResponse<StudentPurchaseHistoryI
     next: string | null;
     previous: string | null;
 };
+
+export type AddWishlistData = {
+    course_id: number;
+    course_title: string;
+};
+
+export type AddWishlistResponse = ApiResponse<AddWishlistData>;
+
+export type WishlistItem = {
+    id: number;
+    course_id: number;
+    course_title: string;
+    original_price: string;
+    thumbnail: string | null;
+    rating: string;
+    instructor: string;
+    reviews_count: number;
+    added_at: string;
+};
+
+export type WishlistData = {
+    id: number;
+    total_items: number;
+    items: WishlistItem[];
+    created_at: string;
+};
+
+export type ViewWishlistResponse = ApiResponse<WishlistData>;
+
+export type RemoveWishlistResponse = ApiResponse<Record<string, never>>;
