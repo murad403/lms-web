@@ -1,6 +1,6 @@
 "use client";
-
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { resolveImageUrl } from "@/utils/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -10,19 +10,21 @@ import "swiper/css";
 // @ts-ignore
 import "swiper/css/pagination";
 
-type Trainer = {
-    id: number;
-    image: StaticImageData;
-    name: string;
-    role: string;
-    bio: string;
+const INSTRUCTOR_FALLBACK_IMAGE = "/courses/Course Images.png";
+
+type TInstructor = {
+    Instructor_name: string;
+    avatar: string | null;
+    biography: string | null;
+    id: string;
+    title: string | null;
+};
+type TInstructors = {
+    instructors: TInstructor[];
 };
 
-type Props = {
-    trainers: Trainer[];
-};
 
-const TrainersSlider = ({ trainers }: Props) => {
+const TrainersSlider = ({ instructors }: TInstructors) => {
     return (
         <Swiper
             modules={[Autoplay, Pagination]}
@@ -38,26 +40,26 @@ const TrainersSlider = ({ trainers }: Props) => {
             }}
             className="pb-12!"
         >
-            {trainers.map((trainer) => (
-                <SwiperSlide key={trainer.id}>
+            {instructors.map((instructor) => (
+                <SwiperSlide key={instructor.id}>
                     <div className="bg-white rounded-md border border-border-light overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full">
                         <div className="relative h-60 sm:h-64 w-full">
                             <Image
-                                src={trainer.image}
-                                alt={trainer.name}
+                                src={resolveImageUrl(instructor.avatar) || INSTRUCTOR_FALLBACK_IMAGE}
+                                alt={instructor.Instructor_name}
                                 fill
                                 className="object-cover object-top"
                             />
                         </div>
                         <div className="p-4 md:p-5 text-center">
                             <h3 className="text-base md:text-lg font-bold text-header mb-1">
-                                {trainer.name}
+                                {instructor.Instructor_name}
                             </h3>
                             <p className="text-main font-medium text-sm mb-2">
-                                {trainer.role}
+                                {instructor.title}
                             </p>
                             <p className="text-description text-sm leading-relaxed">
-                                {trainer.bio}
+                                {instructor.biography}
                             </p>
                         </div>
                     </div>

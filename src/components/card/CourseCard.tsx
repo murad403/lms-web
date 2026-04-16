@@ -4,10 +4,13 @@ import { Heart, Star } from "lucide-react";
 import { TCourse } from "@/lib/courses";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { resolveImageUrl } from "@/utils/image";
 
 type CourseCardProps = {
     course: TCourse;
 };
+
+const COURSE_FALLBACK_IMAGE = "/courses/Course Images.png";
 
 const CourseCard = ({ course }: CourseCardProps) => {
     const t = useTranslations("CourseCard");
@@ -16,13 +19,13 @@ const CourseCard = ({ course }: CourseCardProps) => {
             {/* Image Section */}
             <div className="relative md:h-70 h-60 w-full">
                 <Image
-                    src={course.image}
+                    src={resolveImageUrl(course.image) || COURSE_FALLBACK_IMAGE}
                     alt={course.title}
                     fill
                     className="object-cover"
                 />
                 {/* Wishlist Heart Icon */}
-                <button className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors">
+                <button className="absolute top-2 right-2 size-10 text-white hover:text-gray-700 hover:bg-white rounded-full flex items-center justify-center transition-colors cursor-pointer">
                     <Heart className="w-5 h-5" />
                 </button>
             </div>

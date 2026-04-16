@@ -1,28 +1,14 @@
-// Trainer images
-import trainer1 from "@/assets/trainers/alex-suprun-ZHvM3XIOHoE-unsplash.jpg";
-import trainer2 from "@/assets/trainers/linkedin-sales-solutions-NpyF7rjqmq4-unsplash.jpg";
-import trainer3 from "@/assets/trainers/thisisengineering-TXxiFuQLBKQ-unsplash.jpg";
-import trainer4 from "@/assets/trainers/centre-for-ageing-better-cPyO3GEYjZ4-unsplash.jpg";
-import trainer5 from "@/assets/trainers/successful-professional-enjoying-work-break.jpg";
-import trainer6 from "@/assets/trainers/tra-nguyen-TVSRWmnW8Us-unsplash.jpg";
-import { getTranslations } from "next-intl/server";
+"use client";
+import { useTranslations } from "next-intl";
 import TrainersSlider from "./TrainersSlider";
+import { useHomeLandingData } from "./HomeLandingDataProvider";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const trainerImages = [trainer1, trainer2, trainer3, trainer4, trainer5, trainer6];
+const AboutInstructor = () => {
+    const t = useTranslations("Certifications");
+    const { homeData, isLoading } = useHomeLandingData();
 
-const AboutInstructor = async () => {
-    const t = await getTranslations("Certifications");
-
-    const trainers = trainerImages.map((image, index) => {
-        const id = index + 1;
-        return {
-            id,
-            image,
-            name: t(`trainer${id}Name`),
-            role: t(`trainer${id}Role`),
-            bio: t(`trainer${id}Bio`),
-        };
-    });
+    const instructors = homeData?.instructors || [];
 
     return (
         <div className="px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 container mx-auto">
@@ -35,7 +21,20 @@ const AboutInstructor = async () => {
                 </p>
             </div>
 
-            <TrainersSlider trainers={trainers} />
+            {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <div key={index} className="rounded-md border border-border-light p-4">
+                            <Skeleton className="h-60 sm:h-64 w-full rounded-md" />
+                            <Skeleton className="mt-4 h-5 w-2/3 mx-auto" />
+                            <Skeleton className="mt-2 h-4 w-1/2 mx-auto" />
+                            <Skeleton className="mt-3 h-4 w-full" />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <TrainersSlider instructors={instructors} />
+            )}
         </div>
     );
 };

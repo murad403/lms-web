@@ -2,14 +2,46 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CourseCard from "@/components/card/CourseCard";
-import { trendingCourses, featuredCourses, mostRequestedCourses } from "@/lib/courses";
+import { TCourse } from "@/lib/courses";
 import { useTranslations } from "next-intl";
+import { LandingCourse } from "@/redux/features/landing/landing.type";
+import { useHomeLandingData } from "./HomeLandingDataProvider";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Courses = () => {
     const t = useTranslations("Home");
+    const { homeData, isLoading } = useHomeLandingData();
     const trendingRef = useRef<HTMLDivElement>(null);
     const featuredRef = useRef<HTMLDivElement>(null);
     const mostRequestedRef = useRef<HTMLDivElement>(null);
+
+    const mapApiCourseToCardCourse = (course: LandingCourse): TCourse => ({
+        id: course.id,
+        title: course.title,
+        category: course.Category || course.topic || "CATEGORY",
+        rating: Number(course.rating || 0),
+        reviews: `${course.lectures || 0} Lectures`,
+        price: Number.parseFloat(course.price || "0") || 0,
+        image: course.advance_info?.thumbnail || "/courses/Course Images.png",
+    });
+
+    const trendingCourses = (homeData?.trending_courses || []).map(mapApiCourseToCardCourse);
+    const featuredCourses = (homeData?.featured_courses || []).map(mapApiCourseToCardCourse);
+    const mostRequestedCourses = (homeData?.most_requested_courses || []).map(mapApiCourseToCardCourse);
+
+    const renderCourseSkeletons = () => (
+        Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0 rounded-lg border border-gray-200 p-4">
+                <Skeleton className="h-60 md:h-70 w-full rounded-md" />
+                <Skeleton className="mt-4 h-5 w-3/4" />
+                <Skeleton className="mt-3 h-4 w-1/2" />
+                <div className="mt-5 flex items-center justify-between">
+                    <Skeleton className="h-6 w-1/3" />
+                    <Skeleton className="h-9 w-24" />
+                </div>
+            </div>
+        ))
+    );
 
     const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
         if (ref.current) {
@@ -45,7 +77,7 @@ const Courses = () => {
                             ref={trendingRef}
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
-                            {trendingCourses.map((course) => (
+                            {isLoading ? renderCourseSkeletons() : trendingCourses.map((course) => (
                                 <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
@@ -81,7 +113,7 @@ const Courses = () => {
                             ref={featuredRef}
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
-                            {featuredCourses.map((course) => (
+                            {isLoading ? renderCourseSkeletons() : featuredCourses.map((course) => (
                                 <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>
@@ -117,7 +149,7 @@ const Courses = () => {
                             ref={mostRequestedRef}
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
-                            {mostRequestedCourses.map((course) => (
+                            {isLoading ? renderCourseSkeletons() : mostRequestedCourses.map((course) => (
                                 <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
                                     <CourseCard course={course} />
                                 </div>

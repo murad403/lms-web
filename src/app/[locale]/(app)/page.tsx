@@ -6,15 +6,18 @@ import Certificate from './home/Certificate'
 import TrainingMeetsQuality from './home/TrainingMeetsQuality'
 import JoinOurPlatform from './home/JoinOurPlatform'
 import AboutInstructor from './home/AboutInstructor'
+import HomeLandingDataProvider from './home/HomeLandingDataProvider'
 
-const page = async () => {
+const page = () => {
   return (
     <div className='md:space-y-28 space-y-20'>
       <Banner />
-      <Courses/> 
-      <LearningMode/>
-      <Certificate/>
-      <AboutInstructor/>
+      <HomeLandingDataProvider>
+        <Courses />
+        <LearningMode />
+        <Certificate />
+        <AboutInstructor />
+      </HomeLandingDataProvider>
       <JoinOurPlatform/>
       <TrainingMeetsQuality/>
     </div>
