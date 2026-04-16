@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { HomeCoursesResponse } from "./landing.type";
+import { CourseDetailsResponse, HomeCoursesResponse } from "./landing.type";
 
 
 const landingApi = baseApi.injectEndpoints({
@@ -11,7 +11,7 @@ const landingApi = baseApi.injectEndpoints({
             }),
             providesTags: ["courses"]
         }),
-        courseDetails: builder.query({
+        courseDetails: builder.query<CourseDetailsResponse, number>({
             query: (id) => ({
                 url: `/courses/courses-list/${id}/`,
                 method: "GET"

@@ -60,3 +60,48 @@ export type LandingInstructorProfile = {
 	biography: string | null;
 	avatar: string | null;
 };
+
+export type LandingCourseOutcome = {
+	id: number;
+	text: string;
+	order: number;
+};
+
+export type LandingCourseRequirement = {
+	id: number;
+	text: string;
+	order: number;
+};
+
+export type LandingCourseLecture = {
+	id: number;
+	name: string;
+	order: number;
+	description: string;
+	video_file: string | null;
+	LectureAttachment: string | null;
+	LectureNoteFile: string | null;
+};
+
+export type LandingCourseSection = {
+	id: number;
+	name: string;
+	order: number;
+	lectures: LandingCourseLecture[];
+};
+
+export type LandingRelatedCourse = {
+	id: number;
+	title: string;
+};
+
+export type CourseDetailsData = LandingCourse & {
+	description: string;
+	reviews_count: number;
+	outcomes: LandingCourseOutcome[];
+	requirements: LandingCourseRequirement[];
+	sections: LandingCourseSection[];
+	related_courses: LandingRelatedCourse[];
+};
+
+export type CourseDetailsResponse = ApiResponse<CourseDetailsData>;
