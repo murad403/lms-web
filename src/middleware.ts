@@ -13,6 +13,7 @@ const intlMiddleware = createMiddleware(routing);
 const studentProtectedPrefixes = new Set([
   "dashboard",
   "profile",
+  "wishlist",
   "enrolled-courses",
   "learning-progress",
   "live-classes",

@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { Link } from "@/i18n/navigation"
 import banner from "@/assets/banner/trainers.png";
 import { getTranslations } from "next-intl/server";
+import SignUpGuardLink from '@/components/reusable/SignUpGuardLink';
 
 const TrainersBanner = async () => {
     const t = await getTranslations("ForTrainers");
@@ -26,9 +26,9 @@ const TrainersBanner = async () => {
                     {t("bannerDescription")}
                 </p>
                 <div className=" mt-4 flex items-center">
-                    <Link href={"/auth/trainer-sign-up"} className="md:py-4 py-3 px-6 border-2 text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
+                    <SignUpGuardLink href={"/auth/trainer-sign-up"} className="md:py-4 py-3 px-6 border-2 text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
                         {t("startTeaching")}
-                    </Link>
+                    </SignUpGuardLink>
                 </div>
 
             </div>

@@ -2,11 +2,7 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CourseCard from "@/components/card/CourseCard";
-import {
-    trendingCourses,
-    featuredCourses,
-    mostRequestedCourses,
-} from "@/lib/courses";
+import { trendingCourses, featuredCourses, mostRequestedCourses } from "@/lib/courses";
 import { useTranslations } from "next-intl";
 
 const Courses = () => {

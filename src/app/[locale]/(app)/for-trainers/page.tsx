@@ -20,7 +20,7 @@ const page = async () => {
                 <TrainersHowItsWorks />
                 <TrainersOpportunity />
                 <TrainersOngoingSupport />
-                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/trainer-sign-up' />
+                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/trainer-sign-up' guardWhenLoggedIn />
             </div>
         </div>
     )

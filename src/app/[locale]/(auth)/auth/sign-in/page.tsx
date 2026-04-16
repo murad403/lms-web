@@ -30,6 +30,10 @@ const SignIn = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "mahedi.dev2002@gmail.com",
+      password: "12345678@"
+    }
   });
 
   const onSubmit = async (data: SignInFormData) => {

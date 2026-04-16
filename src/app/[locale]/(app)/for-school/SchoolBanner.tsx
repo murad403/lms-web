@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { Link } from "@/i18n/navigation"
 import banner from "@/assets/banner/school.png";
 import { getTranslations } from "next-intl/server";
+import SignUpGuardLink from '@/components/reusable/SignUpGuardLink';
 
 const SchoolBanner = async () => {
     const t = await getTranslations("ForSchool");
@@ -26,9 +26,9 @@ const SchoolBanner = async () => {
                     {t("bannerDescription")}
                 </p>
                 <div className=" mt-4 flex items-center">
-                    <Link href={"/auth/organization-sign-up"} className="py-3 md:py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
+                    <SignUpGuardLink href={"/auth/organization-sign-up"} className="py-3 md:py-4 px-6 border-2 text-xs sm:text-sm font-medium text-white bg-main hover:bg-main/90 transition-colors cursor-pointer">
                         {t("getAccredited")}
-                    </Link>
+                    </SignUpGuardLink>
                 </div>
 
             </div>

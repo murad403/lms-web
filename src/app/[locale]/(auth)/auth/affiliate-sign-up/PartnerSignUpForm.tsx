@@ -25,7 +25,7 @@ const PartnerSignUpForm = () => {
     const [selectedType, setSelectedType] = useState('');
     const [signUp, { isLoading }] = useSignUpMutation();
 
-    const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, setError} = useForm<PartnerSignUpFormData>({
+    const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, setError } = useForm<PartnerSignUpFormData>({
         resolver: zodResolver(partnerSignUpSchema),
         defaultValues: { terms: false, affiliateType: '' },
     });
@@ -58,9 +58,9 @@ const PartnerSignUpForm = () => {
             console.log(error);
             const message =
                 typeof error === 'object' &&
-                error !== null &&
-                'data' in error &&
-                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    error !== null &&
+                    'data' in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === 'string'
                     ? (error as { data?: { message?: string } }).data?.message
                     : 'Registration failed';
 

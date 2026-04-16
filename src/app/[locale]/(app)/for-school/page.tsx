@@ -16,7 +16,7 @@ const page = async () => {
                 <SchoolWhatYouCanDo/>
                 <SchoolHowItsWorks/>
                 <SchoolSolutions/>
-                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/organization-sign-up' />
+                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/organization-sign-up' guardWhenLoggedIn />
             </div>
         </div>
     )

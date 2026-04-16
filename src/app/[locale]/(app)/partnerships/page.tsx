@@ -15,7 +15,7 @@ const page = async () => {
                 <AboutPartner />
                 <PartnerShipHowItsWorks/>
                 <PartnershipOpportunity/>
-                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/affiliate-sign-up' />
+                <CTABanner title={t("ctaTitle")} description={t("ctaDescription")} buttonText={t("ctaButton")} route='/auth/affiliate-sign-up' guardWhenLoggedIn />
             </div>
         </div>
     )
