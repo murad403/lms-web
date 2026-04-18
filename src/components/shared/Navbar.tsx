@@ -1,12 +1,11 @@
 "use client";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import {
     Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard,
 } from "lucide-react";
 import { notifications, TNotification } from "@/lib/header";
-import { categories as categoryList } from "@/lib/categories";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -15,6 +14,7 @@ import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
 import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery } from "@/redux/features/student/student.api";
+import { useCategoriesQuery } from "@/redux/features/landing/landing.api";
 import { resolveImageUrl } from "@/utils/image";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
@@ -23,10 +23,19 @@ type NavbarProps = {
     initialSession: AuthSessionSnapshot;
 };
 
+const getAreaOrder = (name: string) => {
+    const match = name.trim().match(/area\s*(\d+)/i);
+    if (!match) {
+        return Number.MAX_SAFE_INTEGER;
+    }
+
+    return Number(match[1]);
+};
+
 const Navbar = ({ initialSession }: NavbarProps) => {
     const t = useTranslations("Navbar");
     const tMenu = useTranslations("Menu");
-    const tCat = useTranslations("Categories");
+    const router = useRouter();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const [showBrowse, setShowBrowse] = useState(false);
@@ -50,17 +59,24 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const { data: profileData } = useGetStudentProfileQuery(undefined, {
         skip: !session.accessToken,
     });
+    const { data: categoriesData } = useCategoriesQuery();
     const userAvatar = profileData?.data?.user?.avatar ? resolveImageUrl(profileData.data.user.avatar) : defaultUserImage;
-    const userName = profileData?.data?.user?.name || "User";
     const userEmail = profileData?.data?.user?.email || "";
     const cartItems = cartData?.data?.items || [];
     const cartSubtotal = cartData?.data?.subtotal || "0.00";
 
-    const categories = categoryList.map((cat) => ({
-        slug: cat.slug,
-        name: tCat(`cat${cat.id}Title` as Parameters<typeof tCat>[0]),
-        desc: tCat(`cat${cat.id}Desc` as Parameters<typeof tCat>[0]),
-    }));
+    const categories = (categoriesData?.data || [])
+        .slice()
+        .sort((a, b) => {
+            const areaOrderA = getAreaOrder(a.name);
+            const areaOrderB = getAreaOrder(b.name);
+
+            if (areaOrderA !== areaOrderB) {
+                return areaOrderA - areaOrderB;
+            }
+
+            return a.name.localeCompare(b.name);
+        });
 
     const menuItems = [
         { label: tMenu("home"), href: "/" as const },
@@ -89,6 +105,23 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                     : "Failed to remove cart item.";
             toast.error(message);
         }
+    };
+
+    const handleCategorySelect = (categorySlug: string) => {
+        setShowBrowse(false);
+        router.push(`/categories/${encodeURIComponent(categorySlug)}`);
+    };
+
+    const handleSearchSubmit = (event?: React.FormEvent) => {
+        event?.preventDefault();
+        const value = searchQuery.trim();
+
+        if (!value) {
+            router.push('/courses');
+            return;
+        }
+
+        router.push(`/courses?search=${encodeURIComponent(value)}`);
     };
 
     // Close dropdowns when clicking outside
@@ -170,18 +203,20 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                     </h3>
 
                                     <div className="space-y-4">
-                                        {categories.map((category, index) => (
-                                            <Link onClick={() => setShowBrowse(false)} href={`/categories/${category.slug}`}
-                                                key={index}
-                                                className="pb-4 border-b block border-gray-100"
+                                        {categories.map((category) => (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleCategorySelect(category.slug)}
+                                                key={category.id}
+                                                className="pb-4 border-b block border-gray-100 w-full text-left"
                                             >
                                                 <h4 className="font-semibold text-title text-xs sm:text-sm md:text-base mb-1">
                                                     {category.name}
                                                 </h4>
                                                 <p className="text-xs sm:text-sm text-description">
-                                                    {category.desc}
+                                                    {category.description}
                                                 </p>
-                                            </Link>
+                                            </button>
                                         ))}
                                     </div>
                                 </div>
@@ -189,7 +224,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                         </div>
 
                         {/* Search Input */}
-                        <div className="flex-1 relative">
+                        <form className="flex-1 relative" onSubmit={handleSearchSubmit}>
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -197,8 +232,10 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                 placeholder={t("searchPlaceholder")}
                                 className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg text-sm sm:text-[15px] md:text-base focus:outline-none focus:border-main"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        </div>
+                            <button type="submit" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <Search className="w-5 h-5" />
+                            </button>
+                        </form>
                     </div>
 
                     {/* Right Section - Icons and Auth */}
@@ -448,30 +485,28 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                 </h3>
 
                                 <div className="space-y-3">
-                                    {categories.map((category, index) => (
-                                        <Link onClick={() => setShowBrowse(false)} href={`/categories/${category.slug}`}
-                                            key={index}
-                                            className="pb-3 border-b block border-gray-100"
+                                    {categories.map((category) => (
+                                        <button
+                                            type="button"
+                                            onClick={() => handleCategorySelect(category.slug)}
+                                            key={category.id}
+                                            className="pb-3 border-b block border-gray-100 w-full text-left"
                                         >
                                             <h4 className="font-semibold text-title text-xs sm:text-sm md:text-base mb-1">
                                                 {category.name}
                                             </h4>
                                             <p className="text-xs sm:text-sm text-description">
-                                                {category.desc}
+                                                {category.description}
                                             </p>
-                                        </Link>
+                                        </button>
                                     ))}
                                 </div>
-
-                                <button className="w-full mt-4 py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors">
-                                    {t("browseAllCategories")}
-                                </button>
                             </div>
                         )}
                     </div>
 
                     {/* Search Input for Mobile */}
-                    <div className="flex-1 relative">
+                    <form className="flex-1 relative" onSubmit={handleSearchSubmit}>
                         <input
                             type="text"
                             value={searchQuery}
@@ -479,8 +514,10 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                             placeholder={t("searchPlaceholder")}
                             className="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-main"
                         />
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    </div>
+                        <button type="submit" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <Search className="w-5 h-5" />
+                        </button>
+                    </form>
                 </div>
             </div>
 

@@ -1,5 +1,11 @@
 import baseApi from "@/redux/api/baseApi";
-import { CourseDetailsResponse, HomeCoursesResponse } from "./landing.type";
+import {
+    CategoriesResponse,
+    CourseDetailsResponse,
+    CoursesQueryParams,
+    CoursesResponse,
+    HomeCoursesResponse,
+} from "./landing.type";
 
 
 const landingApi = baseApi.injectEndpoints({
@@ -18,9 +24,28 @@ const landingApi = baseApi.injectEndpoints({
             }),
             providesTags: ["courses"]
         }),
+
+        courses: builder.query<CoursesResponse, CoursesQueryParams | void>({
+            query: (params) => {
+                return {
+                    url: `/courses/home/courses/list/`,
+                    method: "GET",
+                    params: params || undefined,
+                }
+            },
+            providesTags: ["courses"]
+        }),
+        categories: builder.query<CategoriesResponse, void>({
+            query: () => {
+                return {
+                    url: `/courses/categories/`,
+                    method: "GET",
+                }
+            }
+        }),
     }),
 });
 
 
 
-export const { useHomeCoursesQuery, useCourseDetailsQuery } = landingApi;
+export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery } = landingApi;

@@ -3,7 +3,6 @@
 import React from 'react';
 import { ChevronUp, Check } from 'lucide-react';
 import { BsStarFill } from 'react-icons/bs';
-import { categories } from '@/lib/categories';
 import { useTranslations } from "next-intl";
 
 const ratingOptions = [
@@ -32,9 +31,8 @@ const durationOptions = [
 // Custom square checkbox
 const SquareCheck = ({ checked }: { checked: boolean }) => (
     <div
-        className={`size-5 rounded border-2 flex items-center justify-center shrink-0 transition-all duration-150 ${
-            checked ? 'bg-main border-main' : 'border-gray-300 bg-white'
-        }`}
+        className={`size-5 rounded border-2 flex items-center justify-center shrink-0 transition-all duration-150 ${checked ? 'bg-main border-main' : 'border-gray-300 bg-white'
+            }`}
     >
         {checked && <Check className="size-3.5 text-white" strokeWidth={3} />}
     </div>
@@ -53,15 +51,14 @@ export interface FilterState {
 interface CourseFilterSidebarProps {
     filters: FilterState;
     onFilterChange: (field: keyof FilterState, value: string) => void;
+    categoryOptions?: Array<{
+        label: string;
+        value: string;
+    }>;
 }
 
-const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarProps) => {
+const CourseFilterSidebar = ({ filters, onFilterChange, categoryOptions = [] }: CourseFilterSidebarProps) => {
     const t = useTranslations("Courses");
-    const tCat = useTranslations("Categories");
-    const categoryOptions = categories.map((cat) => ({
-        label: tCat(`cat${cat.id}Title` as Parameters<typeof tCat>[0]),
-        value: String(cat.id),
-    }));
     const [openSections, setOpenSections] = React.useState({
         category: true,
         rating: true,
@@ -78,7 +75,7 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
     const handleSelect = (field: keyof FilterState, value: string) => {
         onFilterChange(field, filters[field] === value ? '' : value);
     };
-
+    // console.log(categoryOptions)
     return (
         <div className="space-y-6">
             {/* CATEGORY */}
@@ -102,11 +99,10 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                     type="button"
                                     key={cat.value}
                                     onClick={() => handleSelect('category', cat.value)}
-                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${
-                                        isActive
+                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
                                             ? 'bg-main/10 text-main font-semibold'
                                             : 'text-description hover:text-header hover:bg-gray-50'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex items-center gap-2 flex-1 min-w-0">
                                         <SquareCheck checked={isActive} />
@@ -140,11 +136,10 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                     type="button"
                                     key={opt.value}
                                     onClick={() => handleSelect('rating', opt.value)}
-                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${
-                                        isActive
+                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
                                             ? 'bg-main/10 text-main font-semibold'
                                             : 'text-description hover:text-header hover:bg-gray-50'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex items-center gap-2">
                                         <SquareCheck checked={isActive} />
@@ -182,11 +177,10 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                     type="button"
                                     key={opt.value}
                                     onClick={() => handleSelect('courseLevel', opt.value)}
-                                    className={`flex items-center gap-2 w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${
-                                        isActive
+                                    className={`flex items-center gap-2 w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
                                             ? 'bg-main/10 text-main font-semibold'
                                             : 'text-description hover:text-header hover:bg-gray-50'
-                                    }`}
+                                        }`}
                                 >
                                     <SquareCheck checked={isActive} />
                                     <span>{t(opt.tKey as Parameters<typeof t>[0])}</span>
@@ -237,18 +231,17 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
 
                         {/* Paid / Free */}
                         <div className="space-y-1">
-                            {(['paid', 'free'] as const).map((type) => {
+                            {(['paid'] as const).map((type) => {
                                 const isActive = filters.priceType === type;
                                 return (
                                     <button
                                         type="button"
                                         key={type}
                                         onClick={() => handleSelect('priceType', type)}
-                                        className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${
-                                            isActive
+                                        className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
                                                 ? 'bg-main/10 text-main font-semibold'
                                                 : 'text-description hover:text-header hover:bg-gray-50'
-                                        }`}
+                                            }`}
                                     >
                                         <div className="flex items-center gap-2">
                                             <SquareCheck checked={isActive} />
@@ -286,11 +279,10 @@ const CourseFilterSidebar = ({ filters, onFilterChange }: CourseFilterSidebarPro
                                     type="button"
                                     key={opt.value}
                                     onClick={() => handleSelect('duration', opt.value)}
-                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${
-                                        isActive
+                                    className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
                                             ? 'bg-main/10 text-main font-semibold'
                                             : 'text-description hover:text-header hover:bg-gray-50'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex items-center gap-2">
                                         <SquareCheck checked={isActive} />

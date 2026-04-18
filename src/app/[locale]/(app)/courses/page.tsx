@@ -4,10 +4,12 @@ import React, { useState, useCallback } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import CourseCard from '@/components/card/CourseCard';
 import Pagination from '@/components/reusable/Pagination';
-import { trendingCourses } from '@/lib/courses';
 import CourseSortDropdown from './CourseSortDropdown';
 import CourseFilterSidebar, { type FilterState } from './CourseFilterSidebar';
 import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useCategoriesQuery, useCoursesQuery } from '@/redux/features/landing/landing.api';
 
 const COURSES_PER_PAGE = 12;
 
@@ -21,42 +23,139 @@ const defaultFilters: FilterState = {
     duration: '',
 };
 
+const SORT_TO_ORDERING: Record<string, string | undefined> = {
+    relevance: undefined,
+    trending: '-rating',
+    'high-rated': '-rating',
+    newest: '-id',
+};
+
+const getAreaOrder = (name: string) => {
+    const match = name.trim().match(/area\s*(\d+)/i);
+    if (!match) {
+        return Number.MAX_SAFE_INTEGER;
+    }
+
+    return Number(match[1]);
+};
+
 const CoursesPage = () => {
     const t = useTranslations("Courses");
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [filters, setFilters] = useState<FilterState>(defaultFilters);
-    const [searchValue, setSearchValue] = useState('');
-    const [sortBy, setSortBy] = useState('relevance');
+    const [filters, setFilters] = useState<FilterState>(() => ({
+        category: searchParams.get('category') || '',
+        rating: searchParams.get('rating') || '',
+        courseLevel: searchParams.get('level') || '',
+        priceMin: searchParams.get('min_price') || '',
+        priceMax: searchParams.get('max_price') || '',
+        priceType: searchParams.get('price_type') || '',
+        duration: searchParams.get('duration') || '',
+    }));
+    const [searchValue, setSearchValue] = useState(() => searchParams.get('search') || '');
+    const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'relevance');
+
+    const pageFromQuery = Math.max(1, Number(searchParams.get('page') || '1') || 1);
+    const querySortBy = searchParams.get('sortBy') || 'relevance';
+
+    const { data: coursesData, isFetching: isCoursesLoading } = useCoursesQuery({
+        page: pageFromQuery,
+        page_size: COURSES_PER_PAGE,
+        search: searchParams.get('search') || undefined,
+        category: searchParams.get('category') || undefined,
+        rating: searchParams.get('rating') || undefined,
+        level: searchParams.get('level') || undefined,
+        min_price: searchParams.get('min_price') || undefined,
+        max_price: searchParams.get('max_price') || undefined,
+        price_type: searchParams.get('price_type') || undefined,
+        duration: searchParams.get('duration') || undefined,
+        ordering: SORT_TO_ORDERING[querySortBy],
+    });
+
+    const { data: categoriesData } = useCategoriesQuery();
+
+    const categoryOptions = (categoriesData?.data || [])
+        .slice()
+        .sort((a, b) => {
+            const areaOrderA = getAreaOrder(a.name);
+            const areaOrderB = getAreaOrder(b.name);
+
+            if (areaOrderA !== areaOrderB) {
+                return areaOrderA - areaOrderB;
+            }
+
+            return a.name.localeCompare(b.name);
+        })
+        .map((category) => ({
+            label: category.name,
+            value: category.name.trim().toLowerCase(),
+        }));
+
+    const courseItems = (coursesData?.data || []).map((course) => ({
+        id: course.id,
+        title: course.title,
+        category: course.Category,
+        rating: Number(course.rating || 0),
+        reviews: `${course.reviews_count || 0} Reviews`,
+        price: Number.parseFloat(course.price || '0'),
+        image: course.advance_info?.thumbnail || '',
+        is_wishlisted: Boolean(course.is_wishlisted),
+    }));
 
     const handleFilterChange = useCallback((field: keyof FilterState, value: string) => {
         setFilters((prev) => ({ ...prev, [field]: value }));
     }, []);
 
+    const updateQuery = useCallback((updates: Record<string, string | undefined>) => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        Object.entries(updates).forEach(([key, value]) => {
+            if (!value) {
+                params.delete(key);
+                return;
+            }
+            params.set(key, value);
+        });
+
+        const query = params.toString();
+        router.push(query ? `${pathname}?${query}` : pathname);
+    }, [pathname, router, searchParams]);
+
     const handleClearFilters = () => {
         setFilters(defaultFilters);
+        setSearchValue('');
+        setSortBy('relevance');
+        router.push(pathname);
     };
 
     const handleApplyFilters = () => {
-        const allData = {
-            ...filters,
-            search: searchValue,
-            sortBy: sortBy,
-        };
-        console.log('Applied Filters:', allData);
+        updateQuery({
+            page: '1',
+            search: searchValue || undefined,
+            sortBy: sortBy === 'relevance' ? undefined : sortBy,
+            category: filters.category || undefined,
+            rating: filters.rating || undefined,
+            level: filters.courseLevel || undefined,
+            min_price: filters.priceMin || undefined,
+            max_price: filters.priceMax || undefined,
+            price_type: filters.priceType || undefined,
+            duration: filters.duration || undefined,
+        });
     };
 
-    // For now using static data — will be replaced by API
-    const courses = trendingCourses;
-    const totalPages = Math.ceil(courses.length / COURSES_PER_PAGE);
-    const paginatedCourses = courses.slice(
-        (currentPage - 1) * COURSES_PER_PAGE,
-        currentPage * COURSES_PER_PAGE
-    );
-
     const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+        updateQuery({ page: String(page) });
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleSortChange = (nextSort: string) => {
+        setSortBy(nextSort);
+        updateQuery({
+            page: '1',
+            sortBy: nextSort === 'relevance' ? undefined : nextSort,
+        });
     };
 
     return (
@@ -89,12 +188,20 @@ const CoursesPage = () => {
                             placeholder={t("searchPlaceholder")}
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleApplyFilters();
+                                }
+                            }}
                             className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                         />
                         {searchValue && (
                             <button
                                 type="button"
-                                onClick={() => setSearchValue('')}
+                                onClick={() => {
+                                    setSearchValue('');
+                                    updateQuery({ page: '1', search: undefined });
+                                }}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
                                 <X className="size-4" />
@@ -104,7 +211,7 @@ const CoursesPage = () => {
 
                     <div className="flex items-center gap-3 ml-auto">
                         <span className="text-sm text-description">{t("sortBy")}:</span>
-                        <CourseSortDropdown sortBy={sortBy} onSortChange={setSortBy} />
+                        <CourseSortDropdown sortBy={sortBy} onSortChange={handleSortChange} />
                     </div>
                 </div>
             </div>
@@ -125,7 +232,11 @@ const CoursesPage = () => {
                                     {t("clearAll")}
                                 </button>
                             </div>
-                            <CourseFilterSidebar filters={filters} onFilterChange={handleFilterChange} />
+                            <CourseFilterSidebar
+                                filters={filters}
+                                onFilterChange={handleFilterChange}
+                                categoryOptions={categoryOptions}
+                            />
                             <button
                                 type="button"
                                 onClick={handleApplyFilters}
@@ -146,13 +257,17 @@ const CoursesPage = () => {
                                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                         }`}
                     >
-                        {paginatedCourses.map((course) => (
+                        {courseItems.map((course) => (
                             <CourseCard key={course.id} course={course} />
                         ))}
                     </div>
 
+                    {isCoursesLoading && (
+                        <div className="py-10 text-center text-description text-sm">Loading...</div>
+                    )}
+
                     {/* Empty State */}
-                    {paginatedCourses.length === 0 && (
+                    {!isCoursesLoading && courseItems.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-20 text-center">
                             <p className="text-lg font-semibold text-header mb-2">{t("noCourses")}</p>
                             <p className="text-sm text-description">{t("noCoursesHint")}</p>
@@ -161,8 +276,8 @@ const CoursesPage = () => {
 
                     {/* Pagination */}
                     <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
+                        currentPage={pageFromQuery}
+                        totalPages={coursesData?.total_pages || 1}
                         onPageChange={handlePageChange}
                     />
                 </div>
@@ -184,7 +299,11 @@ const CoursesPage = () => {
                             </button>
                         </div>
                         <div className="p-5">
-                            <CourseFilterSidebar filters={filters} onFilterChange={handleFilterChange} />
+                            <CourseFilterSidebar
+                                filters={filters}
+                                onFilterChange={handleFilterChange}
+                                categoryOptions={categoryOptions}
+                            />
                         </div>
                         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-5 flex gap-3">
                             <button

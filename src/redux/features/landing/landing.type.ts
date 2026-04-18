@@ -5,6 +5,19 @@ export type ApiResponse<T> = {
 	data: T;
 };
 
+export type PaginatedApiResponse<T> = {
+	success: boolean;
+	status: number;
+	message: string;
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	data: T[];
+};
+
 export type LandingInstructor = {
 	id: string;
 	name: string;
@@ -42,6 +55,12 @@ export type LandingCourse = {
 	instructor: LandingInstructor;
 	advance_info: LandingCourseAdvanceInfo;
 	is_wishlisted: boolean;
+	reviews_count?: number;
+	description?: string;
+	outcomes?: LandingCourseOutcome[];
+	requirements?: LandingCourseRequirement[];
+	sections?: LandingCourseSection[];
+	related_courses?: LandingRelatedCourse[];
 };
 
 export type HomeCoursesData = {
@@ -95,6 +114,29 @@ export type LandingRelatedCourse = {
 	title: string;
 };
 
+export type LandingCategory = {
+	id: number;
+	name: string;
+	slug: string;
+	description: string;
+	created_at: string;
+	updated_at: string;
+};
+
+export type CoursesQueryParams = {
+	page?: number;
+	page_size?: number;
+	search?: string;
+	category?: string;
+	rating?: string;
+	level?: string;
+	min_price?: string;
+	max_price?: string;
+	price_type?: string;
+	duration?: string;
+	ordering?: string;
+};
+
 export type CourseDetailsData = LandingCourse & {
 	description: string;
 	reviews_count: number;
@@ -105,3 +147,5 @@ export type CourseDetailsData = LandingCourse & {
 };
 
 export type CourseDetailsResponse = ApiResponse<CourseDetailsData>;
+export type CoursesResponse = PaginatedApiResponse<LandingCourse>;
+export type CategoriesResponse = ApiResponse<LandingCategory[]>;
