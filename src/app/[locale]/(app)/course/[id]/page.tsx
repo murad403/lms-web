@@ -5,16 +5,24 @@ import { Star, Lock, Clock, FileText, Award, Globe, Smartphone, ChevronDown, Che
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { MdSlowMotionVideo } from 'react-icons/md';
 import { useTranslations } from 'next-intl';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useCourseDetailsQuery } from '@/redux/features/landing/landing.api';
 import { resolveImageUrl } from '@/utils/image';
+import { getClientSession } from '@/utils/auth-client';
 import Image from 'next/image';
+import { useAddCartMutation, useViewCartQuery } from '@/redux/features/student/student.api';
+import { toast } from 'sonner';
 
 const CourseDetails = () => {
     const params = useParams<{ id: string }>();
     const courseId = Number(params?.id);
+    const session = getClientSession();
     const { data } = useCourseDetailsQuery(courseId, { skip: !courseId || Number.isNaN(courseId) });
-    const router = useRouter();
+    const [addCart] = useAddCartMutation();
+    const { data: cartData } = useViewCartQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const cartItems = cartData?.data?.items || [];
 
 
     const t = useTranslations("CourseDetail");
@@ -23,7 +31,7 @@ const CourseDetails = () => {
     const apiCourse = data?.data;
 
     const courseImage = resolveImageUrl(apiCourse?.advance_info?.thumbnail);
-    const courseTrailerVideo = resolveImageUrl(apiCourse?.advance_info?.trailer_video) as string;
+    const courseTrailerVideo = resolveImageUrl(apiCourse?.advance_info?.trailer_video);
     const learningPoints = (apiCourse?.outcomes || [])
         .slice()
         .sort((a, b) => a.order - b.order)
@@ -65,6 +73,27 @@ const CourseDetails = () => {
         );
     };
 
+    const handleAddToCart = async () => {
+        if (cartItems.length > 0) {
+            toast.error("Remove the existing cart item first, then you can add another course.");
+            return;
+        }
+
+        try {
+            const response = await addCart({ course_id: courseId }).unwrap();
+            toast.success(response.message || "Course added to cart successfully.");
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to add cart.";
+            toast.error(message);
+        }
+    };
+
     return (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0 mt-4 sm:mt-6 lg:mt-8">
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
@@ -75,10 +104,12 @@ const CourseDetails = () => {
                         <video
                             className="w-full h-full object-cover"
                             controls
-                            poster={courseImage}
+                            poster={courseImage || undefined}
                             preload="metadata"
                         >
-                            <source src={courseTrailerVideo} type="video/mp4" />
+                            {courseTrailerVideo && (
+                                <source src={courseTrailerVideo} type="video/mp4" />
+                            )}
                             {t("browserNotSupported")}
                         </video>
                     </div>
@@ -90,7 +121,7 @@ const CourseDetails = () => {
                         </h1>
                         <div className='flex items-center shrink-0'>
                             <h2 className='bg-[#E7E9EB] text-title py-2 sm:py-2.5 px-3 sm:px-5 font-semibold text-base sm:text-xl'>${Number.parseFloat(apiCourse?.price || '0') || 0}</h2>
-                            <button onClick={() => router.push("/checkout")} className='bg-main text-white py-2 sm:py-2.5 px-3 sm:px-5 hover:bg-main/90 cursor-pointer font-semibold text-base sm:text-xl'>Buy Now</button>
+                            <button onClick={handleAddToCart} className='bg-main text-white py-2 sm:py-2.5 px-3 sm:px-5 hover:bg-main/90 cursor-pointer font-semibold text-base sm:text-xl'>{t("addToCart")}</button>
                         </div>
                     </div>
 
@@ -127,7 +158,15 @@ const CourseDetails = () => {
                     </div>
 
                     <div className='flex items-center gap-2 mb-4'>
-                        <Image src={resolveImageUrl(apiCourse?.instructor?.avatar)} alt={apiCourse?.instructor?.name as string} width={500} height={500} className='rounded-full size-12'/>
+                        {resolveImageUrl(apiCourse?.instructor?.avatar) && (
+                            <Image
+                                src={resolveImageUrl(apiCourse?.instructor?.avatar)}
+                                alt={apiCourse?.instructor?.name || 'Instructor'}
+                                width={500}
+                                height={500}
+                                className='rounded-full size-12'
+                            />
+                        )}
                         <div>
                             <h2 className="font-bold text-header">{apiCourse?.instructor?.name}</h2>
                             <p className="text-sm sm:text-base text-description">{apiCourse?.instructor?.get_biography}</p>

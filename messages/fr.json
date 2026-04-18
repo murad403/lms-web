@@ -1109,6 +1109,7 @@
     "info": "Info"
   },
   "CourseDetail": {
+    "addToCart": "Ajouter au Panier",
     "description": "Description",
     "readLess": "Lire moins",
     "readMore": "Lire plus",
