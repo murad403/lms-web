@@ -44,3 +44,35 @@ export type InstructorDashboardData = {
 };
 
 export type InstructorDashboardResponse = ApiResponse<InstructorDashboardData>;
+
+export type InstructorProfileUser = {
+	id: string;
+	name: string;
+	email: string;
+	phone: string;
+	avatar: string;
+};
+
+export type InstructorProfileData = {
+	id: string;
+	title: string;
+	biography: string;
+	website: string;
+	twitter: string;
+	linkedin: string;
+	youtube: string;
+	user: InstructorProfileUser;
+	user_name?: string;
+};
+
+export type InstructorProfileResponse = ApiResponse<InstructorProfileData>;
+
+export type UpdateInstructorProfilePayload = {
+	title: string;
+	biography: string;
+	user: {
+		name: string;
+		phone: string;
+		avatar?: File | string | null;
+	};
+};

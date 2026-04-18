@@ -1,125 +1,97 @@
 "use client";
 import Image from "next/image";
-import { Star, Users, CirclePlay } from "lucide-react";
-import { instructorProfile, instructorCourses } from "@/lib/instructor";
-import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
-import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
+import { Mail, Phone, Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-const publicReviews = [
-    {
-        id: 1,
-        name: "Guy Hawkins",
-        avatar: "/home/user1.png",
-        timeAgo: "1 week ago",
-        rating: 5,
-        comment:
-            "I appreciate the precise short videos (10 mins or less each) because overly long videos tend to make me lose focus. The instructor is very knowledgeable in Web Design and it shows as he shares his knowledge. These were my best 6 months of training. Thanks, Vako.",
-    },
-    {
-        id: 2,
-        name: "Dianna Russell",
-        avatar: "/home/user1.png",
-        timeAgo: "30 mins ago",
-        rating: 5,
-        comment:
-            "This course is just amazing! has great course content, the best practices, and a lot of real-world knowledge. I love the way of giving examples, the best tips by the instructor which are pretty interesting, fun and knowledgeable.",
-    },
-    {
-        id: 3,
-        name: "Bessie Cooper",
-        avatar: "/home/user1.png",
-        timeAgo: "2 hours ago",
-        rating: 5,
-        comment:
-            "Webflow course was good, it covers design section, and to build responsive web pages, blog, and some more tricks and tips about webflow. I enjoyed the course and it helped me. Thank you Vako.",
-    },
-    {
-        id: 4,
-        name: "Eleanor Pena",
-        avatar: "/home/user1.png",
-        timeAgo: "1 day ago",
-        rating: 5,
-        comment:
-            "I appreciate the precise short videos because overly long videos tend to make me lose focus. The instructor is very knowledgeable in Web Design. These were my best 6 months of training. Thanks, Vako.",
-    },
-    {
-        id: 5,
-        name: "Ralph Edwards",
-        avatar: "/home/user1.png",
-        timeAgo: "2 days ago",
-        rating: 5,
-        comment:
-            "GREAT Course! Instructor was very descriptive and professional. I learned a TON that is going to apply immediately to real life work. Thanks so much, cant wait for the next one!",
-    },
-    {
-        id: 6,
-        name: "Arlene McCoy",
-        avatar: "/home/user1.png",
-        timeAgo: "1 week ago",
-        rating: 5,
-        comment:
-            "This should be one of the best courses I ever made about UX/UI in Udemy. Highly recommend to those who is new to UX/UI and want to become UX/UI freelancer!",
-    },
-];
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
+import { resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
 
 const InstructorProfilePage = () => {
-    const profile = instructorProfile;
-    const publishedCourses = instructorCourses.filter((c) => c.status === "Published");
+    const { data: profileResponse, isLoading } = useGetInstructorProfileQuery();
     const t = useTranslations("InstructorProfile");
+
+    if (isLoading && !profileResponse) {
+        return (
+            <div className="container mx-auto py-8 space-y-8">
+                <div className="bg-white px-4 py-10 rounded-lg border border-border-light">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                        <Skeleton className="h-28 w-28 rounded-md" />
+                        <div className="flex-1 space-y-3 text-center sm:text-left">
+                            <Skeleton className="h-8 w-56 mx-auto sm:mx-0" />
+                            <Skeleton className="h-4 w-40 mx-auto sm:mx-0" />
+                            <div className="flex flex-wrap justify-center sm:justify-start gap-3 pt-2">
+                                <Skeleton className="h-8 w-32" />
+                                <Skeleton className="h-8 w-32" />
+                                <Skeleton className="h-8 w-32" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg border border-border-light space-y-4">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-11/12" />
+                    <Skeleton className="h-4 w-10/12" />
+                </div>
+            </div>
+        );
+    }
+
+    const profile = profileResponse?.data;
+    const avatar = resolveImageUrl(profile?.user?.avatar);
 
     return (
         <div>
-            {/* Profile Header */}
             <div className="bg-white container mx-auto">
-                <div className=" mx-auto px-4 py-10">
+                <div className="mx-auto px-4 py-10">
                     <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                        <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md shrink-0">
-                            <Image
-                                src={profile.avatar}
-                                alt={`${profile.firstName} ${profile.lastName}`}
-                                fill
-                                className="object-cover"
-                            />
+                        <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-md overflow-hidden border border-border-light shadow-md shrink-0 bg-gray-50">
+                            {avatar ? (
+                                <Image
+                                    src={avatar}
+                                    alt={profile?.user?.name || "Instructor"}
+                                    fill
+                                    className="object-cover"
+                                    unoptimized={shouldBypassImageOptimization(avatar)}
+                                />
+                            ) : null}
                         </div>
                         <div className="flex-1 text-center sm:text-left">
                             <h1 className="text-2xl sm:text-3xl font-bold text-title">
-                                {profile.firstName} {profile.lastName}
+                                {profile?.user?.name || "Instructor"}
                             </h1>
-                            <p className="text-sm text-description mt-1">{profile.title}</p>
-                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4">
-                                <div className="flex items-center gap-1.5">
-                                    <div className="flex items-center gap-0.5">
-                                        {[1, 2, 3, 4, 5].map((s) => (
-                                            <Star key={s} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                                        ))}
-                                    </div>
-                                    <span className="text-sm font-semibold text-title">4.8</span>
-                                    <span className="text-xs text-description">
-                                        ({(134633).toLocaleString()} {t("reviews")})
+                            <p className="text-sm text-description mt-1">{profile?.title || "Instructor"}</p>
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4 text-sm text-description">
+                                <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
+                                    <Mail className="w-4 h-4" />
+                                    {profile?.user?.email || "-"}
+                                </span>
+                                <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
+                                    <Phone className="w-4 h-4" />
+                                    {profile?.user?.phone || "-"}
+                                </span>
+                                {profile?.website ? (
+                                    <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
+                                        <Globe className="w-4 h-4" />
+                                        {profile.website}
                                     </span>
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                    <Users className="w-4 h-4 text-description" />
-                                    <span className="text-sm text-description">430,117 {t("students")}</span>
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                    <CirclePlay className="w-4 h-4 text-main" />
-                                    <span className="text-sm text-description">7 {t("courses")}</span>
-                                </div>
+                                ) : null}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Body */}
             <div className="container mx-auto py-8 space-y-8">
-                {/* About Me */}
-                <ProfileAbout/>
-
-                {/* Tabs */}
-                <ProfileTabs profile={profile} publishedCourses={publishedCourses} publicReviews={publicReviews} />
+                <div className="bg-white p-6 rounded-lg border border-border-light">
+                    <h2 className="text-sm font-bold text-title mb-3 uppercase tracking-widest">
+                        {t("aboutMe")}
+                    </h2>
+                    <div className="text-sm text-description leading-relaxed whitespace-pre-line">
+                        {profile?.biography || ""}
+                    </div>
+                </div>
             </div>
         </div>
     );

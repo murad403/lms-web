@@ -8,8 +8,10 @@ import RoleProfileDropdown from "./RoleProfileDropdown";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
-import { instructorProfile } from "@/lib/instructor";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
+import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
+import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type SidebarItem = {
     labelKey: string;
@@ -36,6 +38,7 @@ const InstructorTopbar = () => {
     const notificationRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const t = useTranslations("InstructorTopbar");
+    const { data: profileResponse, isLoading: isProfileLoading } = useGetInstructorProfileQuery();
 
     // Derive page title from pathname
     const getPageTitle = () => {
@@ -137,19 +140,29 @@ const InstructorTopbar = () => {
                             )}
                         </div>
 
-                        <RoleProfileDropdown
-                            name={`${instructorProfile.firstName} ${instructorProfile.lastName}`}
-                            roleLabel={instructorProfile.title}
-                            avatarSrc={instructorProfile.avatar}
-                            avatarAlt={`${instructorProfile.firstName} ${instructorProfile.lastName}`}
-                            profileHref={getProfilePathByRole("instructor")}
-                            dashboardHref={getDashboardPathByRole("instructor")}
-                            profileLabel={t("profile")}
-                            dashboardLabel={t("dashboard")}
-                            logoutLabel={t("signOut")}
-                            triggerClassName="flex items-center gap-2 hover:opacity-80 transition-opacity outline-none"
-                            contentClassName="w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
-                        />
+                        {isProfileLoading ? (
+                            <div className="flex items-center gap-3">
+                                <Skeleton className="h-10 w-10 rounded-md" />
+                                <div className="hidden sm:block space-y-2">
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-3 w-20" />
+                                </div>
+                            </div>
+                        ) : (
+                            <RoleProfileDropdown
+                                name={profileResponse?.data?.user?.name || "Instructor"}
+                                roleLabel={profileResponse?.data?.title || "Instructor"}
+                                avatarSrc={resolveImageUrl(profileResponse?.data?.user?.avatar) || "/home/user1.png"}
+                                avatarAlt={profileResponse?.data?.user?.name || "Instructor"}
+                                profileHref={getProfilePathByRole("instructor")}
+                                dashboardHref={getDashboardPathByRole("instructor")}
+                                profileLabel={t("profile")}
+                                dashboardLabel={t("dashboard")}
+                                logoutLabel={t("signOut")}
+                                triggerClassName="flex items-center gap-2 hover:opacity-80 transition-opacity outline-none"
+                                contentClassName="w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+                            />
+                        )}
                     </div>
                 </div>
 

@@ -1,9 +1,11 @@
-import { instructorProfile } from '@/lib/instructor';
-import React from 'react'
 import { useTranslations } from 'next-intl'
+import { InstructorProfileData } from '@/redux/features/instructor/instructor.type';
 
-const ProfileAbout = () => {
-    const profile = instructorProfile;
+type Props = {
+    profile?: InstructorProfileData;
+};
+
+const ProfileAbout = ({ profile }: Props) => {
     const t = useTranslations("InstructorProfile");
     return (
         <div className="bg-white p-6">
@@ -11,7 +13,7 @@ const ProfileAbout = () => {
                 {t("aboutMe")}
             </h2>
             <div className="text-sm text-description leading-relaxed whitespace-pre-line">
-                {profile.bio}
+                {profile?.biography || ""}
             </div>
         </div>
     )

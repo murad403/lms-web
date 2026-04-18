@@ -27,12 +27,7 @@ const ChangePassword = () => {
     const t = useTranslations("InstructorSettings");
     const [changePassword, { isLoading }] = useChangePasswordMutation();
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<ChangePasswordForm>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordForm>({
         resolver: zodResolver(changePasswordSchema),
     });
 
@@ -49,9 +44,9 @@ const ChangePassword = () => {
         } catch (error: unknown) {
             const message =
                 typeof error === "object" &&
-                error !== null &&
-                "data" in error &&
-                typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
                     ? (error as { data?: { message?: string } }).data?.message
                     : "Failed to change password";
 
