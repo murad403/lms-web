@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Upload, Trash2, User, X } from "lucide-react";
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
 import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
+import AccountDeleteModal from "@/components/modal/AccountDeleteModal";
 import { useGetStudentProfileQuery, useUpdateStudentProfileMutation } from "@/redux/features/student/student.api";
 import { toast } from "sonner";
 import { appendImageVersion, resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
@@ -27,7 +27,6 @@ const SettingsPage = () => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [avatarVersion, setAvatarVersion] = useState(0);
-    const selectedFileRef = useRef<File | null>(null);
 
     const { data: profileData, refetch, isLoading: isProfileLoading } = useGetStudentProfileQuery();
     const [updateStudentProfile, { isLoading: isUpdatingProfile }] = useUpdateStudentProfileMutation();
@@ -63,7 +62,6 @@ const SettingsPage = () => {
         reader.onload = (event) => {
             setPreviewImage(event.target?.result as string);
             setSelectedFile(file);
-            selectedFileRef.current = file;
             setValue("avatar", file);
         };
         reader.readAsDataURL(file);
@@ -72,7 +70,6 @@ const SettingsPage = () => {
     const handleRemoveImage = () => {
         setPreviewImage(null);
         setSelectedFile(null);
-        selectedFileRef.current = null;
         setValue("avatar", null);
     };
 
@@ -85,9 +82,8 @@ const SettingsPage = () => {
             formData.append("title", data.title);
             formData.append("bio", data.bio);
 
-            // selectedFileRef দিয়ে সবসময় latest file নেওয়া হচ্ছে
-            if (selectedFileRef.current) {
-                formData.append("avatar", selectedFileRef.current);
+            if (selectedFile) {
+                formData.append("avatar", selectedFile);
             }
 
             const response = await updateStudentProfile(formData).unwrap();
@@ -110,11 +106,11 @@ const SettingsPage = () => {
             });
 
             setPreviewImage(null);
+            const hadSelectedFile = Boolean(selectedFile);
             setSelectedFile(null);
-            selectedFileRef.current = null;
             setValue("avatar", null);
 
-            if (selectedFileRef.current) {
+            if (hadSelectedFile) {
                 setAvatarVersion((prev) => prev + 1);
             }
 
@@ -131,10 +127,6 @@ const SettingsPage = () => {
 
             toast.error(message);
         }
-    };
-
-    const handleDeleteAccount = () => {
-        setShowDeleteModal(false);
     };
 
     const resolvedApiAvatar = resolveImageUrl(profileData?.data?.user?.avatar);
@@ -330,7 +322,7 @@ const SettingsPage = () => {
                     </div>
                     <button
                         onClick={() => setShowDeleteModal(true)}
-                        className="px-5 py-3 bg-red-500 text-white rounded-md text-sm font-semibold hover:bg-red-600 transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-5 py-3 bg-red-500 text-white rounded-md text-sm font-semibold hover:bg-red-600 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
                     >
                         <Trash2 className="w-4 h-4" />
                         {t("delete")}
@@ -338,35 +330,10 @@ const SettingsPage = () => {
                 </div>
             </div>
 
-            <AlertDialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-                <AlertDialogContent className="max-w-sm">
-                    <AlertDialogHeader className="items-center">
-                        <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mb-2">
-                            <Trash2 className="w-6 h-6 text-red-500" />
-                        </div>
-                        <AlertDialogTitle className="text-lg font-bold text-title">
-                            {t("deleteAccount")}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription className="text-sm text-description text-center">
-                            {t("deleteAccountConfirm")}
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter className="flex-row gap-3 sm:justify-center">
-                        <button
-                            onClick={() => setShowDeleteModal(false)}
-                            className="flex-1 px-6 py-3 border border-gray-300 rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                        >
-                            {t("cancel")}
-                        </button>
-                        <button
-                            onClick={handleDeleteAccount}
-                            className="flex-1 px-6 py-3 bg-red-500 text-white rounded-md text-sm font-medium hover:bg-red-600 transition-colors"
-                        >
-                            {t("yesDelete")}
-                        </button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <AccountDeleteModal
+                open={showDeleteModal}
+                onOpenChange={setShowDeleteModal}
+            />
         </div>
     );
 };

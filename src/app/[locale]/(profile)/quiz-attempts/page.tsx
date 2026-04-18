@@ -33,7 +33,7 @@ const QuizAttemptsPage = () => {
 
                 {quizAttempts.map((quiz) => (
                     <QuizAttemptCard
-                        key={quiz.quiz}
+                        key={quiz?.id}
                         quizAttempt={quiz}
                     />
                 ))}

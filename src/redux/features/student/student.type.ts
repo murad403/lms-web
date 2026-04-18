@@ -254,6 +254,7 @@ export type StudentCertificatesResponse = ApiResponse<StudentCertificateItem[]> 
 };
 
 export type StudentQuizAttemptItem = {
+    id: string;
     quiz: number;
     course_name: string;
     correct_answers: number;
@@ -270,3 +271,9 @@ export type StudentQuizAttemptsResponse = ApiResponse<StudentQuizAttemptItem[]> 
     next?: string | null;
     previous?: string | null;
 };
+
+export type DeleteAccountPayload = {
+    password: string;
+};
+
+export type DeleteAccountResponse = ApiResponse<Record<string, never>>;

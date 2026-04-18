@@ -1,10 +1,19 @@
 import baseApi from "@/redux/api/baseApi";
-import { AddCartResponse, AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
+import { AddCartResponse, AddWishlistResponse, ApiResponse, DeleteAccountPayload, DeleteAccountResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
 
 
 
 const studentApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        deleteAccount:  builder.mutation<DeleteAccountResponse, DeleteAccountPayload>({
+            query: (data) =>{
+                return{
+                    url: "/students/delete-account/",
+                    method: "DELETE",
+                    body: data
+                }
+            }
+        }),
         getStudentDashboard: builder.query<ApiResponse<StudentDashboardData>, void>({
             query: () => ({
                 url: "/students/dashboard/",
@@ -183,4 +192,4 @@ const studentApi = baseApi.injectEndpoints({
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation } = studentApi;
