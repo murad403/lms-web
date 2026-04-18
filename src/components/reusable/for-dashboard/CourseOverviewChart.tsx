@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { TCourseOverviewData } from "@/lib/instructor";
 import { useTranslations } from "next-intl";
@@ -7,27 +6,37 @@ type CourseOverviewChartProps = {
   data: TCourseOverviewData[];
 };
 
-const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
+const CourseOverviewChart = ({ data }: CourseOverviewChartProps) => {
   const t = useTranslations("InstructorDashboard");
-  // Extended demo data for smoother curves
-  const chartData: TCourseOverviewData[] = [
-    { label: "Sun", comments: 75000, views: 65000 },
-    { label: "Mon", comments: 85000, views: 145000 },
-    { label: "Tue", comments: 55000, views: 95000 },
-    { label: "Wed", comments: 8000, views: 5000 },
-    { label: "Thu", comments: 65000, views: 85000 },
-    { label: "Fri", comments: 125000, views: 145000 },
-    { label: "Sat", comments: 95000, views: 85000 },
-  ];
+  const chartData = data;
+  const hasData = chartData.length > 0;
 
-  const maxValue = 1000000;
-  const yAxisLabels = ["1m", "500k", "100k", "50k", "10k", "1k", "0"];
+  const maxValue = hasData
+    ? Math.max(...chartData.flatMap((item) => [item.comments, item.views]), 0)
+    : 0;
+
+  const formatAxisValue = (value: number) => {
+    if (value >= 1_000_000) {
+      const formatted = value / 1_000_000;
+      return `${Number.isInteger(formatted) ? formatted.toFixed(0) : formatted.toFixed(1)}m`;
+    }
+    if (value >= 1_000) {
+      const formatted = value / 1_000;
+      return `${Number.isInteger(formatted) ? formatted.toFixed(0) : formatted.toFixed(1)}k`;
+    }
+    return Math.round(value).toString();
+  };
+
+  const yAxisValues = Array.from({ length: 7 }, (_, index) => {
+    const ratio = (6 - index) / 6;
+    return maxValue * ratio;
+  });
 
   // Create smooth bezier curve path
   const createSmoothPath = (values: number[]) => {
     const points = values.map((val, i) => ({
-      x: (i / (values.length - 1)) * 100,
-      y: 100 - (val / maxValue) * 100,
+      x: values.length === 1 ? 0 : (i / (values.length - 1)) * 100,
+      y: maxValue > 0 ? 100 - (val / maxValue) * 100 : 100,
     }));
 
     if (points.length < 2) return "";
@@ -60,22 +69,16 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
 
   return (
     <div className="bg-white p-4 sm:p-5">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
+      <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">{t("courseOverview")}</h3>
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          <select className="text-xs sm:text-sm text-description px-2 sm:px-3 py-1 sm:py-1.5 bg-white focus:outline-none">
-            <option>{t("thisWeek")}</option>
-            <option>{t("thisMonth")}</option>
-          </select>
-        </div>
       </div>
 
       {/* Chart */}
       <div className="relative h-95 sm:h-100 lg:h-105">
         {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-6 sm:w-8">
-          {yAxisLabels.map((label) => (
-            <span key={label}>{label}</span>
+        <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-8 sm:w-10">
+          {yAxisValues.map((value, index) => (
+            <span key={index}>{formatAxisValue(value)}</span>
           ))}
         </div>
 
@@ -112,34 +115,38 @@ const CourseOverviewChart = ({ data: _data }: CourseOverviewChartProps) => {
             ))}
 
             {/* Views area fill */}
-            <path d={viewsAreaPath} fill="url(#viewsGradient)" />
+            {hasData && <path d={viewsAreaPath} fill="url(#viewsGradient)" />}
 
             {/* Comments area fill */}
-            <path d={commentsAreaPath} fill="url(#commentsGradient)" />
+            {hasData && <path d={commentsAreaPath} fill="url(#commentsGradient)" />}
 
             {/* Views line (purple/indigo) */}
-            <path
-              d={viewsPath}
-              fill="none"
-              stroke="#564FFD"
-              strokeWidth="0.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-              style={{ strokeWidth: '3px' }}
-            />
+            {hasData && (
+              <path
+                d={viewsPath}
+                fill="none"
+                stroke="#564FFD"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                style={{ strokeWidth: '3px' }}
+              />
+            )}
 
             {/* Comments line (cyan) */}
-            <path
-              d={commentsPath}
-              fill="none"
-              stroke="#4F9BEF"
-              strokeWidth="0.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-              style={{ strokeWidth: '3px' }}
-            />
+            {hasData && (
+              <path
+                d={commentsPath}
+                fill="none"
+                stroke="#4F9BEF"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                style={{ strokeWidth: '3px' }}
+              />
+            )}
           </svg>
         </div>
 

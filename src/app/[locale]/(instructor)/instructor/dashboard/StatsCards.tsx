@@ -12,7 +12,7 @@ const statItems = [
   { key: "activeCourses" as const, labelKey: "activeCourses", icon: BookOpen, color: "bg-green-50 text-green-600" },
   { key: "studentsEnrolled" as const, labelKey: "studentsEnrolled", icon: Users, color: "bg-orange-50 text-orange-600" },
   { key: "onlineStudents" as const, labelKey: "onlineStudents", icon: Monitor, color: "bg-red-50 text-red-600" },
-  { key: "onlineCourses" as const, labelKey: "onlineCourses", icon: GraduationCap, color: "bg-violet-50 text-violet-600" },
+  { key: "averageRating" as const, labelKey: "averageRating", icon: GraduationCap, color: "bg-violet-50 text-violet-600" },
   { key: "totalEarning" as const, labelKey: "usdTotalEarning", icon: DollarSign, color: "bg-slate-50 text-slate-600" },
 ];
 
@@ -25,7 +25,9 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
         const value = stats[item.key];
         const displayValue = item.key === "totalEarning"
           ? `$${value.toLocaleString()}`
-          : value.toString().padStart(2, "0");
+          : item.key === "averageRating"
+            ? Number(value).toFixed(1)
+            : value.toString().padStart(2, "0");
 
         return (
           <div

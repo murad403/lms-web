@@ -59,7 +59,7 @@ export type TDashboardStats = {
   activeCourses: number;
   studentsEnrolled: number;
   onlineStudents: number;
-  onlineCourses: number;
+  averageRating: number;
   totalEarning: number;
 };
 
@@ -448,7 +448,7 @@ export const dashboardStats: TDashboardStats = {
   activeCourses: 4,
   studentsEnrolled: 400,
   onlineStudents: 400,
-  onlineCourses: 3,
+  averageRating: 4.8,
   totalEarning: 7461767,
 };
 

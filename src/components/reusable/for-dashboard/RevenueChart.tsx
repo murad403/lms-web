@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useState } from "react";
 import { TRevenueData } from "@/lib/instructor";
-import { useTranslations } from "next-intl";
 
 type RevenueChartProps = {
   data: TRevenueData[];
@@ -11,31 +9,23 @@ type RevenueChartProps = {
   pathColor: string;
 };
 
-const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueChartProps) => {
+const RevenueChart = ({ data, strokeColor, title, pathColor }: RevenueChartProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const t = useTranslations("InstructorDashboard");
+  const chartData = data;
+  const hasData = chartData.length > 0;
+  const maxValue = hasData ? Math.max(...chartData.map((item) => item.value), 0) : 0;
 
-  // Extended demo data for smoother curve
-  const chartData: TRevenueData[] = [
-    { label: "Aug 01", value: 85000 },
-    { label: "Aug 03", value: 92000 },
-    { label: "Aug 05", value: 78000 },
-    { label: "Aug 07", value: 51749 },
-    { label: "Aug 09", value: 88000 },
-    { label: "Aug 11", value: 95000 },
-    { label: "Aug 13", value: 82000 },
-    { label: "Aug 15", value: 75000 },
-    { label: "Aug 17", value: 89000 },
-    { label: "Aug 19", value: 98000 },
-    { label: "Aug 21", value: 85000 },
-    { label: "Aug 23", value: 72000 },
-    { label: "Aug 25", value: 88000 },
-    { label: "Aug 27", value: 95000 },
-    { label: "Aug 29", value: 82000 },
-    { label: "Aug 31", value: 92000 },
-  ];
-
-  const maxValue = 1000000; // 1m for y-axis scale
+  const formatAxisValue = (value: number) => {
+    if (value >= 1_000_000) {
+      const formatted = value / 1_000_000;
+      return `${Number.isInteger(formatted) ? formatted.toFixed(0) : formatted.toFixed(1)}m`;
+    }
+    if (value >= 1_000) {
+      const formatted = value / 1_000;
+      return `${Number.isInteger(formatted) ? formatted.toFixed(0) : formatted.toFixed(1)}k`;
+    }
+    return Math.round(value).toString();
+  };
 
   // Create smooth bezier curve
   const createSmoothPath = (points: { x: number; y: number }[]) => {
@@ -60,33 +50,32 @@ const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueCha
     return path;
   };
 
-  const points = chartData.map((d, i) => ({
-    x: (i / (chartData.length - 1)) * 100,
-    y: 100 - (d.value / maxValue) * 100,
-  }));
+  const points = hasData
+    ? chartData.map((d, i) => ({
+      x: chartData.length === 1 ? 0 : (i / (chartData.length - 1)) * 100,
+      y: maxValue > 0 ? 100 - (d.value / maxValue) * 100 : 100,
+    }))
+    : [];
 
   const linePath = createSmoothPath(points);
   const areaPath = linePath + ` L 100 100 L 0 100 Z`;
 
-  const yAxisLabels = ["1m", "500k", "100k", "50k", "10k", "1k", "0"];
-  const xAxisLabels = ["Aug 01", "Aug 10", "Aug 20", "Aug 31", "Aug 31"];
+  const yAxisValues = Array.from({ length: 7 }, (_, index) => {
+    const ratio = (6 - index) / 6;
+    return maxValue * ratio;
+  });
 
   return (
     <div className="bg-white p-4 sm:p-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-border-light">
         <h3 className="text-base sm:text-lg font-semibold text-title">{title}</h3>
-        <select className="text-xs sm:text-sm text-description px-2 sm:px-3 bg-white focus:outline-none w-fit">
-          <option>{t("thisMonth")}</option>
-          <option>{t("lastMonth")}</option>
-          <option>{t("thisYear")}</option>
-        </select>
       </div>
 
       <div className="relative h-95 sm:h-100 lg:h-105">
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 bottom-6 sm:bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-description w-6 sm:w-8">
-          {yAxisLabels.map((label) => (
-            <span key={label}>{label}</span>
+          {yAxisValues.map((value, index) => (
+            <span key={index}>{formatAxisValue(value)}</span>
           ))}
         </div>
 
@@ -105,23 +94,25 @@ const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueCha
             </defs>
 
             {/* Area fill */}
-            <path d={areaPath} fill="url(#revenueGradient)" />
+            {hasData && <path d={areaPath} fill="url(#revenueGradient)" />}
 
             {/* Line */}
-            <path
-              d={linePath}
-              fill="none"
-              stroke={strokeColor}
-              strokeWidth="0.5"
-              vectorEffect="non-scaling-stroke"
-              style={{ strokeWidth: '3px' }}
-            />
+            {hasData && (
+              <path
+                d={linePath}
+                fill="none"
+                stroke={strokeColor}
+                strokeWidth="0.5"
+                vectorEffect="non-scaling-stroke"
+                style={{ strokeWidth: '3px' }}
+              />
+            )}
           </svg>
 
           {/* Interactive overlay */}
           <div className="absolute inset-0 flex">
             {chartData.map((d, i) => {
-              const y = 100 - (d.value / maxValue) * 100;
+              const y = maxValue > 0 ? 100 - (d.value / maxValue) * 100 : 100;
               return (
                 <div
                   key={i}
@@ -155,7 +146,7 @@ const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueCha
                         }}
                       >
                         <div className="font-semibold">{d.value.toLocaleString()}</div>
-                        <div className="text-gray-300 text-[10px]">{d.label.replace('Aug ', '')}th Aug</div>
+                        <div className="text-gray-300 text-[10px]">{d.label}</div>
                       </div>
                     </>
                   )}
@@ -167,8 +158,8 @@ const RevenueChart = ({ data: _data, strokeColor, title, pathColor }: RevenueCha
 
         {/* X-axis labels */}
         <div className="absolute left-8 sm:left-10 right-0 bottom-0 flex justify-between text-[10px] sm:text-xs text-description">
-          {xAxisLabels.map((label, i) => (
-            <span key={i}>{label}</span>
+          {chartData.map((item) => (
+            <span key={item.label} className="flex-1 text-center">{item.label}</span>
           ))}
         </div>
       </div>
