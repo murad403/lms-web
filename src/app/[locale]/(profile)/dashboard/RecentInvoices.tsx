@@ -1,9 +1,11 @@
-import { StudentDashboardInvoice } from '@/redux/features/student/student.api';
+import { StudentDashboardInvoice } from '@/redux/features/student/student.type';
 import { FileDown } from 'lucide-react'
 import { useTranslations } from 'next-intl';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type RecentInvoicesProps = {
     invoices: StudentDashboardInvoice[];
+    isLoading?: boolean;
 };
 
 const handleDownload = (invoice: StudentDashboardInvoice) => {
@@ -67,8 +69,33 @@ const handleDownload = (invoice: StudentDashboardInvoice) => {
     });
 };
 
-const RecentInvoices = ({ invoices }: RecentInvoicesProps) => {
+const RecentInvoices = ({ invoices, isLoading = false }: RecentInvoicesProps) => {
     const t = useTranslations("Dashboard");
+
+    if (isLoading) {
+        return (
+            <div className="rounded-md border border-border-light p-4 sm:p-5">
+                <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">
+                    {t("recentInvoices")}
+                </h3>
+                <div className="space-y-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="flex items-center justify-between py-2">
+                            <div className="min-w-0 flex-1 space-y-2">
+                                <Skeleton className="h-5 w-40" />
+                                <Skeleton className="h-4 w-52" />
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0 ml-3">
+                                <Skeleton className="h-7 w-16 rounded" />
+                                <Skeleton className="h-6 w-6 rounded" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="rounded-md border border-border-light p-4 sm:p-5">
             <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">

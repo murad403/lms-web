@@ -1,14 +1,15 @@
 import { Badge } from '@/components/ui/badge'
+import { LiveClassItem } from '@/redux/features/student/student.type';
 import { CalendarIcon, Clock, User } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import React from 'react'
-import type { LiveClassItem } from '@/redux/features/student/student.api'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type PastSessionsProps = {
     sessions: LiveClassItem[];
+    isLoading?: boolean;
 };
 
-const PastSessions = ({ sessions }: PastSessionsProps) => {
+const PastSessions = ({ sessions, isLoading = false }: PastSessionsProps) => {
     const t = useTranslations("LiveClasses");
     return (
         <div>
@@ -18,7 +19,28 @@ const PastSessions = ({ sessions }: PastSessionsProps) => {
                     {t("pastSessions")}
                 </h3>
                 <div className="space-y-3">
-                    {sessions.map((session) => (
+                    {isLoading &&
+                        Array.from({ length: 2 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border border-border-light rounded-md p-4"
+                            >
+                                <div className="min-w-0 w-full space-y-2">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <Skeleton className="h-5 w-44" />
+                                        <Skeleton className="h-5 w-16 rounded-full" />
+                                    </div>
+                                    <Skeleton className="h-4 w-52" />
+                                    <div className="flex flex-wrap items-center gap-3 mt-1">
+                                        <Skeleton className="h-4 w-28" />
+                                        <Skeleton className="h-4 w-24" />
+                                        <Skeleton className="h-4 w-20" />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                    {!isLoading && sessions.map((session) => (
                         <div
                             key={session.id}
                             className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border border-border-light rounded-md p-4"

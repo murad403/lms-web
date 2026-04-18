@@ -1,9 +1,11 @@
-import { StudentDashboardQuiz } from '@/redux/features/student/student.api';
+import { StudentDashboardQuiz } from '@/redux/features/student/student.type';
 import { useTranslations } from 'next-intl';
 import React from 'react'
+import { Skeleton } from '@/components/ui/skeleton';
 
 type LatestQuizzesProps = {
     quizzes: StudentDashboardQuiz[];
+    isLoading?: boolean;
 };
 
 const formatDate = (dateString: string) => {
@@ -11,8 +13,32 @@ const formatDate = (dateString: string) => {
     return Number.isNaN(date.getTime()) ? dateString : date.toLocaleDateString();
 };
 
-const LatestQuizzes = ({ quizzes }: LatestQuizzesProps) => {
+const LatestQuizzes = ({ quizzes, isLoading = false }: LatestQuizzesProps) => {
     const t = useTranslations("Dashboard");
+
+    if (isLoading) {
+        return (
+            <div className="rounded-md border border-border-light p-4 sm:p-5">
+                <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">
+                    {t("latestQuizzes")}
+                </h3>
+                <div className="space-y-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="flex items-center justify-between py-2">
+                            <div className="min-w-0 flex-1 space-y-2">
+                                <Skeleton className="h-5 w-40" />
+                                <Skeleton className="h-4 w-48" />
+                            </div>
+                            <div className="shrink-0 ml-3">
+                                <Skeleton className="size-12 rounded-full" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="rounded-md border border-border-light p-4 sm:p-5">
             <h3 className="text-base sm:text-lg font-bold text-title mb-4 border-b border-border-light pb-4">

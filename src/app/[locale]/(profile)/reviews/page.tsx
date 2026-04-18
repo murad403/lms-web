@@ -49,7 +49,26 @@ const ReviewsPage = () => {
       <div className="bg-white space-y-4">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="h-40 w-full" />
+            <div key={index} className="py-5 border border-border-light p-4 rounded-md">
+              <div className="flex items-start gap-3">
+                <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+                <div className="flex-1 min-w-0 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-3 w-16" />
+                    </div>
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                  <Skeleton className="h-4 w-11/12" />
+                  <Skeleton className="h-4 w-10/12" />
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="h-4 w-14" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                </div>
+              </div>
+            </div>
           ))
         ) : (data?.data ?? []).map((review) => (
           <ReviewCard

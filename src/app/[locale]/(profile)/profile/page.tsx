@@ -15,7 +15,7 @@ const MyProfilePage = () => {
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6 border-b border-border-light pb-6">{t("title")}</h2>
 
-            {isLoading && (
+            {isLoading ? (
                 <div className="bg-white rounded-xl p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
                         {Array.from({ length: 9 }).map((_, index) => (
@@ -23,13 +23,7 @@ const MyProfilePage = () => {
                         ))}
                     </div>
                 </div>
-            )}
-
-            {!isLoading && !profile && (
-                <p className="text-sm text-description">No profile data found.</p>
-            )}
-
-            <div className="bg-white rounded-xl p-4 sm:p-6">
+            ) : <div className="bg-white rounded-xl p-4 sm:p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
                     <div>
                         <p className="text-base font-semibold text-title mb-1">{t("firstName")}</p>
@@ -74,7 +68,13 @@ const MyProfilePage = () => {
                     <p className="text-base font-semibold text-title mb-1">{t("bio")}</p>
                     <p className="text-sm text-description leading-relaxed">{profile?.bio || "-"}</p>
                 </div>
-            </div>
+            </div>}
+
+            {!isLoading && !profile && (
+                <p className="text-sm text-description">No profile data found.</p>
+            )}
+
+
         </div>
     );
 };

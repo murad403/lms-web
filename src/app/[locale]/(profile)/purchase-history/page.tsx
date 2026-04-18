@@ -65,8 +65,38 @@ const PurchaseHistoryPage = () => {
 
             {isLoading && (
                 <div className="space-y-4 mb-6">
-                    {Array.from({ length: 2 }).map((_, index) => (
-                        <Skeleton key={index} className="h-48 w-full" />
+                    {Array.from({ length: 1 }).map((_, index) => (
+                        <div
+                            key={index}
+                            className="bg-white rounded-md border border-border-light overflow-hidden"
+                        >
+                            <div className="px-4 sm:px-6 py-3 border-b border-gray-100 bg-gray-50 space-y-2">
+                                <Skeleton className="h-6 w-32" />
+                                <div className="flex items-center gap-3 flex-wrap">
+                                    <Skeleton className="h-4 w-20" />
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-4 w-20" />
+                                </div>
+                            </div>
+
+                            <div className="px-4 sm:px-6 py-3 space-y-3">
+                                {Array.from({ length: 2 }).map((__, itemIndex) => (
+                                    <div
+                                        key={itemIndex}
+                                        className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 py-3 border-b border-gray-50 last:border-b-0"
+                                    >
+                                        <Skeleton className="w-full sm:w-32 h-25 rounded-md shrink-0" />
+                                        <div className="flex-1 min-w-0 space-y-2 w-full">
+                                            <Skeleton className="h-4 w-16" />
+                                            <Skeleton className="h-5 w-4/5" />
+                                            <Skeleton className="h-4 w-40" />
+                                            <Skeleton className="h-5 w-20" />
+                                        </div>
+                                        <Skeleton className="hidden md:block h-4 w-24" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     ))}
                 </div>
             )}

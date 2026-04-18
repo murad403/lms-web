@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import PastSessions from "./PastSessions";
 import UpcomingLiveClasses from "./UpcomingLiveClasses";
 import { useUpcomingLiveClassQuery } from "@/redux/features/student/student.api";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const LiveClassesPage = () => {
     const t = useTranslations("LiveClasses");
@@ -21,19 +20,12 @@ const LiveClassesPage = () => {
                 </p>
             </div>
 
-            {isLoading && (
-                <div className="space-y-4">
-                    <Skeleton className="h-40 w-full" />
-                    <Skeleton className="h-40 w-full" />
-                </div>
-            )}
-
             {!isLoading && upcomingLiveClasses.length === 0 && pastLiveClasses.length === 0 && (
                 <p className="text-sm text-description">No live classes found.</p>
             )}
 
             {/* Upcoming Live Classes */}
-            <UpcomingLiveClasses classes={upcomingLiveClasses} />
+            <UpcomingLiveClasses classes={upcomingLiveClasses} isLoading={isLoading} />
 
             {/* Calendar */}
             {/* <div className="bg-white rounded-md border border-border-light p-4 sm:p-6">
@@ -49,7 +41,7 @@ const LiveClassesPage = () => {
             </div> */}
 
             {/* Past Sessions */}
-            <PastSessions sessions={pastLiveClasses} />
+            <PastSessions sessions={pastLiveClasses} isLoading={isLoading} />
         </div>
     );
 };

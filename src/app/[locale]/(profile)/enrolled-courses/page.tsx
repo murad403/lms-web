@@ -26,7 +26,29 @@ const EnrolledCoursesPage = () => {
             {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {Array.from({ length: 6 }).map((_, index) => (
-                        <Skeleton key={index} className="h-56 w-full" />
+                        <div key={index} className="bg-white rounded-md overflow-hidden border border-border-light w-full">
+                            <Skeleton className="h-50 sm:h-60 w-full" />
+                            <div className="p-3 sm:p-4 space-y-3">
+                                <div className="flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <Skeleton className="size-8 rounded-full" />
+                                        <Skeleton className="h-4 w-20" />
+                                    </div>
+                                    <Skeleton className="h-6 w-16 rounded-lg" />
+                                </div>
+                                <Skeleton className="h-5 w-5/6" />
+                                <Skeleton className="h-4 w-24" />
+                                <div className="flex items-center justify-between">
+                                    <Skeleton className="h-6 w-16" />
+                                    <Skeleton className="h-9 w-28 rounded" />
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Skeleton className="h-1.5 w-full" />
+                                    <Skeleton className="h-4 w-10" />
+                                </div>
+                                <Skeleton className="h-6 w-20 rounded-lg" />
+                            </div>
+                        </div>
                     ))}
                 </div>
             ) : paginatedCourses.length > 0 ? (

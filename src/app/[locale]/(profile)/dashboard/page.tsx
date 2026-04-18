@@ -25,21 +25,6 @@ const DashboardPage = () => {
 
     return (
         <div className="space-y-6">
-            {isLoading && (
-                <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                            <Skeleton key={index} className="h-24 w-full" />
-                        ))}
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                            <Skeleton key={index} className="h-52 w-full" />
-                        ))}
-                    </div>
-                </div>
-            )}
-
             {!isLoading && recentCourses.length === 0 && (
                 <p className="text-sm text-description">No dashboard data found.</p>
             )}
@@ -49,6 +34,7 @@ const DashboardPage = () => {
                 enrolledCoursesCount={dashboardData?.enrolled_courses_count || 0}
                 activeCoursesCount={dashboardData?.active_courses_count || 0}
                 completedCoursesCount={dashboardData?.completed_courses_count || 0}
+                isLoading={isLoading}
             />
 
             {/* Recently Enrolled Courses */}
@@ -57,19 +43,31 @@ const DashboardPage = () => {
                     {t("recentlyEnrolledCourses")}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {recentCourses.map((course) => (
-                        <DashboardCourseCard key={course.id} course={course} />
-                    ))}
+                    {isLoading
+                        ? Array.from({ length: 3 }).map((_, index) => (
+                              <div key={index} className="bg-white rounded-md overflow-hidden border border-border-light w-full">
+                                  <Skeleton className="h-40 sm:h-60 w-full" />
+                                  <div className="p-3 sm:p-4 space-y-3">
+                                      <Skeleton className="h-3 w-3/4" />
+                                      <Skeleton className="h-5 w-5/6" />
+                                      <div className="flex items-center justify-between">
+                                          <Skeleton className="h-10 w-28 rounded" />
+                                          <Skeleton className="h-4 w-20" />
+                                      </div>
+                                  </div>
+                              </div>
+                          ))
+                        : recentCourses.map((course) => <DashboardCourseCard key={course.id} course={course} />)}
                 </div>
             </div>
 
             {/* Recent Invoices & Latest Quizzes */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Invoices */}
-                <RecentInvoices invoices={dashboardData?.recent_invoices || []} />
+                <RecentInvoices invoices={dashboardData?.recent_invoices || []} isLoading={isLoading} />
 
                 {/* Latest Quizzes */}
-                <LatestQuizzes quizzes={dashboardData?.recent_quizes || []} />
+                <LatestQuizzes quizzes={dashboardData?.recent_quizes || []} isLoading={isLoading} />
             </div>
         </div>
     );

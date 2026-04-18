@@ -2,12 +2,14 @@ import { CalendarIcon, Clock, ExternalLink, User, Video } from 'lucide-react'
 import { useTranslations } from 'next-intl';
 import { useJoinLiveClassMutation } from '@/redux/features/student/student.api';
 import { type LiveClassItem } from '@/redux/features/student/student.type';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type UpcomingLiveClassesProps = {
     classes: LiveClassItem[];
+    isLoading?: boolean;
 };
 
-const UpcomingLiveClasses = ({ classes }: UpcomingLiveClassesProps) => {
+const UpcomingLiveClasses = ({ classes, isLoading = false }: UpcomingLiveClassesProps) => {
     const t = useTranslations("LiveClasses");
     const [joinLiveClass, { isLoading: isJoining }] = useJoinLiveClassMutation();
 
@@ -30,11 +32,30 @@ const UpcomingLiveClasses = ({ classes }: UpcomingLiveClassesProps) => {
                 {t("upcomingLiveClasses")}
             </h3>
             <div className="space-y-3">
-                {classes.length === 0 && (
+                {isLoading &&
+                    Array.from({ length: 2 }).map((_, index) => (
+                        <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 border border-border-light rounded-md"
+                        >
+                            <div className="min-w-0 flex-1 space-y-2">
+                                <Skeleton className="h-6 w-44" />
+                                <Skeleton className="h-4 w-56" />
+                                <div className="flex flex-wrap items-center gap-3 pt-1">
+                                    <Skeleton className="h-4 w-28" />
+                                    <Skeleton className="h-4 w-24" />
+                                    <Skeleton className="h-4 w-20" />
+                                </div>
+                            </div>
+                            <Skeleton className="h-11 w-28 rounded-md shrink-0" />
+                        </div>
+                    ))}
+
+                {!isLoading && classes.length === 0 && (
                     <p className="text-sm text-description">No live class available.</p>
                 )}
 
-                {classes.map((cls) => (
+                {!isLoading && classes.map((cls) => (
                     <div
                         key={cls.id}
                         className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 border border-border-light rounded-md"
