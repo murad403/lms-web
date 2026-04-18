@@ -76,34 +76,18 @@ const SettingsPage = () => {
     const onProfileSubmit = async (data: ProfileFormData) => {
         try {
             const formData = new FormData();
-            formData.append("first_name", data.firstName);
-            formData.append("last_name", data.lastName);
-            formData.append("phone", data.phoneNumber);
+            formData.append("user.first_name", data.firstName);
+            formData.append("user.last_name", data.lastName);
+            formData.append("user.phone", data.phoneNumber);
             formData.append("title", data.title);
             formData.append("bio", data.bio);
 
             if (selectedFile) {
-                formData.append("avatar", selectedFile);
+                formData.append("user.avatar", selectedFile);
             }
 
             const response = await updateStudentProfile(formData).unwrap();
             toast.success(response.message || "Profile updated successfully.");
-
-            const updatedProfile = response.data;
-            const fullNameParts = (updatedProfile.user?.name || "").trim().split(/\s+/).filter(Boolean);
-            const fallbackFirstName = fullNameParts[0] || "";
-            const fallbackLastName = fullNameParts.slice(1).join(" ");
-
-            reset({
-                firstName: updatedProfile.first_name || fallbackFirstName,
-                lastName: updatedProfile.last_name || fallbackLastName,
-                phoneNumber: updatedProfile.user?.phone || "",
-                username: updatedProfile.user?.name || "",
-                email: updatedProfile.user?.email || "",
-                title: updatedProfile.title || "",
-                bio: updatedProfile.bio || "",
-                avatar: null,
-            });
 
             setPreviewImage(null);
             const hadSelectedFile = Boolean(selectedFile);
@@ -117,6 +101,7 @@ const SettingsPage = () => {
             await refetch();
 
         } catch (error) {
+            // console.log(error)
             const message =
                 typeof error === "object" &&
                     error !== null &&
@@ -302,7 +287,7 @@ const SettingsPage = () => {
                         <button
                             type="submit"
                             disabled={isUpdatingProfile}
-                            className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors"
+                            className="px-6 py-3 bg-main cursor-pointer text-white text-sm font-semibold hover:bg-main/90 transition-colors"
                         >
                             {isUpdatingProfile ? "Saving..." : t("saveChanges")}
                         </button>

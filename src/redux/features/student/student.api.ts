@@ -5,9 +5,9 @@ import { AddCartResponse, AddWishlistResponse, ApiResponse, DeleteAccountPayload
 
 const studentApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        deleteAccount:  builder.mutation<DeleteAccountResponse, DeleteAccountPayload>({
-            query: (data) =>{
-                return{
+        deleteAccount: builder.mutation<DeleteAccountResponse, DeleteAccountPayload>({
+            query: (data) => {
+                return {
                     url: "/students/delete-account/",
                     method: "DELETE",
                     body: data
@@ -25,7 +25,7 @@ const studentApi = baseApi.injectEndpoints({
                 url: "/students/profile/",
                 method: "GET"
             }),
-            providesTags: ["student"]
+            providesTags: ["profile"]
         }),
         updateStudentProfile: builder.mutation<ApiResponse<StudentProfileData>, FormData>({
             query: (data) => {
@@ -35,7 +35,7 @@ const studentApi = baseApi.injectEndpoints({
                     body: data
                 }
             },
-            invalidatesTags: ["student"]
+            invalidatesTags: ["profile"]
         }),
         getEnrolledCourses: builder.query<EnrolledCoursesResponse, { page?: number; status?: string }>({
             query: ({ page = 1, status }) => {
@@ -74,6 +74,7 @@ const studentApi = baseApi.injectEndpoints({
             }
         }),
 
+        // reviews
         reviewList: builder.query<StudentReviewListResponse, { page?: number }>({
             query: ({ page = 1 }) => {
                 return {
@@ -102,7 +103,18 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["reviews"]
         }),
+        addReview: builder.mutation({
+            query: ({ id, data }: { id: number; data: { rating: number; comment: string } }) => {
+                return {
+                    url: `/students/reviews/${id}/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["reviews"]
+        }),
 
+        // purchase history
         purchaseHistory: builder.query<StudentPurchaseHistoryResponse, { page?: number }>({
             query: ({ page = 1 }) => {
                 return {
@@ -112,6 +124,7 @@ const studentApi = baseApi.injectEndpoints({
             }
         }),
 
+        // wish list
         addWishlist: builder.mutation<AddWishlistResponse, number>({
             query: (id) => {
                 return {
@@ -140,6 +153,7 @@ const studentApi = baseApi.injectEndpoints({
             invalidatesTags: ["wishlist", "courses"]
         }),
 
+        // cart
         addCart: builder.mutation<AddCartResponse, { course_id: number }>({
             query: (data) => {
                 return {
@@ -187,9 +201,37 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+
+        // course continue
+        startCourse: builder.query({
+            query: (courseId) => {
+                return {
+                    url: `/students/courses/${courseId}/player/`,
+                    method: "GET"
+                }
+            }
+        }),
+        completedLecture: builder.mutation({
+            query: (lectureId) => {
+                return {
+                    url: `/students/lectures/${lectureId}/complete/`,
+                    method: "POST"
+                }
+            }
+        }),
+        nextLecture: builder.query({
+            query: ({ lectureId, courseId }: { lectureId: number; courseId: number }) => {
+                return {
+                    url: `/students/courses/${courseId}/player/${lectureId}/`,
+                    method: "GET"
+                }
+            }
+        }),
+
+
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery } = studentApi;

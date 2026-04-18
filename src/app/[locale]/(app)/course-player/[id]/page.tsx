@@ -115,10 +115,6 @@ const CoursePlayerPage = () => {
                     <BookOpen className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#564FFD]" />
                     {coursePlayerInfo.totalLectures} {t("lectures")}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#FD8E1F]" />
-                    {coursePlayerInfo.totalDuration}
-                  </span>
                 </div>
 
                 {/* Mobile Stats - Simplified */}
@@ -135,7 +131,7 @@ const CoursePlayerPage = () => {
               {/* Mobile Menu Button - Shows sidebar */}
               <button
                 onClick={() => setShowMobileSidebar(true)}
-                className="lg:hidden p-1.5 sm:p-2 hover:bg-gray-100 rounded-md transition-colors"
+                className="lg:hidden p-1.5 sm:p-2 hover:bg-gray-100 rounded-md transition-colors cursor-pointer"
               >
                 <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-title" />
               </button>
@@ -143,7 +139,7 @@ const CoursePlayerPage = () => {
               {/* Write Review - Hidden on small mobile */}
               <button
                 onClick={() => setIsReviewOpen(true)}
-                className="hidden sm:flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 border border-border-light rounded-md text-xs sm:text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 border border-border-light rounded-md text-xs sm:text-sm font-semibold text-title hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <span className="hidden md:inline">{t("writeAReview")}</span>
                 <span className="md:hidden">{t("review")}</span>
@@ -153,7 +149,7 @@ const CoursePlayerPage = () => {
               <button
                 onClick={handleNextLecture}
                 disabled={currentIndex >= allLectures.length - 1}
-                className="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 bg-main text-white rounded-md text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 bg-main text-white rounded-md text-xs sm:text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <span className="hidden sm:inline">{t("nextLecture")}</span>
                 <span className="sm:hidden">{t("next")}</span>

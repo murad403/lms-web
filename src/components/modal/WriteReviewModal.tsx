@@ -4,12 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Star } from "lucide-react";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
 
 type WriteReviewModalProps = {
@@ -19,12 +14,7 @@ type WriteReviewModalProps = {
     courseName?: string;
 };
 
-const WriteReviewModal = ({
-    isOpen,
-    onClose,
-    onSubmit,
-    courseName,
-}: WriteReviewModalProps) => {
+const WriteReviewModal = ({ isOpen, onClose, onSubmit, courseName }: WriteReviewModalProps) => {
     const t = useTranslations("WriteReviewModal");
 
     const reviewSchema = z.object({
@@ -37,14 +27,7 @@ const WriteReviewModal = ({
 
     type ReviewFormData = z.infer<typeof reviewSchema>;
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        reset,
-        formState: { errors, isSubmitting },
-    } = useForm<ReviewFormData>({
+    const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<ReviewFormData>({
         resolver: zodResolver(reviewSchema),
         defaultValues: {
             rating: 0,
@@ -72,7 +55,7 @@ const WriteReviewModal = ({
                         <DialogTitle className="text-xl font-bold text-title">
                             {t("title")}
                         </DialogTitle>
-                        
+
                     </div>
                 </DialogHeader>
 
@@ -97,8 +80,8 @@ const WriteReviewModal = ({
                                     >
                                         <Star
                                             className={`w-8 h-8 transition-colors ${i < rating
-                                                    ? "text-yellow-500 fill-yellow-500"
-                                                    : "text-gray-300 hover:text-yellow-400"
+                                                ? "text-yellow-500 fill-yellow-500"
+                                                : "text-gray-300 hover:text-yellow-400"
                                                 }`}
                                         />
                                     </button>
@@ -145,14 +128,14 @@ const WriteReviewModal = ({
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="flex-1 px-4 py-2.5 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors"
+                            className="flex-1 px-4 py-2.5 border border-border-light rounded-md text-sm font-medium text-description hover:bg-gray-50 transition-colors cursor-pointer"
                         >
                             {t("cancel")}
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="flex-1 px-4 py-2.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 px-4 py-2.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         >
                             {isSubmitting ? t("submitting") : t("submit")}
                         </button>
