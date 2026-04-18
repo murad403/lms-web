@@ -5,6 +5,7 @@ import { useDeleteReviewMutation, useEditReviewMutation, useReviewListQuery } fr
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ReviewsPage = () => {
   const t = useTranslations("ReviewsPage");
@@ -46,7 +47,11 @@ const ReviewsPage = () => {
       </div>
 
       <div className="bg-white space-y-4">
-        {isLoading ? null : (data?.data ?? []).map((review) => (
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton key={index} className="h-40 w-full" />
+          ))
+        ) : (data?.data ?? []).map((review) => (
           <ReviewCard
             key={review.id}
             review={review}
@@ -54,6 +59,10 @@ const ReviewsPage = () => {
             onDelete={handleDeleteReview}
           />
         ))}
+
+        {!isLoading && (data?.data ?? []).length === 0 && (
+          <p className="text-sm text-description">No reviews found.</p>
+        )}
       </div>
 
       <Pagination

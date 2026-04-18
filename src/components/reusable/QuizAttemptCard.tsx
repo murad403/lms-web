@@ -1,31 +1,32 @@
 "use client";
-import { ArrowRight } from "lucide-react";
-import { TQuizAttempt } from "@/lib/profile";
 import { useTranslations } from "next-intl";
+import { type StudentQuizAttemptItem } from "@/redux/features/student/student.type";
 
 type QuizAttemptCardProps = {
-    quizAttempt: TQuizAttempt;
+    quizAttempt: StudentQuizAttemptItem;
     onStartQuiz?: (quizId: string) => void;
 };
 
-const QuizAttemptCard = ({ quizAttempt, onStartQuiz }: QuizAttemptCardProps) => {
+const QuizAttemptCard = ({ quizAttempt }: QuizAttemptCardProps) => {
     const t = useTranslations("QuizAttemptCard");
+    const submittedDate = Number.isNaN(new Date(quizAttempt.submitted_at).getTime())
+        ? quizAttempt.submitted_at
+        : new Date(quizAttempt.submitted_at).toLocaleString();
+
     return (
-        <div className="flex items-center justify-between py-4 border border-border-light rounded-md p-4">
+        <div className="py-4 border border-border-light rounded-md p-4">
             <div className="min-w-0 flex-1">
-                <h4 className="text-sm sm:text-base font-semibold text-title mb-1 truncate">
-                    {quizAttempt.title}
+                <h4 className="text-base sm:text-lg font-semibold text-title mb-1 truncate">
+                    {quizAttempt.course_name}
                 </h4>
-                <p className="text-xs text-description">
-                    {t("numberOfQuestions")} : {String(quizAttempt.numberOfQuestions).padStart(2, "0")}
-                </p>
+                <div className="space-y-1 text-sm md:text-base text-description">
+                    <p>Quiz: {quizAttempt.quiz}</p>
+                    <p>{t("numberOfQuestions")} : {String(quizAttempt.total_questions).padStart(2, "0")}</p>
+                    <p>Correct Answers: {quizAttempt.correct_answers}</p>
+                    <p>Score: {quizAttempt.score_percentage}%</p>
+                    <p>Submitted At: {submittedDate}</p>
+                </div>
             </div>
-            <button
-                onClick={() => onStartQuiz?.(quizAttempt.id)}
-                className="p-2 bg-main text-white rounded-full hover:bg-main/90 transition-colors shrink-0 ml-3"
-            >
-                <ArrowRight className="size-5"/>
-            </button>
         </div>
     );
 };

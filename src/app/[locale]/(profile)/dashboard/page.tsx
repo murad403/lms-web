@@ -6,10 +6,11 @@ import RecentInvoices from "./RecentInvoices";
 import LatestQuizzes from "./LatestQuizzes";
 import { useGetStudentDashboardQuery } from "@/redux/features/student/student.api";
 import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DashboardPage = () => {
     const t = useTranslations("Dashboard");
-    const { data } = useGetStudentDashboardQuery();
+    const { data, isLoading } = useGetStudentDashboardQuery();
 
     const dashboardData = data?.data;
 
@@ -24,6 +25,25 @@ const DashboardPage = () => {
 
     return (
         <div className="space-y-6">
+            {isLoading && (
+                <div className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <Skeleton key={index} className="h-24 w-full" />
+                        ))}
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <Skeleton key={index} className="h-52 w-full" />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {!isLoading && recentCourses.length === 0 && (
+                <p className="text-sm text-description">No dashboard data found.</p>
+            )}
+
             {/* Stats */}
             <DashboardStats
                 enrolledCoursesCount={dashboardData?.enrolled_courses_count || 0}

@@ -2,9 +2,11 @@
 import { CreditCard, ShoppingCart } from "lucide-react";
 import PurchaseItemCard from "@/components/card/PurchaseItemCard";
 import { type TPurchaseGroup } from "@/lib/profile";
-import { usePurchaseHistoryQuery, type StudentPurchaseHistoryItem } from "@/redux/features/student/student.api";
+import { usePurchaseHistoryQuery } from "@/redux/features/student/student.api";
+import { type StudentPurchaseHistoryItem } from "@/redux/features/student/student.type";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formatGroupDate = (value: string) => {
     const date = new Date(value);
@@ -18,7 +20,7 @@ const formatGroupDate = (value: string) => {
 
 const PurchaseHistoryPage = () => {
     const t = useTranslations("PurchaseHistoryPage");
-    const { data } = usePurchaseHistoryQuery({ page: 1 });
+    const { data, isLoading } = usePurchaseHistoryQuery({ page: 1 });
 
     const groupedPurchases = useMemo<TPurchaseGroup[]>(() => {
         const groups = new Map<string, TPurchaseGroup>();
@@ -60,6 +62,18 @@ const PurchaseHistoryPage = () => {
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6">
                 {t("title")}
             </h2>
+
+            {isLoading && (
+                <div className="space-y-4 mb-6">
+                    {Array.from({ length: 2 }).map((_, index) => (
+                        <Skeleton key={index} className="h-48 w-full" />
+                    ))}
+                </div>
+            )}
+
+            {!isLoading && groupedPurchases.length === 0 && (
+                <p className="text-sm text-description">No purchase history found.</p>
+            )}
 
             <div className="space-y-6">
                 {groupedPurchases.map((group) => (

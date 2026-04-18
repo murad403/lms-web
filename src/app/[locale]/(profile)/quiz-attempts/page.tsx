@@ -1,21 +1,21 @@
 "use client";
 import { useState } from "react";
 import QuizAttemptCard from "@/components/reusable/QuizAttemptCard";
-import QuizModal from "@/components/modal/QuizModal";
-import { quizAttempts, quizQuestionsData, TQuizData } from "@/lib/profile";
 import { useTranslations } from "next-intl";
+import { useQuizAttemptsQuery } from "@/redux/features/student/student.api";
+import { Skeleton } from "@/components/ui/skeleton";
+import Pagination from "@/components/reusable/Pagination";
 
 const QuizAttemptsPage = () => {
-    const [isQuizOpen, setIsQuizOpen] = useState(false);
-    const [activeQuiz, setActiveQuiz] = useState<TQuizData | null>(null);
     const t = useTranslations("QuizAttemptsPage");
+    const [currentPage, setCurrentPage] = useState(1);
+    const { data, isLoading } = useQuizAttemptsQuery({ page: currentPage });
+    const quizAttempts = data?.data || [];
+    const totalPages = data?.total_pages || 1;
 
-    const handleOpenQuiz = (quizId: string) => {
-        const quizData = quizQuestionsData.find((q) => q.id === quizId);
-        if (quizData) {
-            setActiveQuiz(quizData);
-            setIsQuizOpen(true);
-        }
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
@@ -25,25 +25,29 @@ const QuizAttemptsPage = () => {
             </h2>
 
             <div className="bg-white space-y-4">
+                {isLoading && (
+                    Array.from({ length: 5 }).map((_, index) => (
+                        <Skeleton key={index} className="h-24 w-full" />
+                    ))
+                )}
+
                 {quizAttempts.map((quiz) => (
                     <QuizAttemptCard
-                        key={quiz.id}
+                        key={quiz.quiz}
                         quizAttempt={quiz}
-                        onStartQuiz={handleOpenQuiz}
                     />
                 ))}
+
+                {!isLoading && quizAttempts.length === 0 && (
+                    <p className="text-sm text-description">No quiz attempts found.</p>
+                )}
             </div>
 
-            {activeQuiz && (
-                <QuizModal
-                    isOpen={isQuizOpen}
-                    onClose={() => {
-                        setIsQuizOpen(false);
-                        setActiveQuiz(null);
-                    }}
-                    quizData={activeQuiz}
-                />
-            )}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import { CalendarIcon, Clock, ExternalLink, User, Video } from 'lucide-react'
 import { useTranslations } from 'next-intl';
-import { useJoinLiveClassMutation, type LiveClassItem } from '@/redux/features/student/student.api';
+import { useJoinLiveClassMutation } from '@/redux/features/student/student.api';
+import { type LiveClassItem } from '@/redux/features/student/student.type';
 
 type UpcomingLiveClassesProps = {
     classes: LiveClassItem[];
@@ -29,6 +30,10 @@ const UpcomingLiveClasses = ({ classes }: UpcomingLiveClassesProps) => {
                 {t("upcomingLiveClasses")}
             </h3>
             <div className="space-y-3">
+                {classes.length === 0 && (
+                    <p className="text-sm text-description">No live class available.</p>
+                )}
+
                 {classes.map((cls) => (
                     <div
                         key={cls.id}

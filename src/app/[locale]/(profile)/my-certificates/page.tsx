@@ -2,28 +2,45 @@
 import { useState } from "react";
 import { Eye, Download } from "lucide-react";
 import Pagination from "@/components/reusable/Pagination";
-import { certificates } from "@/lib/profile";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import jsPDF from "jspdf";
 import { useTranslations } from "next-intl";
+import { useCertificatesQuery } from "@/redux/features/student/student.api";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const ITEMS_PER_PAGE = 6;
+type CertificateViewItem = {
+    id: string;
+    courseName: string;
+    studentName: string;
+    date: string;
+    marks: number;
+    outOf: number;
+};
 
 const MyCertificatesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [viewCert, setViewCert] = useState<string | null>(null);
     const t = useTranslations("CertificatesPage");
+    const { data: certificatesData, isLoading: isCertificatesLoading } = useCertificatesQuery({
+        page: currentPage,
+    });
 
-    const totalPages = Math.ceil(certificates.length / ITEMS_PER_PAGE);
-    const paginated = certificates.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
+    const certificates: CertificateViewItem[] = (certificatesData?.data || []).map((cert) => ({
+        id: cert.id,
+        courseName: cert.course_name,
+        studentName: cert.student_name,
+        date: cert.date,
+        marks: cert.marks,
+        outOf: cert.out_of,
+    }));
+
+    const totalPages = certificatesData?.total_pages || 1;
+    const paginated = certificates;
 
     const selectedCert = certificates.find((c) => c.id === viewCert);
 
     // PDF Download Function
-    const handleDownloadCertificate = (cert: typeof certificates[0]) => {
+    const handleDownloadCertificate = (cert: CertificateViewItem) => {
         const pdf = new jsPDF({
             orientation: 'landscape',
             unit: 'mm',
@@ -67,7 +84,7 @@ const MyCertificatesPage = () => {
         pdf.setFontSize(24);
         pdf.setTextColor(0, 0, 0);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Kevin Gilbert', pageWidth / 2, 75, { align: 'center' });
+        pdf.text(cert.studentName, pageWidth / 2, 75, { align: 'center' });
 
         // "has successfully completed"
         pdf.setFontSize(14);
@@ -148,6 +165,32 @@ const MyCertificatesPage = () => {
                             </tr>
                         </thead>
                         <tbody>
+                            {isCertificatesLoading && (
+                                Array.from({ length: 4 }).map((_, index) => (
+                                    <tr key={`loading-${index}`} className="border-b border-gray-50">
+                                        <td className="py-4 px-4"><Skeleton className="h-4 w-20" /></td>
+                                        <td className="py-4 px-4"><Skeleton className="h-4 w-44" /></td>
+                                        <td className="py-4 px-4"><Skeleton className="h-4 w-24" /></td>
+                                        <td className="py-4 px-4"><Skeleton className="h-4 w-8" /></td>
+                                        <td className="py-4 px-4"><Skeleton className="h-4 w-8" /></td>
+                                        <td className="py-4 px-4">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Skeleton className="h-7 w-7" />
+                                                <Skeleton className="h-7 w-7" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+
+                            {!isCertificatesLoading && paginated.length === 0 && (
+                                <tr>
+                                    <td colSpan={6} className="py-10 px-4 text-center text-sm text-description">
+                                        No certificates found.
+                                    </td>
+                                </tr>
+                            )}
+
                             {paginated.map((cert) => (
                                 <tr key={cert.id} className="border-b border-gray-50 hover:bg-gray-50/50">
                                     <td className="py-4 px-4 text-sm text-description">{cert.id}</td>

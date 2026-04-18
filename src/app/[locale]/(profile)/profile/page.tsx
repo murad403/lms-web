@@ -1,10 +1,11 @@
 "use client";
 import { useGetStudentProfileQuery } from "@/redux/features/student/student.api";
 import { useTranslations } from "next-intl";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MyProfilePage = () => {
     const t = useTranslations("ProfilePage");
-    const { data } = useGetStudentProfileQuery();
+    const { data, isLoading } = useGetStudentProfileQuery();
     const profile = data?.data;
     const fullNameParts = (profile?.user?.name || "").trim().split(/\s+/).filter(Boolean);
     const fallbackFirstName = fullNameParts[0] || "-";
@@ -13,6 +14,20 @@ const MyProfilePage = () => {
     return (
         <div>
             <h2 className="text-lg sm:text-xl font-bold text-title mb-6 border-b border-border-light pb-6">{t("title")}</h2>
+
+            {isLoading && (
+                <div className="bg-white rounded-xl p-4 sm:p-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
+                        {Array.from({ length: 9 }).map((_, index) => (
+                            <Skeleton key={index} className="h-10 w-full" />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {!isLoading && !profile && (
+                <p className="text-sm text-description">No profile data found.</p>
+            )}
 
             <div className="bg-white rounded-xl p-4 sm:p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">

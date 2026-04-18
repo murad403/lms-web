@@ -234,3 +234,39 @@ export type CartData = {
 export type ViewCartResponse = ApiResponse<CartData>;
 
 export type RemoveCartResponse = ApiResponse<Record<string, never>>;
+
+export type StudentCertificateItem = {
+    id: string;
+    course_name: string;
+    student_name: string;
+    date: string;
+    marks: number;
+    out_of: number;
+};
+
+export type StudentCertificatesResponse = ApiResponse<StudentCertificateItem[]> & {
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+};
+
+export type StudentQuizAttemptItem = {
+    quiz: number;
+    course_name: string;
+    correct_answers: number;
+    total_questions: number;
+    score_percentage: number;
+    submitted_at: string;
+};
+
+export type StudentQuizAttemptsResponse = ApiResponse<StudentQuizAttemptItem[]> & {
+    total?: number;
+    page?: number;
+    page_size?: number;
+    total_pages?: number;
+    next?: string | null;
+    previous?: string | null;
+};

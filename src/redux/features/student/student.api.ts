@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AddCartResponse, AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
+import { AddCartResponse, AddWishlistResponse, ApiResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
 
 
 
@@ -159,9 +159,28 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["cart"]
         }),
+
+        certificates: builder.query<StudentCertificatesResponse, { page?: number } | void>({
+            query: (params) => {
+                const page = params?.page ?? 1;
+                return {
+                    url: `/students/student/certificates/?page=${page}`,
+                    method: "GET"
+                }
+            }
+        }),
+        quizAttempts: builder.query<StudentQuizAttemptsResponse, { page?: number } | void>({
+            query: (params) => {
+                const page = params?.page ?? 1;
+                return {
+                    url: `/students/quiz-attempts-list/?page=${page}`,
+                    method: "GET"
+                }
+            }
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery } = studentApi;

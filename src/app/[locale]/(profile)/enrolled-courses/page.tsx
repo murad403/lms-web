@@ -4,6 +4,7 @@ import EnrolledCourseCard from "@/components/card/EnrolledCourseCard";
 import Pagination from "@/components/reusable/Pagination";
 import { useTranslations } from "next-intl";
 import { useGetEnrolledCoursesQuery } from "@/redux/features/student/student.api";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const EnrolledCoursesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,8 +24,10 @@ const EnrolledCoursesPage = () => {
             </div>
 
             {isLoading ? (
-                <div className="flex items-center justify-center py-12">
-                    <div className="text-gray-500">Loading...</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <Skeleton key={index} className="h-56 w-full" />
+                    ))}
                 </div>
             ) : paginatedCourses.length > 0 ? (
                 <>

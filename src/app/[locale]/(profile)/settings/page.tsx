@@ -9,6 +9,7 @@ import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
 import { useGetStudentProfileQuery, useUpdateStudentProfileMutation } from "@/redux/features/student/student.api";
 import { toast } from "sonner";
 import { appendImageVersion, resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ProfileFormData = {
     firstName: string;
@@ -28,7 +29,7 @@ const SettingsPage = () => {
     const [avatarVersion, setAvatarVersion] = useState(0);
     const selectedFileRef = useRef<File | null>(null);
 
-    const { data: profileData, refetch } = useGetStudentProfileQuery();
+    const { data: profileData, refetch, isLoading: isProfileLoading } = useGetStudentProfileQuery();
     const [updateStudentProfile, { isLoading: isUpdatingProfile }] = useUpdateStudentProfileMutation();
     const t = useTranslations("SettingsPage");
 
@@ -142,6 +143,22 @@ const SettingsPage = () => {
         (resolvedApiAvatar && resolvedApiAvatar.trim()
             ? appendImageVersion(resolvedApiAvatar, avatarVersion)
             : null);
+
+    if (isProfileLoading) {
+        return (
+            <div className="space-y-6">
+                <h2 className="text-lg sm:text-xl font-bold text-title">{t("title")}</h2>
+                <div className="bg-white rounded-md border border-border-light p-4 sm:p-6 space-y-4">
+                    <Skeleton className="h-32 w-32" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <Skeleton key={index} className="h-11 w-full" />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
