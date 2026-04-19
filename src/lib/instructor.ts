@@ -547,12 +547,6 @@ export const activeCertificates: TActiveCertificate[] = [
   { id: "2", courseName: "UX Design Masterclass", certId: "CERT-002", issued: 1247, validUntil: "1/5/2027", status: "Active" },
 ];
 
-export const liveClassStats: TLiveClassStats = {
-  totalClasses: 10,
-  upcomingClasses: 5,
-  studentsEnrolled: 10000,
-};
-
 export const instructorLiveClasses: TInstructorLiveClass[] = [
   { id: "1", title: "User Research Methods", courseName: "React Masterclass", instructor: "Sarah Johnson", date: "2024-01-15", time: "10:00 AM - 11:30 AM", meetLink: "#" },
   { id: "2", title: "Pandas DataFrames", courseName: "React Masterclass", instructor: "Michael Chen", date: "2024-01-15", time: "10:00 AM - 11:30 AM", meetLink: "#" },

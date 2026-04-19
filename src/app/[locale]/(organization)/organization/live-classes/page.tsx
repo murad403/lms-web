@@ -2,7 +2,7 @@
 import LiveClassModal from '@/components/modal/LiveClassModal';
 import LiveClassPastSessions from '@/components/reusable/for-dashboard/LiveClassPastSessions';
 import LiveClassStats from '@/components/reusable/for-dashboard/LiveClassStats'
-import LiveClassUpcomingAndCalendar from '@/components/reusable/for-dashboard/LiveClassUpcomingAndCalender';
+import LiveClassUpcomingAndCalendar from '@/components/reusable/for-dashboard/UpcomingLiveClass';
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 

@@ -3,9 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Video, User, Tag, Calendar as CalendarIcon, Clock, Link as LinkIcon, ChevronDown } from "lucide-react";
+import { Video, Tag, Calendar as CalendarIcon, Clock, Link as LinkIcon, ChevronDown } from "lucide-react";
 import { liveClassSchema, LiveClassFormData } from "@/validation/liveClass.validation";
 import { useTranslations } from "next-intl";
+import { useCourseInfoQuery, useCreateLiveClassMutation } from "@/redux/features/instructor/instructor.api";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type LiveClassModalProps = {
     isOpen: boolean;
@@ -15,30 +18,26 @@ type LiveClassModalProps = {
 
 const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) => {
     const t = useTranslations("InstructorLiveClassModal");
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        reset,
-        formState: { errors, isSubmitting },
-    } = useForm<LiveClassFormData>({
+    const { data: courseInfoResponse, isLoading: isCourseInfoLoading } = useCourseInfoQuery();
+    const [createLiveClass, { isLoading: isCreateLiveClassLoading }] = useCreateLiveClassMutation();
+
+    const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<LiveClassFormData>({
         resolver: zodResolver(liveClassSchema),
         defaultValues: {
+            course_id: 0,
             title: "",
-            instructor: "",
-            category: "",
-            subCategory: "",
             topic: "",
-            date: "",
-            time: "",
+            scheduled_date: "",
+            scheduled_time: "",
+            duration_minutes: 60,
             platform: "",
-            link: "",
+            class_link: "",
         },
     });
 
+    void isShowDate;
+
     const title = watch("title");
-    const instructor = watch("instructor");
     const platform = watch("platform");
 
     const handleClose = () => {
@@ -46,15 +45,43 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
         onClose();
     };
 
-    const onSubmit = (data: LiveClassFormData) => {
-        console.log(data);
-        reset();
-        onClose();
+    const onSubmit = async (data: LiveClassFormData) => {
+        try {
+            const payload = {
+                title: data.title,
+                topic: data.topic,
+                scheduled_date: data.scheduled_date,
+                scheduled_time: data.scheduled_time.length === 5 ? `${data.scheduled_time}:00` : data.scheduled_time,
+                duration_minutes: Number(data.duration_minutes),
+                platform: data.platform,
+                class_link: data.class_link,
+                is_recorded: true,
+            };
+
+            const response = await createLiveClass({
+                courseId: Number(data.course_id),
+                data: payload,
+            }).unwrap();
+
+            toast.success(response.message || "Live class scheduled successfully.");
+            reset();
+            onClose();
+        } catch (error) {
+            const message =
+                typeof error === "object" &&
+                error !== null &&
+                "data" in error &&
+                typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to schedule live class.";
+
+            toast.error(message);
+        }
     };
 
     const handlePlatform = (platformValue: string) => {
         setValue("platform", platformValue);
-        if (platformValue === "google-meet") {
+        if (platformValue === "google_meet") {
             window.open("https://meet.google.com/new", "_blank");
         } else if (platformValue === "zoom") {
             window.open("https://zoom.us/start/videomeeting", "_blank");
@@ -99,73 +126,32 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         </div>
                     </div>
 
-                    {/* Instructor */}
+                    {/* Course */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            {t("instructor")}
+                            {t("courseCategory")}
                         </label>
-                        <div className="relative">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder={t("instructorPlaceholder")}
-                                {...register("instructor")}
-                                maxLength={120}
-                                className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
-                            />
-                        </div>
-                        <div className="flex items-center justify-between mt-1">
-                            {errors.instructor && (
-                                <p className="text-red-500 text-xs">{errors.instructor.message}</p>
-                            )}
-                            <p className="text-xs text-description ml-auto">{instructor?.length || 0}/120</p>
-                        </div>
-                    </div>
-
-                    {/* Category and Sub-category */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-semibold text-header mb-2">
-                                {t("courseCategory")}
-                            </label>
+                        {isCourseInfoLoading ? (
+                            <Skeleton className="h-12 w-full" />
+                        ) : (
                             <div className="relative">
                                 <select
-                                    {...register("category")}
+                                    {...register("course_id", { valueAsNumber: true })}
                                     className="w-full appearance-none px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition bg-white"
                                 >
-                                    <option value="">Course Category</option>
-                                    <option value="programming">Programming</option>
-                                    <option value="design">Design</option>
-                                    <option value="business">Business</option>
-                                    <option value="marketing">Marketing</option>
+                                    <option value={0}>Select course</option>
+                                    {courseInfoResponse?.data?.map((course) => (
+                                        <option key={course.id} value={course.id}>
+                                            {course.title}
+                                        </option>
+                                    ))}
                                 </select>
                                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
                             </div>
-                            {errors.category && (
-                                <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>
-                            )}
-                        </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-header mb-2">
-                                {t("courseSubCategory")}
-                            </label>
-                            <div className="relative">
-                                <select
-                                    {...register("subCategory")}
-                                    className="w-full appearance-none px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition bg-white"
-                                >
-                                    <option value="">Course Sub-category</option>
-                                    <option value="web-dev">Web Development</option>
-                                    <option value="mobile-dev">Mobile Development</option>
-                                    <option value="ui-ux">UI/UX Design</option>
-                                    <option value="graphic-design">Graphic Design</option>
-                                </select>
-                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
-                            </div>
-                            {errors.subCategory && (
-                                <p className="text-red-500 text-xs mt-1">{errors.subCategory.message}</p>
-                            )}
-                        </div>
+                        )}
+                        {errors.course_id && (
+                            <p className="text-red-500 text-xs mt-1">{errors.course_id.message}</p>
+                        )}
                     </div>
 
                     {/* Live Class Topic */}
@@ -187,43 +173,59 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     </div>
 
                     {/* Date and Time */}
-                    {
-                        isShowDate &&
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-semibold text-header mb-2">
-                                    {t("selectDate")}
-                                </label>
-                                <div className="relative">
-                                    <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                                    <input
-                                        type="date"
-                                        {...register("date")}
-                                        className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
-                                    />
-                                </div>
-                                {errors.date && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>
-                                )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-semibold text-header mb-2">
+                                {t("selectDate")}
+                            </label>
+                            <div className="relative">
+                                <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                <input
+                                    type="date"
+                                    {...register("scheduled_date")}
+                                    className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
+                                />
                             </div>
-                            <div>
-                                <label className="block text-sm font-semibold text-header mb-2">
-                                    {t("selectTime")}
-                                </label>
-                                <div className="relative">
-                                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                                    <input
-                                        type="time"
-                                        {...register("time")}
-                                        className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
-                                    />
-                                </div>
-                                {errors.time && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.time.message}</p>
-                                )}
-                            </div>
+                            {errors.scheduled_date && (
+                                <p className="text-red-500 text-xs mt-1">{errors.scheduled_date.message}</p>
+                            )}
                         </div>
-                    }
+                        <div>
+                            <label className="block text-sm font-semibold text-header mb-2">
+                                {t("selectTime")}
+                            </label>
+                            <div className="relative">
+                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                                <input
+                                    type="time"
+                                    {...register("scheduled_time")}
+                                    className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
+                                />
+                            </div>
+                            {errors.scheduled_time && (
+                                <p className="text-red-500 text-xs mt-1">{errors.scheduled_time.message}</p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Duration */}
+                    <div>
+                        <label className="block text-sm font-semibold text-header mb-2">
+                            Duration (minutes)
+                        </label>
+                        <div className="relative">
+                            <Clock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+                            <input
+                                type="number"
+                                min={1}
+                                {...register("duration_minutes", { valueAsNumber: true })}
+                                className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition"
+                            />
+                        </div>
+                        {errors.duration_minutes && (
+                            <p className="text-red-500 text-xs mt-1">{errors.duration_minutes.message}</p>
+                        )}
+                    </div>
 
                     {/* Choose Live Class platform */}
                     <div>
@@ -243,8 +245,8 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => handlePlatform("google-meet")}
-                                    className={`px-5 py-2.5 text-sm font-semibold ${platform === "google-meet"
+                                    onClick={() => handlePlatform("google_meet")}
+                                    className={`px-5 py-2.5 text-sm font-semibold ${platform === "google_meet"
                                         ? "bg-main text-white hover:bg-main/90"
                                         : "bg-gray-100 text-title hover:bg-gray-200"
                                         }`}
@@ -286,12 +288,12 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                             <input
                                 type="text"
                                 placeholder={t("meetingLinkPlaceholder")}
-                                {...register("link")}
+                                {...register("class_link")}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
                             />
                         </div>
-                        {errors.link && (
-                            <p className="text-red-500 text-xs mt-1">{errors.link.message}</p>
+                        {errors.class_link && (
+                            <p className="text-red-500 text-xs mt-1">{errors.class_link.message}</p>
                         )}
                     </div>
 
@@ -306,10 +308,10 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         </button>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
-                            className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition disabled:opacity-50"
+                            disabled={isSubmitting || isCreateLiveClassLoading}
+                            className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
-                            {isSubmitting ? t("saving") : t("createLiveClass")}
+                            {isSubmitting || isCreateLiveClassLoading ? t("saving") : t("createLiveClass")}
                         </button>
                     </div>
                 </form>

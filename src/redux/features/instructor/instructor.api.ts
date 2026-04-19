@@ -1,8 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import {
-    InstructorDashboardResponse,
-    InstructorProfileResponse,
-} from "./instructor.type";
+import { CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorDashboardResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -34,23 +31,32 @@ const instructorApi = baseApi1.injectEndpoints({
             invalidatesTags: ["instructor-profile"]
         }),
 
-        getLiveClassesDashboard: builder.query({
+        getLiveClassesDashboard: builder.query<InstructorLiveClassesStatsResponse, void>({
             query: () => {
                 return {
                     url: "/courses/live-classes/stats/",
                     method: "GET"
                 }
             },
+            providesTags: ["instructor-live-classes"]
         }),
-        
-        createLiveClass: builder.mutation({
-            query: (data, courseId) => {
+        courseInfo: builder.query<CourseInfoResponse, void>({
+            query: () => {
+                return {
+                    url: "/courses/course/info/",
+                    method: "GET"
+                }
+            }
+        }),
+        createLiveClass: builder.mutation<CreateLiveClassResponse, CreateLiveClassRequest>({
+            query: ({ data, courseId }) => {
                 return {
                     url: `/courses/live-classes/${courseId}/`,
                     method: "POST",
                     body: data
                 }
             },
+            invalidatesTags: ["instructor-live-classes"]
         }),
 
     }),
@@ -58,4 +64,4 @@ const instructorApi = baseApi1.injectEndpoints({
 
 
 
-export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery, useCreateLiveClassMutation } = instructorApi;
+export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery, useCreateLiveClassMutation, useCourseInfoQuery, useGetLiveClassesDashboardQuery } = instructorApi;

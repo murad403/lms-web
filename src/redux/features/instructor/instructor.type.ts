@@ -76,3 +76,55 @@ export type UpdateInstructorProfilePayload = {
 		avatar?: File | string | null;
 	};
 };
+
+export type InstructorLiveClassSession = {
+	id: number;
+	title: string;
+	instructor: string;
+	instructor_name: string;
+	course: number;
+	course_title: string;
+	topic: string;
+	scheduled_date: string;
+	scheduled_time: string;
+	platform: string;
+	class_link: string;
+	is_recorded: boolean;
+	created_at: string;
+};
+
+export type InstructorLiveClassesStatsData = {
+	total_live_classes: number;
+	upcoming_live_classes_count: number;
+	students_enrolled: number;
+	upcoming_sessions: InstructorLiveClassSession[];
+	past_sessions: InstructorLiveClassSession[];
+};
+
+export type InstructorLiveClassesStatsResponse = ApiResponse<InstructorLiveClassesStatsData>;
+
+export type CourseInfoItem = {
+	id: number;
+	title: string;
+	subtitle: string;
+};
+
+export type CourseInfoResponse = ApiResponse<CourseInfoItem[]>;
+
+export type CreateLiveClassPayload = {
+	title: string;
+	topic: string;
+	scheduled_date: string;
+	scheduled_time: string;
+	duration_minutes: number;
+	platform: string;
+	class_link: string;
+	is_recorded: boolean;
+};
+
+export type CreateLiveClassRequest = {
+	courseId: number;
+	data: CreateLiveClassPayload;
+};
+
+export type CreateLiveClassResponse = ApiResponse<InstructorLiveClassSession>;

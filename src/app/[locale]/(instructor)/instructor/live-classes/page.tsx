@@ -2,20 +2,27 @@
 import { useState } from "react";
 import LiveClassModal from "@/components/modal/LiveClassModal";
 import LiveClassStats from "@/components/reusable/for-dashboard/LiveClassStats";
-import LiveClassUpcomingAndCalendar from "@/components/reusable/for-dashboard/LiveClassUpcomingAndCalender";
 import LiveClassPastSessions from "@/components/reusable/for-dashboard/LiveClassPastSessions";
 import { useTranslations } from "next-intl";
+import UpcomingLiveClasses from "@/components/reusable/for-dashboard/UpcomingLiveClass";
+import { useGetLiveClassesDashboardQuery } from "@/redux/features/instructor/instructor.api";
 
 
 const LiveClassPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations("InstructorLiveClasses");
+  const { data: liveClassStatsResponse, isLoading, isFetching } = useGetLiveClassesDashboardQuery();
+  const liveClassData = liveClassStatsResponse?.data;
+  const isLiveClassLoading = isLoading || isFetching;
 
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <LiveClassStats />
+      <LiveClassStats
+        data={liveClassData}
+        isLoading={isLiveClassLoading}
+      />
 
       {/* Live Classes Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -25,17 +32,22 @@ const LiveClassPage = () => {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto shrink-0"
+          className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto shrink-0 cursor-pointer"
         >
           {t("scheduleLiveClass")}
         </button>
       </div>
 
-      {/* Upcoming + Calendar */}
-      <LiveClassUpcomingAndCalendar />
+      <UpcomingLiveClasses
+        sessions={liveClassData?.upcoming_sessions}
+        isLoading={isLiveClassLoading}
+      />
 
       {/* Past Sessions */}
-      <LiveClassPastSessions />
+      <LiveClassPastSessions
+        sessions={liveClassData?.past_sessions}
+        isLoading={isLiveClassLoading}
+      />
 
       {/* Live Class Modal */}
       <LiveClassModal isShowDate={false} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
