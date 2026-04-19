@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Star, Heart, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import type { EnrolledCourse } from "@/redux/features/student/student.api";
+import type { EnrolledCourse } from "@/redux/features/student/student.type";
 import { resolveImageUrl } from "@/utils/image";
 import defaultUserImage from "@/assets/partnership/user2.png";
 
