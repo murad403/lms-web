@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, BookOpen, Layers, Menu } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery } from "@/redux/features/student/student.api";
+import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery, useSubmitQuizzesMutation } from "@/redux/features/student/student.api";
 import { CourseLecture } from "@/redux/features/student/student.type";
 import { Skeleton } from "@/components/ui/skeleton";
 import QuizModal from "@/components/modal/QuizModal";
@@ -28,6 +28,7 @@ const CoursePlayerPage = () => {
   const { data: courseData, isLoading: isCourseLoading } = useStartCourseQuery(courseId);
   // console.log(courseData?.data)
   const [completeLecture] = useCompletedLectureMutation();
+  const [submitQuizzes] = useSubmitQuizzesMutation();
   const [addReview] = useAddReviewMutation();
 
   // State with lazy initialization
@@ -43,6 +44,8 @@ const CoursePlayerPage = () => {
   const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const currentVideoUrl = currentLecture?.video_file ? resolveImageUrl(currentLecture.video_file) : "";
+
   // Initialize current lecture from API response
   useEffect(() => {
     if (courseData?.data && !currentLecture) {
@@ -56,7 +59,7 @@ const CoursePlayerPage = () => {
 
   // Auto-play first lecture on initial load
   useEffect(() => {
-    if (courseData?.data && !hasAutoPlayed && currentLecture) {
+    if (courseData?.data && !hasAutoPlayed && currentLecture && currentVideoUrl) {
       setIsPlaying(true);
       setHasAutoPlayed(true);
       setTimeout(() => {
@@ -66,7 +69,7 @@ const CoursePlayerPage = () => {
         });
       }, 500);
     }
-  }, [courseData?.data, hasAutoPlayed, currentLecture]);
+  }, [courseData?.data, hasAutoPlayed, currentLecture, currentVideoUrl]);
 
   // Fetch quiz data
   const { data: quizData } = useGetQuizzesQuery(
@@ -102,6 +105,10 @@ const CoursePlayerPage = () => {
     setTimeout(() => {
       videoRef.current?.play();
     }, 100);
+  };
+
+  const canSelectLecture = (lecture: CourseLecture) => {
+    return lecture.is_completed || lecture.id === currentLecture?.id;
   };
 
   const handleNextLecture = async () => {
@@ -144,6 +151,26 @@ const CoursePlayerPage = () => {
     } catch (error: any) {
       // console.error("Error submitting review:", error);
       toast.error(error?.data?.message || "Error submitting review");
+    }
+  };
+
+  const handleSubmitQuiz = async (answers: { q_id: number; o_id: number }[]) => {
+    if (!selectedQuizId) return;
+
+    try {
+      await submitQuizzes({
+        quizId: selectedQuizId,
+        data: { answers },
+      }).unwrap();
+
+      if (currentLecture) {
+        await completeLecture(currentLecture.id).unwrap();
+      }
+
+      toast.success("Quiz submitted successfully");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to submit quiz");
+      throw error;
     }
   };
 
@@ -295,14 +322,20 @@ const CoursePlayerPage = () => {
             {currentLecture ? (
               <div>
                 <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
-                  <video
-                    ref={videoRef}
-                    src={resolveImageUrl(currentLecture.video_file)}
-                    className="w-full h-full object-contain"
-                    controls
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                  />
+                  {currentVideoUrl ? (
+                    <video
+                      ref={videoRef}
+                      src={currentVideoUrl}
+                      className="w-full h-full object-contain"
+                      controls
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-sm text-gray-300">
+                      Video is not available for this lecture.
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={() => setIsReviewOpen(true)}
@@ -379,12 +412,14 @@ const CoursePlayerPage = () => {
                         <div className="bg-white">
                           {section.lectures.map((lecture, idx) => {
                             const isActive = currentLecture?.id === lecture.id;
+                            const isSelectable = canSelectLecture(lecture);
 
                             return (
                               <button
                                 key={lecture.id}
-                                onClick={() => handlePlayLecture(lecture)}
-                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${isActive ? "bg-main/10" : ""
+                                onClick={() => isSelectable && handlePlayLecture(lecture)}
+                                disabled={!isSelectable}
+                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""
                                   }`}
                               >
                                 <div className="shrink-0">
@@ -416,17 +451,17 @@ const CoursePlayerPage = () => {
                           {section.quizzes && section.quizzes.length > 0 && (
                             <div className="flex items-center gap-3 px-4 py-2.5">
                               <Square className="size-4 text-gray-300 shrink-0" />
-                              <span className="flex-1 text-sm text-title">
-                                {section.lectures.length + 1}. {t("startQuiz")}
+                              <span className="flex-1 text-sm text-title font-semibold">
+                                {section.lectures.length + 1}. {section.quizzes[0].title}
                               </span>
                               <button
                                 onClick={() => {
                                   setSelectedQuizId(section.quizzes![0].id);
                                   setIsQuizOpen(true);
                                 }}
-                                className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors"
+                                className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
                               >
-                                {t("start")}
+                                {t("startQuiz")}
                               </button>
                             </div>
                           )}
@@ -506,12 +541,14 @@ const CoursePlayerPage = () => {
                       <div className="bg-white">
                         {section.lectures.map((lecture, idx) => {
                           const isActive = currentLecture?.id === lecture.id;
+                          const isSelectable = canSelectLecture(lecture);
 
                           return (
                             <button
                               key={lecture.id}
-                              onClick={() => handlePlayLecture(lecture)}
-                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-main/5 transition-colors ${isActive ? "bg-main/10" : ""
+                              onClick={() => isSelectable && handlePlayLecture(lecture)}
+                              disabled={!isSelectable}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""
                                 }`}
                             >
                               <div className="shrink-0">
@@ -535,8 +572,8 @@ const CoursePlayerPage = () => {
                         {section.quizzes && section.quizzes.length > 0 && (
                           <div className="flex items-center gap-3 px-4 py-2.5">
                             <Square className="size-4 text-gray-300 shrink-0" />
-                            <span className="flex-1 text-sm text-title">
-                              {section.lectures.length + 1}. {t("startQuiz")}
+                            <span className="flex-1 text-sm text-title font-semibold">
+                              {section.lectures.length + 1}. {section.quizzes[0].title}
                             </span>
                             <button
                               onClick={() => {
@@ -544,9 +581,9 @@ const CoursePlayerPage = () => {
                                 setIsQuizOpen(true);
                                 setShowMobileSidebar(false);
                               }}
-                              className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold"
+                              className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
                             >
-                              {t("start")}
+                              {t("startQuiz")}
                             </button>
                           </div>
                         )}
@@ -570,7 +607,9 @@ const CoursePlayerPage = () => {
           title: quizData.data.title,
           questions: quizData.data.questions.map((q) => ({
             id: String(q.id),
+            questionId: q.id,
             question: q.text,
+            optionIds: q.options.map((opt) => opt.id),
             options: q.options.map(opt => opt.text),
             correctAnswer: 0, // API doesn't provide correct answer in get endpoint
           } as TQuizQuestion))
@@ -584,6 +623,7 @@ const CoursePlayerPage = () => {
               setSelectedQuizId(null);
             }}
             quizData={convertedQuizData}
+            onSubmitQuiz={handleSubmitQuiz}
           />
         );
       })()}

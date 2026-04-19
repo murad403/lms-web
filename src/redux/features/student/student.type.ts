@@ -363,6 +363,7 @@ export type CompletedLectureResponse = ApiResponse<Record<string, never>>;
 export type CourseComment = {
     id: number;
     lecture: number;
+    user_name: string;
     text: string;
     parent: number | null;
     replies: CourseComment[];
@@ -412,6 +413,7 @@ export type QuizQuestion = {
     question_type: "mcq" | string;
     text: string;
     order: number;
+    user_name: string;
     options: QuizOption[];
 };
 

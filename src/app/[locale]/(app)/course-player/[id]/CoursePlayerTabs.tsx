@@ -5,9 +5,8 @@ import { useTranslations } from "next-intl";
 import { FaRegComments } from "react-icons/fa6";
 import { useAddCommentMutation, useGetCommentsQuery, useReplyCommentMutation } from "@/redux/features/student/student.api";
 import { CourseComment, CourseLecture } from "@/redux/features/student/student.type";
-import Image from "next/image";
-import { resolveImageUrl } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import RenderCommentComponent from "./RenderComment";
 
 type CoursePlayerTabsProps = {
     currentLecture: CourseLecture;
@@ -22,6 +21,8 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
     const [activeReply, setActiveReply] = useState<number | null>(null);
     const [visibleComments, setVisibleComments] = useState(5);
 
+    // console.log("attachment", currentLecture)
+
     const { data: commentsResponse, isLoading: isCommentsLoading, refetch: refetchComments } = useGetCommentsQuery(currentLecture.id);
     const [addComment, { isLoading: isAddingComment }] = useAddCommentMutation();
     const [replyComment, { isLoading: isReplyingComment }] = useReplyCommentMutation();
@@ -29,23 +30,50 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
     const comments = commentsResponse?.data?.comments ?? [];
     const commentsCount = comments.length;
 
-    const handleDownloadNotes = () => {
+    const handleDownloadNotes = async () => {
         if (!currentLecture.note_file) return;
 
-        const link = document.createElement("a");
-        link.href = currentLecture.note_file;
-        link.download = currentLecture.note_file.split("/").pop() || "lecture-notes";
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.click();
+        try {
+            const fileName = currentLecture.note_file.split("/").pop() || "lecture-notes.pdf";
+            const response = await fetch(currentLecture.note_file);
+            
+            if (!response.ok) throw new Error("Download failed");
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Download error:", error);
+            window.open(currentLecture.note_file, "_blank");
+        }
     };
 
-    const handleDownloadFile = (fileUrl: string) => {
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.click();
+    const handleDownloadFile = async (fileUrl: string) => {
+        try {
+            const fileName = fileUrl.split("/").pop() || "file";
+            const response = await fetch(fileUrl);
+            
+            if (!response.ok) throw new Error("Download failed");
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Download error:", error);
+            window.open(fileUrl, "_blank");
+        }
     };
 
     const getCommentTimestamp = (createdAt: string) => {
@@ -98,55 +126,20 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
 
     const renderComment = (comment: CourseComment, isReply = false) => {
         return (
-            <div key={comment.id} className={`flex gap-3 ${isReply ? "ml-10 sm:ml-14 mt-4" : ""}`}>
-                <Image src={resolveImageUrl(comment?.image)} alt="Commenter" width={40} height={40} className="rounded-full size-10" />
-
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-semibold text-title">Student</span>
-                        <span className="text-xs text-description">• {getCommentTimestamp(comment.created_at)}</span>
-                    </div>
-                    <p className="text-sm text-description leading-relaxed whitespace-pre-line">
-                        {comment.text}
-                    </p>
-
-                    {!isReply && (
-                        <button
-                            onClick={() => handleReplyToggle(comment.id)}
-                            className={`flex items-center gap-1.5 mt-2 text-xs font-medium text-description hover:text-title ${activeReply === comment.id ? "text-main" : ""} transition-colors`}
-                        >
-                            <FaRegComments className="size-4" />
-                            {t("reply")}
-                        </button>
-                    )}
-
-                    {comment.replies?.map((reply) => renderComment(reply, true))}
-
-                    {activeReply === comment.id && (
-                        <div className="mt-3">
-                            <div className="flex items-center gap-2 sm:gap-3">
-                                <div className="flex-1 relative">
-                                    <FaRegComments className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-description" />
-                                    <input
-                                        type="text"
-                                        value={replyTexts[comment.id] || ""}
-                                        onChange={(e) => handleReplyChange(comment.id, e.target.value)}
-                                        placeholder={t("writeYourReply")}
-                                        className="w-full pl-10 pr-4 py-2.5 border border-border-light text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                                    />
-                                </div>
-                                <button
-                                    onClick={() => handleSubmitReply(comment.id)}
-                                    disabled={isReplyingComment}
-                                    className="px-4 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap disabled:opacity-50"
-                                >
-                                    {t("commentReply")}
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
+            <RenderCommentComponent
+                key={comment.id}
+                comment={comment}
+                isReply={isReply}
+                activeReply={activeReply}
+                replyTexts={replyTexts}
+                isReplyingComment={isReplyingComment}
+                onReplyToggle={handleReplyToggle}
+                onReplyChange={handleReplyChange}
+                onSubmitReply={handleSubmitReply}
+                getCommentTimestamp={getCommentTimestamp}
+                t={t}
+                renderComment={renderComment}
+            />
         );
     };
 
@@ -206,23 +199,40 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
 
                 {activeTab === "notes" && (
                     <div>
-                        <div className="flex items-center justify-between mb-4 gap-3">
-                            <h3 className="text-base sm:text-lg font-semibold text-title">
-                                {t("lectureNotes")}
-                            </h3>
-                            {currentLecture.note_file && (
-                                <button
-                                    onClick={handleDownloadNotes}
-                                    className="flex items-center gap-2 px-4 py-3 bg-[#EDF5FD] text-[#4F9BEF] text-sm font-semibold hover:bg-[#EDF5FD]/90 transition-colors"
-                                >
-                                    <Download className="w-4 h-4" />
-                                    {t("downloadNotes")}
-                                </button>
-                            )}
-                        </div>
-                        <div className="text-sm text-description leading-relaxed whitespace-pre-line">
-                            {currentLecture.lecture_notes || "No lecture notes available."}
-                        </div>
+                        <h3 className="text-base sm:text-lg font-semibold text-title mb-4">
+                            {t("lectureNotes")}
+                        </h3>
+                        {currentLecture.note_file ? (
+                            <div>
+                                <div className="flex items-center justify-between px-4 py-5 transition-colors bg-[#F5F7FA] mb-4">
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <div>
+                                            <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-[#4F9BEF]" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-sm font-medium text-title truncate">
+                                                {currentLecture.note_file.split("/").pop() || "lecture-notes.pdf"}
+                                            </p>
+                                            <p className="text-xs text-description">Lecture Notes</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={handleDownloadNotes}
+                                        className="flex items-center gap-2 px-4 py-2 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors shrink-0 ml-3 cursor-pointer"
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        {t("downloadNotes")}
+                                    </button>
+                                </div>
+                                {currentLecture.lecture_notes && (
+                                    <div className="text-sm text-description leading-relaxed whitespace-pre-line p-4 bg-gray-50 rounded">
+                                        {currentLecture.lecture_notes}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-description">No lecture notes available.</p>
+                        )}
                     </div>
                 )}
 
@@ -246,8 +256,8 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
                                         </div>
                                     </div>
                                     <button
-                                        onClick={() => handleDownloadFile(currentLecture.attachment_file)}
-                                        className="px-4 py-2 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors shrink-0 ml-3"
+                                        onClick={() => handleDownloadFile(currentLecture.attachment_file!)}
+                                        className="px-4 py-2 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors shrink-0 ml-3 cursor-pointer"
                                     >
                                         {t("downloadFile")}
                                     </button>

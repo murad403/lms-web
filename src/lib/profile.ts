@@ -159,8 +159,10 @@ export type TExamAssessment = {
 
 export type TQuizQuestion = {
   id: string;
+  questionId?: number;
   question: string;
   options: string[];
+  optionIds?: number[];
   correctAnswer: number; // index of correct option
 };
 

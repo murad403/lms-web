@@ -209,7 +209,8 @@ const studentApi = baseApi.injectEndpoints({
                     url: `/students/courses/${courseId}/player/`,
                     method: "GET"
                 }
-            }
+            },
+            providesTags: ["student-course-videos"]
         }),
         completedLecture: builder.mutation<CompletedLectureResponse, number>({
             query: (lectureId) => {
@@ -217,7 +218,8 @@ const studentApi = baseApi.injectEndpoints({
                     url: `/students/lectures/${lectureId}/complete/`,
                     method: "POST"
                 }
-            }
+            },
+            invalidatesTags: ["student-course-videos"]
         }),
         nextLecture: builder.query<NextLectureResponse, { lectureId: number; courseId: number }>({
             query: ({ lectureId, courseId }: { lectureId: number; courseId: number }) => {
@@ -225,7 +227,8 @@ const studentApi = baseApi.injectEndpoints({
                     url: `/students/courses/${courseId}/player/${lectureId}/`,
                     method: "GET"
                 }
-            }
+            },
+            providesTags: ["student-course-videos"]
         }),
         getComments: builder.query<GetCommentsResponse, number>({
             query: (lectureId) => {
@@ -268,7 +271,8 @@ const studentApi = baseApi.injectEndpoints({
                     method: "POST",
                     body: data
                 }
-            }
+            },
+            invalidatesTags: ["student-course-videos"]
         }),
 
         // learning progress

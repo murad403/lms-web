@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
-import { X, ChevronRight, ArrowRight, ArrowLeft } from "lucide-react";
+import { X, ChevronRight, ArrowRight } from "lucide-react";
 import { TQuizData } from "@/lib/profile";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
@@ -10,11 +10,12 @@ type QuizModalProps = {
     isOpen: boolean;
     onClose: () => void;
     quizData: TQuizData;
+    onSubmitQuiz?: (answers: { q_id: number; o_id: number }[]) => Promise<void>;
 };
 
 type QuizState = "taking" | "result";
 
-const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
+const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
     const [quizState, setQuizState] = useState<QuizState>("taking");
@@ -39,13 +40,46 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
         }));
     }, [currentQuestion]);
 
-    const handleNextQuestion = useCallback(() => {
+    const [isSubmittingQuiz, setIsSubmittingQuiz] = useState(false);
+
+    const handleNextQuestion = useCallback(async () => {
         if (currentQuestion < totalQuestions - 1) {
             setCurrentQuestion((prev) => prev + 1);
         } else {
+            if (onSubmitQuiz) {
+                const answers = quizData.questions
+                    .map((question, qIndex) => {
+                        const selectedOptionIndex = selectedAnswers[qIndex];
+                        if (
+                            selectedOptionIndex === undefined ||
+                            question.questionId === undefined ||
+                            !question.optionIds ||
+                            question.optionIds[selectedOptionIndex] === undefined
+                        ) {
+                            return null;
+                        }
+
+                        return {
+                            q_id: question.questionId,
+                            o_id: question.optionIds[selectedOptionIndex],
+                        };
+                    })
+                    .filter((item): item is { q_id: number; o_id: number } => item !== null);
+
+                try {
+                    setIsSubmittingQuiz(true);
+                    await onSubmitQuiz(answers);
+                } catch {
+                    setIsSubmittingQuiz(false);
+                    return;
+                } finally {
+                    setIsSubmittingQuiz(false);
+                }
+            }
+
             setQuizState("result");
         }
-    }, [currentQuestion, totalQuestions]);
+    }, [currentQuestion, totalQuestions, onSubmitQuiz, quizData.questions, selectedAnswers]);
 
     const handleRetake = useCallback(() => {
         setCurrentQuestion(0);
@@ -132,7 +166,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                         {/* Next Button */}
                         <button
                             onClick={handleNextQuestion}
-                            disabled={selectedAnswers[currentQuestion] === undefined}
+                            disabled={selectedAnswers[currentQuestion] === undefined || isSubmittingQuiz}
                             className="w-full py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {currentQuestion < totalQuestions - 1 ? (
@@ -141,30 +175,20 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                                     <ChevronRight className="w-4 h-4" />
                                 </>
                             ) : (
-                                t("submitQuiz")
+                                isSubmittingQuiz ? "Submitting..." : t("submitQuiz")
                             )}
                         </button>
                     </div>
                 ) : (
                     /* Result View */
                     <div className="p-6 bg-gray-50">
-                        {/* Header */}
-                        <div className="flex items-center gap-3 mb-8">
-                            <button
-                                onClick={handleRetake}
-                                className="text-title hover:text-main transition-colors"
-                            >
-                                <ArrowLeft className="w-5 h-5" />
-                            </button>
-                            <h2 className="text-lg font-bold text-title">{t("quizResult")}</h2>
-                        </div>
 
                         {/* Score Circle */}
                         <div className="flex justify-center mb-8">
                             <div className="relative w-48 h-48 bg-white rounded-full shadow-lg flex items-center justify-center">
                                 <div className="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 rounded-full opacity-50" />
                                 <div className="relative text-center">
-                                    <p className="text-sm text-main font-medium mb-1">{t("yourScore")}</p>
+                                    <p className="text-sm text-main font-medium mb-1 capitalize">{t("yourScore")}</p>
                                     <div className="flex items-baseline justify-center gap-1">
                                         <span className="text-5xl font-bold text-main">{scorePoints}</span>
                                         <span className="text-xl text-main font-medium">{t("pt")}</span>
@@ -236,7 +260,7 @@ const QuizModal = ({ isOpen, onClose, quizData }: QuizModalProps) => {
                         {/* Continue Button */}
                         <button
                             onClick={handleClose}
-                            className="w-full py-3.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
+                            className="w-full py-3.5 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors cursor-pointer"
                         >
                             {t("continue")}
                         </button>
