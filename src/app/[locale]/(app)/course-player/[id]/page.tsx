@@ -1,49 +1,68 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useRef, useMemo } from "react";
-import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, Clock, BookOpen, Layers, Menu } from "lucide-react";
-import { courseSections, coursePlayerInfo, quizQuestionsData, } from "@/lib/profile";
+import { useParams } from "next/navigation";
+import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, BookOpen, Layers, Menu } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery } from "@/redux/features/student/student.api";
+import { CourseLecture } from "@/redux/features/student/student.type";
+import { Skeleton } from "@/components/ui/skeleton";
 import QuizModal from "@/components/modal/QuizModal";
 import WriteReviewModal from "@/components/modal/WriteReviewModal";
-import CoursePlayerTabs from "./CoursePlayerTabs";
+import CoursePlayerTabs from "@/components/course-player/CoursePlayerTabs";
+import { toast } from "sonner";
+import { TQuizData, TQuizQuestion } from "@/lib/profile";
+import { resolveImageUrl } from "@/utils/image";
 
 const CoursePlayerPage = () => {
+  const params = useParams();
+  const courseId = Array.isArray(params.id) ? parseInt(params.id[0]) : parseInt(params.id as string);
+  // console.log(courseId)
+
   const router = useRouter();
   const t = useTranslations("CoursePlayer");
-  const [currentLecture, setCurrentLecture] = useState(
-    courseSections[0].lectures[1]
+
+  // API Hooks
+  const { data: courseData, isLoading: isCourseLoading } = useStartCourseQuery(courseId);
+  // console.log(courseData?.data)
+  const [completeLecture] = useCompletedLectureMutation();
+  const [addReview] = useAddReviewMutation();
+
+  // State with lazy initialization
+  const [currentLecture, setCurrentLecture] = useState<CourseLecture | null>(() =>
+    courseData?.data?.current_lecture ?? null
   );
-  const [expandedSections, setExpandedSections] = useState<string[]>(["s1"]);
+  const [expandedSections, setExpandedSections] = useState<number[]>(() =>
+    courseData?.data?.contents?.[0] ? [courseData.data.contents[0].id] : []
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Fetch quiz data
+  const { data: quizData } = useGetQuizzesQuery(
+    selectedQuizId ?? 0,
+    { skip: !selectedQuizId }
+  );
+
   // Calculate overall progress
-  const totalLectures = courseSections.reduce(
-    (acc, section) => acc + section.lectures.length,
-    0
-  );
-  const completedLectures = courseSections.reduce(
-    (acc, section) => acc + section.lectures.filter((l) => l.completed).length,
-    0
-  );
-  const progressPercent = Math.round(
-    (completedLectures / totalLectures) * 100
+  const progressPercent = courseData?.data?.course_progress_percentage ?? 0;
+
+  // Get all lectures
+  const allLectures = useMemo(() => {
+    return (courseData?.data?.contents ?? []).flatMap((s) => s.lectures);
+  }, [courseData?.data?.contents]);
+
+  const currentIndex = useMemo(
+    () => allLectures.findIndex((l) => l.id === currentLecture?.id),
+    [allLectures, currentLecture?.id]
   );
 
-  // Find current lecture index across all sections for "Next Lecture"
-  const allLectures = useMemo(
-    () => courseSections.flatMap((s) => s.lectures),
-    []
-  );
-  const currentIndex = allLectures.findIndex(
-    (l) => l.id === currentLecture.id
-  );
-
-  const toggleSection = (sectionId: string) => {
+  const toggleSection = (sectionId: number) => {
     setExpandedSections((prev) =>
       prev.includes(sectionId)
         ? prev.filter((id) => id !== sectionId)
@@ -51,9 +70,7 @@ const CoursePlayerPage = () => {
     );
   };
 
-  const handlePlayLecture = (
-    lecture: (typeof courseSections)[0]["lectures"][0]
-  ) => {
+  const handlePlayLecture = (lecture: CourseLecture) => {
     setCurrentLecture(lecture);
     setIsPlaying(true);
     setShowMobileSidebar(false);
@@ -62,28 +79,80 @@ const CoursePlayerPage = () => {
     }, 100);
   };
 
-  const handleNextLecture = () => {
-    if (currentIndex < allLectures.length - 1) {
-      handlePlayLecture(allLectures[currentIndex + 1]);
-    }
-  };
+  const handleNextLecture = async () => {
+    if (!currentLecture || currentIndex < 0) return;
 
-  const handleReviewSubmit = (data: { rating: number; comment: string }) => {
-    console.log("Review submitted:", data);
-    setIsReviewOpen(false);
-  };
+    try {
+      // 1. Call completedLecture for current lecture
+      await completeLecture(currentLecture.id).unwrap();
 
-  // Get current lecture number
-  const getCurrentLectureNumber = () => {
-    let count = 0;
-    for (const section of courseSections) {
-      for (const lecture of section.lectures) {
-        count++;
-        if (lecture.id === currentLecture.id) return count;
+      // 2. Move to next lecture
+      if (currentIndex < allLectures.length - 1) {
+        const nextLecture = allLectures[currentIndex + 1];
+        setCurrentLecture(nextLecture);
+        setIsPlaying(true);
+        // Pause the previous video and play the next one
+        if (videoRef.current) {
+          videoRef.current.pause();
+          setTimeout(() => {
+            videoRef.current?.play();
+          }, 100);
+        }
       }
+    } catch (error) {
+      console.error("Error completing lecture:", error);
+      toast.error(t("errorCompletingLecture") || "Error completing lecture");
     }
-    return 0;
   };
+
+  const handleReviewSubmit = async (data: { rating: number; comment: string }) => {
+    try {
+      const response = await addReview({
+        id: courseId,
+        data: {
+          rating: data.rating,
+          comment: data.comment,
+        },
+      }).unwrap();
+      toast.success(response?.message || "Review submitted successfully");
+      setIsReviewOpen(false);
+    } catch (error: any) {
+      // console.error("Error submitting review:", error);
+      toast.error(error?.data?.message || "Error submitting review");
+    }
+  };
+
+  const getCurrentLectureNumber = () => {
+    if (!currentLecture) return 0;
+    return allLectures.findIndex((l) => l.id === currentLecture.id) + 1;
+  };
+
+  if (isCourseLoading) {
+    return (
+      <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-8">
+          <Skeleton className="h-12 w-1/2 mb-4" />
+          <Skeleton className="h-96 w-full mb-4" />
+          <div className="flex gap-4">
+            <Skeleton className="flex-1 h-96" />
+            <Skeleton className="w-80 h-96" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!courseData?.data) {
+    return (
+      <div className="sm:min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-title">Course not found</p>
+        </div>
+      </div>
+    );
+  }
+
+  const contents = courseData.data.contents;
 
   return (
     <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
@@ -102,26 +171,26 @@ const CoursePlayerPage = () => {
 
               <div className="min-w-0 flex-1">
                 <h1 className="text-sm sm:text-base md:text-lg font-medium text-title truncate">
-                  {coursePlayerInfo.title}
+                  {courseData.data.course_title}
                 </h1>
 
                 {/* Desktop Stats - Hidden on mobile */}
                 <div className="hidden md:flex items-center gap-3 lg:gap-4 mt-1 text-xs md:text-sm text-description">
                   <span className="flex items-center gap-1">
                     <Layers className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#4F9BEF]" />
-                    {coursePlayerInfo.sections} {t("sections")}
+                    {contents.length} {t("sections")}
                   </span>
                   <span className="flex items-center gap-1">
                     <BookOpen className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#564FFD]" />
-                    {coursePlayerInfo.totalLectures} {t("lectures")}
+                    {allLectures.length} {t("lectures")}
                   </span>
                 </div>
 
                 {/* Mobile Stats - Simplified */}
                 <div className="flex md:hidden items-center gap-2 mt-1 text-xs text-description">
-                  <span>{coursePlayerInfo.sections} {t("sections")}</span>
+                  <span>{contents.length} {t("sections")}</span>
                   <span>•</span>
-                  <span>{coursePlayerInfo.totalLectures} {t("lectures")}</span>
+                  <span>{allLectures.length} {t("lectures")}</span>
                 </div>
               </div>
             </div>
@@ -164,32 +233,35 @@ const CoursePlayerPage = () => {
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Video Player Column */}
           <div className="flex-1 min-w-0">
-            {/* Video */}
-            <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
-              <video
-                ref={videoRef}
-                src={currentLecture.videoUrl}
-                className="w-full h-full object-contain"
-                controls
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-              />
-            </div>
-
-            {/* Mobile Review Button - Below Video */}
-            <button
-              onClick={() => setIsReviewOpen(true)}
-              className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
-            >
-              {t("writeAReview")}
-            </button>
-            <CoursePlayerTabs
-              currentLectureTitle={currentLecture.title}
-              currentLectureNumber={getCurrentLectureNumber()}
-            />
+            {currentLecture ? (
+              <div>
+                <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
+                  <video
+                    ref={videoRef}
+                    src={resolveImageUrl(currentLecture.video_file)}
+                    className="w-full h-full object-contain"
+                    controls
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+                </div>
+                <button
+                  onClick={() => setIsReviewOpen(true)}
+                  className="sm:hidden w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 px-4 py-2.5 border border-border-light rounded-lg text-sm font-semibold text-title hover:bg-gray-50 transition-colors"
+                >
+                  {t("writeAReview")}
+                </button>
+                <CoursePlayerTabs
+                  currentLecture={currentLecture}
+                  currentLectureNumber={getCurrentLectureNumber()}
+                />
+              </div>
+            ) : (
+              <div className="relative bg-black rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                <Skeleton className="w-full h-full" />
+              </div>
+            )}
           </div>
-
-          {/* Desktop Course Contents Sidebar */}
           <div className="hidden lg:block w-full lg:w-110 shrink-0">
             <div className="border border-border-light rounded-lg overflow-hidden lg:sticky lg:top-20">
               {/* Sidebar Header */}
@@ -204,10 +276,10 @@ const CoursePlayerPage = () => {
 
               {/* Sections List */}
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide bg-white">
-                {courseSections.map((section) => {
+                {contents.map((section) => {
                   const isExpanded = expandedSections.includes(section.id);
                   const sectionCompleted = section.lectures.filter(
-                    (l) => l.completed
+                    (l) => l.is_completed
                   ).length;
 
                   return (
@@ -227,21 +299,17 @@ const CoursePlayerPage = () => {
                             <ChevronDown className="size-3 text-description shrink-0" />
                           )}
                           <span className="text-sm lg:text-base font-semibold text-title text-left truncate">
-                            {section.title}
+                            {section.name}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 xl:gap-3 text-xs text-description shrink-0 ml-2">
                           <span className="flex items-center gap-1">
                             <BookOpen className="size-3.5 text-main" />
-                            {section.lectureCount}
+                            {section.lectures.length}
                           </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="size-3.5 text-main" />
-                            {section.totalDuration}
-                          </span>
-                          {section.completionPercent !== undefined && (
+                          {section.quizzes && section.quizzes.length > 0 && (
                             <span className="flex items-center gap-1 text-success">
-                              {section.completionPercent}%
+                              {sectionCompleted}/{section.lectures.length}
                             </span>
                           )}
                         </div>
@@ -251,7 +319,7 @@ const CoursePlayerPage = () => {
                       {isExpanded && (
                         <div className="bg-white">
                           {section.lectures.map((lecture, idx) => {
-                            const isActive = currentLecture.id === lecture.id;
+                            const isActive = currentLecture?.id === lecture.id;
 
                             return (
                               <button
@@ -261,7 +329,7 @@ const CoursePlayerPage = () => {
                                   }`}
                               >
                                 <div className="shrink-0">
-                                  {lecture.completed ? (
+                                  {lecture.is_completed ? (
                                     <CheckSquare className="size-4 text-main fill-main" />
                                   ) : (
                                     <Square className="size-4 text-gray-300" />
@@ -270,35 +338,33 @@ const CoursePlayerPage = () => {
 
                                 <span
                                   className={`flex-1 text-sm truncate ${isActive
-                                      ? "text-main font-medium"
-                                      : "text-title"
+                                    ? "text-main font-medium"
+                                    : "text-title"
                                     }`}
                                 >
-                                  {idx + 1}. {lecture.title}
+                                  {idx + 1}. {lecture.name}
                                 </span>
 
-                                <div className="flex items-center gap-2 shrink-0">
-                                  {isActive && isPlaying ? (
-                                    <Pause className="w-3.5 h-3.5 text-main" />
-                                  ) : (
-                                    <Play className="w-3.5 h-3.5 text-description" />
-                                  )}
-                                  <span className="text-xs text-description">
-                                    {lecture.duration}
-                                  </span>
-                                </div>
+                                {isActive && isPlaying ? (
+                                  <Pause className="w-3.5 h-3.5 text-main shrink-0" />
+                                ) : (
+                                  <Play className="w-3.5 h-3.5 text-description shrink-0" />
+                                )}
                               </button>
                             );
                           })}
 
-                          {section.hasQuiz && (
+                          {section.quizzes && section.quizzes.length > 0 && (
                             <div className="flex items-center gap-3 px-4 py-2.5">
                               <Square className="size-4 text-gray-300 shrink-0" />
                               <span className="flex-1 text-sm text-title">
                                 {section.lectures.length + 1}. {t("startQuiz")}
                               </span>
                               <button
-                                onClick={() => setIsQuizOpen(true)}
+                                onClick={() => {
+                                  setSelectedQuizId(section.quizzes![0].id);
+                                  setIsQuizOpen(true);
+                                }}
                                 className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors"
                               >
                                 {t("start")}
@@ -347,10 +413,10 @@ const CoursePlayerPage = () => {
 
             {/* Sections List */}
             <div className="flex-1 overflow-y-auto">
-              {courseSections.map((section) => {
+              {contents.map((section) => {
                 const isExpanded = expandedSections.includes(section.id);
                 const sectionCompleted = section.lectures.filter(
-                  (l) => l.completed
+                  (l) => l.is_completed
                 ).length;
 
                 return (
@@ -369,7 +435,7 @@ const CoursePlayerPage = () => {
                           <ChevronDown className="size-3 text-description shrink-0" />
                         )}
                         <span className="text-sm font-semibold text-title text-left truncate">
-                          {section.title}
+                          {section.name}
                         </span>
                       </div>
                       <span className="text-xs text-success shrink-0 ml-2">
@@ -380,7 +446,7 @@ const CoursePlayerPage = () => {
                     {isExpanded && (
                       <div className="bg-white">
                         {section.lectures.map((lecture, idx) => {
-                          const isActive = currentLecture.id === lecture.id;
+                          const isActive = currentLecture?.id === lecture.id;
 
                           return (
                             <button
@@ -390,7 +456,7 @@ const CoursePlayerPage = () => {
                                 }`}
                             >
                               <div className="shrink-0">
-                                {lecture.completed ? (
+                                {lecture.is_completed ? (
                                   <CheckSquare className="size-4 text-main fill-main" />
                                 ) : (
                                   <Square className="size-4 text-gray-300" />
@@ -401,17 +467,13 @@ const CoursePlayerPage = () => {
                                 className={`flex-1 text-sm truncate ${isActive ? "text-main font-medium" : "text-title"
                                   }`}
                               >
-                                {idx + 1}. {lecture.title}
-                              </span>
-
-                              <span className="text-xs text-description shrink-0">
-                                {lecture.duration}
+                                {idx + 1}. {lecture.name}
                               </span>
                             </button>
                           );
                         })}
 
-                        {section.hasQuiz && (
+                        {section.quizzes && section.quizzes.length > 0 && (
                           <div className="flex items-center gap-3 px-4 py-2.5">
                             <Square className="size-4 text-gray-300 shrink-0" />
                             <span className="flex-1 text-sm text-title">
@@ -419,6 +481,7 @@ const CoursePlayerPage = () => {
                             </span>
                             <button
                               onClick={() => {
+                                setSelectedQuizId(section.quizzes![0].id);
                                 setIsQuizOpen(true);
                                 setShowMobileSidebar(false);
                               }}
@@ -439,18 +502,39 @@ const CoursePlayerPage = () => {
       )}
 
       {/* Quiz Modal */}
-      <QuizModal
-        isOpen={isQuizOpen}
-        onClose={() => setIsQuizOpen(false)}
-        quizData={quizQuestionsData[0]}
-      />
+      {(() => {
+        if (!selectedQuizId || !quizData?.data) return null;
+
+        // Convert API quiz data to TQuizData format
+        const convertedQuizData: TQuizData = {
+          id: String(selectedQuizId),
+          title: quizData.data.title,
+          questions: quizData.data.questions.map((q) => ({
+            id: String(q.id),
+            question: q.text,
+            options: q.options.map(opt => opt.text),
+            correctAnswer: 0, // API doesn't provide correct answer in get endpoint
+          } as TQuizQuestion))
+        };
+
+        return (
+          <QuizModal
+            isOpen={isQuizOpen}
+            onClose={() => {
+              setIsQuizOpen(false);
+              setSelectedQuizId(null);
+            }}
+            quizData={convertedQuizData}
+          />
+        );
+      })()}
 
       {/* Write Review Modal */}
       <WriteReviewModal
         isOpen={isReviewOpen}
         onClose={() => setIsReviewOpen(false)}
         onSubmit={handleReviewSubmit}
-        courseName={coursePlayerInfo.title}
+        courseName={courseData.data.course_title}
       />
     </div>
   );

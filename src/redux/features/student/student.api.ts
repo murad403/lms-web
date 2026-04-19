@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AddCartResponse, AddWishlistResponse, ApiResponse, DeleteAccountPayload, DeleteAccountResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LearningProgressResponse, LessonTrackingResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse } from "./student.type";
+import { AddCartResponse, AddWishlistResponse, ApiResponse, DeleteAccountPayload, DeleteAccountResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LearningProgressResponse, LessonTrackingResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse, StartCourseResponse, CompletedLectureResponse, GetCommentsResponse, AddCommentPayload, AddCommentResponse, ReplyCommentPayload, NextLectureResponse, GetQuizzesResponse, SubmitQuizPayload, SubmitQuizResponse } from "./student.type";
 
 
 
@@ -203,7 +203,7 @@ const studentApi = baseApi.injectEndpoints({
         }),
 
         // course continue
-        startCourse: builder.query({
+        startCourse: builder.query<StartCourseResponse, number>({
             query: (courseId) => {
                 return {
                     url: `/students/courses/${courseId}/player/`,
@@ -211,7 +211,7 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
-        completedLecture: builder.mutation({
+        completedLecture: builder.mutation<CompletedLectureResponse, number>({
             query: (lectureId) => {
                 return {
                     url: `/students/lectures/${lectureId}/complete/`,
@@ -219,7 +219,7 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
-        nextLecture: builder.query({
+        nextLecture: builder.query<NextLectureResponse, { lectureId: number; courseId: number }>({
             query: ({ lectureId, courseId }: { lectureId: number; courseId: number }) => {
                 return {
                     url: `/students/courses/${courseId}/player/${lectureId}/`,
@@ -227,7 +227,51 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        getComments: builder.query<GetCommentsResponse, number>({
+            query: (lectureId) => {
+                return {
+                    url: `/courses/lectures/comments/${lectureId}/`,
+                    method: "GET"
+                }
+            }
+        }),
+        addComment: builder.mutation<AddCommentResponse, AddCommentPayload>({
+            query: (data) => {
+                return {
+                    url: `/courses/lectures/comments/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        replyComment: builder.mutation<AddCommentResponse, ReplyCommentPayload>({
+            query: (data) => {
+                return {
+                    url: `/courses/lectures/comments/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        getQuizzes: builder.query<GetQuizzesResponse, number>({
+            query: (quizId) => {
+                return {
+                    url: `/students/quizzes/${quizId}/`,
+                    method: "GET"
+                }
+            }
+        }),
+        submitQuizzes: builder.mutation<SubmitQuizResponse, { quizId: number; data: SubmitQuizPayload }>({
+            query: ({ quizId, data }) => {
+                return {
+                    url: `/students/quizzes/${quizId}/submit/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
 
+        // learning progress
         learningProgress: builder.query<LearningProgressResponse, void>({
             query: () => {
                 return {
@@ -249,4 +293,4 @@ const studentApi = baseApi.injectEndpoints({
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation } = studentApi;

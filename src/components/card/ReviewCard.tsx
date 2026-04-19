@@ -4,11 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { Star, Pencil, Trash2 } from "lucide-react";
 import { TReview } from "@/lib/profile";
-import { StudentReviewItem } from "@/redux/features/student/student.api";
 import EditReviewModal from "../modal/EditReviewModal";
 import DeleteReviewModal from "../modal/DeleteReviewModal";
 import { useTranslations } from "next-intl";
 import { resolveImageUrl } from "@/utils/image";
+import { StudentReviewItem } from "@/redux/features/student/student.type";
 
 type ReviewCardProps = {
     review: TReview | StudentReviewItem;
@@ -51,7 +51,7 @@ const ReviewCard = ({ review, onEdit, onDelete }: ReviewCardProps) => {
     const t = useTranslations("ReviewCard");
     const normalizedReview: TReview = {
         id: String(review.id),
-        userName: "userName" in review ? review.userName : review.student_name,
+        userName: "userName" in review ? review.userName : review.course_title,
         avatar: review.avatar,
         rating: review.rating,
         timeAgo: "timeAgo" in review ? review.timeAgo : formatRelativeTime(review.created_at),

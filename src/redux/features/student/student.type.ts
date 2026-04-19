@@ -316,3 +316,125 @@ export type DeleteAccountPayload = {
 };
 
 export type DeleteAccountResponse = ApiResponse<Record<string, never>>;
+
+// Course Player Types
+export type CourseLecture = {
+    id: number;
+    name: string;
+    description: string;
+    video_file: string;
+    note_file: string;
+    attachment_file: string;
+    is_completed?: boolean;
+    is_accessible?: boolean;
+    lecture_notes?: string;
+};
+
+export type CourseQuiz = {
+    id: number;
+    title: string;
+    description: string;
+    questions_count: number;
+    is_passed?: boolean;
+};
+
+export type CourseSection = {
+    id: number;
+    name: string;
+    lectures: CourseLecture[];
+    quizzes?: CourseQuiz[];
+};
+
+export type StartCourseData = {
+    course_title: string;
+    course_progress_percentage: number;
+    current_lecture: CourseLecture;
+    next_lecture: {
+        id: number;
+        name: string;
+    };
+    contents: CourseSection[];
+};
+
+export type StartCourseResponse = ApiResponse<StartCourseData>;
+
+export type CompletedLectureResponse = ApiResponse<Record<string, never>>;
+
+export type CourseComment = {
+    id: number;
+    lecture: number;
+    text: string;
+    parent: number | null;
+    replies: CourseComment[];
+    created_at: string;
+};
+
+export type GetCommentsData = {
+    comments: CourseComment[];
+};
+
+export type GetCommentsResponse = ApiResponse<GetCommentsData>;
+
+export type AddCommentPayload = {
+    lecture: number;
+    text: string;
+};
+
+export type AddCommentData = {
+    id: number;
+    lecture: number;
+    text: string;
+    parent: number | null;
+    replies: CourseComment[];
+    created_at: string;
+};
+
+export type AddCommentResponse = ApiResponse<AddCommentData>;
+
+export type ReplyCommentPayload = {
+    lecture: number;
+    text: string;
+    parent: number;
+};
+
+export type NextLectureResponse = ApiResponse<StartCourseData>;
+
+// Quiz Types
+export type QuizOption = {
+    id: number;
+    text: string;
+    order: number;
+};
+
+export type QuizQuestion = {
+    id: number;
+    question_type: "mcq" | string;
+    text: string;
+    order: number;
+    options: QuizOption[];
+};
+
+export type QuizData = {
+    title: string;
+    description: string;
+    time_limit: number;
+    questions: QuizQuestion[];
+};
+
+export type GetQuizzesResponse = ApiResponse<QuizData>;
+
+export type QuizAnswerPayload = {
+    q_id: number;
+    o_id: number;
+};
+
+export type SubmitQuizPayload = {
+    answers: QuizAnswerPayload[];
+};
+
+export type SubmitQuizData = {
+    score: number;
+    passed: boolean;
+};
+
+export type SubmitQuizResponse = ApiResponse<SubmitQuizData>;
