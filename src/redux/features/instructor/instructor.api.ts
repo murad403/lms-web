@@ -33,9 +33,29 @@ const instructorApi = baseApi1.injectEndpoints({
             },
             invalidatesTags: ["instructor-profile"]
         }),
+
+        getLiveClassesDashboard: builder.query({
+            query: () => {
+                return {
+                    url: "/courses/live-classes/stats/",
+                    method: "GET"
+                }
+            },
+        }),
+        
+        createLiveClass: builder.mutation({
+            query: (data, courseId) => {
+                return {
+                    url: `/courses/live-classes/${courseId}/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+        }),
+
     }),
 });
 
 
 
-export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery } = instructorApi;
+export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery, useCreateLiveClassMutation } = instructorApi;
