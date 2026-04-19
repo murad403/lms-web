@@ -367,6 +367,7 @@ export type CourseComment = {
     parent: number | null;
     replies: CourseComment[];
     created_at: string;
+    image: string;
 };
 
 export type GetCommentsData = {

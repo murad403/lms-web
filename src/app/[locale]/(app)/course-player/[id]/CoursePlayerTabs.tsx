@@ -1,15 +1,13 @@
 "use client";
-
 import { useState } from "react";
 import { Download, FileText, Loader } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FaRegComments } from "react-icons/fa6";
-import {
-    useAddCommentMutation,
-    useGetCommentsQuery,
-    useReplyCommentMutation,
-} from "@/redux/features/student/student.api";
+import { useAddCommentMutation, useGetCommentsQuery, useReplyCommentMutation } from "@/redux/features/student/student.api";
 import { CourseComment, CourseLecture } from "@/redux/features/student/student.type";
+import Image from "next/image";
+import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CoursePlayerTabsProps = {
     currentLecture: CourseLecture;
@@ -24,11 +22,7 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
     const [activeReply, setActiveReply] = useState<number | null>(null);
     const [visibleComments, setVisibleComments] = useState(5);
 
-    const {
-        data: commentsResponse,
-        isLoading: isCommentsLoading,
-        refetch: refetchComments,
-    } = useGetCommentsQuery(currentLecture.id);
+    const { data: commentsResponse, isLoading: isCommentsLoading, refetch: refetchComments } = useGetCommentsQuery(currentLecture.id);
     const [addComment, { isLoading: isAddingComment }] = useAddCommentMutation();
     const [replyComment, { isLoading: isReplyingComment }] = useReplyCommentMutation();
 
@@ -105,11 +99,7 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
     const renderComment = (comment: CourseComment, isReply = false) => {
         return (
             <div key={comment.id} className={`flex gap-3 ${isReply ? "ml-10 sm:ml-14 mt-4" : ""}`}>
-                <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden shrink-0 bg-main/10 flex items-center justify-center">
-                    <span className="text-xs sm:text-sm font-semibold text-main">
-                        {String(comment.id).slice(-1)}
-                    </span>
-                </div>
+                <Image src={resolveImageUrl(comment?.image)} alt="Commenter" width={40} height={40} className="rounded-full size-10" />
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -203,10 +193,10 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
             <div className="py-4 sm:py-6">
                 {activeTab === "description" && (
                     <div className="space-y-6">
+                        <h3 className="text-base sm:text-lg font-semibold text-title">
+                            {t("lectureDescription")}
+                        </h3>
                         <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-title mb-3">
-                                {t("lecturesDescription")}
-                            </h3>
                             <p className="text-sm text-description leading-relaxed whitespace-pre-line">
                                 {currentLecture.description || "No description available."}
                             </p>
@@ -296,9 +286,19 @@ const CoursePlayerTabs = ({ currentLecture, currentLectureNumber }: CoursePlayer
                         </div>
 
                         {isCommentsLoading ? (
-                            <div className="py-6 text-sm text-description flex items-center gap-2">
-                                <Loader className="size-4 animate-spin" />
-                                Loading comments...
+                            <div className="space-y-4 py-6">
+                                {[...Array(3)].map((_, idx) => (
+                                    <div key={idx} className="flex gap-3">
+                                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+                                        <div className="flex-1 space-y-2">
+                                            <div className="flex gap-2">
+                                                <Skeleton className="h-4 w-20" />
+                                                <Skeleton className="h-4 w-24" />
+                                            </div>
+                                            <Skeleton className="h-12 w-full" />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         ) : (
                             <div className="space-y-5">

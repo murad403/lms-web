@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, BookOpen, Layers, Menu } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
@@ -10,16 +11,16 @@ import { CourseLecture } from "@/redux/features/student/student.type";
 import { Skeleton } from "@/components/ui/skeleton";
 import QuizModal from "@/components/modal/QuizModal";
 import WriteReviewModal from "@/components/modal/WriteReviewModal";
-import CoursePlayerTabs from "@/components/course-player/CoursePlayerTabs";
 import { toast } from "sonner";
 import { TQuizData, TQuizQuestion } from "@/lib/profile";
 import { resolveImageUrl } from "@/utils/image";
+import CoursePlayerTabs from "./CoursePlayerTabs";
+
+
 
 const CoursePlayerPage = () => {
   const params = useParams();
   const courseId = Array.isArray(params.id) ? parseInt(params.id[0]) : parseInt(params.id as string);
-  // console.log(courseId)
-
   const router = useRouter();
   const t = useTranslations("CoursePlayer");
 
@@ -30,9 +31,8 @@ const CoursePlayerPage = () => {
   const [addReview] = useAddReviewMutation();
 
   // State with lazy initialization
-  const [currentLecture, setCurrentLecture] = useState<CourseLecture | null>(() =>
-    courseData?.data?.current_lecture ?? null
-  );
+  const [currentLecture, setCurrentLecture] = useState<CourseLecture | null>(null);
+  const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
   const [expandedSections, setExpandedSections] = useState<number[]>(() =>
     courseData?.data?.contents?.[0] ? [courseData.data.contents[0].id] : []
   );
@@ -42,6 +42,31 @@ const CoursePlayerPage = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Initialize current lecture from API response
+  useEffect(() => {
+    if (courseData?.data && !currentLecture) {
+      const lecture = courseData.data.current_lecture ?? courseData.data.contents?.[0]?.lectures?.[0];
+      if (lecture) {
+        setCurrentLecture(lecture);
+        setHasAutoPlayed(false); // Reset auto-play flag when lecture is set
+      }
+    }
+  }, [courseData?.data, currentLecture]);
+
+  // Auto-play first lecture on initial load
+  useEffect(() => {
+    if (courseData?.data && !hasAutoPlayed && currentLecture) {
+      setIsPlaying(true);
+      setHasAutoPlayed(true);
+      setTimeout(() => {
+        videoRef.current?.play().catch(() => {
+          // Autoplay might be blocked by browser policy
+          console.log("Autoplay was prevented by browser");
+        });
+      }, 500);
+    }
+  }, [courseData?.data, hasAutoPlayed, currentLecture]);
 
   // Fetch quiz data
   const { data: quizData } = useGetQuizzesQuery(
@@ -129,13 +154,47 @@ const CoursePlayerPage = () => {
 
   if (isCourseLoading) {
     return (
-      <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6">
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-8">
-          <Skeleton className="h-12 w-1/2 mb-4" />
-          <Skeleton className="h-96 w-full mb-4" />
-          <div className="flex gap-4">
-            <Skeleton className="flex-1 h-96" />
-            <Skeleton className="w-80 h-96" />
+      <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
+        {/* Header Skeleton */}
+        <div className="border-b border-border-light bg-white sticky top-0 z-30">
+          <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
+            <div className="flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-4">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="flex-1 h-6 max-w-xs" />
+              <div className="flex gap-2">
+                <Skeleton className="h-10 w-20" />
+                <Skeleton className="h-10 w-32" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Skeleton */}
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-4 sm:py-6">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+            {/* Video Player Skeleton */}
+            <div className="flex-1 min-w-0">
+              <Skeleton className="w-full aspect-video rounded-lg mb-4" />
+              <div className="space-y-3">
+                <Skeleton className="h-6 w-1/3" />
+                <Skeleton className="h-40 w-full" />
+              </div>
+            </div>
+
+            {/* Sidebar Skeleton */}
+            <div className="hidden lg:block w-full lg:w-110 shrink-0">
+              <div className="border border-border-light rounded-lg overflow-hidden">
+                <Skeleton className="h-16 w-full" />
+                <div className="space-y-2 p-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-12 w-full mt-4" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
