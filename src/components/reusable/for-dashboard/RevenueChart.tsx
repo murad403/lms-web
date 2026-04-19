@@ -27,7 +27,6 @@ const RevenueChart = ({ data, strokeColor, title, pathColor }: RevenueChartProps
     return Math.round(value).toString();
   };
 
-  // Create smooth bezier curve
   const createSmoothPath = (points: { x: number; y: number }[]) => {
     if (points.length < 2) return "";
 
@@ -53,12 +52,14 @@ const RevenueChart = ({ data, strokeColor, title, pathColor }: RevenueChartProps
   const points = hasData
     ? chartData.map((d, i) => ({
       x: chartData.length === 1 ? 0 : (i / (chartData.length - 1)) * 100,
-      y: maxValue > 0 ? 100 - (d.value / maxValue) * 100 : 100,
+      y: maxValue > 0 ? 5 + (1 - d.value / maxValue) * 92 : 97, // top padding only, bottom stays near 97
     }))
     : [];
 
   const linePath = createSmoothPath(points);
-  const areaPath = linePath + ` L 100 100 L 0 100 Z`;
+  const areaPath = linePath + ` L 100 100 L 0 100 Z`; // area still closes at true bottom
+
+
 
   const yAxisValues = Array.from({ length: 7 }, (_, index) => {
     const ratio = (6 - index) / 6;
@@ -83,7 +84,7 @@ const RevenueChart = ({ data, strokeColor, title, pathColor }: RevenueChartProps
         <div className="absolute left-8 sm:left-10 right-0 top-0 bottom-6 sm:bottom-8">
           <svg
             className="w-full h-full"
-            viewBox="0 0 100 100"
+            viewBox="0 -5 100 110"
             preserveAspectRatio="none"
           >
             <defs>
@@ -112,7 +113,7 @@ const RevenueChart = ({ data, strokeColor, title, pathColor }: RevenueChartProps
           {/* Interactive overlay */}
           <div className="absolute inset-0 flex">
             {chartData.map((d, i) => {
-              const y = maxValue > 0 ? 100 - (d.value / maxValue) * 100 : 100;
+              const y = maxValue > 0 ? 5 + (1 - d.value / maxValue) * 92 : 97;
               return (
                 <div
                   key={i}

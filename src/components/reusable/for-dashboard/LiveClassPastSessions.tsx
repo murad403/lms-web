@@ -72,9 +72,9 @@ const LiveClassPastSessions = ({ sessions, isLoading }: LiveClassPastSessionsPro
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h4 className="text-base font-medium text-title">{session.title}</h4>
                                     <Badge
-                                        className="text-xs bg-green-500 text-white"
+                                        className={`text-xs bg-green-500 text-white ${!session.is_present ? 'bg-red-500' : ''}`}
                                     >
-                                        Completed
+                                        {session.is_present ? 'Completed' : 'Missed'}
                                     </Badge>
                                 </div>
                                 <p className="text-xs text-description mt-0.5">{session.course_title}</p>

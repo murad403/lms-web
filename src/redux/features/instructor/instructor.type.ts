@@ -91,6 +91,7 @@ export type InstructorLiveClassSession = {
 	class_link: string;
 	is_recorded: boolean;
 	created_at: string;
+	is_present: boolean;
 };
 
 export type InstructorLiveClassesStatsData = {
