@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { useLearningProgressQuery, useLessonTrackingQuery } from "@/redux/features/student/student.api";
 import LearningProgressStats from "./LearningProgressStats";
 import ExamsAndAssessments from "./ExamsAndAssessments";
 import LessonTracking from "./LessonTracking";
@@ -7,6 +8,8 @@ import LessonTracking from "./LessonTracking";
 const LearningProgressPage = () => {
 
     const t = useTranslations("LearningProgress");
+    const { data: learningProgressResponse, isLoading: isLearningProgressLoading, isFetching: isLearningProgressFetching } = useLearningProgressQuery();
+    const { data: lessonTrackingResponse, isLoading: isLessonTrackingLoading, isFetching: isLessonTrackingFetching } = useLessonTrackingQuery();
 
     return (
         <div className="space-y-6">
@@ -18,13 +21,22 @@ const LearningProgressPage = () => {
             </div>
 
             {/* Stats */}
-            <LearningProgressStats />
+            <LearningProgressStats
+                data={learningProgressResponse}
+                isLoading={isLearningProgressLoading || isLearningProgressFetching}
+            />
 
             {/* Exams & Assessments */}
-            <ExamsAndAssessments />
+            <ExamsAndAssessments
+                data={learningProgressResponse?.data ?? []}
+                isLoading={isLearningProgressLoading || isLearningProgressFetching}
+            />
 
             {/* Lesson Tracking */}
-            <LessonTracking />
+            <LessonTracking
+                data={lessonTrackingResponse?.data ?? []}
+                isLoading={isLessonTrackingLoading || isLessonTrackingFetching}
+            />
         </div>
     );
 };

@@ -41,6 +41,45 @@ export type StudentDashboardData = {
     recent_quizes: StudentDashboardQuiz[];
 };
 
+export type LearningProgressCourseItem = {
+    id: number;
+    course: number;
+    course_title: string;
+    course_thumbnail: string;
+    instructor: string;
+    is_completed: boolean;
+    section_count: number;
+    lecture_count: number;
+    completed_lecture_count: number;
+    completion_percentage: number;
+    enrolled_at: string;
+};
+
+export type LearningProgressResponse = ApiResponse<LearningProgressCourseItem[]> & {
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+    average_completion_percentage: number;
+    total_completed_courses: number;
+    total_certificated_courses: number;
+    total_completed_quizzes: number;
+};
+
+export type LessonTrackingItem = {
+    id: number;
+    course_id: number;
+    course_name: string;
+    model_name: string;
+    lesson_name: string;
+    is_completed: boolean;
+    completed_at: string | null;
+};
+
+export type LessonTrackingResponse = ApiResponse<LessonTrackingItem[]>;
+
 export type StudentProfileData = {
     id: string;
     title: string;
