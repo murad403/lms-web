@@ -2,6 +2,7 @@
 import { useState, useCallback } from "react";
 import { X, ChevronRight, ArrowRight } from "lucide-react";
 import { TQuizData } from "@/lib/profile";
+import type { SubmitQuizData } from "@/redux/features/student/student.type";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
 
@@ -10,7 +11,7 @@ type QuizModalProps = {
     isOpen: boolean;
     onClose: () => void;
     quizData: TQuizData;
-    onSubmitQuiz?: (answers: { q_id: number; o_id: number }[]) => Promise<void>;
+    onSubmitQuiz?: (answers: { q_id: number; o_id: number }[]) => Promise<SubmitQuizData | null | void>;
 };
 
 type QuizState = "taking" | "result";
@@ -19,19 +20,23 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
     const [quizState, setQuizState] = useState<QuizState>("taking");
+    const [submitResult, setSubmitResult] = useState<SubmitQuizData | null>(null);
     const t = useTranslations("QuizModal");
 
     const totalQuestions = quizData.questions.length;
     const currentQ = quizData.questions[currentQuestion];
     const progress = ((currentQuestion + 1) / totalQuestions) * 100;
 
-    const correctCount = Object.entries(selectedAnswers).filter(
+    const fallbackCorrectCount = Object.entries(selectedAnswers).filter(
         ([qIndex, answer]) => quizData.questions[Number(qIndex)].correctAnswer === answer
     ).length;
 
-    const wrongCount = totalQuestions - correctCount;
-    const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
-    const scorePoints = Math.round((correctCount / totalQuestions) * 100);
+    const resultData = submitResult;
+    const correctCount = resultData?.correct_answers ?? fallbackCorrectCount;
+    const wrongCount = resultData?.wrong_answers ?? (totalQuestions - fallbackCorrectCount);
+    const scorePercentage = resultData?.completion_percentage ?? Math.round((correctCount / totalQuestions) * 100);
+    const scorePoints = resultData?.score ?? Math.round((correctCount / totalQuestions) * 100);
+    const totalQuestionsDisplay = resultData?.total_questions ?? totalQuestions;
 
     const handleSelectAnswer = useCallback((optionIndex: number) => {
         setSelectedAnswers((prev) => ({
@@ -68,7 +73,10 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
 
                 try {
                     setIsSubmittingQuiz(true);
-                    await onSubmitQuiz(answers);
+                    const response = await onSubmitQuiz(answers);
+                    if (response && typeof response === "object") {
+                        setSubmitResult(response);
+                    }
                 } catch {
                     setIsSubmittingQuiz(false);
                     return;
@@ -84,12 +92,14 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
     const handleRetake = useCallback(() => {
         setCurrentQuestion(0);
         setSelectedAnswers({});
+        setSubmitResult(null);
         setQuizState("taking");
     }, []);
 
     const handleClose = useCallback(() => {
         setCurrentQuestion(0);
         setSelectedAnswers({});
+        setSubmitResult(null);
         setQuizState("taking");
         onClose();
     }, [onClose]);
@@ -122,7 +132,7 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
                                     />
                                 </div>
                                 <span className="text-description font-medium">
-                                   {currentQuestion + 1}/{totalQuestions}
+                                    {currentQuestion + 1}/{totalQuestions}
                                 </span>
                             </div>
                         </div>
@@ -212,7 +222,7 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
                             <div className="text-center">
                                 <div className="flex items-center justify-center gap-2 mb-1">
                                     <div className="w-3 h-3 rounded-full bg-main" />
-                                    <span className="text-2xl font-bold text-title">{totalQuestions}</span>
+                                    <span className="text-2xl font-bold text-title">{totalQuestionsDisplay}</span>
                                 </div>
                                 <p className="text-sm text-description">{t("totalQuestion")}</p>
                             </div>
@@ -238,22 +248,35 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
 
                         {/* Course Info Card */}
                         <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-                            <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                    <h4 className="text-sm font-semibold text-title mb-1">
-                                        {quizData.title}
-                                    </h4>
-                                    <p className="text-xs text-description">
-                                        {t("numberOfQuestions")} : {totalQuestions}
-                                    </p>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="flex-1">
+                                        <h4 className="text-sm font-semibold text-title mb-1">
+                                            {submitResult?.quiz_title || quizData.title}
+                                        </h4>
+                                        <p className="text-xs text-description">
+                                            {t("numberOfQuestions")} : {totalQuestionsDisplay}
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={handleRetake}
+                                        className="flex items-center gap-2 px-4 py-2 bg-main text-white rounded-full text-sm font-medium hover:bg-main/90 transition-colors"
+                                    >
+                                        {t("retake")}
+                                        <ArrowRight className="w-4 h-4" />
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={handleRetake}
-                                    className="flex items-center gap-2 px-4 py-2 bg-main text-white rounded-full text-sm font-medium hover:bg-main/90 transition-colors"
-                                >
-                                    {t("retake")}
-                                    <ArrowRight className="w-4 h-4" />
-                                </button>
+
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div className="rounded-lg bg-gray-50 p-3">
+                                        <p className="text-xs text-description mb-1">Quiz Title</p>
+                                        <p className="font-semibold text-title">{submitResult?.quiz_title}</p>
+                                    </div>
+                                    <div className="rounded-lg bg-gray-50 p-3">
+                                        <p className="text-xs text-description mb-1">Passed</p>
+                                        <p className="font-semibold text-title">{submitResult?.passed ? "Passed" : "Failed"}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

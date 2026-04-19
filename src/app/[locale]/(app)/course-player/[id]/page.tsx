@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { TQuizData, TQuizQuestion } from "@/lib/profile";
 import { resolveImageUrl } from "@/utils/image";
 import CoursePlayerTabs from "./CoursePlayerTabs";
+import type { SubmitQuizData } from "@/redux/features/student/student.type";
 
 
 
@@ -154,20 +155,21 @@ const CoursePlayerPage = () => {
     }
   };
 
-  const handleSubmitQuiz = async (answers: { q_id: number; o_id: number }[]) => {
-    if (!selectedQuizId) return;
+  const handleSubmitQuiz = async (answers: { q_id: number; o_id: number }[]): Promise<SubmitQuizData | null> => {
+    if (!selectedQuizId) return null;
 
     try {
-      await submitQuizzes({
+      const response = await submitQuizzes({
         quizId: selectedQuizId,
         data: { answers },
       }).unwrap();
-
+      // console.log(response)
       if (currentLecture) {
         await completeLecture(currentLecture.id).unwrap();
       }
 
       toast.success("Quiz submitted successfully");
+      return response.data;
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to submit quiz");
       throw error;

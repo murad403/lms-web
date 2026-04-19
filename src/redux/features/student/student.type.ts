@@ -436,7 +436,14 @@ export type SubmitQuizPayload = {
 };
 
 export type SubmitQuizData = {
+    quiz_id: number;
+    quiz_title: string;
     score: number;
+    total_questions: number;
+    correct_answers: number;
+    wrong_answers: number;
+    completion_percentage: number;
+    is_completed: boolean;
     passed: boolean;
 };
 
