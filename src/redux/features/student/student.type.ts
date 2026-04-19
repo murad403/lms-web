@@ -336,6 +336,7 @@ export type CourseQuiz = {
     description: string;
     questions_count: number;
     is_passed?: boolean;
+    is_completed: boolean;
 };
 
 export type CourseSection = {

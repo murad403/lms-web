@@ -451,21 +451,41 @@ const CoursePlayerPage = () => {
                           })}
 
                           {section.quizzes && section.quizzes.length > 0 && (
-                            <div className="flex items-center gap-3 px-4 py-2.5">
-                              <Square className="size-4 text-gray-300 shrink-0" />
-                              <span className="flex-1 text-sm text-title font-semibold">
-                                {section.lectures.length + 1}. {section.quizzes[0].title}
-                              </span>
-                              <button
-                                onClick={() => {
-                                  setSelectedQuizId(section.quizzes![0].id);
-                                  setIsQuizOpen(true);
-                                }}
-                                className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
-                              >
-                                {t("startQuiz")}
-                              </button>
-                            </div>
+                            (() => {
+                              const quiz = section.quizzes![0];
+                              const isQuizCompleted = Boolean(quiz.is_completed);
+
+                              return (
+                                <div
+                                  className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}
+                                >
+                                  <div className="shrink-0">
+                                    {isQuizCompleted ? (
+                                      <CheckSquare className="size-4 text-main fill-main" />
+                                    ) : (
+                                      <Square className="size-4 text-gray-300" />
+                                    )}
+                                  </div>
+                                  <span className={`flex-1 text-sm font-semibold ${isQuizCompleted ? "text-main" : "text-title"}`}>
+                                    {section.lectures.length + 1}. {quiz.title}
+                                  </span>
+                                  {isQuizCompleted && (
+                                    <span className="text-xs font-medium text-success">
+                                      {t("completed")}
+                                    </span>
+                                  )}
+                                  <button
+                                    onClick={() => {
+                                      setSelectedQuizId(quiz.id);
+                                      setIsQuizOpen(true);
+                                    }}
+                                    className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
+                                  >
+                                    {t("startQuiz")}
+                                  </button>
+                                </div>
+                              );
+                            })()
                           )}
                         </div>
                       )}
@@ -572,22 +592,42 @@ const CoursePlayerPage = () => {
                         })}
 
                         {section.quizzes && section.quizzes.length > 0 && (
-                          <div className="flex items-center gap-3 px-4 py-2.5">
-                            <Square className="size-4 text-gray-300 shrink-0" />
-                            <span className="flex-1 text-sm text-title font-semibold">
-                              {section.lectures.length + 1}. {section.quizzes[0].title}
-                            </span>
-                            <button
-                              onClick={() => {
-                                setSelectedQuizId(section.quizzes![0].id);
-                                setIsQuizOpen(true);
-                                setShowMobileSidebar(false);
-                              }}
-                              className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
-                            >
-                              {t("startQuiz")}
-                            </button>
-                          </div>
+                          (() => {
+                            const quiz = section.quizzes![0];
+                            const isQuizCompleted = Boolean(quiz.is_completed);
+
+                            return (
+                              <div
+                                className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}
+                              >
+                                <div className="shrink-0">
+                                  {isQuizCompleted ? (
+                                    <CheckSquare className="size-4 text-main fill-main" />
+                                  ) : (
+                                    <Square className="size-4 text-gray-300" />
+                                  )}
+                                </div>
+                                <span className={`flex-1 text-sm font-semibold ${isQuizCompleted ? "text-main" : "text-title"}`}>
+                                  {section.lectures.length + 1}. {quiz.title}
+                                </span>
+                                {isQuizCompleted && (
+                                  <span className="text-xs font-medium text-success">
+                                    {t("completed")}
+                                  </span>
+                                )}
+                                <button
+                                  onClick={() => {
+                                    setSelectedQuizId(quiz.id);
+                                    setIsQuizOpen(true);
+                                    setShowMobileSidebar(false);
+                                  }}
+                                  className="px-3 py-1.5 bg-main text-white rounded text-xs font-semibold hover:bg-main/90 transition-colors cursor-pointer"
+                                >
+                                  {t("startQuiz")}
+                                </button>
+                              </div>
+                            );
+                          })()
                         )}
                       </div>
                     )}
