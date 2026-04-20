@@ -11,6 +11,9 @@ import PublishCourseTab from "@/components/reusable/create-course/PublishCourseT
 import { TCourseSection } from "@/lib/instructor";
 import CurriculumTab from "@/components/reusable/create-course/CurriculumTab";
 import { useTranslations } from "next-intl";
+import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCourseCategoriesQuery, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/instructor/instructor.api";
+import type { BasicCourseInfoPayload } from "@/redux/features/instructor/instructor.type";
+import { toast } from "sonner";
 
 const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
 type CourseFormData = z.infer<typeof courseFormSchema>;
@@ -22,45 +25,42 @@ const tabMeta = [
     { id: 3, labelKey: "publishCourse", icon: Globe },
 ];
 
-const defaultSections: TCourseSection[] = [
-    {
-        id: "section-1",
-        title: "Section 1: Getting Started",
-        lectures: [
-            { id: "lecture-1", title: "Introduction", type: "video", duration: "5:00" },
-            { id: "lecture-2", title: "Course Overview", type: "video", duration: "10:00" },
-        ],
-    },
-];
-
 const CreateCoursePage = () => {
     const searchParams = useSearchParams();
     const editId = searchParams.get("edit");
-    const isEdit = !!editId;
 
     const [activeTab, setActiveTab] = useState(0);
     const t = useTranslations("InstructorCreateCourse");
+    const [courseId, setCourseId] = useState<number | null>(editId ? Number(editId) : null);
+    const [advanceInfoId, setAdvanceInfoId] = useState<number | null>(null);
+    const { data: categoriesResponse } = useCourseCategoriesQuery();
+    const [addCourseBasicInfo] = useAddCourseBasicInfoMutation();
+    const [updateCourseBasicInfo] = useUpdateCourseBasicInfoMutation();
+    const [addCourseAdvanceInfo] = useAddCourseAdvanceInfoMutation();
+    const [updateCourseAdvanceInfo] = useUpdateCourseAdvanceInfoMutation();
 
     const tabs = tabMeta.map(tab => ({ ...tab, label: t(tab.labelKey) }));
+    const categories = categoriesResponse?.data || [];
 
     // React Hook Form
     const methods = useForm<CourseFormData>({
+        mode: "onChange",
+        reValidateMode: "onChange",
         resolver: zodResolver(courseFormSchema),
         defaultValues: {
             title: "",
             subtitle: "",
             category: "",
-            subCategory: "",
             topic: "",
             language: "",
             level: "",
             price: "",
             couponCode: "",
             discountPrice: "",
-            expiryPeriod: "limited",
+            expiryPeriod: "",
             description: "",
-            whatYouWillTeach: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
-            requirements: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
+            whatYouWillTeach: [],
+            requirements: [],
         },
     });
 
@@ -69,9 +69,97 @@ const CreateCoursePage = () => {
     const [trailer, setTrailer] = useState<File | null>(null);
 
     // Curriculum state
-    const [sections, setSections] = useState<TCourseSection[]>(
-        isEdit ? defaultSections : []
-    );
+    const [sections, setSections] = useState<TCourseSection[]>([]);
+
+    const getPersistedAdvanceInfoId = (id: number) => {
+        if (typeof window === "undefined") return null;
+        const storedValue = window.localStorage.getItem(`create-course-advance-info-${id}`);
+        const parsedValue = storedValue ? Number(storedValue) : null;
+        return parsedValue && Number.isFinite(parsedValue) ? parsedValue : null;
+    };
+
+    const saveBasicInfo = async () => {
+        const values = methods.getValues();
+
+        const payload: BasicCourseInfoPayload = {
+            title: values.title,
+            subtitle: values.subtitle || undefined,
+            category: Number(values.category),
+            topic: values.topic || undefined,
+            language: values.language as BasicCourseInfoPayload["language"],
+            level: values.level as BasicCourseInfoPayload["level"],
+            price: values.price ? Number(values.price) : undefined,
+            discount_price: values.discountPrice ? Number(values.discountPrice) : undefined,
+            coupon_code: values.couponCode || undefined,
+            expiry_type: (values.expiryPeriod as BasicCourseInfoPayload["expiry_type"]) || undefined,
+        };
+
+        try {
+            const response = courseId
+                ? await updateCourseBasicInfo({ courseId, data: payload }).unwrap()
+                : await addCourseBasicInfo(payload).unwrap();
+
+            setCourseId(response.data.id);
+            setActiveTab(1);
+            return true;
+        } catch (error) {
+            console.error("Failed to save basic info:", error);
+            toast.error("Failed to save basic information");
+            return false;
+        }
+    };
+
+    const saveAdvanceInfo = async (): Promise<boolean> => {
+        if (!courseId) {
+            toast.error("Please save basic information first");
+            setActiveTab(0);
+            return false;
+        }
+
+        const storedAdvanceInfoId = getPersistedAdvanceInfoId(courseId);
+        const effectiveAdvanceInfoId = advanceInfoId ?? storedAdvanceInfoId;
+
+        const values = methods.getValues();
+        const outcomes = values.whatYouWillTeach
+            .map((item, index) => ({ text: item.value.trim(), order: index + 1 }))
+            .filter((item) => item.text);
+
+        const requirements = values.requirements
+            .map((item, index) => ({ text: item.value.trim(), order: index + 1 }))
+            .filter((item) => item.text);
+
+        const formData = new FormData();
+        formData.append("description", values.description || "");
+        formData.append("outcomes", JSON.stringify(outcomes));
+        formData.append("requirements", JSON.stringify(requirements));
+
+        if (thumbnail && !effectiveAdvanceInfoId) {
+            formData.append("thumbnail", thumbnail);
+        }
+        if (trailer && !effectiveAdvanceInfoId) {
+            formData.append("trailer_video", trailer);
+        }
+        // console.log(formData)
+        try {
+            const response = effectiveAdvanceInfoId
+                ? await updateCourseAdvanceInfo({ advanceInfoId: effectiveAdvanceInfoId, data: formData }).unwrap()
+                : await addCourseAdvanceInfo({ courseId, data: formData }).unwrap();
+            console.log(response)
+            setAdvanceInfoId(response.data.id);
+            if (typeof window !== "undefined") {
+                window.localStorage.setItem(`create-course-advance-info-${courseId}`, String(response.data.id));
+            }
+            setThumbnail(null);
+            setTrailer(null);
+            setActiveTab(2);
+            toast.success("Advanced information saved successfully");
+            return true;
+        } catch (error) {
+            console.error("Failed to save advance info:", error);
+            toast.error("Failed to save advanced information");
+            return false;
+        }
+    };
 
     const goNext = () => {
         if (activeTab < tabs.length - 1) {
@@ -114,7 +202,6 @@ const CreateCoursePage = () => {
             formData.append("title", values.title);
             if (values.subtitle) formData.append("subtitle", values.subtitle);
             formData.append("category", values.category);
-            if (values.subCategory) formData.append("subCategory", values.subCategory);
             if (values.topic) formData.append("topic", values.topic);
             formData.append("language", values.language);
             formData.append("level", values.level);
@@ -140,26 +227,9 @@ const CreateCoursePage = () => {
             formData.append("sections", JSON.stringify(sections));
 
             // Edit mode
-            if (isEdit && editId) {
-                formData.append("courseId", editId);
+            if (courseId) {
+                formData.append("courseId", String(courseId));
             }
-
-            // TODO: Replace with your actual API endpoint
-            // const response = await fetch("/api/courses", {
-            //     method: isEdit ? "PUT" : "POST",
-            //     body: formData,
-            // });
-            // if (!response.ok) throw new Error("Failed to submit course");
-
-            console.log("Course data ready for API:", {
-                values,
-                thumbnail: thumbnail?.name,
-                trailer: trailer?.name,
-                sections,
-                isEdit,
-                editId,
-            });
-
             return true;
         } catch (error) {
             console.error("Error submitting course:", error);
@@ -208,14 +278,15 @@ const CreateCoursePage = () => {
                 <div className="bg-white rounded-lg border border-border-light p-4 sm:p-6">
                     {activeTab === 0 && (
                         <BasicInfoTab
-                            onNext={goNext}
+                            onNext={saveBasicInfo}
                             onCancel={() => window.history.back()}
+                            categories={categories}
                         />
                     )}
 
                     {activeTab === 1 && (
                         <AdvanceInfoTab
-                            onNext={goNext}
+                            onNext={saveAdvanceInfo}
                             onPrev={goPrev}
                             onThumbnailChange={setThumbnail}
                             onTrailerChange={setTrailer}

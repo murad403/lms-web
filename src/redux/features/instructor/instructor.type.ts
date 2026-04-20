@@ -67,6 +67,51 @@ export type InstructorProfileData = {
 
 export type InstructorProfileResponse = ApiResponse<InstructorProfileData>;
 
+export type InstructorCategoryItem = {
+	id: number;
+	name: string;
+	slug: string;
+	description: string;
+};
+
+export type InstructorCategoryResponse = ApiResponse<InstructorCategoryItem[]>;
+
+export type BasicCourseInfoPayload = {
+	title: string;
+	subtitle?: string;
+	category: number;
+	topic?: string;
+	language: "en" | "es" | "fr" | "de" | "zh";
+	level: "beginner" | "intermediate" | "advanced";
+	price?: number;
+	discount_price?: number;
+	coupon_code?: string;
+	expiry_type?: "1_week" | "1_month" | "3_months" | "lifetime" | "limited";
+};
+
+export type BasicCourseInfoData = BasicCourseInfoPayload & {
+	id: number;
+	status?: string;
+};
+
+export type BasicCourseInfoResponse = ApiResponse<BasicCourseInfoData>;
+
+export type AdvanceCourseInfoItem = {
+	text: string;
+	order: number;
+};
+
+export type AdvanceCourseInfoData = {
+	id: number;
+	description: string;
+	outcomes: AdvanceCourseInfoItem[];
+	requirements: AdvanceCourseInfoItem[];
+	thumbnail?: string;
+	trailer_video?: string;
+};
+
+export type AdvanceCourseInfoResponse = ApiResponse<AdvanceCourseInfoData>;
+
 export type UpdateInstructorProfilePayload = {
 	title: string;
 	biography: string;

@@ -3,19 +3,19 @@
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
+import type { InstructorCategoryItem } from "@/redux/features/instructor/instructor.type";
 
 const TITLE_MAX = 80;
 const SUBTITLE_MAX = 120;
 
 export const basicInfoSchema = z.object({
     title: z.string().min(1, "Title is required").max(TITLE_MAX),
-    subtitle: z.string().max(SUBTITLE_MAX).optional(),
+    subtitle: z.string().min(1, "Subtitle is required").max(SUBTITLE_MAX),
     category: z.string().min(1, "Category is required"),
-    subCategory: z.string().optional(),
-    topic: z.string().optional(),
+    topic: z.string().min(1, "Topic is required"),
     language: z.string().min(1, "Language is required"),
     level: z.string().min(1, "Level is required"),
-    price: z.string().optional(),
+    price: z.string().min(1, "Price is required"),
     couponCode: z.string().optional(),
     discountPrice: z.string().optional(),
     expiryPeriod: z.string().optional(),
@@ -23,76 +23,48 @@ export const basicInfoSchema = z.object({
 
 export type BasicInfoFormData = z.infer<typeof basicInfoSchema>;
 
-const categoryOptions = [
-    { value: "development", label: "Development" },
-    { value: "business", label: "Business" },
-    { value: "design", label: "Design" },
-    { value: "marketing", label: "Marketing" },
-    { value: "it-software", label: "IT & Software" },
-    { value: "photography", label: "Photography" },
-    { value: "music", label: "Music" },
-];
-
-const subCategoryOptions = [
-    { value: "web-development", label: "Web Development" },
-    { value: "mobile-development", label: "Mobile Development" },
-    { value: "data-science", label: "Data Science" },
-    { value: "game-development", label: "Game Development" },
-    { value: "programming", label: "Programming Languages" },
-];
-
 const languageOptions = [
-    { value: "english", label: "English" },
-    { value: "spanish", label: "Spanish" },
-    { value: "french", label: "French" },
-    { value: "german", label: "German" },
-    { value: "bangla", label: "Bangla" },
+    { value: "en", label: "English" },
+    { value: "es", label: "Spanish" },
+    { value: "fr", label: "French" },
+    { value: "de", label: "German" },
+    { value: "zh", label: "Chinese" },
 ];
 
 const levelOptions = [
     { value: "beginner", label: "Beginner" },
     { value: "intermediate", label: "Intermediate" },
     { value: "advanced", label: "Advanced" },
-    { value: "all-levels", label: "All Levels" },
 ];
 
 const expiryOptions = [
-    { value: "limited", label: "Limited Time" },
-    { value: "1-week", label: "1 Week" },
-    { value: "1-month", label: "1 Month" },
-    { value: "3-months", label: "3 Months" },
-    { value: "unlimited", label: "Unlimited" },
+    { value: "1_week", label: "1 Week" },
+    { value: "1_month", label: "1 Month" },
+    { value: "3_months", label: "3 Months" },
+    { value: "lifetime", label: "Lifetime" },
 ];
 
 type Props = {
-    onNext: () => void;
+    onNext: () => Promise<boolean>;
     onCancel: () => void;
+    categories: InstructorCategoryItem[];
 };
 
-const BasicInfoTab = ({ onNext, onCancel }: Props) => {
+const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
     const t = useTranslations("InstructorCreateCourse");
-    const {
-        register,
-        trigger,
-        watch,
-        setValue,
-        formState: { errors },
-    } = useFormContext<BasicInfoFormData>();
+    const { register, trigger, watch, formState: { errors } } = useFormContext<BasicInfoFormData>();
 
     const titleValue = watch("title") || "";
     const subtitleValue = watch("subtitle") || "";
 
     const handleNext = async () => {
         const valid = await trigger([
-            "title", "subtitle", "category", "subCategory", "topic",
+            "title", "subtitle", "category", "topic",
             "language", "level", "price", "couponCode", "discountPrice", "expiryPeriod"
         ]);
-        if (valid) onNext();
-    };
-
-    const generateCouponCode = () => {
-        const code = "ABCUPON" + Math.random().toString(36).substring(2, 6).toUpperCase();
-        setValue("couponCode", code);
+        if (valid) {
+            await onNext();
+        }
     };
 
     return (
@@ -137,10 +109,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                         {subtitleValue.length}/{SUBTITLE_MAX}
                     </span>
                 </div>
+                {errors.subtitle && (
+                    <p className="text-xs text-red-500 mt-1">{errors.subtitle.message}</p>
+                )}
             </div>
 
             {/* Category & Sub-category */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
                         {t("courseCategory")}
@@ -150,31 +125,15 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
                         <option value="">{t("courseCategoryPlaceholder")}</option>
-                        {categoryOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                                {opt.label}
+                        {categories.map((opt) => (
+                            <option key={opt.id} value={String(opt.id)}>
+                                {opt.name}
                             </option>
                         ))}
                     </select>
                     {errors.category && (
                         <p className="text-xs text-red-500 mt-1">{errors.category.message}</p>
                     )}
-                </div>
-                <div>
-                    <label className="text-sm font-medium text-title mb-1.5 block">
-                        {t("courseSubCategory")}
-                    </label>
-                    <select
-                        {...register("subCategory")}
-                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
-                    >
-                        <option value="">{t("courseSubCategoryPlaceholder")}</option>
-                        {subCategoryOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                            </option>
-                        ))}
-                    </select>
                 </div>
             </div>
 
@@ -188,6 +147,9 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                     placeholder={t("courseTopicPlaceholder")}
                     className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                 />
+                {errors.topic && (
+                    <p className="text-xs text-red-500 mt-1">{errors.topic.message}</p>
+                )}
             </div>
 
             {/* Language & Level */}
@@ -244,25 +206,19 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                         type="number"
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     />
+                    {errors.price && (
+                        <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>
+                    )}
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        {t("createCouponCode")}
+                        Coupon Code
                     </label>
-                    <div className="flex">
-                        <input
-                            {...register("couponCode")}
-                            placeholder={t("couponPlaceholder")}
-                            className="flex-1 border border-border-light rounded-l-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
-                        />
-                        <button
-                            type="button"
-                            onClick={generateCouponCode}
-                            className="p-3 bg-main text-white text-sm font-medium rounded-r-md hover:bg-main/90 transition-colors whitespace-nowrap"
-                        >
-                            {t("generateCode")}
-                        </button>
-                    </div>
+                    <input
+                        {...register("couponCode")}
+                        placeholder={t("couponPlaceholder")}
+                        className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
+                    />
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
@@ -277,12 +233,13 @@ const BasicInfoTab = ({ onNext, onCancel }: Props) => {
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
-                        {t("expiryPeriod")}
+                        Coupon Expiry Duration
                     </label>
                     <select
                         {...register("expiryPeriod")}
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white text-description"
                     >
+                        <option value="">{t("selectPlaceholder")}</option>
                         {expiryOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                                 {opt.label}

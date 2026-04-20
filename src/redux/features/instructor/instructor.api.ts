@@ -1,5 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorDashboardResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse } from "./instructor.type";
+import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -61,7 +61,7 @@ const instructorApi = baseApi1.injectEndpoints({
 
 
         // create course-------------------------------------------
-        courseCategories: builder.query({
+        courseCategories: builder.query<InstructorCategoryResponse, void>({
             query: () => {
                 return {
                     url: "/courses/categories/",
@@ -69,7 +69,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        addCourseBasicInfo: builder.mutation({
+        addCourseBasicInfo: builder.mutation<BasicCourseInfoResponse, BasicCourseInfoPayload>({
             query: (data) => {
                 return {
                     url: `/courses/courses/`,
@@ -78,8 +78,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        updateCourseBasicInfo: builder.mutation({
-            query: (courseId, data) => {
+        updateCourseBasicInfo: builder.mutation<BasicCourseInfoResponse, { courseId: number; data: BasicCourseInfoPayload }>({
+            query: ({ courseId, data }) => {
                 return {
                     url: `/courses/courses/${courseId}/`,
                     method: "PATCH",
@@ -87,8 +87,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        addCourseAdvanceInfo: builder.mutation({
-            query: (courseId, data) => {
+        addCourseAdvanceInfo: builder.mutation<AdvanceCourseInfoResponse, { courseId: number; data: FormData }>({
+            query: ({ courseId, data }) => {
                 return {
                     url: `/courses/courses/advance-info/${courseId}/`,
                     method: "POST",
@@ -96,8 +96,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        updateCourseAdvanceInfo: builder.mutation({
-            query: (advanceInfoId, data) => {
+        updateCourseAdvanceInfo: builder.mutation<AdvanceCourseInfoResponse, { advanceInfoId: number; data: FormData }>({
+            query: ({ advanceInfoId, data }) => {
                 return {
                     url: `/courses/courses/advance-info/${advanceInfoId}/`,
                     method: "PATCH",
@@ -106,7 +106,7 @@ const instructorApi = baseApi1.injectEndpoints({
             }
         }),
         addCourseSection: builder.mutation({
-            query: (courseId, data) => {
+            query: ({ courseId, data }: { courseId: number; data: Record<string, unknown> }) => {
                 return {
                     url: `/courses/courses/sections/${courseId}/`,
                     method: "POST",
@@ -115,7 +115,7 @@ const instructorApi = baseApi1.injectEndpoints({
             }
         }),
         updateCourseSection: builder.mutation({
-            query: (courseId, sectionId, data) => {
+            query: ({ courseId, sectionId, data }: { courseId: number; sectionId: number; data: Record<string, unknown> }) => {
                 return {
                     url: `/courses/courses/${courseId}/sections/${sectionId}/`,
                     method: "PATCH",
@@ -124,7 +124,7 @@ const instructorApi = baseApi1.injectEndpoints({
             }
         }),
         addCourseLecture: builder.mutation({
-            query: (sectionId, data) => {
+            query: ({ sectionId, data }: { sectionId: number; data: Record<string, unknown> }) => {
                 return {
                     url: `/courses/sections/lectures/${sectionId}/`,
                     method: "POST",
@@ -133,7 +133,7 @@ const instructorApi = baseApi1.injectEndpoints({
             }
         }),
         updateCourseLecture: builder.mutation({
-            query: (lectureId, sectionId, data) => {
+            query: ({ lectureId, sectionId, data }: { lectureId: number; sectionId: number; data: Record<string, unknown> }) => {
                 return {
                     url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
                     method: "PATCH",
@@ -142,7 +142,7 @@ const instructorApi = baseApi1.injectEndpoints({
             }
         }),
         addCourseQuiz: builder.mutation({
-            query: (sectionId, data) => {
+            query: ({ sectionId, data }: { sectionId: number; data: Record<string, unknown> }) => {
                 return {
                     url: `/courses/sections/quizzes/${sectionId}/`,
                     method: "POST",
@@ -163,4 +163,4 @@ const instructorApi = baseApi1.injectEndpoints({
 
 
 
-export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery, useCreateLiveClassMutation, useCourseInfoQuery, useGetLiveClassesDashboardQuery } = instructorApi;
+export const { useDashboardQuery, useUpdateInstructorProfileMutation, useGetInstructorProfileQuery, useCreateLiveClassMutation, useCourseInfoQuery, useGetLiveClassesDashboardQuery, useCourseCategoriesQuery, useAddCourseBasicInfoMutation, useUpdateCourseBasicInfoMutation, useAddCourseAdvanceInfoMutation, useUpdateCourseAdvanceInfoMutation } = instructorApi;

@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
-import { Plus, Upload, Image as ImageIcon, CirclePlay } from "lucide-react";
-import Image from "next/image";
+import { Plus, Upload, Image as ImageIcon, CirclePlay, Trash2 } from "lucide-react";
 
 const MAX_ITEMS = 8;
 const ITEM_MAX_LENGTH = 120;
@@ -12,17 +12,17 @@ const ITEM_MAX_LENGTH = 120;
 export const advanceInfoSchema = z.object({
     description: z.string().optional(),
     whatYouWillTeach: z.array(z.object({
-        value: z.string().max(ITEM_MAX_LENGTH),
-    })),
+        value: z.string().min(1, "Outcome is required").max(ITEM_MAX_LENGTH),
+    })).min(1, "At least one outcome is required"),
     requirements: z.array(z.object({
-        value: z.string().max(ITEM_MAX_LENGTH),
-    })),
+        value: z.string().min(1, "Requirement is required").max(ITEM_MAX_LENGTH),
+    })).min(1, "At least one requirement is required"),
 });
 
 export type AdvanceInfoFormData = z.infer<typeof advanceInfoSchema>;
 
 type Props = {
-    onNext: () => void;
+    onNext: () => Promise<boolean>;
     onPrev: () => void;
     onThumbnailChange: (file: File | null) => void;
     onTrailerChange: (file: File | null) => void;
@@ -33,47 +33,55 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
     const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
 
-    const {
-        register,
-        trigger,
-        control,
-        watch,
-    } = useFormContext<AdvanceInfoFormData>();
+    const { register, trigger, control, watch, formState: { errors }} = useFormContext<AdvanceInfoFormData>();
 
-    const {
-        fields: teachFields,
-        append: appendTeach,
-    } = useFieldArray({ control, name: "whatYouWillTeach" });
+    const { fields: teachFields, append: appendTeach, remove: removeTeach} = useFieldArray({ control, name: "whatYouWillTeach" });
 
     const {
         fields: reqFields,
         append: appendReq,
+        remove: removeReq,
     } = useFieldArray({ control, name: "requirements" });
 
     const watchTeach = watch("whatYouWillTeach");
     const watchReq = watch("requirements");
 
+    useEffect(() => {
+        return () => {
+            if (thumbnailPreview) {
+                URL.revokeObjectURL(thumbnailPreview);
+            }
+            if (trailerPreview) {
+                URL.revokeObjectURL(trailerPreview);
+            }
+        };
+    }, [thumbnailPreview, trailerPreview]);
+
     const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        if (thumbnailPreview) {
+            URL.revokeObjectURL(thumbnailPreview);
+        }
+        setThumbnailPreview(URL.createObjectURL(file));
         onThumbnailChange(file);
-        const reader = new FileReader();
-        reader.onload = (ev) => setThumbnailPreview(ev.target?.result as string);
-        reader.readAsDataURL(file);
     };
 
     const handleTrailer = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        if (trailerPreview) {
+            URL.revokeObjectURL(trailerPreview);
+        }
+        setTrailerPreview(URL.createObjectURL(file));
         onTrailerChange(file);
-        const reader = new FileReader();
-        reader.onload = (ev) => setTrailerPreview(ev.target?.result as string);
-        reader.readAsDataURL(file);
     };
 
     const handleNext = async () => {
         const valid = await trigger(["description", "whatYouWillTeach", "requirements"]);
-        if (valid) onNext();
+        if (valid) {
+            await onNext();
+        }
     };
 
     return (
@@ -92,8 +100,8 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                             {thumbnailPreview ? (
                                 <Image
                                     src={thumbnailPreview}
-                                    alt="Thumbnail"
-                                    width={112}
+                                    alt="Course thumbnail preview"
+                                    width={128}
                                     height={112}
                                     className="w-full h-full object-cover"
                                 />
@@ -129,6 +137,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                             {trailerPreview ? (
                                 <video
                                     src={trailerPreview}
+                                    controls
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
@@ -191,6 +200,9 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                 </div>
 
                 <div className="space-y-3">
+                    {typeof errors.whatYouWillTeach?.message === "string" && (
+                        <p className="text-xs text-red-500">{errors.whatYouWillTeach.message}</p>
+                    )}
                     {teachFields.map((field, index) => (
                         <div key={field.id}>
                             <span className="text-xs text-description mb-1 block">
@@ -206,6 +218,20 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
                                     {watchTeach?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
                                 </span>
+                            </div>
+                            {errors.whatYouWillTeach?.[index]?.value?.message && (
+                                <p className="text-xs text-red-500 mt-1">
+                                    {errors.whatYouWillTeach[index]?.value?.message}
+                                </p>
+                            )}
+                            <div className="mt-1 flex justify-end">
+                                <button
+                                    type="button"
+                                    onClick={() => removeTeach(index)}
+                                    className="text-xs text-red-500 hover:text-red-600 cursor-pointer"
+                                >
+                                    <Trash2 size={17} />
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -231,6 +257,9 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                 </div>
 
                 <div className="space-y-3">
+                    {typeof errors.requirements?.message === "string" && (
+                        <p className="text-xs text-red-500">{errors.requirements.message}</p>
+                    )}
                     {reqFields.map((field, index) => (
                         <div key={field.id}>
                             <span className="text-xs text-description mb-1 block">
@@ -246,6 +275,20 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
                                     {watchReq?.[index]?.value?.length || 0}/{ITEM_MAX_LENGTH}
                                 </span>
+                            </div>
+                            {errors.requirements?.[index]?.value?.message && (
+                                <p className="text-xs text-red-500 mt-1">
+                                    {errors.requirements[index]?.value?.message}
+                                </p>
+                            )}
+                            <div className="mt-1 flex justify-end">
+                                <button
+                                    type="button"
+                                    onClick={() => removeReq(index)}
+                                    className="text-xs text-red-500 hover:text-red-600 cursor-pointer"
+                                >
+                                    <Trash2 size={17} />
+                                </button>
                             </div>
                         </div>
                     ))}
