@@ -359,7 +359,11 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                         ${Number.parseFloat(cartSubtotal || "0").toFixed(2)}
                                                     </span>
                                                 </div>
-                                                <Link href="/checkout" className="block w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors text-center">
+                                                <Link
+                                                    href="/checkout"
+                                                    onClick={() => setShowCart(false)}
+                                                    className="block w-full py-3 bg-main text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-main/90 transition-colors text-center"
+                                                >
                                                     {t("goToCheckout")}
                                                 </Link>
                                             </div>

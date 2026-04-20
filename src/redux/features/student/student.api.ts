@@ -182,6 +182,25 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["cart"]
         }),
+        checkout: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/orders/cart/checkout/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["cart"]
+        }),
+        makePayment: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/payments/stripe/checkout/132/`,
+                    method: "POST"
+                }
+            },
+            invalidatesTags: ["cart"]
+        }),
 
         certificates: builder.query<StudentCertificatesResponse, { page?: number } | void>({
             query: (params) => {

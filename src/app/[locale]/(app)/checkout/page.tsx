@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { CreditCard, Check } from "lucide-react";
+import { useViewCartQuery } from "@/redux/features/student/student.api";
+import { resolveImageUrl } from "@/utils/image";
 
 type CheckoutFormData = {
   nameOnCard: string;
@@ -13,34 +13,8 @@ type CheckoutFormData = {
   couponCode: string;
 };
 
-const cartItems = [
-  {
-    id: 1,
-    title: "Graphic Design Masterclass - Learn GREAT Design",
-    image: "/courses/Course Images.png",
-    instructor: "Courtney Henry",
-    price: 13.0,
-  },
-  {
-    id: 2,
-    title: "Learn Python Programming Masterclass",
-    image: "/courses/Course Images (1).png",
-    instructor: "Albert McKinney",
-    price: 89.0,
-    originalPrice: 99.0,
-  },
-  {
-    id: 3,
-    title: "Instagram Marketing 2021 - Complete Guide To Instagram",
-    image: "/courses/Course Images (2).png",
-    instructor: "Jacob Jones",
-    price: 50.0,
-    originalPrice: 60.0,
-  },
-];
-
 const CheckoutPage = () => {
-  const [paymentMethod] = useState("stripe");
+  const { data: cartResponse, isLoading: isCartLoading } = useViewCartQuery();
 
   const { register, handleSubmit } = useForm<CheckoutFormData>({
     defaultValues: {
@@ -48,7 +22,8 @@ const CheckoutPage = () => {
     },
   });
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
+  const cartItems = cartResponse?.data?.items || [];
+  const subtotal = Number.parseFloat(cartResponse?.data?.subtotal || "0");
   const couponDiscount = 10;
   const discountAmount = (subtotal * couponDiscount) / 100;
   const total = subtotal - discountAmount;
@@ -59,7 +34,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 py-6 md:py-10">
+    <div className="container mx-auto px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0 py-6 md:py-10 min-h-screen">
       <h1 className="text-xl sm:text-2xl font-bold text-title text-center mb-8">
         Checkout
       </h1>
@@ -67,29 +42,6 @@ const CheckoutPage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Payment Form */}
         <div className="flex-1">
-          <h2 className="text-xl sm:text-2xl font-bold text-title mb-4">
-            Payment Method
-          </h2>
-
-          {/* Stripe Badge */}
-          <div className="flex items-center gap-2 mb-4">
-            <span className="px-5 py-2 bg-blue-100 text-main text-sm font-bold rounded">
-              stripe
-            </span>
-            <span className="text-sm text-description">Select Stripe</span>
-          </div>
-
-          {/* New Payment Card */}
-          <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg mb-6 bg-gray-50">
-            <CreditCard className="w-5 h-5 text-main" />
-            <span className="text-sm font-medium text-title flex-1">
-              New Payment Cards
-            </span>
-            <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-              <Check className="w-3 h-3 text-white" />
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="text-xs font-medium text-title mb-1 block">
@@ -177,36 +129,42 @@ const CheckoutPage = () => {
             </h3>
 
             <div className="space-y-4 mb-6">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex gap-3">
-                  <div className="relative w-16 h-12 rounded-md overflow-hidden shrink-0">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] text-description">
-                      Course by: {item.instructor}
-                    </p>
-                    <h4 className="text-xs font-semibold text-title line-clamp-2">
-                      {item.title}
-                    </h4>
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <span className="text-sm font-bold text-main">
-                        ${item.price.toFixed(2)}
-                      </span>
-                      {item.originalPrice && (
-                        <span className="text-[10px] text-description line-through">
-                          ${item.originalPrice.toFixed(2)}
+              {isCartLoading ? (
+                <p className="text-sm text-description">Loading cart...</p>
+              ) : cartItems.length > 0 ? (
+                cartItems.map((item) => (
+                  <div key={item.id} className="flex gap-3">
+                    <div className="relative w-16 h-12 rounded-md overflow-hidden shrink-0">
+                      <Image
+                        src={resolveImageUrl(item.thumbnail)}
+                        alt={item.course_title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] text-description">
+                        {Number(item.rating).toFixed(2)} ({Number(item.reviews_count)} reviews)
+                      </p>
+                      <h4 className="text-xs font-semibold text-title line-clamp-2">
+                        {item.course_title}
+                      </h4>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <span className="text-sm font-bold text-main">
+                          ${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}
                         </span>
-                      )}
+                        {item.course_discount_price && item.course_discount_price !== item.course_price && (
+                          <span className="text-[10px] text-description line-through">
+                            ${Number.parseFloat(item.course_discount_price).toFixed(2)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-sm text-description">Your cart is empty.</p>
+              )}
             </div>
 
             {/* Order Summary */}
