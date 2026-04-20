@@ -62,6 +62,7 @@ export type LearningProgressResponse = ApiResponse<LearningProgressCourseItem[]>
     total_pages: number;
     next: string | null;
     previous: string | null;
+    "user.phone"?: string;
     average_completion_percentage: number;
     total_completed_courses: number;
     total_certificated_courses: number;
@@ -100,11 +101,11 @@ export type StudentProfileData = {
 };
 
 export type UpdateStudentProfilePayload = {
-    first_name: string;
-    last_name: string;
-    title: string;
-    bio: string;
-    avatar?: File;
+    first_name?: string;
+    last_name?: string;
+    title?: string;
+    bio?: string;
+    "user.phone"?: string;
 };
 
 export type EnrolledCourse = {

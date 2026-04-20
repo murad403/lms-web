@@ -8,7 +8,7 @@ import ChangePassword from "@/components/reusable/for-dashboard/ChangePassword";
 import AccountDeleteModal from "@/components/modal/AccountDeleteModal";
 import { useGetStudentProfileQuery, useUpdateStudentProfileMutation } from "@/redux/features/student/student.api";
 import { toast } from "sonner";
-import { appendImageVersion, resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
+import { resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type ProfileFormData = {
@@ -26,7 +26,6 @@ const SettingsPage = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [avatarVersion, setAvatarVersion] = useState(0);
 
     const { data: profileData, refetch, isLoading: isProfileLoading } = useGetStudentProfileQuery();
     const [updateStudentProfile, { isLoading: isUpdatingProfile }] = useUpdateStudentProfileMutation();
@@ -38,13 +37,9 @@ const SettingsPage = () => {
         const profile = profileData?.data;
         if (!profile) return;
 
-        const fullNameParts = (profile.user?.name || "").trim().split(/\s+/).filter(Boolean);
-        const fallbackFirstName = fullNameParts[0] || "";
-        const fallbackLastName = fullNameParts.slice(1).join(" ");
-
         reset({
-            firstName: profile.first_name || fallbackFirstName,
-            lastName: profile.last_name || fallbackLastName,
+            firstName: profile.first_name || "",
+            lastName: profile.last_name || "",
             phoneNumber: profile.user?.phone || "",
             username: profile.user?.name || "",
             email: profile.user?.email || "",
@@ -76,11 +71,10 @@ const SettingsPage = () => {
     const onProfileSubmit = async (data: ProfileFormData) => {
         try {
             const formData = new FormData();
-            formData.append("user.first_name", data.firstName);
-            formData.append("user.last_name", data.lastName);
-            formData.append("user.phone", data.phoneNumber);
-            formData.append("title", data.title);
+            formData.append("first_name", data.firstName);
+            formData.append("last_name", data.lastName);
             formData.append("bio", data.bio);
+            formData.append("title", data.title);
 
             if (selectedFile) {
                 formData.append("user.avatar", selectedFile);
@@ -90,18 +84,12 @@ const SettingsPage = () => {
             toast.success(response.message || "Profile updated successfully.");
 
             setPreviewImage(null);
-            const hadSelectedFile = Boolean(selectedFile);
             setSelectedFile(null);
             setValue("avatar", null);
-
-            if (hadSelectedFile) {
-                setAvatarVersion((prev) => prev + 1);
-            }
 
             await refetch();
 
         } catch (error) {
-            // console.log(error)
             const message =
                 typeof error === "object" &&
                     error !== null &&
@@ -117,9 +105,7 @@ const SettingsPage = () => {
     const resolvedApiAvatar = resolveImageUrl(profileData?.data?.user?.avatar);
     const currentAvatar =
         previewImage ||
-        (resolvedApiAvatar && resolvedApiAvatar.trim()
-            ? appendImageVersion(resolvedApiAvatar, avatarVersion)
-            : null);
+        (resolvedApiAvatar && resolvedApiAvatar.trim() ? resolvedApiAvatar : null);
 
     if (isProfileLoading) {
         return (
