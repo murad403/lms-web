@@ -112,7 +112,7 @@ const CheckoutPage = () => {
                 />
                 <button
                   type="button"
-                  className="px-5 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap"
+                  className="px-5 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap cursor-pointer"
                 >
                   Apply Code
                 </button>
@@ -134,7 +134,7 @@ const CheckoutPage = () => {
               ) : cartItems.length > 0 ? (
                 cartItems.map((item) => (
                   <div key={item.id} className="flex gap-3">
-                    <div className="relative w-16 h-12 rounded-md overflow-hidden shrink-0">
+                    <div className="relative w-20 h-16 rounded-md overflow-hidden shrink-0">
                       <Image
                         src={resolveImageUrl(item.thumbnail)}
                         alt={item.course_title}
@@ -143,18 +143,18 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] text-description">
+                      <p className="text-xs text-description">
                         {Number(item.rating).toFixed(2)} ({Number(item.reviews_count)} reviews)
                       </p>
-                      <h4 className="text-xs font-semibold text-title line-clamp-2">
+                      <h4 className="text-sm md:text-base font-semibold text-title line-clamp-2">
                         {item.course_title}
                       </h4>
                       <div className="flex items-center gap-1 mt-0.5">
-                        <span className="text-sm font-bold text-main">
+                        <span className="text-sm md:text-base font-bold text-main">
                           ${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}
                         </span>
                         {item.course_discount_price && item.course_discount_price !== item.course_price && (
-                          <span className="text-[10px] text-description line-through">
+                          <span className="text-xs text-description line-through">
                             ${Number.parseFloat(item.course_discount_price).toFixed(2)}
                           </span>
                         )}
@@ -190,7 +190,7 @@ const CheckoutPage = () => {
 
             <button
               onClick={handleSubmit(onSubmit)}
-              className="w-full mt-4 py-3 bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
+              className="w-full mt-4 py-3 cursor-pointer bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
             >
               Complete Payment
             </button>

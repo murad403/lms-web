@@ -42,7 +42,7 @@ const CreateCoursePage = () => {
     const t = useTranslations("InstructorCreateCourse");
 
     const tabs = tabMeta.map(tab => ({ ...tab, label: t(tab.labelKey) }));
-    
+
     // React Hook Form
     const methods = useForm<CourseFormData>({
         resolver: zodResolver(courseFormSchema),
@@ -169,76 +169,76 @@ const CreateCoursePage = () => {
 
     return (
         <FormProvider {...methods}>
-        <div className="space-y-6">
-            {/* Step indicator */}
-            <div className="bg-white rounded-lg border border-border-light p-4">
-                <div className="flex items-center justify-between">
-                    {tabs.map((tab, i) => {
-                        const Icon = tab.icon;
-                        const isCompleted = i < activeTab;
-                        const isActive = i === activeTab;
-                        
-                        return (
-                            <div key={tab.id} className="flex items-center flex-1">
-                                <button
-                                    onClick={() => i <= activeTab && setActiveTab(i)}
-                                    className={`flex items-center gap-2 ${i <= activeTab ? 'cursor-pointer' : 'cursor-default'}`}
-                                >
-                                    <Icon className={`w-5 h-5 ${isActive ? 'text-main' : isCompleted ? 'text-green-500' : 'text-description'}`} />
-                                    <span className={`text-sm font-medium hidden sm:block ${isActive ? 'text-main' : isCompleted ? 'text-title' : 'text-description'}`}>
-                                        {tab.label}
-                                    </span>
-                                    {isCompleted && (
-                                        <div className="flex items-center text-green-500">
-                                            <Check className="w-4 h-4" />
-                                            <Check className="w-4 h-4 -ml-2" />
-                                        </div>
+            <div className="space-y-6">
+                {/* Step indicator */}
+                <div className="bg-white rounded-lg border border-border-light p-4">
+                    <div className="flex items-center justify-between">
+                        {tabs.map((tab, i) => {
+                            const Icon = tab.icon;
+                            const isCompleted = i < activeTab;
+                            const isActive = i === activeTab;
+
+                            return (
+                                <div key={tab.id} className="flex items-center flex-1">
+                                    <button
+                                        onClick={() => i <= activeTab && setActiveTab(i)}
+                                        className={`flex items-center gap-2 ${i <= activeTab ? 'cursor-pointer' : 'cursor-default'}`}
+                                    >
+                                        <Icon className={`w-5 h-5 ${isActive ? 'text-main' : isCompleted ? 'text-green-500' : 'text-description'}`} />
+                                        <span className={`text-sm font-medium hidden sm:block ${isActive ? 'text-main' : isCompleted ? 'text-title' : 'text-description'}`}>
+                                            {tab.label}
+                                        </span>
+                                        {isCompleted && (
+                                            <div className="flex items-center text-green-500">
+                                                <Check className="w-4 h-4" />
+                                                <Check className="w-4 h-4 -ml-2" />
+                                            </div>
+                                        )}
+                                    </button>
+                                    {i < tabs.length - 1 && (
+                                        <div className={`flex-1 h-px mx-2 sm:mx-4 ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
                                     )}
-                                </button>
-                                {i < tabs.length - 1 && (
-                                    <div className={`flex-1 h-px mx-2 sm:mx-4 ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
-                                )}
-                            </div>
-                        );
-                    })}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Tab content */}
+                <div className="bg-white rounded-lg border border-border-light p-4 sm:p-6">
+                    {activeTab === 0 && (
+                        <BasicInfoTab
+                            onNext={goNext}
+                            onCancel={() => window.history.back()}
+                        />
+                    )}
+
+                    {activeTab === 1 && (
+                        <AdvanceInfoTab
+                            onNext={goNext}
+                            onPrev={goPrev}
+                            onThumbnailChange={setThumbnail}
+                            onTrailerChange={setTrailer}
+                        />
+                    )}
+
+                    {activeTab === 2 && (
+                        <CurriculumTab
+                            sections={sections}
+                            setSections={setSections}
+                            onNext={goNext}
+                            onPrev={goPrev}
+                        />
+                    )}
+
+                    {activeTab === 3 && (
+                        <PublishCourseTab
+                            onPrev={goPrev}
+                            onSubmit={handlePublish}
+                        />
+                    )}
                 </div>
             </div>
-
-            {/* Tab content */}
-            <div className="bg-white rounded-lg border border-border-light p-4 sm:p-6">
-                {activeTab === 0 && (
-                    <BasicInfoTab
-                        onNext={goNext}
-                        onCancel={() => window.history.back()}
-                    />
-                )}
-
-                {activeTab === 1 && (
-                    <AdvanceInfoTab
-                        onNext={goNext}
-                        onPrev={goPrev}
-                        onThumbnailChange={setThumbnail}
-                        onTrailerChange={setTrailer}
-                    />
-                )}
-
-                {activeTab === 2 && (
-                    <CurriculumTab
-                        sections={sections}
-                        setSections={setSections}
-                        onNext={goNext}
-                        onPrev={goPrev}
-                    />
-                )}
-
-                {activeTab === 3 && (
-                    <PublishCourseTab
-                        onPrev={goPrev}
-                        onSubmit={handlePublish}
-                    />
-                )}
-            </div>
-        </div>
         </FormProvider>
     );
 };

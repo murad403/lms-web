@@ -77,7 +77,7 @@ const SettingsPage = () => {
             formData.append("title", data.title);
 
             if (selectedFile) {
-                formData.append("user.avatar", selectedFile);
+                formData.append("user.image", selectedFile);
             }
 
             const response = await updateStudentProfile(formData).unwrap();

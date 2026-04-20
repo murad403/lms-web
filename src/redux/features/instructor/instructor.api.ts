@@ -59,6 +59,105 @@ const instructorApi = baseApi1.injectEndpoints({
             invalidatesTags: ["instructor-live-classes"]
         }),
 
+
+        // create course-------------------------------------------
+        courseCategories: builder.query({
+            query: () => {
+                return {
+                    url: "/courses/categories/",
+                    method: "GET"
+                }
+            }
+        }),
+        addCourseBasicInfo: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/courses/courses/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        updateCourseBasicInfo: builder.mutation({
+            query: (courseId, data) => {
+                return {
+                    url: `/courses/courses/${courseId}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            }
+        }),
+        addCourseAdvanceInfo: builder.mutation({
+            query: (courseId, data) => {
+                return {
+                    url: `/courses/courses/advance-info/${courseId}/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        updateCourseAdvanceInfo: builder.mutation({
+            query: (advanceInfoId, data) => {
+                return {
+                    url: `/courses/courses/advance-info/${advanceInfoId}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            }
+        }),
+        addCourseSection: builder.mutation({
+            query: (courseId, data) => {
+                return {
+                    url: `/courses/courses/sections/${courseId}/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        updateCourseSection: builder.mutation({
+            query: (courseId, sectionId, data) => {
+                return {
+                    url: `/courses/courses/${courseId}/sections/${sectionId}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            }
+        }),
+        addCourseLecture: builder.mutation({
+            query: (sectionId, data) => {
+                return {
+                    url: `/courses/sections/lectures/${sectionId}/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        updateCourseLecture: builder.mutation({
+            query: (lectureId, sectionId, data) => {
+                return {
+                    url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            }
+        }),
+        addCourseQuiz: builder.mutation({
+            query: (sectionId, data) => {
+                return {
+                    url: `/courses/sections/quizzes/${sectionId}/`,
+                    method: "POST",
+                    body: data
+                }
+            }
+        }),
+        publishCourse: builder.mutation({
+            query: (courseId) => {
+                return {
+                    url: `/courses/courses/publish/${courseId}/`,
+                    method: "PATCH"
+                }
+            }
+        }),
     }),
 });
 
