@@ -38,25 +38,6 @@ const PublishCourseTab = ({ onPrev, onSubmit }: Props) => {
 
             <div className="border-b border-border-light" />
 
-            {/* Video Preview Card */}
-            <div className="flex flex-col sm:flex-row gap-4 items-start">
-                <div className="w-full sm:w-40 h-40 sm:h-24 bg-gray-100 rounded-md overflow-hidden shrink-0">
-                    <video src="/videos/video.mp4" className="w-full h-full object-cover" />
-                </div>
-                <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-medium text-green-600 uppercase">{t("fileUploaded")}</span>
-                        <span className="text-xs text-description">• 1:55</span>
-                    </div>
-                    <p className="text-sm text-title leading-relaxed">
-                        Conduct-ux-research - 01 - Introduction to Course 4 Conduct UX Research and Test Early Concepts.mp4
-                    </p>
-                    <button className="text-sm text-main mt-2 hover:text-main/80 transition-colors">
-                        {t("replaceVideo")}
-                    </button>
-                </div>
-            </div>
-
             {/* Navigation */}
             <div className="flex items-center justify-between pt-6 border-t border-border-light">
                 <button

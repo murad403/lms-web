@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 import type { InstructorCategoryItem } from "@/redux/features/instructor/instructor.type";
 
 const TITLE_MAX = 80;
@@ -53,6 +55,7 @@ type Props = {
 const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
     const t = useTranslations("InstructorCreateCourse");
     const { register, trigger, watch, formState: { errors } } = useFormContext<BasicInfoFormData>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const titleValue = watch("title") || "";
     const subtitleValue = watch("subtitle") || "";
@@ -63,7 +66,12 @@ const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
             "language", "level", "price", "couponCode", "discountPrice", "expiryPeriod"
         ]);
         if (valid) {
-            await onNext();
+            setIsSubmitting(true);
+            try {
+                await onNext();
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -254,14 +262,17 @@ const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-5 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                    disabled={isSubmitting}
+                    className="px-5 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                     {t("cancel")}
                 </button>
                 <button
                     type="submit"
-                    className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                    disabled={isSubmitting}
+                    className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                 >
+                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                     {t("saveAndNext")}
                 </button>
             </div>

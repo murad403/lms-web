@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
-import { Plus, Upload, Image as ImageIcon, CirclePlay, Trash2 } from "lucide-react";
+import { Plus, Upload, Image as ImageIcon, CirclePlay, Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const MAX_ITEMS = 8;
 const ITEM_MAX_LENGTH = 120;
+const MAX_TRAILER_SIZE_MB = 80;
 
 export const advanceInfoSchema = z.object({
     description: z.string().optional(),
@@ -32,6 +34,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
     const t = useTranslations("InstructorCreateCourse");
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
     const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { register, trigger, control, watch, formState: { errors }} = useFormContext<AdvanceInfoFormData>();
 
@@ -70,6 +73,12 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
     const handleTrailer = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        if (file.size > MAX_TRAILER_SIZE_MB * 1024 * 1024) {
+            toast.error(`Trailer video must be ${MAX_TRAILER_SIZE_MB}MB or smaller`);
+            e.target.value = "";
+            onTrailerChange(null);
+            return;
+        }
         if (trailerPreview) {
             URL.revokeObjectURL(trailerPreview);
         }
@@ -80,7 +89,12 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
     const handleNext = async () => {
         const valid = await trigger(["description", "whatYouWillTeach", "requirements"]);
         if (valid) {
-            await onNext();
+            setIsSubmitting(true);
+            try {
+                await onNext();
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -300,14 +314,17 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
                 <button
                     type="button"
                     onClick={onPrev}
-                    className="px-5 py-3.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                    disabled={isSubmitting}
+                    className="px-5 py-3.5 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                     {t("previous")}
                 </button>
                 <button
                     type="submit"
-                    className="px-5 py-3.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                    disabled={isSubmitting}
+                    className="px-5 py-3.5 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                 >
+                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                     {t("saveAndNext")}
                 </button>
             </div>

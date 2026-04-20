@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Props = {
@@ -6,9 +7,13 @@ type Props = {
     onClose: () => void;
     lectureNotes: string;
     setLectureNotes: (val: string) => void;
+    lectureNoteFile: File | null;
+    setLectureNoteFile: (file: File | null) => void;
+    onSave: () => void | Promise<void>;
+    isSaving?: boolean;
 };
 
-const LectureNotesModal = ({ open, onClose, lectureNotes, setLectureNotes }: Props) => {
+const LectureNotesModal = ({ open, onClose, lectureNotes, setLectureNotes, lectureNoteFile, setLectureNoteFile, onSave, isSaving = false }: Props) => {
     const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -31,20 +36,30 @@ const LectureNotesModal = ({ open, onClose, lectureNotes, setLectureNotes }: Pro
                         <p className="text-sm font-medium text-title mb-2">{t("uploadsNotes")}</p>
                         <label className="text-sm text-description cursor-pointer">
                             {t("dragAndDrop")} <span className="text-main">{t("browseFile")}</span>
-                            <input type="file" className="hidden" />
+                            <input
+                                type="file"
+                                className="hidden"
+                                onChange={(e) => setLectureNoteFile(e.target.files?.[0] || null)}
+                            />
                         </label>
+                        {lectureNoteFile && (
+                            <p className="text-xs text-description mt-2">{lectureNoteFile.name}</p>
+                        )}
                     </div>
                     <div className="flex justify-end gap-3">
                         <button
                             onClick={onClose}
+                            disabled={isSaving}
                             className="px-4 py-2 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
                             {t("cancel")}
                         </button>
                         <button
-                            onClick={onClose}
-                            className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                            onClick={onSave}
+                            disabled={isSaving}
+                            className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                         >
+                            {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
                             {t("addNotes")}
                         </button>
                     </div>

@@ -184,15 +184,24 @@ export type TInstructorPastClass = {
 
 // Create Course Types
 export type TCourseLecture = {
-  id: string;
+  id: string | number;
   title: string;
   type: "video" | "document" | "quiz";
   duration?: string;
+  description?: string;
+  lectureNotes?: string;
+  videoFileUrl?: string;
+  lectureAttachmentUrl?: string;
+  lectureNoteFileUrl?: string;
+  videoFile?: File | null;
+  lectureAttachmentFile?: File | null;
+  lectureNoteFile?: File | null;
 };
 
 export type TCourseSection = {
-  id: string;
+  id: string | number;
   title: string;
+  order?: number;
   lectures: TCourseLecture[];
 };
 

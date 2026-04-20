@@ -174,3 +174,83 @@ export type CreateLiveClassRequest = {
 };
 
 export type CreateLiveClassResponse = ApiResponse<InstructorLiveClassSession>;
+
+export type SectionItem = {
+	id: number;
+	name: string;
+	order: number;
+	lectures: LectureItem[];
+};
+
+export type SectionPayload = {
+	name: string;
+};
+
+export type SectionResponse = ApiResponse<SectionItem>;
+
+export type LectureItem = {
+	id: number;
+	name: string;
+	order: number;
+	description?: string;
+	video_file?: string;
+	LectureAttachment?: string;
+	LectureNoteFile?: string;
+	lecture_notes?: string;
+};
+
+export type LectureResponse = ApiResponse<LectureItem>;
+
+export type QuizOptionPayload = {
+	text: string;
+	is_correct: boolean;
+};
+
+export type QuizQuestionPayload = {
+	question_type: "mcq" | "true_false";
+	text: string;
+	options: QuizOptionPayload[];
+};
+
+export type QuizPayload = {
+	title: string;
+	description: string;
+	time_limit_minutes: number;
+	attempts_allowed: number;
+	passing_score: number;
+	shuffle_questions: boolean;
+	questions: QuizQuestionPayload[];
+};
+
+export type QuizOptionItem = {
+	id: number;
+	text: string;
+	is_correct: boolean;
+	order: number;
+};
+
+export type QuizQuestionItem = {
+	id: number;
+	question_type: "mcq" | "true_false";
+	text: string;
+	order: number;
+	options: QuizOptionItem[];
+};
+
+export type QuizItem = {
+	id: number;
+	title: string;
+	description: string;
+	time_limit_minutes: number;
+	attempts_allowed: number;
+	passing_score: number;
+	shuffle_questions: boolean;
+	questions: QuizQuestionItem[];
+};
+
+export type QuizResponse = ApiResponse<QuizItem>;
+
+export type PublishCourseResponse = ApiResponse<{
+	id: number;
+	status: string;
+}>;

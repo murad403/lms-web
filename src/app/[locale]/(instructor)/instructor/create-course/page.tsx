@@ -9,9 +9,9 @@ import BasicInfoTab, { basicInfoSchema } from "@/components/reusable/create-cour
 import AdvanceInfoTab, { advanceInfoSchema } from "@/components/reusable/create-course/AdvanceInfoTab";
 import PublishCourseTab from "@/components/reusable/create-course/PublishCourseTab";
 import { TCourseSection } from "@/lib/instructor";
-import CurriculumTab from "@/components/reusable/create-course/CurriculumTab";
+import CurriculumTab from "../../../../../components/reusable/create-course/CurriculumTab";
 import { useTranslations } from "next-intl";
-import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCourseCategoriesQuery, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/instructor/instructor.api";
+import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCourseCategoriesQuery, usePublishCourseMutation, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/instructor/instructor.api";
 import type { BasicCourseInfoPayload } from "@/redux/features/instructor/instructor.type";
 import { toast } from "sonner";
 
@@ -28,7 +28,6 @@ const tabMeta = [
 const CreateCoursePage = () => {
     const searchParams = useSearchParams();
     const editId = searchParams.get("edit");
-
     const [activeTab, setActiveTab] = useState(0);
     const t = useTranslations("InstructorCreateCourse");
     const [courseId, setCourseId] = useState<number | null>(editId ? Number(editId) : null);
@@ -38,6 +37,9 @@ const CreateCoursePage = () => {
     const [updateCourseBasicInfo] = useUpdateCourseBasicInfoMutation();
     const [addCourseAdvanceInfo] = useAddCourseAdvanceInfoMutation();
     const [updateCourseAdvanceInfo] = useUpdateCourseAdvanceInfoMutation();
+    const [publishCourse] = usePublishCourseMutation();
+
+
 
     const tabs = tabMeta.map(tab => ({ ...tab, label: t(tab.labelKey) }));
     const categories = categoriesResponse?.data || [];
@@ -76,6 +78,19 @@ const CreateCoursePage = () => {
         const storedValue = window.localStorage.getItem(`create-course-advance-info-${id}`);
         const parsedValue = storedValue ? Number(storedValue) : null;
         return parsedValue && Number.isFinite(parsedValue) ? parsedValue : null;
+    };
+
+    const getErrorStatus = (error: unknown): number | string | null => {
+        if (!error || typeof error !== "object") return null;
+        if ("status" in error) {
+            const status = (error as { status?: number | string }).status;
+            return status ?? null;
+        }
+        if ("originalStatus" in error) {
+            const status = (error as { originalStatus?: number | string }).originalStatus;
+            return status ?? null;
+        }
+        return null;
     };
 
     const saveBasicInfo = async () => {
@@ -133,37 +148,47 @@ const CreateCoursePage = () => {
         formData.append("outcomes", JSON.stringify(outcomes));
         formData.append("requirements", JSON.stringify(requirements));
 
-        if (thumbnail && !effectiveAdvanceInfoId) {
+        if (thumbnail) {
             formData.append("thumbnail", thumbnail);
         }
-        if (trailer && !effectiveAdvanceInfoId) {
+        if (trailer) {
             formData.append("trailer_video", trailer);
         }
-        // console.log(formData)
+
         try {
-            const response = effectiveAdvanceInfoId
-                ? await updateCourseAdvanceInfo({ advanceInfoId: effectiveAdvanceInfoId, data: formData }).unwrap()
-                : await addCourseAdvanceInfo({ courseId, data: formData }).unwrap();
-            console.log(response)
+            let response;
+
+            if (effectiveAdvanceInfoId) {
+                try {
+                    response = await updateCourseAdvanceInfo({ advanceInfoId: effectiveAdvanceInfoId, data: formData }).unwrap();
+                } catch (patchError) {
+                    const patchStatus = getErrorStatus(patchError);
+                    if (patchStatus === 404) {
+                        response = await addCourseAdvanceInfo({ courseId, data: formData }).unwrap();
+                    } else {
+                        throw patchError;
+                    }
+                }
+            } else {
+                response = await addCourseAdvanceInfo({ courseId, data: formData }).unwrap();
+            }
+
             setAdvanceInfoId(response.data.id);
             if (typeof window !== "undefined") {
                 window.localStorage.setItem(`create-course-advance-info-${courseId}`, String(response.data.id));
             }
-            setThumbnail(null);
-            setTrailer(null);
             setActiveTab(2);
             toast.success("Advanced information saved successfully");
             return true;
         } catch (error) {
             console.error("Failed to save advance info:", error);
-            toast.error("Failed to save advanced information");
+            const status = getErrorStatus(error);
+            if (status === 413 || status === "FETCH_ERROR") {
+                toast.error("Upload failed. File is too large or server error response is blocked by CORS.");
+            } else {
+                toast.error("Failed to save advanced information");
+            }
             return false;
-        }
-    };
-
-    const goNext = () => {
-        if (activeTab < tabs.length - 1) {
-            setActiveTab(activeTab + 1);
         }
     };
 
@@ -194,47 +219,30 @@ const CreateCoursePage = () => {
             return false;
         }
 
-        try {
-            const values = methods.getValues();
-            const formData = new FormData();
-
-            // Basic Info
-            formData.append("title", values.title);
-            if (values.subtitle) formData.append("subtitle", values.subtitle);
-            formData.append("category", values.category);
-            if (values.topic) formData.append("topic", values.topic);
-            formData.append("language", values.language);
-            formData.append("level", values.level);
-            if (values.price) formData.append("price", values.price);
-            if (values.couponCode) formData.append("couponCode", values.couponCode);
-            if (values.discountPrice) formData.append("discountPrice", values.discountPrice);
-            if (values.expiryPeriod) formData.append("expiryPeriod", values.expiryPeriod);
-
-            // Advance Info
-            if (values.description) formData.append("description", values.description);
-            formData.append("whatYouWillTeach", JSON.stringify(
-                values.whatYouWillTeach.map(item => item.value).filter(Boolean)
-            ));
-            formData.append("requirements", JSON.stringify(
-                values.requirements.map(item => item.value).filter(Boolean)
-            ));
-
-            // Files
-            if (thumbnail) formData.append("thumbnail", thumbnail);
-            if (trailer) formData.append("trailer", trailer);
-
-            // Curriculum
-            formData.append("sections", JSON.stringify(sections));
-
-            // Edit mode
-            if (courseId) {
-                formData.append("courseId", String(courseId));
-            }
-            return true;
-        } catch (error) {
-            console.error("Error submitting course:", error);
+        if (!courseId) {
+            toast.error("Please save basic information first");
+            setActiveTab(0);
             return false;
         }
+
+        try {
+            await publishCourse(courseId).unwrap();
+            toast.success("Course submitted for review successfully");
+            return true;
+        } catch (error) {
+            console.error("Error submitting course for review:", error);
+            toast.error("Failed to submit course for review");
+            return false;
+        }
+    };
+
+    const handleCurriculumNext = async (): Promise<boolean> => {
+        if (sections.length === 0) {
+            toast.error("Please add at least one section");
+            return false;
+        }
+        setActiveTab(3);
+        return true;
     };
 
     return (
@@ -297,8 +305,9 @@ const CreateCoursePage = () => {
                         <CurriculumTab
                             sections={sections}
                             setSections={setSections}
-                            onNext={goNext}
+                            onNext={handleCurriculumNext}
                             onPrev={goPrev}
+                            courseId={courseId}
                         />
                     )}
 

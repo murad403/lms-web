@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
-import { Plus, Trash2, ChevronDown } from "lucide-react";
+import { Plus, Trash2, ChevronDown, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-type QuizQuestionType = "multiple-choice" | "true-false" | "short-answer";
+type QuizQuestionType = "multiple-choice" | "true-false";
 
 type QuizOption = {
     label: string;
@@ -15,7 +15,6 @@ type QuizQuestion = {
     type: QuizQuestionType;
     questionText: string;
     options: QuizOption[];
-    answer?: string;
 };
 
 type QuizData = {
@@ -24,6 +23,7 @@ type QuizData = {
     timeLimit: string;
     attemptsAllowed: string;
     passingScore: string;
+    shuffleQuestions: boolean;
     questions: QuizQuestion[];
 };
 
@@ -38,7 +38,6 @@ const timeLimitOptions = [
 ];
 
 const attemptsOptions = [
-    { label: "Unlimited", value: "unlimited" },
     { label: "1x", value: "1" },
     { label: "2x", value: "2" },
     { label: "3x", value: "3" },
@@ -59,29 +58,18 @@ type Props = {
     open: boolean;
     onClose: () => void;
     quizData: QuizData;
-    updateQuizField: (field: keyof QuizData, value: string) => void;
+    updateQuizField: (field: keyof QuizData, value: string | boolean) => void;
     addQuizQuestion: () => void;
     removeQuizQuestion: (questionId: string) => void;
     updateQuizQuestion: (questionId: string, field: string, value: string) => void;
     changeQuestionType: (questionId: string, type: QuizQuestionType) => void;
     updateQuizOption: (questionId: string, optionIndex: number, value: string) => void;
     setCorrectOption: (questionId: string, optionIndex: number) => void;
-    onSave: () => void;
+    onSave: () => void | Promise<void>;
+    isSaving?: boolean;
 };
 
-const AddQuizModal = ({
-    open,
-    onClose,
-    quizData,
-    updateQuizField,
-    addQuizQuestion,
-    removeQuizQuestion,
-    updateQuizQuestion,
-    changeQuestionType,
-    updateQuizOption,
-    setCorrectOption,
-    onSave,
-}: Props) => {
+const AddQuizModal = ({ open, onClose, quizData, updateQuizField, addQuizQuestion, removeQuizQuestion, updateQuizQuestion, changeQuestionType, updateQuizOption, setCorrectOption, onSave, isSaving = false}: Props) => {
     const t = useTranslations("InstructorCreateCourse");
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -127,7 +115,6 @@ const AddQuizModal = ({
                         <div className="rounded-md border border-border-light p-4 space-y-4">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-base font-bold text-title">{t("quizSettings")}</h4>
-                                <button className="mt-2 px-3 py-3 bg-main text-white rounded-md text-sm hover:bg-main/90 transition-colors">{t("saveSettings")}</button>
                             </div>
                             <div>
                                 <label className="text-xs font-medium text-title mb-1 block">{t("timeLimit")}</label>
@@ -174,6 +161,14 @@ const AddQuizModal = ({
                                     <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                 </div>
                             </div>
+                            <label className="flex items-center gap-2 text-sm text-title">
+                                <input
+                                    type="checkbox"
+                                    checked={quizData.shuffleQuestions}
+                                    onChange={(e) => updateQuizField("shuffleQuestions", e.target.checked)}
+                                />
+                                Shuffle Questions
+                            </label>
                         </div>
                     </div>
 
@@ -213,7 +208,6 @@ const AddQuizModal = ({
                                             >
                                                 <option value="multiple-choice">{t("multipleChoice")}</option>
                                                 <option value="true-false">{t("trueOrFalse")}</option>
-                                                <option value="short-answer">{t("questionAnswers")}</option>
                                             </select>
                                             <ChevronDown className="w-4 h-4 text-description absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                         </div>
@@ -277,18 +271,6 @@ const AddQuizModal = ({
                                         </div>
                                     </div>
                                 )}
-
-                                {question.type === "short-answer" && (
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-medium text-title block">{t("correctAnswer")}</label>
-                                        <input
-                                            value={question.answer || ""}
-                                            onChange={(e) => updateQuizQuestion(question.id, "answer", e.target.value)}
-                                            placeholder={t("correctAnswerPlaceholder")}
-                                            className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main bg-white"
-                                        />
-                                    </div>
-                                )}
                             </div>
                         ))}
 
@@ -307,6 +289,7 @@ const AddQuizModal = ({
                         <button
                             type="button"
                             onClick={onClose}
+                            disabled={isSaving}
                             className="px-4 py-3 border border-border-light rounded-md text-sm font-medium text-title hover:bg-gray-50 transition-colors"
                         >
                             {t("cancel")}
@@ -314,8 +297,10 @@ const AddQuizModal = ({
                         <button
                             type="button"
                             onClick={onSave}
-                            className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
+                            disabled={isSaving}
+                            className="px-5 py-3 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                         >
+                            {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
                             {t("saveQuiz")}
                         </button>
                     </div>
