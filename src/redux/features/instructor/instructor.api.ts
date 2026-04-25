@@ -28,6 +28,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             },
         }),
+
+        // settings****************************************************************************************
         getInstructorProfile: builder.query<InstructorProfileResponse, void>({
             query: () => {
                 return {
@@ -48,6 +50,7 @@ const instructorApi = baseApi1.injectEndpoints({
             invalidatesTags: ["instructor-profile"]
         }),
 
+        // live classes*****************************************************************************************
         getLiveClassesDashboard: builder.query<InstructorLiveClassesStatsResponse, void>({
             query: () => {
                 return {
@@ -77,7 +80,7 @@ const instructorApi = baseApi1.injectEndpoints({
         }),
 
 
-        // create course-------------------------------------------
+        // create course************************************************************************************
         courseCategories: builder.query<InstructorCategoryResponse, void>({
             query: () => {
                 return {
@@ -188,6 +191,17 @@ const instructorApi = baseApi1.injectEndpoints({
                 return {
                     url: `/courses/courses/publish/${courseId}/`,
                     method: "PATCH"
+                }
+            }
+        }),
+
+
+        //my courses*************************************************************************** 
+        myCourses: builder.query({
+            query: () => {
+                return {
+                    url: `/courses/courses-list-instructor/`,
+                    method: "GET"
                 }
             }
         }),

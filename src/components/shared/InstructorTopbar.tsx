@@ -77,7 +77,7 @@ const InstructorTopbar = () => {
     return (
         <>
             <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-                <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-2.5">
+                <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3.5">
                     {/* Left - Mobile menu + Title */}
                     <div className="flex items-center gap-3">
                         {/* Mobile Menu Button */}
@@ -93,7 +93,6 @@ const InstructorTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">{t("goodMorning")}</p>
                             <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>

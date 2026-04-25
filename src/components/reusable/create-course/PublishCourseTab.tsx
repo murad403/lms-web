@@ -84,7 +84,9 @@ const PublishCourseTab = ({ onPrev, onSubmit }: Props) => {
                                 onClick={() => setShowSuccess(false)}
                                 className="px-4 py-2 bg-main text-white rounded-md text-sm font-medium hover:bg-main/90 transition-colors"
                             >
-                                {t("continue")}
+                                <Link href={"/instructor/dashboard"}>
+                                    {t("continue")}
+                                </Link>
                             </button>
                         </div>
                     </div>
