@@ -50,9 +50,9 @@ export function AffiliateSideBar() {
       icon: Wallet,
     },
     {
-      titleKey: "paymentStatus",
-      infoKey: "paymentStatusInfo",
-      href: `/${locale}/affiliate/payment-status`,
+      titleKey: "withdrawal",
+      infoKey: "withdrawalInfo",
+      href: `/${locale}/affiliate/withdrawal`,
       icon: CreditCard,
     },
     {

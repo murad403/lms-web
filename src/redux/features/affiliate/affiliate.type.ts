@@ -89,3 +89,74 @@ export interface AffiliateProfileResponse {
 	data: AffiliateProfileData;
 }
 
+export interface StripeConnectData {
+	stripe_account_id: string;
+	onboarding_url: string;
+	charges_enabled: boolean;
+	payouts_enabled: boolean;
+	details_submitted: boolean;
+}
+
+export interface StripeConnectResponse {
+	success: boolean;
+	status: number;
+	message: string;
+	data: StripeConnectData;
+}
+
+export interface StripeDashboardResponse {
+	success: boolean;
+	status: number;
+	message: string;
+	data: {
+		url: string;
+	};
+}
+
+export interface WithdrawalRequestPayload {
+	amount: number;
+}
+
+export interface WithdrawalRequestResponse {
+	success: boolean;
+	status: number;
+	message: string;
+	data: {
+		withdraw_id: string;
+		amount: string;
+		status: string;
+	};
+}
+
+export interface WithdrawalHistoryItem {
+	id: number;
+	withdraw_id: string;
+	user_name: string;
+	bank_name: string;
+	bank_last4: string;
+	amount: string;
+	status: string;
+	requested_at: string;
+}
+
+export interface WithdrawalHistoryResponse {
+	success: boolean;
+	status: number;
+	message: string;
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	data: {
+		message: string;
+		data: WithdrawalHistoryItem[];
+	};
+}
+
+export interface WithdrawalHistoryQueryParams {
+	page?: number;
+	page_size?: number;
+}
+

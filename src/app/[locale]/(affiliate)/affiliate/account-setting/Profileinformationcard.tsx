@@ -246,7 +246,7 @@ export function ProfileInformationCard({
             <Button
               type="submit"
               disabled={isUpdatingProfile}
-              className="px-6 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg h-11"
+              className="px-6 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg h-11 cursor-pointer"
             >
               {isUpdatingProfile ? t("saving") : t("saveChanges")}
             </Button>

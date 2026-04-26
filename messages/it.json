@@ -2159,6 +2159,7 @@
     "myReferralLink": "Il mio link di referral",
     "salesHistory": "Storico vendite",
     "commissionWallet": "Portafoglio commissioni",
+    "withdrawal": "Prelievo",
     "paymentStatus": "Stato pagamento",
     "accountSettings": "Impostazioni account",
     "logout": "Esci",
@@ -2167,6 +2168,7 @@
     "myReferralLinkInfo": "Condividi il tuo link di referral e guadagna commissioni",
     "salesHistoryInfo": "Monitora tutte le tue vendite di affiliazione",
     "commissionWalletInfo": "Visualizza le tue commissioni totali e i pagamenti",
+    "withdrawalInfo": "Richiedi e gestisci i tuoi prelievi di pagamento",
     "paymentStatusInfo": "Controlla lo storico e lo stato dei pagamenti",
     "accountSettingsInfo": "Aggiorna le impostazioni del tuo account e profilo"
   },

@@ -4,6 +4,12 @@ import {
     AffiliateDashboardResponse,
     AffiliateProfileResponse,
     AffiliateWalletResponse,
+    StripeConnectResponse,
+    StripeDashboardResponse,
+    WithdrawalHistoryQueryParams,
+    WithdrawalHistoryResponse,
+    WithdrawalRequestPayload,
+    WithdrawalRequestResponse,
 } from "./affiliate.type";
 
 const affiliateApi = baseApi1.injectEndpoints({
@@ -24,6 +30,9 @@ const affiliateApi = baseApi1.injectEndpoints({
                 }
             },
         }),
+
+
+        // sales history*********************************************************************************
         salesHistory: builder.query<AffiliateDashboardResponse, AffiliateDashboardQueryParams | void>({
             query: (params) => {
                 return {
@@ -34,6 +43,8 @@ const affiliateApi = baseApi1.injectEndpoints({
                 }
             },
         }),
+
+        // commission wallet**********************************************************************************
         commissionWallet: builder.query<AffiliateWalletResponse, AffiliateDashboardQueryParams | void>({
             query: (params) => {
                 return {
@@ -66,6 +77,48 @@ const affiliateApi = baseApi1.injectEndpoints({
             invalidatesTags: ["affiliate-profile"]
         }),
 
+
+
+        // withdrawal requests************************************************************************
+        stripeConnect: builder.mutation<StripeConnectResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/affiliate/stripe/connect/`,
+                    method: "POST"
+                }
+            },
+        }),
+        stripeDashboard: builder.mutation<StripeDashboardResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/affiliate/stripe/dashboard-link/`,
+                    method: "POST"
+                }
+            },
+        }),
+        withdrawalRequest: builder.mutation<WithdrawalRequestResponse, WithdrawalRequestPayload>({
+            query: (data) => {
+                return {
+                    url: `/payments/affiliate/withdraw/request/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+        }),
+        withdrawalHistory: builder.query<WithdrawalHistoryResponse, WithdrawalHistoryQueryParams | void>({
+            query: (params) => {
+                return {
+                    url: `/affiliates/affiliate/withdrawal-requests-list/`,
+                    method: "GET",
+                    params: {
+                        page: params?.page ?? 1,
+                        page_size: params?.page_size ?? 10,
+                    }
+                }
+            },
+        }),
+
+
     }),
 });
 
@@ -77,5 +130,9 @@ export const {
     useSalesHistoryQuery,
     useCommissionWalletQuery,
     useGetProfileQuery,
-    useUpdateProfileMutation
+    useUpdateProfileMutation,
+    useStripeConnectMutation,
+    useStripeDashboardMutation,
+    useWithdrawalRequestMutation,
+    useWithdrawalHistoryQuery
 } = affiliateApi;

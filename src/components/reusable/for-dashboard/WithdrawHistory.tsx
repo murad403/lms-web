@@ -1,86 +1,126 @@
-import { withdrawalHistory } from '@/lib/instructor'
-import { MoreHorizontal } from 'lucide-react'
-import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { withdrawalHistory } from "@/lib/instructor";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatAmount } from "@/utils/formatter";
 
-const WithdrawHistory = () => {
-    const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-    const t = useTranslations("InstructorEarnings");
+type WithdrawHistoryRow = {
+  id: number | string;
+  withdraw_id?: string;
+  user_name?: string;
+  bank_name?: string;
+  amount: string | number;
+  status: string;
+  requested_at?: string;
+  date?: string;
+  provider?: string;
+};
 
-    const statusColor: Record<string, string> = {
-        Pending: "text-orange-500",
-        Completed: "text-green-600",
-        Cancelled: "text-red-500",
-        "Cancel Withdraw": "text-red-500",
-    };
-
-    const handleCancelWithdraw = (id: string) => {
-        // TODO: API call to cancel withdrawal
-        console.log("Cancelling withdrawal:", id);
-        setOpenMenuId(null);
-    };
-
-    return (
-        <div className="bg-white xl:col-span-2 p-5">
-            <h3 className="text-base sm:text-lg font-semibold text-title mb-2">{t("withdrawHistory")}</h3>
-            <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="border-b border-gray-200 bg-light-bg">
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("date")}</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("method")}</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("amount")}</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("provider")}</th>
-                            <th className="text-left py-3 px-2 text-sm font-semibold text-title uppercase">{t("status")}</th>
-                            <th className="py-3 px-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {withdrawalHistory.map((item) => (
-                            <tr key={item.id} className="border-b border-gray-100">
-                                <td className="py-3 px-2 text-description text-xs text-nowrap">{item.date}</td>
-                                <td className="py-3 px-2 text-title">{item.method}</td>
-                                <td className="py-3 px-2 text-title">${item.amount}</td>
-                                <td className="py-3 px-2 text-title">{item.provider}</td>
-                                <td className="py-3 px-2">
-                                    <span className={`font-medium ${statusColor[item.status] || "text-gray-600"}`}>
-                                        {item.status}
-                                    </span>
-                                </td>
-                                <td className="py-3 px-2">
-                                    <div className="relative">
-                                        <button
-                                            onClick={() => setOpenMenuId(openMenuId === item.id ? null : item.id)}
-                                            className="p-1 hover:bg-gray-100 rounded"
-                                        >
-                                            <MoreHorizontal className="w-4 h-4 text-gray-400" />
-                                        </button>
-                                        {openMenuId === item.id && (
-                                            <>
-                                                <div
-                                                    className="fixed inset-0 z-10"
-                                                    onClick={() => setOpenMenuId(null)}
-                                                />
-                                                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 min-w-40">
-                                                    <button
-                                                        onClick={() => handleCancelWithdraw(item.id)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                                                        disabled={item.status !== "Pending"}
-                                                    >
-                                                        {t("cancelWithdraw")}
-                                                    </button>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    )
+interface WithdrawHistoryProps {
+  title?: string;
+  rows?: WithdrawHistoryRow[];
+  isLoading?: boolean;
+  currency?: string;
 }
 
-export default WithdrawHistory
+const toTitleCase = (value: string) => {
+  if (!value) return "Unknown";
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+};
+
+const statusClassName = (status: string) => {
+  if (status === "completed") return "text-green-700 bg-green-50 border-green-200";
+  if (status === "pending") return "text-amber-700 bg-amber-50 border-amber-200";
+  return "text-red-700 bg-red-50 border-red-200";
+};
+
+const legacyRows: WithdrawHistoryRow[] = withdrawalHistory.map((item) => ({
+  id: item.id,
+  withdraw_id: String(item.id),
+  user_name: "-",
+  bank_name: item.provider,
+  amount: item.amount,
+  status: item.status.toLowerCase(),
+  date: item.date,
+  provider: item.provider,
+}));
+
+const WithdrawHistory = ({
+  title = "Withdrawal History",
+  rows,
+  isLoading = false,
+  currency = "$",
+}: WithdrawHistoryProps) => {
+  const tableRows = rows ?? legacyRows;
+
+  return (
+    <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-230 text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">ID</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">User Name</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">Bank Name</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">Amount</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">Status</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">Date</th>
+              <th className="text-left py-3 px-3 font-semibold text-gray-700">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <tr key={`history-skeleton-${index}`} className="border-b border-gray-100">
+                  <td className="py-3 px-3" colSpan={7}>
+                    <Skeleton className="h-7 w-full" />
+                  </td>
+                </tr>
+              ))
+            ) : tableRows.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="py-10 text-center text-sm text-gray-400">
+                  No withdrawal history found.
+                </td>
+              </tr>
+            ) : (
+              tableRows.map((item) => {
+                const requestedAt = item.requested_at ? new Date(item.requested_at) : null;
+                const isValidDate = requestedAt ? !Number.isNaN(requestedAt.getTime()) : false;
+                const numericAmount = typeof item.amount === "string" ? Number(item.amount) : item.amount;
+
+                return (
+                  <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50/60">
+                    <td className="py-3 px-3 text-gray-700">{item.id}</td>
+                    <td className="py-3 px-3 text-gray-700">{item.user_name || "-"}</td>
+                    <td className="py-3 px-3 text-gray-700">{item.bank_name || item.provider || "-"}</td>
+                    <td className="py-3 px-3 text-gray-900 font-medium">
+                      {Number.isFinite(numericAmount) ? formatAmount(Number(numericAmount), currency) : "-"}
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${statusClassName(String(item.status).toLowerCase())}`}>
+                        {toTitleCase(String(item.status))}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-gray-700">
+                      {isValidDate
+                        ? requestedAt!.toLocaleDateString("en-US")
+                        : item.date || "-"}
+                    </td>
+                    <td className="py-3 px-3 text-gray-700">
+                      {isValidDate
+                        ? requestedAt!.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+                        : "-"}
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+};
+
+export default WithdrawHistory;

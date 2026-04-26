@@ -15,7 +15,7 @@ interface EarningsCardProps {
 export function WalletCard({
   label = "Total Earned",
   amount = 0,
-  currency = "&",
+  currency = "$",
   icon: Icon = Euro,
   iconClassName = "text-purple-500",
   iconBgClassName = "bg-purple-50",

@@ -8,6 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useChangePasswordMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const changePasswordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
@@ -20,7 +21,13 @@ const changePasswordSchema = z.object({
 
 type ChangePasswordForm = z.infer<typeof changePasswordSchema>;
 
-const ChangePassword = () => {
+const ChangePassword = ({
+    buttonColor = "bg-main",
+    isPageLoading = false,
+}: {
+    buttonColor?: string;
+    isPageLoading?: boolean;
+}) => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -30,6 +37,7 @@ const ChangePassword = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordForm>({
         resolver: zodResolver(changePasswordSchema),
     });
+    const isSubmitting = isLoading;
 
     const onSubmit = async (data: ChangePasswordForm) => {
         try {
@@ -54,10 +62,36 @@ const ChangePassword = () => {
         }
     };
 
+    if (isPageLoading) {
+        return (
+            <div className="bg-white rounded-xl shadow max-w-2xl border border-border-light p-4 sm:p-6 space-y-5">
+                <Skeleton className="h-6 w-40" />
+
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-36" />
+                    <Skeleton className="h-11 w-full" />
+                    <Skeleton className="h-3 w-28 ml-auto" />
+                </div>
+
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-28" />
+                    <Skeleton className="h-11 w-full" />
+                </div>
+
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-11 w-full" />
+                </div>
+
+                <Skeleton className="h-11 w-36" />
+            </div>
+        );
+    }
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white rounded-md max-w-2xl border border-border-light p-4 sm:p-6"
+            className="bg-white rounded-xl shadow max-w-2xl border border-border-light p-4 sm:p-6"
         >
             <h3 className="text-base font-bold text-title mb-5">
                 {t("changePassword")}
@@ -162,10 +196,10 @@ const ChangePassword = () => {
                 <div>
                     <button
                         type="submit"
-                        disabled={isLoading}
-                        className="px-6 py-3 cursor-pointer bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+                        disabled={isSubmitting}
+                        className={`${buttonColor} px-6 py-3 cursor-pointer text-white text-sm font-medium hover:opacity-90 transition-opacity`}
                     >
-                        {isLoading ? "Updating..." : t("changePassword")}
+                        {isSubmitting ? "Updating..." : t("changePassword")}
                     </button>
                 </div>
             </div>
