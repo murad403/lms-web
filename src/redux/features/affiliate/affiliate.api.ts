@@ -2,6 +2,7 @@ import baseApi1 from "@/redux/api/baseApi";
 import {
     AffiliateDashboardQueryParams,
     AffiliateDashboardResponse,
+    AffiliateProfileResponse,
     AffiliateWalletResponse,
 } from "./affiliate.type";
 
@@ -43,6 +44,28 @@ const affiliateApi = baseApi1.injectEndpoints({
                 }
             },
         }),
+
+        // profile settings************************************************************************
+        getProfile: builder.query<AffiliateProfileResponse, void>({
+            query: () => {
+                return {
+                    url: `/affiliates/affiliate/profile/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["affiliate-profile"]
+        }),
+        updateProfile: builder.mutation<AffiliateProfileResponse, FormData>({
+            query: (data) => {
+                return {
+                    url: `/affiliates/affiliate/profile/`,
+                    method: "PATCH",
+                    body: data
+                }
+            },
+            invalidatesTags: ["affiliate-profile"]
+        }),
+
     }),
 });
 
@@ -52,5 +75,7 @@ export const {
     useCourseListQuery,
     useGenerateCourseReferralLinkMutation,
     useSalesHistoryQuery,
-    useCommissionWalletQuery
+    useCommissionWalletQuery,
+    useGetProfileQuery,
+    useUpdateProfileMutation
 } = affiliateApi;

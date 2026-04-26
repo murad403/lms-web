@@ -1,10 +1,6 @@
 import { AffiliateSideBar } from "@/components/affiliate/AffiliateSideBar";
-import { NotificationsDropdown } from "@/components/shared/NotificationDialog";
-
-import { PageHeader } from "@/components/shared/PageHeader";
-import RoleProfileDropdown from "@/components/shared/RoleProfileDropdown";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
+import AffiliateTopbar from "@/components/shared/AffiliateTopbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,26 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <AffiliateSideBar />
       <main className="w-full">
-        <div className="border-b p-2 flex items-center justify-between">
-          <div className="flex gap-2">
-            <SidebarTrigger />
-            <PageHeader></PageHeader>
-          </div>
-          <div className="flex items-center gap-4">
-            <NotificationsDropdown />
-            <RoleProfileDropdown
-              name="Affiliate User"
-              roleLabel="Affiliate account"
-              avatarSrc="/home/user1.png"
-              avatarAlt="Affiliate User"
-              profileHref={getProfilePathByRole("affiliate")}
-              dashboardHref={getDashboardPathByRole("affiliate")}
-              profileLabel="My Profile"
-              dashboardLabel="Go to Dashboard"
-              logoutLabel="Log Out"
-            />
-          </div>
-        </div>
+        <AffiliateTopbar />
         {children}
       </main>
     </SidebarProvider>

@@ -163,7 +163,7 @@ const ChangePassword = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="px-6 py-3 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+                        className="px-6 py-3 cursor-pointer bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
                         {isLoading ? "Updating..." : t("changePassword")}
                     </button>
