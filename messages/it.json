@@ -2231,7 +2231,14 @@
     "music": "Musica",
     "students": "{count} studenti",
     "copyUrl": "Copia URL",
-    "copied": "Copiato!"
+    "copied": "Copiato!",
+    "generating": "Generazione...",
+    "generateReferralLink": "Genera link referral",
+    "referralLinkGenerated": "Link referral generato",
+    "referralCode": "Codice referral",
+    "copy": "Copia",
+    "referralUrl": "URL referral",
+    "openReferralLink": "Apri link referral"
   },
   "AffiliateCommission": {
     "commissionWallet": "Portafoglio commissioni",

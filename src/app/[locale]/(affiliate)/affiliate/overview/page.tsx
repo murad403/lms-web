@@ -7,110 +7,6 @@ import { MousePointer2, ShoppingCart, Euro, Clock} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 
-
-const salesData: SaleRecord[] = [
-  {
-    orderId: "ORD-8821",
-    course: "Advanced React Development",
-    customer: "Sarah Johnson",
-    price: 299.0,
-    commissionPercent: 15,
-    commissionAmount: 44.85,
-    status: "Paid",
-    date: "Feb 10, 2026",
-  },
-  {
-    orderId: "ORD-8820",
-    course: "TypeScript Mastery",
-    customer: "Michael Chen",
-    price: 199.0,
-    commissionPercent: 15,
-    commissionAmount: 29.85,
-    status: "Approved",
-    date: "Feb 9, 2026",
-  },
-  {
-    orderId: "ORD-8819",
-    course: "Node.js Complete Guide",
-    customer: "Emma Wilson",
-    price: 249.0,
-    commissionPercent: 15,
-    commissionAmount: 37.35,
-    status: "Pending",
-    date: "Feb 8, 2026",
-  },
-  {
-    orderId: "ORD-8818",
-    course: "Full Stack Web Development",
-    customer: "James Brown",
-    price: 399.0,
-    commissionPercent: 15,
-    commissionAmount: 59.85,
-    status: "Paid",
-    date: "Feb 7, 2026",
-  },
-  {
-    orderId: "ORD-8817",
-    course: "Python for Data Science",
-    customer: "Olivia Martinez",
-    price: 279.0,
-    commissionPercent: 15,
-    commissionAmount: 41.85,
-    status: "Approved",
-    date: "Feb 6, 2026",
-  },
-  {
-    orderId: "ORD-8816",
-    course: "UI/UX Design Fundamentals",
-    customer: "Liam Thompson",
-    price: 179.0,
-    commissionPercent: 15,
-    commissionAmount: 26.85,
-    status: "Paid",
-    date: "Feb 5, 2026",
-  },
-  {
-    orderId: "ORD-8815",
-    course: "GraphQL for Beginners",
-    customer: "Sophia Davis",
-    price: 149.0,
-    commissionPercent: 15,
-    commissionAmount: 22.35,
-    status: "Pending",
-    date: "Feb 4, 2026",
-  },
-  {
-    orderId: "ORD-8814",
-    course: "Docker & Kubernetes",
-    customer: "Noah Garcia",
-    price: 329.0,
-    commissionPercent: 15,
-    commissionAmount: 49.35,
-    status: "Approved",
-    date: "Feb 3, 2026",
-  },
-  {
-    orderId: "ORD-8813",
-    course: "Machine Learning A-Z",
-    customer: "Isabella Lee",
-    price: 449.0,
-    commissionPercent: 15,
-    commissionAmount: 67.35,
-    status: "Paid",
-    date: "Feb 2, 2026",
-  },
-  {
-    orderId: "ORD-8812",
-    course: "AWS Cloud Practitioner",
-    customer: "Ethan White",
-    price: 219.0,
-    commissionPercent: 15,
-    commissionAmount: 32.85,
-    status: "Paid",
-    date: "Feb 1, 2026",
-  },
-];
-
 const Page = () => {
   const t = useTranslations("AffiliateDashboard");
 
@@ -166,26 +62,8 @@ const Page = () => {
           </div>
         ))}
       </div>
-      <div>
-        <AffiliateReferralCard
-          affiliateCode="AFF-83921"
-          referralLink="https://platform.com/course?id=123&ref=AFF-83921"
-          className="w-full"
-        />
-      </div>
-      <div>
-        <CommissionWalletCard
-          title={t("commissionWallet")}
-          totalEarned={2845.5}
-          totalPayable={213.75}
-          totalPaid={2631.75}
-          currency="€"
-          className="w-full"
-        />
-      </div>
-      <div>
-        <SalesHistoryTable data={salesData} currency="€" className="w-full" />
-      </div>
+
+      
     </div>
   );
 };

@@ -160,3 +160,38 @@ export interface WithdrawalHistoryQueryParams {
 	page_size?: number;
 }
 
+export interface Course {
+  id: number;
+  title: string;
+  subtitle: string;
+  category_name: string;
+  price: string;
+  discount_price: string;
+  course_thumbnail: string;
+  created_at: string;
+}
+
+export interface CourseListResponse {
+  success: boolean;
+  status: number;
+  message: string;
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  next: string | null;
+  previous: string | null;
+  data: Course[];
+}
+
+export interface GenerateReferralResponse {
+  success: boolean;
+  status: number;
+  message: string;
+  data: {
+    course_id: number;
+    course_title: string;
+    referral_code: string;
+    referral_url: string;
+  };
+}

@@ -2231,7 +2231,14 @@
     "music": "Musique",
     "students": "{count} étudiants",
     "copyUrl": "Copier l'URL",
-    "copied": "Copié !"
+    "copied": "Copié !",
+    "generating": "Génération...",
+    "generateReferralLink": "Générer un lien de parrainage",
+    "referralLinkGenerated": "Lien de parrainage généré",
+    "referralCode": "Code de parrainage",
+    "copy": "Copier",
+    "referralUrl": "URL de parrainage",
+    "openReferralLink": "Ouvrir le lien de parrainage"
   },
   "AffiliateCommission": {
     "commissionWallet": "Portefeuille de commissions",

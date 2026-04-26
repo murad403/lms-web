@@ -32,12 +32,6 @@ export function AffiliateSideBar() {
       icon: BookOpen,
     },
     {
-      titleKey: "myReferralLink",
-      infoKey: "myReferralLinkInfo",
-      href: `/${locale}/affiliate/my-referral`,
-      icon: LinkIcon,
-    },
-    {
       titleKey: "salesHistory",
       infoKey: "salesHistoryInfo",
       href: `/${locale}/affiliate/sales-history`,

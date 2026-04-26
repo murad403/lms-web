@@ -1,36 +1,25 @@
 import baseApi1 from "@/redux/api/baseApi";
-import {
-    AffiliateDashboardQueryParams,
-    AffiliateDashboardResponse,
-    AffiliateProfileResponse,
-    AffiliateWalletResponse,
-    StripeConnectResponse,
-    StripeDashboardResponse,
-    WithdrawalHistoryQueryParams,
-    WithdrawalHistoryResponse,
-    WithdrawalRequestPayload,
-    WithdrawalRequestResponse,
-} from "./affiliate.type";
+import { AffiliateDashboardQueryParams, AffiliateDashboardResponse, AffiliateProfileResponse, AffiliateWalletResponse, CourseListResponse, GenerateReferralResponse, StripeConnectResponse, StripeDashboardResponse, WithdrawalHistoryQueryParams, WithdrawalHistoryResponse, WithdrawalRequestPayload, WithdrawalRequestResponse } from "./affiliate.type";
 
 const affiliateApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
-        courseList: builder.query({
-            query: () => {
-                return {
-                    url: `/affiliates/affiliate/courses/`,
-                    method: "GET"
-                }
-            },
-        }),
-        generateCourseReferralLink: builder.mutation({
-            query: (courseId) => {
-                return {
-                    url: `/affiliates/generate-course-referral-link/${courseId}/`,
-                    method: "POST"
-                }
-            },
+        courseList: builder.query<CourseListResponse, { search?: string; page?: number }>({
+            query: ({ search = "", page = 1 } = {}) => ({
+                url: `/affiliates/affiliate/courses/`,
+                method: "GET",
+                params: {
+                    ...(search ? { search } : {}),
+                    page,
+                },
+            }),
         }),
 
+        generateCourseReferralLink: builder.mutation<GenerateReferralResponse, number>({
+            query: (courseId) => ({
+                url: `/affiliates/generate-course-referral-link/${courseId}/`,
+                method: "POST",
+            }),
+        }),
 
         // sales history*********************************************************************************
         salesHistory: builder.query<AffiliateDashboardResponse, AffiliateDashboardQueryParams | void>({
