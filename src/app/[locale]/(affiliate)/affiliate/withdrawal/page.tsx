@@ -55,6 +55,7 @@ const Page = () => {
 
   const wallet = walletResponse?.data.wallet;
   const historyItems = historyResponse?.data?.data ?? [];
+  // Always fall back to 1 so Pagination still renders during loading
   const totalPages = historyResponse?.total_pages ?? 1;
   const numericAmount = Number(amount);
   const hasValidAmount = Number.isFinite(numericAmount) && numericAmount > 0;
@@ -90,9 +91,9 @@ const Page = () => {
     } catch (error: unknown) {
       const message =
         typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        typeof (error as { data?: { message?: string } }).data?.message === "string"
+          error !== null &&
+          "data" in error &&
+          typeof (error as { data?: { message?: string } }).data?.message === "string"
           ? (error as { data?: { message?: string } }).data?.message
           : "Failed to start Stripe onboarding";
 
@@ -108,9 +109,9 @@ const Page = () => {
     } catch (error: unknown) {
       const message =
         typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        typeof (error as { data?: { message?: string } }).data?.message === "string"
+          error !== null &&
+          "data" in error &&
+          typeof (error as { data?: { message?: string } }).data?.message === "string"
           ? (error as { data?: { message?: string } }).data?.message
           : "Failed to open Stripe dashboard";
 
@@ -138,9 +139,9 @@ const Page = () => {
     } catch (error: unknown) {
       const message =
         typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        typeof (error as { data?: { message?: string } }).data?.message === "string"
+          error !== null &&
+          "data" in error &&
+          typeof (error as { data?: { message?: string } }).data?.message === "string"
           ? (error as { data?: { message?: string } }).data?.message
           : "Failed to submit withdrawal request";
 
@@ -189,7 +190,11 @@ const Page = () => {
       <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-xl sm:text-2xl font-semibold">Withdrawal</h1>
-          {(isWalletFetching || isConnectLoading || isDashboardLoading || isRequestLoading) && (
+          {(isWalletFetching ||
+            isHistoryFetching ||
+            isConnectLoading ||
+            isDashboardLoading ||
+            isRequestLoading) && (
             <Badge variant="outline" className="text-xs text-blue-600 border-blue-200 bg-blue-50">
               Processing
             </Badge>
@@ -199,15 +204,21 @@ const Page = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
           <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <p className="text-sm text-gray-500">Available Payable</p>
-            <p className="mt-2 text-3xl font-bold text-amber-500">{formatAmount(wallet.total_payable, "$")}</p>
+            <p className="mt-2 text-3xl font-bold text-amber-500">
+              {formatAmount(wallet.total_payable, "$")}
+            </p>
           </div>
           <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <p className="text-sm text-gray-500">Total Paid</p>
-            <p className="mt-2 text-3xl font-bold text-green-600">{formatAmount(wallet.total_paid, "$")}</p>
+            <p className="mt-2 text-3xl font-bold text-green-600">
+              {formatAmount(wallet.total_paid, "$")}
+            </p>
           </div>
           <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
             <p className="text-sm text-gray-500">Total Earned</p>
-            <p className="mt-2 text-3xl font-bold text-gray-900">{formatAmount(wallet.total_earned, "$")}</p>
+            <p className="mt-2 text-3xl font-bold text-gray-900">
+              {formatAmount(wallet.total_earned, "$")}
+            </p>
           </div>
         </div>
 
@@ -220,38 +231,20 @@ const Page = () => {
               </p>
             </div>
 
-            <div className="space-y-2 text-sm text-gray-700">
-              <p>
-                <span className="font-medium">Account ID:</span>{" "}
-                {connectState?.stripeAccountId || "Not connected yet"}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Badge
-                  variant="outline"
-                  className={connectState?.chargesEnabled ? "border-green-200 text-green-700 bg-green-50" : "border-gray-200 text-gray-600 bg-gray-50"}
-                >
-                  Charges: {connectState?.chargesEnabled ? "Enabled" : "Not enabled"}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className={connectState?.payoutsEnabled ? "border-green-200 text-green-700 bg-green-50" : "border-gray-200 text-gray-600 bg-gray-50"}
-                >
-                  Payouts: {connectState?.payoutsEnabled ? "Enabled" : "Not enabled"}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className={connectState?.detailsSubmitted ? "border-green-200 text-green-700 bg-green-50" : "border-gray-200 text-gray-600 bg-gray-50"}
-                >
-                  Details: {connectState?.detailsSubmitted ? "Submitted" : "Pending"}
-                </Badge>
-              </div>
-            </div>
-
             <div className="flex flex-wrap gap-3">
-              <Button onClick={handleConnect} disabled={isConnectLoading} className="bg-blue-600 hover:bg-blue-700 cursor-pointer">
+              <Button
+                onClick={handleConnect}
+                disabled={isConnectLoading}
+                className="bg-blue-600 hover:bg-blue-700 cursor-pointer"
+              >
                 {isConnectLoading ? "Generating..." : "Connect Stripe"}
               </Button>
-              <Button onClick={handleOpenDashboard} disabled={isDashboardLoading} variant="outline" className="cursor-pointer">
+              <Button
+                onClick={handleOpenDashboard}
+                disabled={isDashboardLoading}
+                variant="outline"
+                className="cursor-pointer"
+              >
                 {isDashboardLoading ? "Opening..." : "Open Stripe Dashboard"}
               </Button>
             </div>
@@ -265,7 +258,10 @@ const Page = () => {
 
             <form onSubmit={handleWithdrawalSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700" htmlFor="withdraw-amount">
+                <label
+                  className="text-sm font-medium text-gray-700"
+                  htmlFor="withdraw-amount"
+                >
                   Amount
                 </label>
                 <Input
@@ -277,10 +273,16 @@ const Page = () => {
                   onChange={(event) => setAmount(event.target.value)}
                   placeholder="Enter amount"
                 />
-                <p className="text-xs text-gray-500">Maximum available: {formatAmount(maxWithdraw, "$")}</p>
+                <p className="text-xs text-gray-500">
+                  Maximum available: {formatAmount(maxWithdraw, "$")}
+                </p>
               </div>
 
-              <Button type="submit" disabled={!canSubmit || isRequestLoading} className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer">
+              <Button
+                type="submit"
+                disabled={!canSubmit || isRequestLoading}
+                className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+              >
                 {isRequestLoading ? "Submitting..." : "Submit Withdrawal"}
               </Button>
             </form>
@@ -292,10 +294,12 @@ const Page = () => {
                   <span className="font-medium">Withdraw ID:</span> {lastRequest.withdrawId}
                 </p>
                 <p>
-                  <span className="font-medium">Amount:</span> {formatAmount(Number(lastRequest.amount), "$")}
+                  <span className="font-medium">Amount:</span>{" "}
+                  {formatAmount(Number(lastRequest.amount), "$")}
                 </p>
                 <p>
-                  <span className="font-medium">Status:</span> {toTitleCase(lastRequest.status)}
+                  <span className="font-medium">Status:</span>{" "}
+                  {toTitleCase(lastRequest.status)}
                 </p>
               </div>
             )}
@@ -303,17 +307,21 @@ const Page = () => {
         </div>
       </div>
 
+      {/* History section — skeleton + table always render; Pagination always renders */}
       <div className="space-y-4 px-4 sm:px-6 lg:px-8">
         <WithdrawHistory
           title="Withdrawal History"
           rows={historyItems}
-          isLoading={isHistoryLoading}
+          isLoading={isHistoryLoading || isHistoryFetching}
           currency="$"
         />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         />
       </div>
     </div>
