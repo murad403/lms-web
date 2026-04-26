@@ -195,3 +195,62 @@ export interface GenerateReferralResponse {
     referral_url: string;
   };
 }
+
+// types/affiliate.ts - add these interfaces
+
+export interface YearlyEarnedDataPoint {
+  month: string;
+  total_earned: number;
+}
+
+export interface DashboardStats {
+  total_clicks: number;
+  total_unique_clicks: number;
+  total_sales: number;
+  total_earned: number;
+  pending_Withdraw: number;
+  wallet: {
+    total_earned: number;
+    total_payable: number;
+    total_paid: number;
+    payout_progress: number;
+  };
+  trends: {
+    clicks: string;
+    sales: string;
+    earned: string;
+    pending: string;
+  };
+  click_sections: {
+    current_month_clicks: number;
+    last_month_clicks: number;
+    total_clicks: number;
+  };
+  clicks_pie_chart: {
+    labels: string[];
+    values: number[];
+  };
+  payout_progress_chart: {
+    type: string;
+    labels: string[];
+    values: number[];
+    current_month: number;
+    last_month: number;
+    overall: number;
+  };
+  yearly_earned_graph: {
+    type: string;
+    period: string;
+    data: YearlyEarnedDataPoint[];
+  };
+}
+
+export interface DashboardResponse {
+  success: boolean;
+  status: number;
+  message: string;
+  data: {
+    stats: DashboardStats;
+  };
+}
+

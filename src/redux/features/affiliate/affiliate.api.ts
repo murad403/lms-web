@@ -1,8 +1,19 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { AffiliateDashboardQueryParams, AffiliateDashboardResponse, AffiliateProfileResponse, AffiliateWalletResponse, CourseListResponse, GenerateReferralResponse, StripeConnectResponse, StripeDashboardResponse, WithdrawalHistoryQueryParams, WithdrawalHistoryResponse, WithdrawalRequestPayload, WithdrawalRequestResponse } from "./affiliate.type";
+import { AffiliateDashboardQueryParams, AffiliateDashboardResponse, AffiliateProfileResponse, AffiliateWalletResponse, CourseListResponse, DashboardResponse, GenerateReferralResponse, StripeConnectResponse, StripeDashboardResponse, WithdrawalHistoryQueryParams, WithdrawalHistoryResponse, WithdrawalRequestPayload, WithdrawalRequestResponse } from "./affiliate.type";
+
+
+
 
 const affiliateApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
+        affiliateDashboard: builder.query<DashboardResponse, void>({
+            query: () => ({
+                url: `/affiliates/affiliate/main-dashboard/`,
+                method: "GET",
+            }),
+        }),
+
+        // course list *****************************************************************************
         courseList: builder.query<CourseListResponse, { search?: string; page?: number }>({
             query: ({ search = "", page = 1 } = {}) => ({
                 url: `/affiliates/affiliate/courses/`,
@@ -114,6 +125,7 @@ const affiliateApi = baseApi1.injectEndpoints({
 
 
 export const {
+    useAffiliateDashboardQuery,
     useCourseListQuery,
     useGenerateCourseReferralLinkMutation,
     useSalesHistoryQuery,
