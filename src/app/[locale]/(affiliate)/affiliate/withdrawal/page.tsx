@@ -22,18 +22,70 @@ const toTitleCase = (value: string) => {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 };
 
+const CardSkeleton = () => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-3">
+    <Skeleton className="h-4 w-28" />
+    <Skeleton className="h-9 w-40" />
+  </div>
+);
+
+const SectionSkeleton = ({ titleWidth = 160, lines = 2 }: { titleWidth?: number; lines?: number }) => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
+    <div className="space-y-2">
+      <Skeleton className="h-5" style={{ width: titleWidth }} />
+      <Skeleton className="h-4 w-full max-w-md" />
+    </div>
+
+    {lines === 1 ? (
+      <Skeleton className="h-11 w-full max-w-xs" />
+    ) : (
+      <div className="flex flex-wrap gap-3">
+        <Skeleton className="h-10 w-36" />
+        <Skeleton className="h-10 w-44" />
+      </div>
+    )}
+  </div>
+);
+
+const WithdrawalFormSkeleton = () => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
+    <div className="space-y-2">
+      <Skeleton className="h-5 w-48" />
+      <Skeleton className="h-4 w-full max-w-sm" />
+    </div>
+
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-3 w-52" />
+      </div>
+      <Skeleton className="h-10 w-44" />
+    </div>
+  </div>
+);
+
+const HistorySkeleton = () => (
+  <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
+    <div className="space-y-2">
+      <Skeleton className="h-5 w-44" />
+      <Skeleton className="h-4 w-72" />
+    </div>
+
+    <div className="space-y-3">
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Skeleton key={index} className="h-12 w-full" />
+      ))}
+    </div>
+  </div>
+);
+
 const Page = () => {
   const [amount, setAmount] = useState("");
   const [lastRequest, setLastRequest] = useState<{
     withdrawId: string;
     amount: string;
     status: string;
-  } | null>(null);
-  const [connectState, setConnectState] = useState<{
-    stripeAccountId: string;
-    chargesEnabled: boolean;
-    payoutsEnabled: boolean;
-    detailsSubmitted: boolean;
   } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -62,17 +114,13 @@ const Page = () => {
   const maxWithdraw = wallet?.total_payable ?? 0;
   const canSubmit = hasValidAmount && numericAmount <= maxWithdraw && maxWithdraw > 0;
 
+  const showWalletSkeleton = isWalletLoading && !walletResponse;
+  const showHistorySkeleton = isHistoryLoading && !historyResponse;
+
   const handleConnect = async () => {
     try {
       const response = await stripeConnect().unwrap();
       const connectData = response.data;
-
-      setConnectState({
-        stripeAccountId: connectData.stripe_account_id,
-        chargesEnabled: connectData.charges_enabled,
-        payoutsEnabled: connectData.payouts_enabled,
-        detailsSubmitted: connectData.details_submitted,
-      });
 
       const isStripeReady =
         connectData.charges_enabled &&
@@ -149,33 +197,7 @@ const Page = () => {
     }
   };
 
-  if (isWalletLoading && !walletResponse) {
-    return (
-      <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
-        <Skeleton className="h-8 w-72" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
-            <Skeleton className="h-6 w-56" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
-            <Skeleton className="h-6 w-48" />
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-36" />
-          </div>
-        </div>
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-3">
-          <Skeleton className="h-6 w-56" />
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="h-12 w-full" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (!walletResponse || !wallet) {
+  if (!showWalletSkeleton && (!walletResponse || !wallet)) {
     return (
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="rounded-2xl border border-red-100 bg-red-50 p-6 text-sm text-red-600 shadow-sm">
@@ -189,7 +211,11 @@ const Page = () => {
     <div className="space-y-6 sm:space-y-8">
       <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="text-xl sm:text-2xl font-semibold">Withdrawal</h1>
+          {showWalletSkeleton ? (
+            <Skeleton className="h-8 w-56" />
+          ) : (
+            <h1 className="text-xl sm:text-2xl font-semibold">Withdrawal</h1>
+          )}
           {(isWalletFetching ||
             isHistoryFetching ||
             isConnectLoading ||
@@ -202,119 +228,142 @@ const Page = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <p className="text-sm text-gray-500">Available Payable</p>
-            <p className="mt-2 text-3xl font-bold text-amber-500">
-              {formatAmount(wallet.total_payable, "$")}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <p className="text-sm text-gray-500">Total Paid</p>
-            <p className="mt-2 text-3xl font-bold text-green-600">
-              {formatAmount(wallet.total_paid, "$")}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <p className="text-sm text-gray-500">Total Earned</p>
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              {formatAmount(wallet.total_earned, "$")}
-            </p>
-          </div>
+          {showWalletSkeleton ? (
+            <>
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+            </>
+          ) : (
+            <>
+              <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                <p className="text-sm text-gray-500">Available Payable</p>
+                <p className="mt-2 text-3xl font-bold text-amber-500">
+                  {formatAmount(wallet?.total_payable ?? 0, "$")}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                <p className="text-sm text-gray-500">Total Paid</p>
+                <p className="mt-2 text-3xl font-bold text-green-600">
+                  {formatAmount(wallet?.total_paid ?? 0, "$")}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                <p className="text-sm text-gray-500">Total Earned</p>
+                <p className="mt-2 text-3xl font-bold text-gray-900">
+                  {formatAmount(wallet?.total_earned ?? 0, "$")}
+                </p>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">Stripe Connection</h2>
-              <p className="mt-1 text-sm text-gray-500">
-                Connect Stripe, verify account status, and open your Stripe Express dashboard.
-              </p>
-            </div>
+          {showWalletSkeleton ? (
+            <>
+              <SectionSkeleton titleWidth={180} lines={2} />
+              <WithdrawalFormSkeleton />
+            </>
+          ) : (
+            <>
+              <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">Stripe Connection</h2>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Connect Stripe, verify account status, and open your Stripe Express dashboard.
+                  </p>
+                </div>
 
-            <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={handleConnect}
-                disabled={isConnectLoading}
-                className="bg-blue-600 hover:bg-blue-700 cursor-pointer"
-              >
-                {isConnectLoading ? "Generating..." : "Connect Stripe"}
-              </Button>
-              <Button
-                onClick={handleOpenDashboard}
-                disabled={isDashboardLoading}
-                variant="outline"
-                className="cursor-pointer"
-              >
-                {isDashboardLoading ? "Opening..." : "Open Stripe Dashboard"}
-              </Button>
-            </div>
-          </section>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    onClick={handleConnect}
+                    disabled={isConnectLoading}
+                    className="bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                  >
+                    {isConnectLoading ? "Generating..." : "Connect Stripe"}
+                  </Button>
+                  <Button
+                    onClick={handleOpenDashboard}
+                    disabled={isDashboardLoading}
+                    variant="outline"
+                    className="cursor-pointer"
+                  >
+                    {isDashboardLoading ? "Opening..." : "Open Stripe Dashboard"}
+                  </Button>
+                </div>
+              </section>
 
-          <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">Withdrawal Request</h2>
-              <p className="mt-1 text-sm text-gray-500">Submit a withdrawal amount.</p>
-            </div>
+              <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-5">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">Withdrawal Request</h2>
+                  <p className="mt-1 text-sm text-gray-500">Submit a withdrawal amount.</p>
+                </div>
 
-            <form onSubmit={handleWithdrawalSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium text-gray-700"
-                  htmlFor="withdraw-amount"
-                >
-                  Amount
-                </label>
-                <Input
-                  id="withdraw-amount"
-                  type="number"
-                  min={1}
-                  step="0.01"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                  placeholder="Enter amount"
-                />
-                <p className="text-xs text-gray-500">
-                  Maximum available: {formatAmount(maxWithdraw, "$")}
-                </p>
-              </div>
+                <form onSubmit={handleWithdrawalSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <label
+                      className="text-sm font-medium text-gray-700"
+                      htmlFor="withdraw-amount"
+                    >
+                      Amount
+                    </label>
+                    <Input
+                      id="withdraw-amount"
+                      type="number"
+                      min={1}
+                      step="0.01"
+                      value={amount}
+                      onChange={(event) => setAmount(event.target.value)}
+                      placeholder="Enter amount"
+                    />
+                    <p className="text-xs text-gray-500">
+                      Maximum available: {formatAmount(maxWithdraw, "$")}
+                    </p>
+                  </div>
 
-              <Button
-                type="submit"
-                disabled={!canSubmit || isRequestLoading}
-                className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
-              >
-                {isRequestLoading ? "Submitting..." : "Submit Withdrawal"}
-              </Button>
-            </form>
+                  <Button
+                    type="submit"
+                    disabled={!canSubmit || isRequestLoading}
+                    className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+                  >
+                    {isRequestLoading ? "Submitting..." : "Submit Withdrawal"}
+                  </Button>
+                </form>
 
-            {lastRequest && (
-              <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-2 text-sm">
-                <p className="font-semibold text-gray-900">Latest Request</p>
-                <p>
-                  <span className="font-medium">Withdraw ID:</span> {lastRequest.withdrawId}
-                </p>
-                <p>
-                  <span className="font-medium">Amount:</span>{" "}
-                  {formatAmount(Number(lastRequest.amount), "$")}
-                </p>
-                <p>
-                  <span className="font-medium">Status:</span>{" "}
-                  {toTitleCase(lastRequest.status)}
-                </p>
-              </div>
-            )}
-          </section>
+                {lastRequest && (
+                  <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-2 text-sm">
+                    <p className="font-semibold text-gray-900">Latest Request</p>
+                    <p>
+                      <span className="font-medium">Withdraw ID:</span> {lastRequest.withdrawId}
+                    </p>
+                    <p>
+                      <span className="font-medium">Amount:</span>{" "}
+                      {formatAmount(Number(lastRequest.amount), "$")}
+                    </p>
+                    <p>
+                      <span className="font-medium">Status:</span>{" "}
+                      {toTitleCase(lastRequest.status)}
+                    </p>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
         </div>
       </div>
 
       {/* History section — skeleton + table always render; Pagination always renders */}
       <div className="space-y-4 px-4 sm:px-6 lg:px-8">
-        <WithdrawHistory
-          title="Withdrawal History"
-          rows={historyItems}
-          isLoading={isHistoryLoading || isHistoryFetching}
-          currency="$"
-        />
+        {showHistorySkeleton ? (
+          <HistorySkeleton />
+        ) : (
+          <WithdrawHistory
+            title="Withdrawal History"
+            rows={historyItems}
+            isLoading={isHistoryLoading || isHistoryFetching}
+            currency="$"
+          />
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

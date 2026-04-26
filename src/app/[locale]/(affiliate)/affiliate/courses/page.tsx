@@ -3,9 +3,46 @@ import { CourseCard } from "@/app/[locale]/(affiliate)/affiliate/courses/CourseC
 import { ReferralModal } from "@/app/[locale]/(affiliate)/affiliate/courses/ReferralModal";
 import { CourseSearchFilter } from "@/components/affiliate/course/Coursesearchfilter";
 import Pagination from "@/components/reusable/Pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCourseListQuery, useGenerateCourseReferralLinkMutation } from "@/redux/features/affiliate/affiliate.api";
 import { GenerateReferralResponse } from "@/redux/features/affiliate/affiliate.type";
 import React, { useState } from "react";
+
+const CourseCardSkeleton = () => (
+  <div className="bg-white rounded-sm border border-gray-100 overflow-hidden flex flex-col">
+    <Skeleton className="h-48 w-full rounded-none" />
+
+    <div className="flex flex-col gap-3 p-4 flex-1">
+      <Skeleton className="h-5 w-20 rounded-none" />
+
+      <div className="space-y-2 flex-1">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-4/5" />
+      </div>
+
+      <div className="border-t border-gray-100" />
+
+      <div className="flex items-center justify-between gap-4">
+        <Skeleton className="h-5 w-20" />
+        <Skeleton className="h-5 w-8" />
+      </div>
+
+      <div className="border-t border-gray-100" />
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-6 w-16" />
+          <Skeleton className="h-5 w-12" />
+        </div>
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+    </div>
+
+    <div className="px-4 pb-4">
+      <Skeleton className="h-11 w-full rounded-md" />
+    </div>
+  </div>
+);
 
 const Page = () => {
   const [search, setSearch] = useState("");
@@ -50,7 +87,7 @@ const Page = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-80 bg-gray-100 rounded-sm animate-pulse" />
+              <CourseCardSkeleton key={i} />
             ))}
           </div>
         ) : (
