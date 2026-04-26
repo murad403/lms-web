@@ -1,33 +1,26 @@
 "use client";
-
+import { formatAmount } from "@/utils/formatter";
 import { useTranslations } from "next-intl";
-
 interface CommissionWalletCardProps {
   totalEarned?: number;
   totalPayable?: number;
   totalPaid?: number;
+  payoutProgress?: number;
   currency?: string;
   className?: string;
   title: string;
 }
 
-function formatAmount(amount: number, currency: string) {
-  return `${currency}${amount.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
 export function CommissionWalletCard({
-  totalEarned = 2845.5,
-  totalPayable = 213.75,
-  totalPaid = 2631.75,
-  currency = "€",
+  totalEarned = 0,
+  totalPayable = 0,
+  totalPaid = 0,
+  payoutProgress = 0,
+  currency = "$",
   className = "",
   title,
 }: CommissionWalletCardProps) {
-  const progress = totalEarned > 0 ? (totalPaid / totalEarned) * 100 : 0;
-  const progressPercent = Math.min(Math.max(progress, 0), 100);
+
   const t = useTranslations("AffiliateDashboard");
 
   return (
@@ -69,14 +62,14 @@ export function CommissionWalletCard({
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">{t("paymentProgress")}</p>
           <p className="text-sm text-gray-500 font-medium">
-            {progressPercent.toFixed(1)}% {t("paid")}
+            {payoutProgress.toFixed(1)}% {t("paid")}
           </p>
         </div>
         {/* Track */}
         <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
           <div
             className="h-full bg-blue-600 rounded-full transition-all duration-500"
-            style={{ width: `${progressPercent}%` }}
+            style={{ width: `${payoutProgress}%` }}
           />
         </div>
       </div>

@@ -1,12 +1,11 @@
 "use client";
-
 import { MousePointerClick, LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-
 interface AffiliateStatCardProps {
   title?: string;
   value?: string | number;
   change?: number;
+  trendLabel?: string;
   compareLabel?: string;
   icon?: LucideIcon;
   iconClassName?: string;
@@ -16,15 +15,19 @@ interface AffiliateStatCardProps {
 
 export function AffiliateStatCard({
   title = "Total Clicks",
-  value = "3,247",
-  change = 12.5,
+  value = "0",
+  change = 0,
+  trendLabel,
   compareLabel = "",
   icon: Icon = MousePointerClick,
   iconClassName = "text-blue-500",
   iconBgClassName = "bg-blue-50",
   className = "",
 }: AffiliateStatCardProps) {
-  const isPositive = change >= 0;
+  const hasTrendLabel = typeof trendLabel === "string";
+  const isPositive = hasTrendLabel
+    ? !trendLabel.startsWith("-")
+    : change >= 0;
   const t = useTranslations("AffiliateDashboard");
 
   return (
@@ -49,8 +52,7 @@ export function AffiliateStatCard({
       {/* Change */}
       <p className="mt-3 text-sm font-medium">
         <span className={isPositive ? "text-green-500" : "text-red-500"}>
-          {isPositive ? "+" : ""}
-          {change}%
+          {hasTrendLabel ? trendLabel : `${isPositive ? "+" : ""}${change}%`}
         </span>
         <span className="text-gray-400 ml-1">{compareLabel || t("vsLastMonth")}</span>
       </p>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Download } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -12,95 +12,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
-export type SaleStatus = "Paid" | "Approved" | "Pending";
+export type SaleStatus = "paid" | "approved" | "pending";
 
 export interface SaleRecord {
   orderId: string;
   course: string;
   customer: string;
   price: number;
-  commissionPercent: number;
+  commissionPercent: string;
   commissionAmount: number;
   status: SaleStatus;
   date: string;
-  currency?: string;
 }
 
 interface SalesHistoryTableProps {
   data?: SaleRecord[];
   currency?: string;
   className?: string;
+  isLoading?: boolean;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
 }
 
-const defaultData: SaleRecord[] = [
-  {
-    orderId: "ORD-8821",
-    course: "Advanced React Development",
-    customer: "Sarah Johnson",
-    price: 299.0,
-    commissionPercent: 15,
-    commissionAmount: 44.85,
-    status: "Paid",
-    date: "Feb 10, 2026",
-  },
-  {
-    orderId: "ORD-8820",
-    course: "TypeScript Mastery",
-    customer: "Michael Chen",
-    price: 199.0,
-    commissionPercent: 15,
-    commissionAmount: 29.85,
-    status: "Approved",
-    date: "Feb 9, 2026",
-  },
-  {
-    orderId: "ORD-8819",
-    course: "Node.js Complete Guide",
-    customer: "Emma Wilson",
-    price: 249.0,
-    commissionPercent: 15,
-    commissionAmount: 37.35,
-    status: "Pending",
-    date: "Feb 8, 2026",
-  },
-  {
-    orderId: "ORD-8818",
-    course: "Full Stack Web Development",
-    customer: "James Brown",
-    price: 399.0,
-    commissionPercent: 15,
-    commissionAmount: 59.85,
-    status: "Paid",
-    date: "Feb 7, 2026",
-  },
-  {
-    orderId: "ORD-8817",
-    course: "Python for Data Science",
-    customer: "Olivia Martinez",
-    price: 279.0,
-    commissionPercent: 15,
-    commissionAmount: 41.85,
-    status: "Approved",
-    date: "Feb 6, 2026",
-  },
-];
-
 const statusStyles: Record<SaleStatus, string> = {
-  Paid: "bg-green-50 text-green-600 border-green-200 hover:bg-green-50",
-  Approved: "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-50",
-  Pending: "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-50",
+  paid: "bg-green-50 text-green-600 border-green-200 hover:bg-green-50",
+  approved: "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-50",
+  pending: "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-50",
 };
+
+function formatStatusLabel(status: SaleStatus) {
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
 
 function formatAmount(amount: number, currency: string) {
   return `${currency}${amount.toLocaleString("en-US", {
@@ -110,105 +53,65 @@ function formatAmount(amount: number, currency: string) {
 }
 
 export function SalesHistoryTable({
-  data = defaultData,
-  currency = "€",
+  data = [],
+  currency = "$",
   className = "",
+  isLoading = false,
+  searchValue = "",
+  onSearchChange,
 }: SalesHistoryTableProps) {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
   const t = useTranslations("AffiliateDashboard");
 
-  const filtered = data.filter((row) => {
-    const matchesSearch =
-      row.orderId.toLowerCase().includes(search.toLowerCase()) ||
-      row.course.toLowerCase().includes(search.toLowerCase()) ||
-      row.customer.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" ||
-      row.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
-
-  const handleExport = () => {
-    const headers = [
-      "Order ID",
-      "Course",
-      "Customer",
-      "Price",
-      "Commission %",
-      "Commission Amount",
-      "Status",
-      "Date",
-    ];
-    const rows = filtered.map((r) => [
-      r.orderId,
-      r.course,
-      r.customer,
-      formatAmount(r.price, currency),
-      `${r.commissionPercent}%`,
-      formatAmount(r.commissionAmount, currency),
-      r.status,
-      r.date,
-    ]);
-    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "sales-history.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+  const renderSkeletonRows = () =>
+    Array.from({ length: 5 }).map((_, index) => (
+      <TableRow key={`skeleton-${index}`} className="border-b border-gray-50">
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-28" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-40" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-32" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-20" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-16" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-24" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-7 w-20 rounded-md" />
+        </TableCell>
+        <TableCell className="py-4">
+          <Skeleton className="h-4 w-24" />
+        </TableCell>
+      </TableRow>
+    ));
 
   return (
     <div
-      className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 flex flex-col gap-5 ${className} `}
+      className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 flex flex-col gap-5 ${className}`}
     >
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-[18px] font-bold  text-gray-900 ">{t("salesHistory")}</h2>
+        <h2 className="text-[18px] font-bold text-gray-900">{t("salesHistory")}</h2>
 
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder={t("searchSales")}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-9 w-full sm:w-40 lg:w-52 text-sm border-gray-200 focus-visible:ring-0"
-            />
-          </div>
-
-          {/* Status Filter */}
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-9 w-28 sm:w-32 lg:w-36 text-sm border-gray-200 focus:ring-0">
-              <SelectValue placeholder={t("allStatus")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t("allStatus")}</SelectItem>
-              <SelectItem value="paid">{t("paid")}</SelectItem>
-              <SelectItem value="approved">{t("approved")}</SelectItem>
-              <SelectItem value="pending">{t("pending")}</SelectItem>
-            </SelectContent>
-          </Select>
-
-          {/* Export */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExport}
-            className="h-9 gap-2 text-sm border-gray-200 text-gray-700 hover:bg-gray-50"
-          >
-            <Download className="w-4 h-4" />
-            {t("export")}
-          </Button>
+        <div className="w-full sm:w-64">
+          <input
+            type="search"
+            value={searchValue}
+            onChange={(event) => onSearchChange?.(event.target.value)}
+            placeholder={t("searchSales")}
+            className="h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-sm outline-none transition focus:border-gray-300 focus:ring-0"
+          />
         </div>
       </div>
 
-      {/* Table */}
       <div className="rounded-xl border border-gray-100 overflow-x-auto">
-        <Table className="min-w-[800px]">
+        <Table className="min-w-200">
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
               <TableHead className="text-xs font-semibold text-gray-500 py-3">
@@ -238,7 +141,9 @@ export function SalesHistoryTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              renderSkeletonRows()
+            ) : data.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={8}
@@ -248,7 +153,7 @@ export function SalesHistoryTable({
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((row) => (
+              data.map((row) => (
                 <TableRow
                   key={row.orderId}
                   className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
@@ -266,7 +171,7 @@ export function SalesHistoryTable({
                     {formatAmount(row.price, currency)}
                   </TableCell>
                   <TableCell className="text-sm text-gray-700 py-4">
-                    {row.commissionPercent}%
+                    {row.commissionPercent}
                   </TableCell>
                   <TableCell className="text-sm font-semibold text-green-500 py-4">
                     {formatAmount(row.commissionAmount, currency)}
@@ -276,7 +181,7 @@ export function SalesHistoryTable({
                       variant="outline"
                       className={`text-xs h-7 font-medium px-2.5 py-0.5 rounded-md ${statusStyles[row.status]}`}
                     >
-                      {row.status}
+                      {formatStatusLabel(row.status)}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-sm text-gray-400 py-4">

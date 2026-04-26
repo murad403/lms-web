@@ -1,5 +1,4 @@
 "use client";
-
 import { CourseCard } from "@/components/affiliate/course/CourseCard";
 import { CourseSearchFilter } from "@/components/affiliate/course/Coursesearchfilter";
 import Pagination from "@/components/reusable/Pagination";
