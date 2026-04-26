@@ -2,7 +2,7 @@ import baseApi1 from "@/redux/api/baseApi";
 import {
     AffiliateDashboardQueryParams,
     AffiliateDashboardResponse,
-    AffiliateWalletData,
+    AffiliateWalletResponse,
 } from "./affiliate.type";
 
 const affiliateApi = baseApi1.injectEndpoints({
@@ -33,11 +33,13 @@ const affiliateApi = baseApi1.injectEndpoints({
                 }
             },
         }),
-        commissionWallet: builder.query<AffiliateWalletData, void>({
-            query: () => {
+        commissionWallet: builder.query<AffiliateWalletResponse, AffiliateDashboardQueryParams | void>({
+            query: (params) => {
                 return {
                     url: `/affiliates/affiliate/wallet/`,
                     method: "GET"
+                    ,
+                    params: params?.search ? { search: params.search } : undefined,
                 }
             },
         }),

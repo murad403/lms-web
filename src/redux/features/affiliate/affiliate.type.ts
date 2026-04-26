@@ -1,5 +1,6 @@
 export interface AffiliateWalletData {
 	total_earned: number;
+	pending_payment: number;
 	total_payable: number;
 	total_paid: number;
 	payout_progress: number;
@@ -46,5 +47,27 @@ export interface AffiliateDashboardResponse {
 	status: number;
 	message: string;
 	data: AffiliateDashboardData;
+}
+
+export interface AffiliateRecentTransactionItem {
+	id: number;
+	order_id: string;
+	course_title: string;
+	customer_name: string;
+	price: number;
+	commission_percentage: string;
+	commission_amount: string;
+	status: string;
+	date: string;
+}
+
+export interface AffiliateWalletResponse {
+	success: boolean;
+	status: number;
+	message: string;
+	data: {
+		wallet: AffiliateWalletData;
+		recent_transactions: AffiliateRecentTransactionItem[];
+	};
 }
 
