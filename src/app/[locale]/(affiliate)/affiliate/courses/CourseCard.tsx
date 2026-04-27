@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Star, Users, Link2, MoreHorizontal } from "lucide-react";
+import { Star, Users, Link2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { resolveImageUrl } from "@/utils/image";
 

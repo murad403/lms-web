@@ -48,7 +48,6 @@ const CreateCoursePage = () => {
             title: "",
             subtitle: "",
             category: "",
-            subCategory: "",
             topic: "",
             language: "",
             level: "",
@@ -112,7 +111,6 @@ const CreateCoursePage = () => {
             formData.append("title", values.title);
             if (values.subtitle) formData.append("subtitle", values.subtitle);
             formData.append("category", values.category);
-            if (values.subCategory) formData.append("subCategory", values.subCategory);
             if (values.topic) formData.append("topic", values.topic);
             formData.append("language", values.language);
             formData.append("level", values.level);
