@@ -112,6 +112,25 @@ export type AdvanceCourseInfoData = {
 
 export type AdvanceCourseInfoResponse = ApiResponse<AdvanceCourseInfoData>;
 
+export type CourseOverviewData = {
+	id: number;
+	title: string;
+	description: string;
+	thumbnail: string | null;
+	thumbnail_video: string | null;
+	category_name: string;
+	language: string;
+	level: "beginner" | "intermediate" | "advanced";
+	price: string;
+	discount_price: string;
+};
+
+export type CourseOverviewResponse = {
+	success: boolean;
+	message: string;
+	data: CourseOverviewData;
+};
+
 export type UpdateInstructorProfilePayload = {
 	title: string;
 	biography: string;

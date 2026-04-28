@@ -315,6 +315,7 @@ const CreateCoursePage = () => {
                         <PublishCourseTab
                             onPrev={goPrev}
                             onSubmit={handlePublish}
+                            courseId={courseId}
                         />
                     )}
                 </div>

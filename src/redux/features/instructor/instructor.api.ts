@@ -1,5 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse, CourseAccreditationResponse, CertificateListResponse, MyCoursesQueryParams, MyCoursesResponse, OwnerCourseDetailsResponse } from "./instructor.type";
+import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse, CourseAccreditationResponse, CertificateListResponse, MyCoursesQueryParams, MyCoursesResponse, OwnerCourseDetailsResponse, CourseOverviewResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -169,6 +169,14 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+        courseOverview: builder.query<CourseOverviewResponse, number>({
+            query: (courseId) => {
+                return {
+                    url: `/courses/courses/${courseId}/overview/`,
+                    method: "GET"
+                }
+            }
+        }),
         publishCourse: builder.mutation<PublishCourseResponse, number>({
             query: (courseId) => {
                 return {
@@ -327,6 +335,7 @@ export const {
     useGetSignatureQuery,
     useUploadSignatureMutation,
     useMyCoursesQuery,
+    useCourseOverviewQuery,
     useCourseAccreditationQuery,
     useCertificateListQuery,
     useOwnerCourseDetailsQuery
