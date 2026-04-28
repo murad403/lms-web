@@ -144,6 +144,8 @@ export type CourseDetailsData = LandingCourse & {
 	requirements: LandingCourseRequirement[];
 	sections: LandingCourseSection[];
 	related_courses: LandingRelatedCourse[];
+	created_at: string;
+	
 };
 
 export type CourseDetailsResponse = ApiResponse<CourseDetailsData>;

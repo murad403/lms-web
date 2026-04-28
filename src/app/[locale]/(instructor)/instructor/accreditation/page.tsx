@@ -6,7 +6,7 @@ import SubmissionsTab from "@/app/[locale]/(instructor)/instructor/accreditation
 import CertificatesTab from "@/app/[locale]/(instructor)/instructor/accreditation/CertificatesTab";
 import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
 import SignatureModal from "@/components/modal/SignatureModal";
-import { accreditationStats, accreditationSubmissions, activeCertificates, accreditationGuidelines} from "@/lib/instructor";
+import { accreditationGuidelines } from "@/lib/instructor";
 import { useTranslations } from "next-intl";
 
 const tabKeys = [
@@ -23,7 +23,7 @@ const AccreditationPage = () => {
     return (
         <div className="space-y-6">
             {/* Stats */}
-            <AccreditationStatsCards stats={accreditationStats} />
+            <AccreditationStatsCards />
 
             {/* Tab content card */}
             <div>
@@ -56,10 +56,10 @@ const AccreditationPage = () => {
                 {/* Tab body */}
                 <div className="mt-6">
                     {activeTab === "submissions" && (
-                        <SubmissionsTab submissions={accreditationSubmissions} />
+                        <SubmissionsTab />
                     )}
                     {activeTab === "certificates" && (
-                        <CertificatesTab certificates={activeCertificates} />
+                        <CertificatesTab />
                     )}
                     {activeTab === "guidelines" && (
                         <GuidelinesTab guidelines={accreditationGuidelines} />

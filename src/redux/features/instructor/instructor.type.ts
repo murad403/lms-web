@@ -330,3 +330,78 @@ export type InstructorUploadSignatureResponse = {
 	status: number;
 	message: InstructorUploadSignatureMessage;
 };
+
+// Course Accreditation Types
+export type CourseAccreditationStats = {
+	approved_courses: number;
+	published_courses: number;
+	pending_review_courses: number;
+	certificates_issued: number;
+	ratings_people: number;
+};
+
+export type CourseAccreditationCourse = {
+	id: number;
+	title: string;
+	subtitle: string;
+	category: number;
+	topic: string;
+	language: string;
+	level: "beginner" | "intermediate" | "advanced";
+	price: string;
+	discount_price: string;
+	rating: number;
+	coupon_code: string;
+	expiry_type: string;
+	status: "draft" | "published" | "accepted" | "pending" | "rejected";
+	created_at: string;
+};
+
+export type CourseAccreditationData = {
+	stats: CourseAccreditationStats;
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	results: CourseAccreditationCourse[];
+};
+
+export type CourseAccreditationResponse = ApiResponse<CourseAccreditationData>;
+
+// Certificate Types
+export type CertificateListCourse = {
+	id: number;
+	certificated_id: string;
+	title: string;
+	subtitle: string;
+	category: number;
+	topic: string;
+	language: string;
+	status: string;
+	created_at: string;
+};
+
+export type CertificateListData = {
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	data: CertificateListCourse[];
+};
+
+export type CertificateListResponse = {
+	success: boolean;
+	status: number;
+	message: string;
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	data: CertificateListCourse[];
+};
