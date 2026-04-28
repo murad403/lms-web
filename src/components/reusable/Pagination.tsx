@@ -87,7 +87,7 @@ const Pagination: React.FC<PaginationProps> = ({
         }
     };
 
-    if (totalPages <= 1) return null;
+    // if (totalPages <= 1) return null;
 
     return (
         <div className="flex items-center justify-center gap-2 sm:gap-3 mt-10">
