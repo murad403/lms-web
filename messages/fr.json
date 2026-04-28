@@ -1815,6 +1815,7 @@
     "certificates": "Certificats",
     "guidelines": "Directives",
     "requestAccreditation": "Demander l'Accréditation",
+    "createSignature": "Créer la signature",
     "allStatus": "Tous les Statuts",
     "approved": "Approuvé",
     "pending": "En attente",

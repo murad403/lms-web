@@ -1,5 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse } from "./instructor.type";
+import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -229,13 +229,37 @@ const instructorApi = baseApi1.injectEndpoints({
         }),
         cancelWithdrawRequest: builder.mutation<InstructorCancelWithdrawResponse, { withdrawId: string }>({
             query: ({ withdrawId }) => {
-                console.log(withdrawId)
                 return {
                     url: `/payments/instructor/withdraw/cancel/${withdrawId}/`,
                     method: "POST"
                 }
             },
             invalidatesTags: ["instructor-earnings"]
+        }),
+
+
+
+
+
+        // accreditation********************************************************************************
+        uploadSignature: builder.mutation<InstructorUploadSignatureResponse, FormData>({
+            query: (data) => {
+                return {
+                    url: `/instructors/upload-signature/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["signature"]
+        }),
+        getSignature: builder.query<InstructorSignatureResponse, void>({
+            query: () => {
+                return {
+                    url: `/instructors/get-signature/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["signature"]
         }),
     }),
 });
@@ -271,5 +295,7 @@ export const {
     useStripeConnectMutation,
     useStripeDashboardLinkMutation,
     useWithdrawRequestMutation,
-    useCancelWithdrawRequestMutation
+    useCancelWithdrawRequestMutation,
+    useGetSignatureQuery,
+    useUploadSignatureMutation
 } = instructorApi;

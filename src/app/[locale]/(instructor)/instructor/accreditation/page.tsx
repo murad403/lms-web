@@ -5,7 +5,7 @@ import AccreditationStatsCards from "@/app/[locale]/(instructor)/instructor/accr
 import SubmissionsTab from "@/app/[locale]/(instructor)/instructor/accreditation/SubmissionsTab";
 import CertificatesTab from "@/app/[locale]/(instructor)/instructor/accreditation/CertificatesTab";
 import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
-import RequestAccreditationModal from "@/components/modal/RequestAccreditationModal";
+import SignatureModal from "@/components/modal/SignatureModal";
 import { accreditationStats, accreditationSubmissions, activeCertificates, accreditationGuidelines} from "@/lib/instructor";
 import { useTranslations } from "next-intl";
 
@@ -17,7 +17,7 @@ const tabKeys = [
 
 const AccreditationPage = () => {
     const [activeTab, setActiveTab] = useState("submissions");
-    const [showRequestModal, setShowRequestModal] = useState(false);
+    const [showSignatureModal, setShowSignatureModal] = useState(false);
     const t = useTranslations("InstructorAccreditation");
 
     return (
@@ -45,11 +45,11 @@ const AccreditationPage = () => {
                         ))}
                     </div>
                     <button
-                        onClick={() => setShowRequestModal(true)}
-                        className="flex items-center gap-1.5 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
+                        onClick={() => setShowSignatureModal(true)}
+                        className="flex cursor-pointer items-center gap-1.5 px-4 py-2.5 bg-main text-white text-sm font-medium hover:bg-main/90 transition-colors"
                     >
                         <Plus className="w-4 h-4" />
-                        {t("requestAccreditation")}
+                        {t("createSignature")}
                     </button>
                 </div>
 
@@ -67,10 +67,9 @@ const AccreditationPage = () => {
                 </div>
             </div>
 
-            {/* Request Modal */}
-            <RequestAccreditationModal
-                open={showRequestModal}
-                onClose={() => setShowRequestModal(false)}
+            <SignatureModal
+                open={showSignatureModal}
+                onClose={() => setShowSignatureModal(false)}
             />
         </div>
     );

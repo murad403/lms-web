@@ -1815,6 +1815,7 @@
     "certificates": "Zertifikate",
     "guidelines": "Richtlinien",
     "requestAccreditation": "Akkreditierung beantragen",
+    "createSignature": "Signatur erstellen",
     "allStatus": "Alle Status",
     "approved": "Genehmigt",
     "pending": "Ausstehend",

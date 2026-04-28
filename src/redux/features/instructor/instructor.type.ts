@@ -310,3 +310,23 @@ export type InstructorCancelWithdrawResponse = ApiResponse<{
 	withdraw_id: string;
 	status: string;
 }>;
+
+export type InstructorSignatureData = {
+	id: string;
+	name: string;
+	email: string;
+	signature: string;
+};
+
+export type InstructorSignatureResponse = ApiResponse<InstructorSignatureData>;
+
+export type InstructorUploadSignatureMessage = {
+	message: string;
+	id: string;
+};
+
+export type InstructorUploadSignatureResponse = {
+	success: boolean;
+	status: number;
+	message: InstructorUploadSignatureMessage;
+};
