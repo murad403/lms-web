@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { Check, Loader2, BadgeCheck, BookOpen, Globe, Layers3, FileText, PlayCircle, Tag } from "lucide-react";
+import { Check, Loader2, BadgeCheck, BookOpen, Globe, Layers3, FileText, Tag } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -162,7 +162,7 @@ const PublishCourseTab = ({ onPrev, onSubmit, courseId }: Props) => {
             )}
 
 
-            
+
             {/* Navigation */}
             <div className="flex items-center justify-between pt-6 border-t border-border-light">
                 <button
