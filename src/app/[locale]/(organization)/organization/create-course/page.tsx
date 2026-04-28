@@ -15,6 +15,8 @@ import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCour
 import type { BasicCourseInfoPayload } from "@/redux/features/instructor/instructor.type";
 import { toast } from "sonner";
 
+
+
 const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
 type CourseFormData = z.infer<typeof courseFormSchema>;
 

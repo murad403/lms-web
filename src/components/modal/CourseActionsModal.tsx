@@ -65,21 +65,8 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                     </Link>
 
                     <button
-                        onClick={handleRequestAccreditation}
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                        <div className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center">
-                            <Award className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <div className="flex-1">
-                            <p className="font-medium">{t("requestAccreditation")}</p>
-                            <p className="text-xs text-description">{t("getOfficialCert")}</p>
-                        </div>
-                    </button>
-
-                    <button
                         onClick={handleDelete}
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full cursor-pointer"
                     >
                         <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center">
                             <Trash2 className="w-4 h-4 text-red-600" />
