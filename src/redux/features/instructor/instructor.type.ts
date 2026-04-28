@@ -461,3 +461,99 @@ export type CertificateListResponse = {
 	previous: string | null;
 	data: CertificateListCourse[];
 };
+
+// Owner Course Details Types
+export type OwnerCourseDetailsCategory = {
+	id: number;
+	name: string;
+	slug: string;
+	description: string;
+	created_at: string;
+	updated_at: string;
+};
+
+export type OwnerCourseDetailsInstructor = {
+	id: string;
+	name: string;
+	email: string;
+	phone: string;
+	get_biography: string;
+	avatar: string | null;
+};
+
+export type OwnerCourseDetailsHero = {
+	thumbnail: string | null;
+	published_at: string;
+	last_updated_at: string;
+	created_by: string;
+	title: string;
+	subtitle: string;
+	course_price: number;
+	total_revenue: number;
+	overall_rating: number;
+	reviews_count: number;
+};
+
+export type OwnerCourseDetailsCard = {
+	label: string;
+	value: number | string;
+	sub_label: string;
+};
+
+export type ChartTrendData = {
+	labels: string[];
+	values: number[];
+};
+
+export type RatingBreakdownItem = {
+	stars: number;
+	count: number;
+	percentage: number;
+};
+
+export type OwnerCourseDetailsRatingChart = {
+	overall_rating: number;
+	reviews_count: number;
+	trend: ChartTrendData;
+	breakdown: RatingBreakdownItem[];
+};
+
+export type OwnerCourseDetailsRevenueChart = {
+	labels: string[];
+	values: number[];
+};
+
+export type OwnerCourseDetailsCourseOverviewChart = {
+	labels: string[];
+	enrollments: number[];
+	completions: number[];
+};
+
+export type OwnerCourseDetailsDashboard = {
+	hero: OwnerCourseDetailsHero;
+	cards: OwnerCourseDetailsCard[];
+	rating_chart: OwnerCourseDetailsRatingChart;
+	revenue_chart: OwnerCourseDetailsRevenueChart;
+	course_overview_chart: OwnerCourseDetailsCourseOverviewChart;
+};
+
+export type OwnerCourseDetailsData = {
+	id: number;
+	title: string;
+	subtitle: string;
+	category: OwnerCourseDetailsCategory;
+	topic: string;
+	language: string;
+	level: "beginner" | "intermediate" | "advanced";
+	price: string;
+	discount_price: string;
+	rating: number;
+	coupon_code: string;
+	expiry_type: string;
+	status: string;
+	created_at: string;
+	instructor: OwnerCourseDetailsInstructor;
+	dashboard: OwnerCourseDetailsDashboard;
+};
+
+export type OwnerCourseDetailsResponse = ApiResponse<OwnerCourseDetailsData>;

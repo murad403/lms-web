@@ -28,9 +28,8 @@ const LectureVideoModal = ({ open, onClose, uploadedVideo, setUploadedVideo, onS
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-xs font-medium text-green-600 uppercase">{t("fileUploaded")}</span>
-                                    <span className="text-xs text-description">• 1:55</span>
                                 </div>
-                                <p className="text-sm text-title truncate">{uploadedVideo.name}</p>
+                                <p className="text-sm text-title">{uploadedVideo.name}</p>
                                 <button
                                     onClick={() => setUploadedVideo(null)}
                                     className="text-sm text-main mt-2"

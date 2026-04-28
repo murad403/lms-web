@@ -1,12 +1,14 @@
+"use client"
 import CourseDetailPage from '@/components/reusable/for-dashboard/CourseDetailPage'
-import React from 'react'
+import { useParams } from 'next/navigation';
 
-const page = () => {
+const CourseDetails = () => {
+  const { id } = useParams();
   return (
     <div>
-      <CourseDetailPage />
+      <CourseDetailPage courseId={Number(id)} />
     </div>
   )
 }
 
-export default page
+export default CourseDetails

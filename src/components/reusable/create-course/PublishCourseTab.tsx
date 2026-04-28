@@ -37,7 +37,13 @@ const PublishCourseTab = ({ onPrev, onSubmit }: Props) => {
             <h3 className="text-xl font-bold text-title">{t("publishCourse")}</h3>
 
             <div className="border-b border-border-light" />
+            {/* course content */}
+            <div>
 
+            </div>
+
+
+            
             {/* Navigation */}
             <div className="flex items-center justify-between pt-6 border-t border-border-light">
                 <button
