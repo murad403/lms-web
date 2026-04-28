@@ -370,6 +370,62 @@ export type CourseAccreditationData = {
 
 export type CourseAccreditationResponse = ApiResponse<CourseAccreditationData>;
 
+// My Courses Types
+export type MyCourseInstructor = {
+	id: string;
+	name: string;
+	email: string;
+	phone: string;
+	get_biography: string | null;
+	avatar: string | null;
+};
+
+export type MyCourseAdvanceInfo = {
+	id: number;
+	thumbnail: string | null;
+	trailer_video: string | null;
+	description: string;
+};
+
+export type MyCourseItem = {
+	id: number;
+	title: string;
+	subtitle: string;
+	Category: string;
+	topic: string;
+	language: string;
+	description: string;
+	level: "beginner" | "intermediate" | "advanced";
+	price: string;
+	rating: number;
+	discount_price: string;
+	coupon_code: string;
+	status: string;
+	reviews_count: number;
+	instructor: MyCourseInstructor;
+	advance_info: MyCourseAdvanceInfo;
+};
+
+export type MyCoursesQueryParams = {
+	page?: number;
+	page_size?: number;
+	search?: string;
+	category?: string | number;
+};
+
+export type MyCoursesResponse = {
+	success: boolean;
+	status: number;
+	message: string;
+	total: number;
+	page: number;
+	page_size: number;
+	total_pages: number;
+	next: string | null;
+	previous: string | null;
+	data: MyCourseItem[];
+};
+
 // Certificate Types
 export type CertificateListCourse = {
 	id: number;

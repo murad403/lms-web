@@ -1,18 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import DeleteCourseModal from "@/components/modal/DeleteCourseModal";
 import Pagination from "@/components/reusable/Pagination";
-import { instructorCourses } from "@/lib/instructor";
+import { TInstructorCourse } from "@/lib/instructor";
 import DashboardCourseCard from "@/components/reusable/for-dashboard/DashboardCourseCard";
 import { useTranslations } from "next-intl";
-
-const COURSES_PER_PAGE = 8;
+import { useCourseCategoriesQuery, useMyCoursesQuery } from "@/redux/features/instructor/instructor.api";
+import { resolveImageUrl } from "@/utils/image";
 
 const MyCoursesPage = () => {
     const path = "/instructor";
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("All Category");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [deleteModal, setDeleteModal] = useState<{ open: boolean; courseId: number | null; courseName: string }>({
         open: false,
@@ -21,20 +22,48 @@ const MyCoursesPage = () => {
     });
     const t = useTranslations("InstructorMyCourses");
 
-    const filteredCourses = instructorCourses.filter((course) => {
-        const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = selectedCategory === "All Category" || course.category === selectedCategory;
-        return matchesSearch && matchesCategory;
+    // Debounce search input (500ms)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+            setCurrentPage(1);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    const { data: categoryData } = useCourseCategoriesQuery();
+
+    const { data: myCoursesData } = useMyCoursesQuery({
+        page: currentPage,
+        page_size: 10,
+        ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
+        ...(selectedCategory !== "all" && { category: Number(selectedCategory) }),
     });
 
-    const totalPages = Math.ceil(filteredCourses.length / COURSES_PER_PAGE);
-    const paginatedCourses = filteredCourses.slice(
-        (currentPage - 1) * COURSES_PER_PAGE,
-        currentPage * COURSES_PER_PAGE
-    );
+    const categories = categoryData?.data || [];
+    const courses: TInstructorCourse[] = (myCoursesData?.data || []).map((course) => ({
+        id: course.id,
+        title: course.title,
+        image:
+            resolveImageUrl(course.advance_info?.thumbnail) ||
+            "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
+        category: course.Category || "N/A",
+        rating: Number(course.rating) || 0,
+        reviews: String(course.reviews_count || 0),
+        students: String(course.reviews_count || 0),
+        price: Number(course.price) || 0,
+        status:
+            course.status === "published" || course.status === "accepted"
+                ? "Published"
+                : course.status === "draft"
+                    ? "Draft"
+                    : "Under Review",
+    }));
+
+    const totalPages = myCoursesData?.total_pages || 1;
 
     const handleDelete = (id: number) => {
-        const course = instructorCourses.find((c) => c.id === id);
+        const course = courses.find((c) => c.id === id);
         setDeleteModal({ open: true, courseId: id, courseName: course?.title || "" });
     };
 
@@ -42,6 +71,11 @@ const MyCoursesPage = () => {
         // TODO: API call to delete course
         console.log("Deleting course:", deleteModal.courseId);
         setDeleteModal({ open: false, courseId: null, courseName: "" });
+    };
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategory(e.target.value);
+        setCurrentPage(1);
     };
 
     return (
@@ -60,36 +94,42 @@ const MyCoursesPage = () => {
                 </div>
                 <select
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    onChange={handleCategoryChange}
                     className="px-4 py-3 bg-white text-sm text-description focus:outline-none focus:border-main"
                 >
-                    <option>{t("allCategory")}</option>
-                    <option>DEVELOPMENT</option>
-                    <option>DESIGN</option>
-                    <option>MARKETING</option>
+                    <option value="all">{t("allCategory")}</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={String(category.id)}>
+                            {category.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
             {/* Course Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                {paginatedCourses.map((course) => (
-                    <DashboardCourseCard
-                        path={path}
-                        key={course.id}
-                        course={course}
-                        onDelete={handleDelete}
-                    />
-                ))}
+                {courses.length > 0 ? (
+                    courses.map((course) => (
+                        <DashboardCourseCard
+                            path={path}
+                            key={course.id}
+                            course={course}
+                            onDelete={handleDelete}
+                        />
+                    ))
+                ) : (
+                    <div className="col-span-full text-center py-12 text-description">
+                        {t("noCoursesFound")}
+                    </div>
+                )}
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
-            )}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
 
             {/* Delete Modal */}
             <DeleteCourseModal

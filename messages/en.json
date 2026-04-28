@@ -1714,6 +1714,7 @@
     "searchPlaceholder": "Search in your courses...",
     "allCategory": "All Category",
     "students": "students",
+    "noCoursesFound": "No courses found",
     "deleteCourse": "Delete Course",
     "deleteConfirm": "Are you sure you want to delete {courseName}? This action cannot be undone.",
     "cancel": "Cancel",

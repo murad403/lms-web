@@ -1,5 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse, CourseAccreditationResponse, CertificateListResponse } from "./instructor.type";
+import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse, CourseAccreditationResponse, CertificateListResponse, MyCoursesQueryParams, MyCoursesResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -180,11 +180,13 @@ const instructorApi = baseApi1.injectEndpoints({
 
 
         //my courses*************************************************************************** 
-        myCourses: builder.query({
-            query: () => {
+        myCourses: builder.query<MyCoursesResponse, MyCoursesQueryParams | void>({
+            query: (params) => {
+                console.log(params)
                 return {
                     url: `/courses/courses-list-instructor/`,
-                    method: "GET"
+                    method: "GET",
+                    params: params || undefined
                 }
             }
         }),
@@ -316,6 +318,7 @@ export const {
     useCancelWithdrawRequestMutation,
     useGetSignatureQuery,
     useUploadSignatureMutation,
+    useMyCoursesQuery,
     useCourseAccreditationQuery,
     useCertificateListQuery
 } = instructorApi;

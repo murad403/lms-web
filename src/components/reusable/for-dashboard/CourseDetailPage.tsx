@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Star, BookOpen, MessageSquare, Users, Paperclip, Globe, Clock } from "lucide-react";
+import { Star, BookOpen, MessageSquare, Users, Paperclip, Globe } from "lucide-react";
 import RevenueChart from "@/components/reusable/for-dashboard/RevenueChart";
 import OverallRating from "@/components/reusable/for-dashboard/OverallRating";
 import CourseOverviewChart from "@/components/reusable/for-dashboard/CourseOverviewChart";
@@ -20,7 +20,6 @@ const CourseDetailPage = () => {
         { icon: Users, value: course.studentsEnrolled.toLocaleString(), labelKey: "studentsEnrolled", sub: "" },
         { icon: Paperclip, value: course.attachFiles.toString(), labelKey: "attachFile", sub: course.attachSize },
         { icon: Globe, value: course.language, labelKey: "courseLanguage", sub: "" },
-        { icon: Clock, value: course.totalHours, labelKey: "hours", sub: "" },
     ];
 
     return (
@@ -112,9 +111,6 @@ const CourseDetailPage = () => {
                                 <span className="text-sm text-description">{t("usdRevenue")}</span>
                             </div>
 
-                            <button className="sm:ml-auto px-5 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors">
-                                {t("withdrawMoney")}
-                            </button>
 
                         </div>
                     </div>
