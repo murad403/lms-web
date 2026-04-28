@@ -1,36 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { useViewCartQuery } from "@/redux/features/student/student.api";
+import { useCheckoutMutation, useMakePaymentMutation, useViewCartQuery } from "@/redux/features/student/student.api";
 import { resolveImageUrl } from "@/utils/image";
+import stripe from "@/assets/logo/stripe.png";
+import { toast } from "sonner";
 
 type CheckoutFormData = {
-  nameOnCard: string;
-  cardNumber: string;
-  expiryDate: string;
-  cvc: string;
-  saveCard: boolean;
   couponCode: string;
 };
 
 const CheckoutPage = () => {
   const { data: cartResponse, isLoading: isCartLoading } = useViewCartQuery();
+  const [checkout, { isLoading: isCheckoutLoading }] = useCheckoutMutation();
+  const [makePayment, { isLoading: isPaymentLoading }] = useMakePaymentMutation();
 
-  const { register, handleSubmit } = useForm<CheckoutFormData>({
-    defaultValues: {
-      saveCard: true,
-    },
-  });
+  const { register, handleSubmit } = useForm<CheckoutFormData>();
 
   const cartItems = cartResponse?.data?.items || [];
-  const subtotal = Number.parseFloat(cartResponse?.data?.subtotal || "0");
-  const couponDiscount = 10;
-  const discountAmount = (subtotal * couponDiscount) / 100;
-  const total = subtotal - discountAmount;
+  const courseAmount = Number(cartItems[0]?.course_amount) || 0;
+  const courseDiscountPrice = Number(cartItems[0]?.course_discount_price) || 0;
+  const convertDiscountPrice = Number(courseAmount - courseDiscountPrice);
 
-  const onSubmit = (data: CheckoutFormData) => {
-    // TODO: API call for payment
-    console.log("Checkout:", data);
+  const onSubmit = async (data: CheckoutFormData) => {
+    try {
+      await checkout({ coupon_code: data.couponCode }).unwrap();
+      toast.success("Coupon applied successfully!");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to apply coupon.");
+    }
+  };
+
+  const handleCompletePayment = async () => {
+    try {
+      const checkoutResponse = await checkout({ coupon_code: "" }).unwrap();
+      const paymentResponse = await makePayment(checkoutResponse?.data?.order_id).unwrap();
+      if (paymentResponse.data.checkout_url) {
+        window.location.href = paymentResponse.data.checkout_url;
+      }
+    } catch (error: any) {
+      console.error("Payment flow failed:", error);
+      toast.error(error?.data?.message || "Failed to complete payment.");
+    }
   };
 
   return (
@@ -42,64 +54,8 @@ const CheckoutPage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Payment Form */}
         <div className="flex-1">
+          <Image src={stripe} alt="Stripe" width={500} height={500} className="mx-auto object-cover" />
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="text-xs font-medium text-title mb-1 block">
-                Name
-              </label>
-              <input
-                {...register("nameOnCard")}
-                placeholder="Name on card"
-                className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-title mb-1 block">
-                Card Number
-              </label>
-              <input
-                {...register("cardNumber")}
-                placeholder="Label"
-                className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-medium text-title mb-1 block">
-                  MM / YY
-                </label>
-                <input
-                  {...register("expiryDate")}
-                  placeholder="MM / YY"
-                  className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-title mb-1 block">
-                  CVC
-                </label>
-                <input
-                  {...register("cvc")}
-                  placeholder="Security Code"
-                  className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
-                />
-              </div>
-            </div>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                {...register("saveCard")}
-                type="checkbox"
-                className="w-4 h-4 rounded border-gray-300 text-main focus:ring-main"
-              />
-              <span className="text-xs text-description">
-                Remember this card, save it on my card list
-              </span>
-            </label>
-
-            {/* Coupon */}
             <div className="pt-4 border-t border-gray-100">
               <p className="text-xs font-medium text-title mb-2">
                 Have a Coupon?
@@ -111,7 +67,7 @@ const CheckoutPage = () => {
                   className="flex-1 px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main uppercase"
                 />
                 <button
-                  type="button"
+                  type="submit"
                   className="px-5 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap cursor-pointer"
                 >
                   Apply Code
@@ -173,26 +129,28 @@ const CheckoutPage = () => {
                 Order Summery
               </h4>
               <div className="flex justify-between text-sm text-description">
-                <span>Subtotal:</span>
+                <span>Course Price:</span>
                 <span className="font-medium text-title">
-                  ${subtotal.toFixed(2)}
+                  ${courseAmount}
                 </span>
               </div>
               <div className="flex justify-between text-xs text-description">
-                <span>Coupon Discount:</span>
-                <span>{couponDiscount}%</span>
+                <span>Discount Price:</span>
+                <span>${convertDiscountPrice}</span>
               </div>
               <div className="flex justify-between text-xl font-bold text-title pt-2 border-t border-gray-100">
                 <span>Total:</span>
-                <span className="text-xl">${total.toFixed(2)} USD</span>
+                <span className="text-xl">${courseAmount - convertDiscountPrice}</span>
               </div>
             </div>
 
             <button
-              onClick={handleSubmit(onSubmit)}
+              onClick={handleCompletePayment}
+              type="button"
               className="w-full mt-4 py-3 cursor-pointer bg-main text-white rounded-lg text-sm font-semibold hover:bg-main/90 transition-colors"
+              disabled={isCheckoutLoading || isPaymentLoading || isCartLoading}
             >
-              Complete Payment
+              {isPaymentLoading ? "Processing..." : "Complete Payment"}
             </button>
           </div>
         </div>

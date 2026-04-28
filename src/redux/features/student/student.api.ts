@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AddCartResponse, AddWishlistResponse, ApiResponse, DeleteAccountPayload, DeleteAccountResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LearningProgressResponse, LessonTrackingResponse, LiveClassesResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse, StartCourseResponse, CompletedLectureResponse, GetCommentsResponse, AddCommentPayload, AddCommentResponse, ReplyCommentPayload, NextLectureResponse, GetQuizzesResponse, SubmitQuizPayload, SubmitQuizResponse } from "./student.type";
+import { AddCartResponse, AddWishlistResponse, ApiResponse, CheckoutRequest, CheckoutResponse, DeleteAccountPayload, DeleteAccountResponse, EnrolledCoursesResponse, JoinLiveClassResponse, LearningProgressResponse, LessonTrackingResponse, LiveClassesResponse, MakePaymentResponse, RemoveCartResponse, RemoveWishlistResponse, StudentCertificatesResponse, StudentDashboardData, StudentProfileData, StudentPurchaseHistoryResponse, StudentQuizAttemptsResponse, StudentReviewItem, StudentReviewListResponse, UpdateReviewPayload, ViewCartResponse, ViewWishlistResponse, StartCourseResponse, CompletedLectureResponse, GetCommentsResponse, AddCommentPayload, AddCommentResponse, ReplyCommentPayload, NextLectureResponse, GetQuizzesResponse, SubmitQuizPayload, SubmitQuizResponse } from "./student.type";
 
 
 
@@ -182,7 +182,7 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["cart"]
         }),
-        checkout: builder.mutation({
+        checkout: builder.mutation<CheckoutResponse, CheckoutRequest>({
             query: (data) => {
                 return {
                     url: `/orders/cart/checkout/`,
@@ -192,10 +192,10 @@ const studentApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["cart"]
         }),
-        makePayment: builder.mutation({
-            query: (data) => {
+        makePayment: builder.mutation<MakePaymentResponse, number>({
+            query: (orderId) => {
                 return {
-                    url: `/payments/stripe/checkout/132/`,
+                    url: `/payments/stripe/checkout/${orderId}/`,
                     method: "POST"
                 }
             },
@@ -316,4 +316,4 @@ const studentApi = baseApi.injectEndpoints({
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCheckoutMutation, useMakePaymentMutation } = studentApi;

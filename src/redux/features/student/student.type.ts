@@ -275,6 +275,40 @@ export type ViewCartResponse = ApiResponse<CartData>;
 
 export type RemoveCartResponse = ApiResponse<Record<string, never>>;
 
+export type CheckoutRequest = {
+    coupon_code: string;
+};
+
+export type CheckoutOrderItem = {
+    course_id: number;
+    course_title: string;
+    original_price: string;
+    discount_amount: string;
+    paid_price: string;
+    course_coupon_code: string;
+};
+
+export type CheckoutOrderData = {
+    order_id: number;
+    custom_order_id: string;
+    status: string;
+    coupon_code: string | null;
+    subtotal: string;
+    discount_amount: string;
+    total_amount: string;
+    items: CheckoutOrderItem[];
+};
+
+export type CheckoutResponse = ApiResponse<CheckoutOrderData>;
+
+export type MakePaymentData = {
+    checkout_url: string;
+    session_id: string;
+    payment_id: number;
+};
+
+export type MakePaymentResponse = ApiResponse<MakePaymentData>;
+
 export type StudentCertificateItem = {
     id: string;
     course_name: string;
