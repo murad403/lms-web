@@ -28,10 +28,6 @@ const CourseDetailPage = () => {
             {/* Breadcrumb */}
             <div className="text-sm text-description">
                 <Link href="/instructor/my-courses" className="hover:text-main">
-                    {t("courseBreadcrumb")}
-                </Link>
-                {" > "}
-                <Link href="/instructor/my-courses" className="hover:text-main">
                     {t("myCoursesLink")}
                 </Link>
                 {" > "}

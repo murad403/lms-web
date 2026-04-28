@@ -16,6 +16,8 @@ const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProp
   const [showModal, setShowModal] = useState(false);
   const t = useTranslations("InstructorMyCourses");
 
+  // console.log(path)
+
   return (
     <div className="bg-white overflow-hidden group relative">
       {/* Image */}

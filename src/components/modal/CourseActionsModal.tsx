@@ -1,5 +1,5 @@
 "use client";
-import { Eye, Pencil, Award, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -19,10 +19,6 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
         onClose();
     };
 
-    const handleRequestAccreditation = () => {
-        console.log("Requesting accreditation for course ID:", courseId);
-        onClose();
-    };
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>

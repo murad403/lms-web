@@ -9,7 +9,8 @@ import { useTranslations } from "next-intl";
 
 const COURSES_PER_PAGE = 8;
 
-const MyCoursesPage = ({ path }: { path: string }) => {
+const MyCoursesPage = () => {
+    const path = "/instructor";
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All Category");
     const [currentPage, setCurrentPage] = useState(1);
