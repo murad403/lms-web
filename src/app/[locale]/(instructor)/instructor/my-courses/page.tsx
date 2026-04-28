@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import DeleteCourseModal from "@/components/modal/DeleteCourseModal";
 import Pagination from "@/components/reusable/Pagination";
 import { TInstructorCourse } from "@/lib/instructor";
-import DashboardCourseCard from "@/components/reusable/for-dashboard/DashboardCourseCard";
+import DashboardCourseCard, { DashboardCourseCardSkeleton } from "@/components/reusable/for-dashboard/DashboardCourseCard";
 import { useTranslations } from "next-intl";
 import { useCourseCategoriesQuery, useMyCoursesQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
@@ -33,7 +33,7 @@ const MyCoursesPage = () => {
 
     const { data: categoryData } = useCourseCategoriesQuery();
 
-    const { data: myCoursesData } = useMyCoursesQuery({
+    const { data: myCoursesData, isLoading: isCoursesLoading, isFetching: isCoursesFetching } = useMyCoursesQuery({
         page: currentPage,
         page_size: 10,
         ...(debouncedSearch.trim() && { search: debouncedSearch.trim() }),
@@ -108,7 +108,11 @@ const MyCoursesPage = () => {
 
             {/* Course Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                {courses.length > 0 ? (
+                {isCoursesLoading || isCoursesFetching ? (
+                    Array.from({ length: 8 }).map((_, index) => (
+                        <DashboardCourseCardSkeleton key={`course-skeleton-${index}`} />
+                    ))
+                ) : courses.length > 0 ? (
                     courses.map((course) => (
                         <DashboardCourseCard
                             path={path}

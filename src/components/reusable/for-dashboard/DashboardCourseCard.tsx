@@ -5,6 +5,7 @@ import { Star, Users, MoreHorizontal } from "lucide-react";
 import { TInstructorCourse } from "@/lib/instructor";
 import CourseActionsModal from "@/components/modal/CourseActionsModal";
 import { useTranslations } from "next-intl";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type DashboardCourseCardProps = {
   course: TInstructorCourse;
@@ -67,6 +68,35 @@ const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProp
         onDelete={onDelete}
         path={path}
       />
+    </div>
+  );
+};
+
+export const DashboardCourseCardSkeleton = () => {
+  return (
+    <div className="bg-white overflow-hidden group relative">
+      <div className="relative h-65 overflow-hidden">
+        <Skeleton className="h-full w-full rounded-none" />
+      </div>
+
+      <div className="p-4">
+        <Skeleton className="h-4 w-24 mb-2" />
+        <Skeleton className="h-5 w-full mb-3" />
+        <div className="flex items-center gap-3 border-y border-border-light py-4 justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded-full" />
+            <Skeleton className="h-4 w-10" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded-full" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-6 w-20" />
+          <Skeleton className="h-7 w-7 rounded-full" />
+        </div>
+      </div>
     </div>
   );
 };

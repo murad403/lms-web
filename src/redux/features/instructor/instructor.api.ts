@@ -182,7 +182,7 @@ const instructorApi = baseApi1.injectEndpoints({
         //my courses*************************************************************************** 
         myCourses: builder.query<MyCoursesResponse, MyCoursesQueryParams | void>({
             query: (params) => {
-                console.log(params)
+                // console.log(params)
                 return {
                     url: `/courses/courses-list-instructor/`,
                     method: "GET",
