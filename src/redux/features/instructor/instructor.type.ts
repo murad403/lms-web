@@ -254,3 +254,59 @@ export type PublishCourseResponse = ApiResponse<{
 	id: number;
 	status: string;
 }>;
+
+export type InstructorEarningsWithdrawalItem = {
+	id: number;
+	withdraw_id: string;
+	user_name: string;
+	bank_name: string | null;
+	bank_last4: string | null;
+	amount: string;
+	status: string;
+	requested_at: string;
+};
+
+export type InstructorMonthlyRevenueChartItem = {
+	label: string;
+	amount: string;
+};
+
+export type InstructorEarningsData = {
+	total_revenue: string;
+	total_withdrawals: string;
+	today_revenue: string;
+	current_balance: string;
+	withdrawals: InstructorEarningsWithdrawalItem[];
+	monthly_revenue_chart: InstructorMonthlyRevenueChartItem[];
+};
+
+export type InstructorEarningsResponse = ApiResponse<InstructorEarningsData>;
+
+export type InstructorStripeConnectData = {
+	stripe_account_id: string;
+	onboarding_url: string;
+	charges_enabled: boolean;
+	payouts_enabled: boolean;
+	details_submitted: boolean;
+};
+
+export type InstructorStripeConnectResponse = ApiResponse<InstructorStripeConnectData>;
+
+export type InstructorStripeDashboardResponse = ApiResponse<{
+	url: string;
+}>;
+
+export type InstructorWithdrawRequestPayload = {
+	amount: number;
+};
+
+export type InstructorWithdrawRequestResponse = ApiResponse<{
+	withdraw_id: string;
+	amount: string;
+	status: string;
+}>;
+
+export type InstructorCancelWithdrawResponse = ApiResponse<{
+	withdraw_id: string;
+	status: string;
+}>;

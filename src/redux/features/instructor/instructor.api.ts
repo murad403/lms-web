@@ -1,22 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import {
-    AdvanceCourseInfoResponse,
-    BasicCourseInfoPayload,
-    BasicCourseInfoResponse,
-    CourseInfoResponse,
-    CreateLiveClassRequest,
-    CreateLiveClassResponse,
-    InstructorCategoryResponse,
-    InstructorDashboardResponse,
-    InstructorLiveClassesStatsResponse,
-    InstructorProfileResponse,
-    LectureResponse,
-    PublishCourseResponse,
-    QuizPayload,
-    QuizResponse,
-    SectionPayload,
-    SectionResponse,
-} from "./instructor.type";
+import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -205,8 +188,62 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+
+
+
+        // earnings*****************************************************************************************
+        earnings: builder.query<InstructorEarningsResponse, void>({
+            query: () => {
+                return {
+                    url: `/instructors/earnings/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["instructor-earnings"]
+        }),
+        stripeConnect: builder.mutation<InstructorStripeConnectResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/stripe/connect/`,
+                    method: "POST"
+                }
+            }
+        }),
+        stripeDashboardLink: builder.mutation<InstructorStripeDashboardResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/stripe/dashboard-link/`,
+                    method: "POST"
+                }
+            }
+        }),
+        withdrawRequest: builder.mutation<InstructorWithdrawRequestResponse, InstructorWithdrawRequestPayload>({
+            query: (data) => {
+                return {
+                    url: `/payments/withdraw/request/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["instructor-earnings"]
+        }),
+        cancelWithdrawRequest: builder.mutation<InstructorCancelWithdrawResponse, { withdrawId: string }>({
+            query: ({ withdrawId }) => {
+                console.log(withdrawId)
+                return {
+                    url: `/payments/instructor/withdraw/cancel/${withdrawId}/`,
+                    method: "POST"
+                }
+            },
+            invalidatesTags: ["instructor-earnings"]
+        }),
     }),
 });
+
+
+
+
+
 
 
 
@@ -229,5 +266,10 @@ export const {
     useAddCourseQuizMutation,
     usePublishCourseMutation,
     useDeleteCourseSectionMutation,
-    useDeleteCourseLectureMutation
+    useDeleteCourseLectureMutation,
+    useEarningsQuery,
+    useStripeConnectMutation,
+    useStripeDashboardLinkMutation,
+    useWithdrawRequestMutation,
+    useCancelWithdrawRequestMutation
 } = instructorApi;

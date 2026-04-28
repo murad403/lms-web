@@ -1,8 +1,8 @@
-import { withdrawalHistory } from "@/lib/instructor";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { formatAmount } from "@/utils/formatter";
 
-type WithdrawHistoryRow = {
+export type WithdrawHistoryRow = {
   id: number | string;
   withdraw_id?: string;
   user_name?: string;
@@ -20,6 +20,9 @@ interface WithdrawHistoryProps {
   rows?: WithdrawHistoryRow[];
   isLoading?: boolean;
   currency?: string;
+  showCancelAction?: boolean;
+  onCancelWithdraw?: (row: WithdrawHistoryRow) => void;
+  cancellingWithdrawId?: string | number | null;
 }
 
 const toTitleCase = (value: string) => {
@@ -33,36 +36,63 @@ const statusClassName = (status: string) => {
   return "text-red-700 bg-red-50 border-red-200";
 };
 
-const legacyRows: WithdrawHistoryRow[] = withdrawalHistory.map((item) => ({
-  id: item.id,
-  withdraw_id: String(item.id),
-  user_name: "-",
-  bank_name: item.provider,
-  amount: item.amount,
-  status: item.status.toLowerCase(),
-  date: item.date,
-  provider: item.provider,
-}));
-
 const COLUMNS = ["Withdraw ID", "User Name", "Bank Name", "Amount", "Status", "Date", "Time"];
+
+const RowSkeleton = ({ showCancelAction }: { showCancelAction: boolean }) => (
+  <tr className="border-b border-gray-100">
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-28 rounded-md" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-20 rounded-md" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-32 rounded-md" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-16 rounded-md" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-6 w-20 rounded-full" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-20 rounded-md" />
+    </td>
+    <td className="py-3 px-3">
+      <Skeleton className="h-5 w-16 rounded-md" />
+    </td>
+    {showCancelAction && (
+      <td className="py-3 px-3">
+        <Skeleton className="h-9 w-28 rounded-md" />
+      </td>
+    )}
+  </tr>
+);
 
 const WithdrawHistory = ({
   title = "Withdrawal History",
   rows,
   isLoading = false,
   currency = "$",
+  showCancelAction = false,
+  onCancelWithdraw,
+  cancellingWithdrawId = null,
 }: WithdrawHistoryProps) => {
-  const tableRows = rows ?? legacyRows;
+  const tableRows = rows ?? [];
+  const columns = showCancelAction ? [...COLUMNS, "Action"] : COLUMNS;
 
   return (
-    <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+    <section className="border border-gray-100 bg-white p-6">
+      <div className="space-y-1">
+        <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <p className="text-sm text-gray-500">Latest withdrawal requests and their current status.</p>
+      </div>
 
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-230 text-sm">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
-              {COLUMNS.map((col) => (
+              {columns.map((col) => (
                 <th key={col} className="text-left py-3 px-3 font-semibold text-gray-700">
                   {col}
                 </th>
@@ -72,33 +102,11 @@ const WithdrawHistory = ({
           <tbody>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, index) => (
-                <tr key={`history-skeleton-${index}`} className="border-b border-gray-100">
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-28 rounded-md" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-24 rounded-md" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-32 rounded-md" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-16 rounded-md" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-6 w-20 rounded-full" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-20 rounded-md" />
-                  </td>
-                  <td className="py-3 px-3">
-                    <Skeleton className="h-5 w-16 rounded-md" />
-                  </td>
-                </tr>
+                <RowSkeleton key={`history-skeleton-${index}`} showCancelAction={showCancelAction} />
               ))
             ) : tableRows.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-10 text-center text-sm text-gray-400">
+                <td colSpan={columns.length} className="py-10 text-center text-sm text-gray-400">
                   No withdrawal history found.
                 </td>
               </tr>
@@ -108,6 +116,11 @@ const WithdrawHistory = ({
                 const isValidDate = requestedAt ? !Number.isNaN(requestedAt.getTime()) : false;
                 const numericAmount =
                   typeof item.amount === "string" ? Number(item.amount) : item.amount;
+                const normalizedStatus = String(item.status).toLowerCase();
+                const isCompleted = normalizedStatus === "completed" || normalizedStatus === "rejected" || normalizedStatus === "cancelled";
+                const isCancelling =
+                  cancellingWithdrawId !== null &&
+                  (cancellingWithdrawId === item.withdraw_id || cancellingWithdrawId === item.id);
                 const bankDisplay = [item.bank_name, item.bank_last4 ? `••••${item.bank_last4}` : null]
                   .filter(Boolean)
                   .join(" ");
@@ -129,7 +142,7 @@ const WithdrawHistory = ({
                     <td className="py-3 px-3">
                       <span
                         className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${statusClassName(
-                          String(item.status).toLowerCase()
+                          normalizedStatus
                         )}`}
                       >
                         {toTitleCase(String(item.status))}
@@ -148,6 +161,24 @@ const WithdrawHistory = ({
                           })
                         : "-"}
                     </td>
+                    {showCancelAction && (
+                      <td className="py-3 px-3">
+                        {!isCompleted ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="cursor-pointer"
+                            disabled={!onCancelWithdraw || isCancelling}
+                            onClick={() => onCancelWithdraw?.(item)}
+                          >
+                            {isCancelling ? "Cancelling..." : "Cancel Withdraw"}
+                          </Button>
+                        ) : (
+                          <span className="text-xs text-gray-400">-</span>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 );
               })
