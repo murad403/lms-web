@@ -1220,7 +1220,14 @@
     "activeNow": "Active Now",
     "today": "Today",
     "typePlaceholder": "Type your message",
-    "send": "Send"
+    "send": "Send",
+    "loading": "Loading conversations...",
+    "noConversations": "No conversations found",
+    "noMessages": "No messages yet",
+    "loadingMessages": "Loading messages...",
+    "selectConversation": "Select a conversation to start chatting",
+    "connected": "Connected",
+    "disconnected": "Disconnected"
   },
   "CertificatesPage": {
     "title": "My Certificates",
