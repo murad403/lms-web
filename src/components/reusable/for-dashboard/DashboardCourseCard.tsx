@@ -9,11 +9,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type DashboardCourseCardProps = {
   course: TInstructorCourse;
-  onDelete: (id: number) => void;
   path: string;
 };
 
-const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProps) => {
+const DashboardCourseCard = ({ course, path }: DashboardCourseCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const t = useTranslations("InstructorMyCourses");
 
@@ -65,7 +64,6 @@ const DashboardCourseCard = ({ course, onDelete, path }: DashboardCourseCardProp
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         courseId={course.id}
-        onDelete={onDelete}
         path={path}
       />
     </div>

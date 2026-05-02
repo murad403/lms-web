@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import DeleteCourseModal from "@/components/modal/DeleteCourseModal";
 import Pagination from "@/components/reusable/Pagination";
 import { TInstructorCourse } from "@/lib/instructor";
 import DashboardCourseCard, { DashboardCourseCardSkeleton } from "@/components/reusable/for-dashboard/DashboardCourseCard";
@@ -15,11 +14,6 @@ const MyCoursesPage = () => {
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
-    const [deleteModal, setDeleteModal] = useState<{ open: boolean; courseId: number | null; courseName: string }>({
-        open: false,
-        courseId: null,
-        courseName: "",
-    });
     const t = useTranslations("InstructorMyCourses");
 
     // Debounce search input (500ms)
@@ -61,18 +55,6 @@ const MyCoursesPage = () => {
     }));
 
     const totalPages = myCoursesData?.total_pages || 1;
-
-    const handleDelete = (id: number) => {
-        const course = courses.find((c) => c.id === id);
-        setDeleteModal({ open: true, courseId: id, courseName: course?.title || "" });
-    };
-
-    const confirmDelete = () => {
-        // TODO: API call to delete course
-        console.log("Deleting course:", deleteModal.courseId);
-        setDeleteModal({ open: false, courseId: null, courseName: "" });
-    };
-
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(e.target.value);
         setCurrentPage(1);
@@ -118,7 +100,6 @@ const MyCoursesPage = () => {
                             path={path}
                             key={course.id}
                             course={course}
-                            onDelete={handleDelete}
                         />
                     ))
                 ) : (
@@ -133,14 +114,6 @@ const MyCoursesPage = () => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
-            />
-
-            {/* Delete Modal */}
-            <DeleteCourseModal
-                open={deleteModal.open}
-                onClose={() => setDeleteModal({ open: false, courseId: null, courseName: "" })}
-                onConfirm={confirmDelete}
-                courseName={deleteModal.courseName}
             />
         </div>
     );

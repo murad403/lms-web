@@ -1,5 +1,5 @@
 "use client";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -8,16 +8,12 @@ type CourseActionsModalProps = {
     isOpen: boolean;
     onClose: () => void;
     courseId: number;
-    onDelete: (id: number) => void;
     path: string;
 };
 
-const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: CourseActionsModalProps) => {
+const CourseActionsModal = ({ isOpen, onClose, courseId, path }: CourseActionsModalProps) => {
     const t = useTranslations("InstructorCourseActions");
-    const handleDelete = () => {
-        onDelete(courseId);
-        onClose();
-    };
+
 
 
     return (
@@ -47,7 +43,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                     </Link>
 
                     <Link
-                        href={`${path}/create-course?edit=${courseId}`}
+                        href={`/instructor/edit-course/`}
                         onClick={onClose}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >
@@ -59,19 +55,6 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, onDelete, path }: Cours
                             <p className="text-xs text-description">{t("updateContent")}</p>
                         </div>
                     </Link>
-
-                    <button
-                        onClick={handleDelete}
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full cursor-pointer"
-                    >
-                        <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center">
-                            <Trash2 className="w-4 h-4 text-red-600" />
-                        </div>
-                        <div className="flex-1 text-left">
-                            <p className="font-medium">{t("deleteCourse")}</p>
-                            <p className="text-xs text-red-400">{t("permanentlyRemove")}</p>
-                        </div>
-                    </button>
                 </div>
             </DialogContent>
         </Dialog>

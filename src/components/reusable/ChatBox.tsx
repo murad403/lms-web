@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -12,6 +11,7 @@ import { TMessage } from "@/redux/features/message/message.type";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { resolveImageUrl } from "@/utils/image";
 import { getClientSession } from "@/utils/auth-client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type MessageForm = {
   message: string;
@@ -68,6 +68,84 @@ const normalizeIncomingMessage = (
     created_at: data.created_at ?? new Date().toISOString(),
   };
 };
+
+const ConversationsSkeleton = () => (
+  <div className="space-y-1.5 px-3 sm:px-4 py-2">
+    {Array.from({ length: 6 }).map((_, index) => (
+      <div
+        key={index}
+        className="flex items-center gap-3 px-0 py-3 sm:py-3.5 border-b border-border-light last:border-0"
+      >
+        <Skeleton className="size-10 rounded-full shrink-0" />
+
+        <div className="flex-1 min-w-0 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-14 shrink-0" />
+          </div>
+          <Skeleton className="h-3 w-4/5" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const MessagesSkeleton = () => (
+  <div className="space-y-4 sm:space-y-5 px-3 sm:px-4 py-4">
+    <div className="text-center">
+      <Skeleton className="h-6 w-20 rounded-full mx-auto" />
+    </div>
+
+    {Array.from({ length: 5 }).map((_, index) => {
+      const isOwn = index % 2 === 1;
+
+      return (
+        <div key={index} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
+          <div
+            className={`flex items-end gap-1.5 sm:gap-2 max-w-[85%] sm:max-w-[75%] md:max-w-[70%] ${isOwn ? "flex-row-reverse" : ""}`}
+          >
+            {!isOwn && <Skeleton className="size-7 rounded-full mb-4 shrink-0" />}
+
+            <div className="space-y-1.5">
+              {!isOwn && <Skeleton className="h-3 w-20 ml-1" />}
+
+              <Skeleton
+                className={`h-10 sm:h-11 rounded-2xl ${isOwn ? "w-44 sm:w-56" : "w-52 sm:w-64"}`}
+              />
+
+              <Skeleton className={`h-3 w-12 ${isOwn ? "ml-auto mr-1" : "ml-1"}`} />
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);
+
+const MessageHeaderSkeleton = () => (
+  <div className="px-3 sm:px-4 py-3 border-b border-border-light flex items-center gap-2 sm:gap-3 shrink-0">
+    <Skeleton className="w-5 h-5 rounded-md md:hidden shrink-0" />
+
+    <div className="relative shrink-0">
+      <Skeleton className="w-10 h-10 sm:w-11 sm:h-11 rounded-full" />
+      <Skeleton className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white" />
+    </div>
+
+    <div className="min-w-0 flex-1 space-y-2">
+      <Skeleton className="h-4 sm:h-5 w-28 sm:w-36" />
+      <Skeleton className="h-3 w-20" />
+    </div>
+
+    <Skeleton className="h-4 w-16 ml-auto hidden sm:block" />
+  </div>
+);
+
+const MessageComposerSkeleton = () => (
+  <div className="px-3 sm:px-4 py-3 border-t border-border-light flex items-center gap-2 shrink-0">
+    <Skeleton className="flex-1 min-w-0 h-11 sm:h-12 rounded-xl" />
+    <Skeleton className="h-11 sm:h-12 w-24 sm:w-28 rounded-xl shrink-0" />
+  </div>
+);
 
 const ChatBox = ({
   title,
@@ -309,9 +387,7 @@ const ChatBox = ({
 
           <div className="flex-1 overflow-y-auto">
             {isConversationsLoading ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-sm text-description">{t("loading")}</p>
-              </div>
+              <ConversationsSkeleton />
             ) : filteredConversations.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-sm text-description">
@@ -379,72 +455,72 @@ const ChatBox = ({
           className={`flex-col flex-1 min-w-0 ${showUserList ? "hidden md:flex" : "flex"
             }`}
         >
-          <div className="px-3 sm:px-4 py-3 border-b border-border-light flex items-center gap-2 sm:gap-3 shrink-0">
-            <button
-              onClick={() => setShowUserList(true)}
-              className="md:hidden p-1.5 -ml-1 rounded-md text-description hover:text-title hover:bg-gray-100 transition-colors"
-              aria-label="Back to chats"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          {isMessagesLoading ? (
+            <MessageHeaderSkeleton />
+          ) : (
+            <div className="px-3 sm:px-4 py-3 border-b border-border-light flex items-center gap-2 sm:gap-3 shrink-0">
+              <button
+                onClick={() => setShowUserList(true)}
+                className="md:hidden p-1.5 -ml-1 rounded-md text-description hover:text-title hover:bg-gray-100 transition-colors"
+                aria-label="Back to chats"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
 
-            {otherParticipant ? (
-              <>
-                <div className="relative shrink-0">
-                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden">
-                    <Image
-                      src={resolveImageUrl(otherParticipant.avatar)}
-                      alt={otherParticipant.name}
-                      fill
-                      className="object-cover"
-                    />
+              {otherParticipant ? (
+                <>
+                  <div className="relative shrink-0">
+                    <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden">
+                      <Image
+                        src={resolveImageUrl(otherParticipant.avatar)}
+                        alt={otherParticipant.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" />
                   </div>
 
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" />
-                </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-sm sm:text-base font-bold text-title truncate">
+                      {otherParticipant.name}
+                    </h4>
 
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-sm sm:text-base font-bold text-title truncate">
-                    {otherParticipant.name}
-                  </h4>
-
-                  <p className="text-xs text-green-500 font-medium">
-                    {t("activeNow")}
-                  </p>
-                </div>
-              </>
-            ) : (
-              <p className="text-sm text-description">
-                {t("selectConversation")}
-              </p>
-            )}
-
-            <div className="flex items-center gap-1.5 ml-auto">
-              {isWsConnected ? (
-                <>
-                  <Wifi className="w-4 h-4 text-green-500" />
-                  <span className="text-xs text-green-500 hidden sm:inline">
-                    {t("connected")}
-                  </span>
+                    <p className="text-xs text-green-500 font-medium">
+                      {t("activeNow")}
+                    </p>
+                  </div>
                 </>
               ) : (
-                <>
-                  <WifiOff className="w-4 h-4 text-red-500" />
-                  <span className="text-xs text-red-500 hidden sm:inline">
-                    {t("disconnected")}
-                  </span>
-                </>
+                <p className="text-sm text-description">
+                  {t("selectConversation")}
+                </p>
               )}
+
+              <div className="flex items-center gap-1.5 ml-auto">
+                {isWsConnected ? (
+                  <>
+                    <Wifi className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-green-500 hidden sm:inline">
+                      {t("connected")}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-4 h-4 text-red-500" />
+                    <span className="text-xs text-red-500 hidden sm:inline">
+                      {t("disconnected")}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-3 sm:space-y-4">
             {isMessagesLoading ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-sm text-description">
-                  {t("loadingMessages")}
-                </p>
-              </div>
+              <MessagesSkeleton />
             ) : localMessages.length === 0 ? (
               <div className="text-center">
                 <p className="text-xs text-description bg-gray-100 px-3 py-1.5 rounded-full inline-block">
@@ -525,27 +601,31 @@ const ChatBox = ({
             <div ref={messagesEndRef} />
           </div>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="px-3 sm:px-4 py-3 border-t border-border-light flex items-center gap-2 shrink-0"
-          >
-            <input
-              {...register("message")}
-              placeholder={t("typePlaceholder")}
-              disabled={!selectedConversationId || isMessagesLoading}
-              className="flex-1 min-w-0 bg-gray-50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 border border-border-light text-sm focus:outline-none focus:ring-1 focus:ring-main disabled:opacity-50 disabled:cursor-not-allowed"
-              autoComplete="off"
-            />
-
-            <button
-              type="submit"
-              disabled={!selectedConversationId}
-              className="px-3 sm:px-4 py-2.5 sm:py-3 bg-main text-white rounded-xl text-sm font-semibold hover:bg-main/90 active:bg-main/80 transition-colors flex items-center gap-1.5 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+          {isMessagesLoading ? (
+            <MessageComposerSkeleton />
+          ) : (
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="px-3 sm:px-4 py-3 border-t border-border-light flex items-center gap-2 shrink-0"
             >
-              <span className="hidden sm:inline">{t("send")}</span>
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
+              <input
+                {...register("message")}
+                placeholder={t("typePlaceholder")}
+                disabled={!selectedConversationId || isMessagesLoading}
+                className="flex-1 min-w-0 bg-gray-50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 border border-border-light text-sm focus:outline-none focus:ring-1 focus:ring-main disabled:opacity-50 disabled:cursor-not-allowed"
+                autoComplete="off"
+              />
+
+              <button
+                type="submit"
+                disabled={!selectedConversationId}
+                className="px-3 sm:px-4 py-2.5 sm:py-3 bg-main text-white rounded-xl text-sm font-semibold hover:bg-main/90 active:bg-main/80 transition-colors flex items-center gap-1.5 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="hidden sm:inline">{t("send")}</span>
+                <Send className="w-4 h-4" />
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

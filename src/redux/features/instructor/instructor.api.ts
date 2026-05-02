@@ -81,6 +81,14 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+        getCourseBasicInfo: builder.query({
+            query: (courseId) => {
+                return {
+                    url: `/courses/courses/${courseId}/`,
+                    method: "GET"
+                }
+            }
+        }),
         updateCourseBasicInfo: builder.mutation<BasicCourseInfoResponse, { courseId: number; data: BasicCourseInfoPayload }>({
             query: ({ courseId, data }) => {
                 return {
@@ -108,12 +116,28 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+        getCourseAdvanceInfo: builder.query({
+            query: (advanceInfoId) => {
+                return {
+                    url: `/courses/courses/advance-info/${advanceInfoId}/`,
+                    method: "GET"
+                }
+            }
+        }),
         addCourseSection: builder.mutation<SectionResponse, { courseId: number; data: SectionPayload }>({
             query: ({ courseId, data }) => {
                 return {
                     url: `/courses/courses/sections/${courseId}/`,
                     method: "POST",
                     body: data
+                }
+            }
+        }),
+        getCourseSection: builder.query({
+            query: (courseId, sectionId) => {
+                return {
+                    url: `/courses/courses/${courseId}/sections/${sectionId}/`,
+                    method: "GET"
                 }
             }
         }),
@@ -140,6 +164,14 @@ const instructorApi = baseApi1.injectEndpoints({
                     url: `/courses/sections/lectures/${sectionId}/`,
                     method: "POST",
                     body: data
+                }
+            }
+        }),
+        getCourseLecture: builder.query({
+            query: ({ sectionId, lectureId }) => {
+                return {
+                    url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
+                    method: "GET"
                 }
             }
         }),
@@ -185,6 +217,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+
+
 
 
         //my courses*************************************************************************** 
