@@ -8,13 +8,10 @@ import { Check, Layers, FileText, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "@/i18n/navigation";
 import BasicInfoTab from "../../../../../../components/reusable/edit-course/EditBasicInfoTab";
 import AdvanceInfoTab from "../../../../../../components/reusable/edit-course/EditAdvanceInfoTab";
 import CurriculumTab from "../../../../../../components/reusable/edit-course/EditCurriCulumTab";
-import { TCourseLecture, TCourseSection } from "@/lib/instructor";
 import { useCourseDetailsQuery } from "@/redux/features/landing/landing.api";
-import type { LandingCourseLecture, LandingCourseSection } from "@/redux/features/landing/landing.type";
 import { useCourseCategoriesQuery, useGetCourseAdvanceInfoQuery, useGetCourseBasicInfoQuery, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/create-course/createCourse.api";
 import type { BasicCourseInfoPayload } from "@/redux/features/create-course/createCourse.type";
 import { basicInfoSchema } from "../../../../../../components/reusable/edit-course/EditBasicInfoTab";
@@ -31,29 +28,6 @@ const tabMeta = [
     { id: 2, labelKey: "curriculum", icon: Play },
 ];
 
-const mapSections = (sections: LandingCourseSection[] = []): TCourseSection[] => {
-    return sections
-        .slice()
-        .sort((a, b) => a.order - b.order)
-        .map((section: LandingCourseSection) => ({
-            id: section.id,
-            title: section.name,
-            order: section.order,
-            lectures: section.lectures
-                .slice()
-                .sort((a: LandingCourseLecture, b: LandingCourseLecture) => a.order - b.order)
-                .map((lecture: LandingCourseLecture): TCourseLecture => ({
-                    id: lecture.id,
-                    title: lecture.name,
-                    type: lecture.video_file ? "video" : "document",
-                    description: lecture.description || "",
-                    lectureNotes: "",
-                    videoFileUrl: lecture.video_file || undefined,
-                    lectureAttachmentUrl: lecture.LectureAttachment || undefined,
-                    lectureNoteFileUrl: lecture.LectureNoteFile || undefined,
-                })),
-        }));
-};
 
 type CourseTextItem = {
     text: string;
@@ -102,10 +76,8 @@ type EditCourseFormProps = {
 
 const EditCourseForm = ({ courseId, categories, courseDetails, basicInfo, advanceInfo }: EditCourseFormProps) => {
     const [activeTab, setActiveTab] = useState(0);
-    const [courseSections, setCourseSections] = useState<TCourseSection[]>(() => mapSections(courseDetails.sections || []));
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const [trailer, setTrailer] = useState<File | null>(null);
-    const router = useRouter();
 
     const t = useTranslations("InstructorCreateCourse");
 
@@ -216,23 +188,6 @@ const EditCourseForm = ({ courseId, categories, courseDetails, basicInfo, advanc
         }
     };
 
-    const handlePublish = async (): Promise<boolean> => {
-        if (courseSections.length === 0) {
-            setActiveTab(2);
-            toast.error("Please add at least one section");
-            return false;
-        }
-
-        try {
-            router.push("/instructor/my-courses");
-            toast.success("Course updated successfully");
-            return true;
-        } catch (error) {
-            console.error("Error returning to my courses:", error);
-            toast.error("Failed to finish update");
-            return false;
-        }
-    };
 
     return (
         <FormProvider {...methods}>
@@ -292,11 +247,6 @@ const EditCourseForm = ({ courseId, categories, courseDetails, basicInfo, advanc
 
                     {activeTab === 2 && (
                         <CurriculumTab
-                            sections={courseSections}
-                            setSections={setCourseSections}
-                            onNext={handlePublish}
-                            onPrev={goPrev}
-                            courseId={courseId}
                         />
                     )}
 
