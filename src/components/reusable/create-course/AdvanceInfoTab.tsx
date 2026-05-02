@@ -28,12 +28,21 @@ type Props = {
     onPrev: () => void;
     onThumbnailChange: (file: File | null) => void;
     onTrailerChange: (file: File | null) => void;
+    initialThumbnailPreview?: string | null;
+    initialTrailerPreview?: string | null;
 };
 
-const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: Props) => {
+const AdvanceInfoTab = ({
+    onNext,
+    onPrev,
+    onThumbnailChange,
+    onTrailerChange,
+    initialThumbnailPreview = null,
+    initialTrailerPreview = null,
+}: Props) => {
     const t = useTranslations("InstructorCreateCourse");
-    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-    const [trailerPreview, setTrailerPreview] = useState<string | null>(null);
+    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(initialThumbnailPreview);
+    const [trailerPreview, setTrailerPreview] = useState<string | null>(initialTrailerPreview);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { register, trigger, control, watch, formState: { errors }} = useFormContext<AdvanceInfoFormData>();
@@ -51,10 +60,10 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
 
     useEffect(() => {
         return () => {
-            if (thumbnailPreview) {
+            if (thumbnailPreview?.startsWith("blob:")) {
                 URL.revokeObjectURL(thumbnailPreview);
             }
-            if (trailerPreview) {
+            if (trailerPreview?.startsWith("blob:")) {
                 URL.revokeObjectURL(trailerPreview);
             }
         };
@@ -63,7 +72,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
     const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (thumbnailPreview) {
+        if (thumbnailPreview?.startsWith("blob:")) {
             URL.revokeObjectURL(thumbnailPreview);
         }
         setThumbnailPreview(URL.createObjectURL(file));
@@ -79,7 +88,7 @@ const AdvanceInfoTab = ({ onNext, onPrev, onThumbnailChange, onTrailerChange }: 
             onTrailerChange(null);
             return;
         }
-        if (trailerPreview) {
+        if (trailerPreview?.startsWith("blob:")) {
             URL.revokeObjectURL(trailerPreview);
         }
         setTrailerPreview(URL.createObjectURL(file));

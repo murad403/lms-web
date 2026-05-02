@@ -81,7 +81,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        getCourseBasicInfo: builder.query({
+        getCourseBasicInfo: builder.query<BasicCourseInfoResponse, number>({
             query: (courseId) => {
                 return {
                     url: `/courses/courses/${courseId}/`,
@@ -116,7 +116,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        getCourseAdvanceInfo: builder.query({
+        getCourseAdvanceInfo: builder.query<AdvanceCourseInfoResponse, number>({
             query: (advanceInfoId) => {
                 return {
                     url: `/courses/courses/advance-info/${advanceInfoId}/`,
@@ -133,8 +133,8 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        getCourseSection: builder.query({
-            query: (courseId, sectionId) => {
+        getCourseSection: builder.query<SectionResponse, { courseId: number; sectionId: number }>({
+            query: ({ courseId, sectionId }) => {
                 return {
                     url: `/courses/courses/${courseId}/sections/${sectionId}/`,
                     method: "GET"
@@ -167,7 +167,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        getCourseLecture: builder.query({
+        getCourseLecture: builder.query<LectureResponse, { sectionId: number; lectureId: number }>({
             query: ({ sectionId, lectureId }) => {
                 return {
                     url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
@@ -198,6 +198,23 @@ const instructorApi = baseApi1.injectEndpoints({
                     url: `/courses/sections/quizzes/${sectionId}/`,
                     method: "POST",
                     body: data
+                }
+            }
+        }),
+        updateCourseQuiz: builder.mutation<QuizResponse, { sectionId: number; quizId: number; data: QuizPayload }>({
+            query: ({ sectionId, quizId, data }) => {
+                return {
+                    url: `/courses/sections/quizzes/${sectionId}/${quizId}`,
+                    method: "PATCH",
+                    body: data
+                }
+            }
+        }),
+        getCourseQuiz: builder.query<QuizResponse, { sectionId: number; quizId: number }>({
+            query: ({ sectionId, quizId }) => {
+                return {
+                    url: `/courses/sections/quizzes/${sectionId}/${quizId}`,
+                    method: "GET"
                 }
             }
         }),
@@ -350,14 +367,19 @@ export const {
     useGetLiveClassesDashboardQuery,
     useCourseCategoriesQuery,
     useAddCourseBasicInfoMutation,
+    useGetCourseBasicInfoQuery,
     useUpdateCourseBasicInfoMutation,
     useAddCourseAdvanceInfoMutation,
+    useGetCourseAdvanceInfoQuery,
     useUpdateCourseAdvanceInfoMutation,
     useAddCourseSectionMutation,
+    useGetCourseSectionQuery,
     useUpdateCourseSectionMutation,
     useAddCourseLectureMutation,
+    useGetCourseLectureQuery,
     useUpdateCourseLectureMutation,
     useAddCourseQuizMutation,
+    useGetCourseQuizQuery,
     usePublishCourseMutation,
     useDeleteCourseSectionMutation,
     useDeleteCourseLectureMutation,

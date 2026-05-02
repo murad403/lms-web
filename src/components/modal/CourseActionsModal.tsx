@@ -43,7 +43,7 @@ const CourseActionsModal = ({ isOpen, onClose, courseId, path }: CourseActionsMo
                     </Link>
 
                     <Link
-                        href={`/instructor/edit-course/`}
+                        href={`/instructor/my-courses/edit-course?courseId=${courseId}`}
                         onClick={onClose}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-title hover:bg-gray-50 rounded-lg transition-colors"
                     >
