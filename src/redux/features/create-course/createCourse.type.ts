@@ -67,6 +67,8 @@ export type SectionItem = {
 	id: number;
 	name: string;
 	order: number;
+	quizze_id?: number;
+	quizz_title?: string;
 	lectures: LectureItem[];
 };
 
@@ -90,11 +92,13 @@ export type LectureResponse = ApiResponse<LectureItem>;
 export type QuizOptionPayload = {
 	text: string;
 	is_correct: boolean;
+	order?: number;
 };
 
 export type QuizQuestionPayload = {
 	question_type: "mcq" | "true_false";
 	text: string;
+	order?: number;
 	options: QuizOptionPayload[];
 };
 
@@ -107,6 +111,9 @@ export type QuizPayload = {
 	shuffle_questions: boolean;
 	questions: QuizQuestionPayload[];
 };
+
+// Quiz Update Payload (same shape as QuizPayload)
+export type QuizUpdatePayload = QuizPayload;
 
 export type QuizOptionItem = {
 	id: number;

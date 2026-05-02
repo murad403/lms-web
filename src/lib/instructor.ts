@@ -203,6 +203,8 @@ export type TCourseSection = {
   title: string;
   order?: number;
   lectures: TCourseLecture[];
+  quizze_id?: number;
+  quizz_title?: string;
 };
 
 export type TQuizQuestion = {
