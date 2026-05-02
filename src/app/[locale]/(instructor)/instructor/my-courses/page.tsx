@@ -5,8 +5,9 @@ import Pagination from "@/components/reusable/Pagination";
 import { TInstructorCourse } from "@/lib/instructor";
 import DashboardCourseCard, { DashboardCourseCardSkeleton } from "@/components/reusable/for-dashboard/DashboardCourseCard";
 import { useTranslations } from "next-intl";
-import { useCourseCategoriesQuery, useMyCoursesQuery } from "@/redux/features/instructor/instructor.api";
+import { useMyCoursesQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
+import { useCourseCategoriesQuery } from "@/redux/features/create-course/createCourse.api";
 
 const MyCoursesPage = () => {
     const path = "/instructor";

@@ -15,8 +15,8 @@ import CurriculumTab from "../../../../../../components/reusable/edit-course/Edi
 import { TCourseLecture, TCourseSection } from "@/lib/instructor";
 import { useCourseDetailsQuery } from "@/redux/features/landing/landing.api";
 import type { LandingCourseLecture, LandingCourseSection } from "@/redux/features/landing/landing.type";
-import { useCourseCategoriesQuery, useGetCourseAdvanceInfoQuery, useGetCourseBasicInfoQuery, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/instructor/instructor.api";
-import type { BasicCourseInfoPayload } from "@/redux/features/instructor/instructor.type";
+import { useCourseCategoriesQuery, useGetCourseAdvanceInfoQuery, useGetCourseBasicInfoQuery, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/create-course/createCourse.api";
+import type { BasicCourseInfoPayload } from "@/redux/features/create-course/createCourse.type";
 import { basicInfoSchema } from "../../../../../../components/reusable/edit-course/EditBasicInfoTab";
 import { advanceInfoSchema } from "../../../../../../components/reusable/edit-course/EditAdvanceInfoTab";
 

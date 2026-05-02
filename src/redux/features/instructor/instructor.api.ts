@@ -1,5 +1,5 @@
 import baseApi1 from "@/redux/api/baseApi";
-import { AdvanceCourseInfoResponse, BasicCourseInfoPayload, BasicCourseInfoResponse, CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorCategoryResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, LectureResponse, PublishCourseResponse, QuizPayload, QuizResponse, SectionPayload, SectionResponse, CourseAccreditationResponse, CertificateListResponse, MyCoursesQueryParams, MyCoursesResponse, OwnerCourseDetailsResponse, CourseOverviewResponse } from "./instructor.type";
+import { CourseInfoResponse, CreateLiveClassRequest, CreateLiveClassResponse, InstructorCancelWithdrawResponse, InstructorDashboardResponse, InstructorEarningsResponse, InstructorLiveClassesStatsResponse, InstructorProfileResponse, InstructorSignatureResponse, InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorUploadSignatureResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse, CourseAccreditationResponse, CertificateListResponse, MyCoursesQueryParams, MyCoursesResponse, OwnerCourseDetailsResponse } from "./instructor.type";
 
 const instructorApi = baseApi1.injectEndpoints({
     endpoints: (builder) => ({
@@ -61,182 +61,6 @@ const instructorApi = baseApi1.injectEndpoints({
             },
             invalidatesTags: ["instructor-live-classes"]
         }),
-
-
-        // create course************************************************************************************
-        courseCategories: builder.query<InstructorCategoryResponse, void>({
-            query: () => {
-                return {
-                    url: "/courses/categories/",
-                    method: "GET"
-                }
-            }
-        }),
-        addCourseBasicInfo: builder.mutation<BasicCourseInfoResponse, BasicCourseInfoPayload>({
-            query: (data) => {
-                return {
-                    url: `/courses/courses/`,
-                    method: "POST",
-                    body: data
-                }
-            }
-        }),
-        getCourseBasicInfo: builder.query<BasicCourseInfoResponse, number>({
-            query: (courseId) => {
-                return {
-                    url: `/courses/courses/${courseId}/`,
-                    method: "GET"
-                }
-            }
-        }),
-        updateCourseBasicInfo: builder.mutation<BasicCourseInfoResponse, { courseId: number; data: BasicCourseInfoPayload }>({
-            query: ({ courseId, data }) => {
-                return {
-                    url: `/courses/courses/${courseId}/`,
-                    method: "PATCH",
-                    body: data
-                }
-            }
-        }),
-        addCourseAdvanceInfo: builder.mutation<AdvanceCourseInfoResponse, { courseId: number; data: FormData }>({
-            query: ({ courseId, data }) => {
-                return {
-                    url: `/courses/courses/advance-info/${courseId}/`,
-                    method: "POST",
-                    body: data
-                }
-            }
-        }),
-        updateCourseAdvanceInfo: builder.mutation<AdvanceCourseInfoResponse, { advanceInfoId: number; data: FormData }>({
-            query: ({ advanceInfoId, data }) => {
-                return {
-                    url: `/courses/courses/advance-info/${advanceInfoId}/`,
-                    method: "PATCH",
-                    body: data
-                }
-            }
-        }),
-        getCourseAdvanceInfo: builder.query<AdvanceCourseInfoResponse, number>({
-            query: (advanceInfoId) => {
-                return {
-                    url: `/courses/courses/advance-info/${advanceInfoId}/`,
-                    method: "GET"
-                }
-            }
-        }),
-        addCourseSection: builder.mutation<SectionResponse, { courseId: number; data: SectionPayload }>({
-            query: ({ courseId, data }) => {
-                return {
-                    url: `/courses/courses/sections/${courseId}/`,
-                    method: "POST",
-                    body: data
-                }
-            }
-        }),
-        getCourseSection: builder.query<SectionResponse, { courseId: number; sectionId: number }>({
-            query: ({ courseId, sectionId }) => {
-                return {
-                    url: `/courses/courses/${courseId}/sections/${sectionId}/`,
-                    method: "GET"
-                }
-            }
-        }),
-        updateCourseSection: builder.mutation<SectionResponse, { courseId: number; sectionId: number; data: SectionPayload }>({
-            query: ({ courseId, sectionId, data }) => {
-                return {
-                    url: `/courses/courses/${courseId}/sections/${sectionId}/`,
-                    method: "PATCH",
-                    body: data
-                }
-            }
-        }),
-        deleteCourseSection: builder.mutation({
-            query: ({ courseId, sectionId }) => {
-                return {
-                    url: `/courses/courses/${courseId}/sections/${sectionId}/`,
-                    method: "DELETE"
-                }
-            }
-        }),
-        addCourseLecture: builder.mutation<LectureResponse, { sectionId: number; data: FormData }>({
-            query: ({ sectionId, data }) => {
-                return {
-                    url: `/courses/sections/lectures/${sectionId}/`,
-                    method: "POST",
-                    body: data
-                }
-            }
-        }),
-        getCourseLecture: builder.query<LectureResponse, { sectionId: number; lectureId: number }>({
-            query: ({ sectionId, lectureId }) => {
-                return {
-                    url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
-                    method: "GET"
-                }
-            }
-        }),
-        updateCourseLecture: builder.mutation<LectureResponse, { lectureId: number; sectionId: number; data: FormData }>({
-            query: ({ lectureId, sectionId, data }) => {
-                return {
-                    url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
-                    method: "PATCH",
-                    body: data
-                }
-            }
-        }),
-        deleteCourseLecture: builder.mutation({
-            query: ({ lectureId, sectionId }) => {
-                return {
-                    url: `/courses/sections/lectures/${sectionId}/${lectureId}/`,
-                    method: "DELETE"
-                }
-            }
-        }),
-        addCourseQuiz: builder.mutation<QuizResponse, { sectionId: number; data: QuizPayload }>({
-            query: ({ sectionId, data }) => {
-                return {
-                    url: `/courses/sections/quizzes/${sectionId}/`,
-                    method: "POST",
-                    body: data
-                }
-            }
-        }),
-        updateCourseQuiz: builder.mutation<QuizResponse, { sectionId: number; quizId: number; data: QuizPayload }>({
-            query: ({ sectionId, quizId, data }) => {
-                return {
-                    url: `/courses/sections/quizzes/${sectionId}/${quizId}`,
-                    method: "PATCH",
-                    body: data
-                }
-            }
-        }),
-        getCourseQuiz: builder.query<QuizResponse, { sectionId: number; quizId: number }>({
-            query: ({ sectionId, quizId }) => {
-                return {
-                    url: `/courses/sections/quizzes/${sectionId}/${quizId}`,
-                    method: "GET"
-                }
-            }
-        }),
-        courseOverview: builder.query<CourseOverviewResponse, number>({
-            query: (courseId) => {
-                return {
-                    url: `/courses/courses/${courseId}/overview/`,
-                    method: "GET"
-                }
-            }
-        }),
-        publishCourse: builder.mutation<PublishCourseResponse, number>({
-            query: (courseId) => {
-                return {
-                    url: `/courses/courses/publish/${courseId}/`,
-                    method: "PATCH"
-                }
-            }
-        }),
-
-
-
 
         //my courses*************************************************************************** 
         myCourses: builder.query<MyCoursesResponse, MyCoursesQueryParams | void>({
@@ -365,24 +189,6 @@ export const {
     useCreateLiveClassMutation,
     useCourseInfoQuery,
     useGetLiveClassesDashboardQuery,
-    useCourseCategoriesQuery,
-    useAddCourseBasicInfoMutation,
-    useGetCourseBasicInfoQuery,
-    useUpdateCourseBasicInfoMutation,
-    useAddCourseAdvanceInfoMutation,
-    useGetCourseAdvanceInfoQuery,
-    useUpdateCourseAdvanceInfoMutation,
-    useAddCourseSectionMutation,
-    useGetCourseSectionQuery,
-    useUpdateCourseSectionMutation,
-    useAddCourseLectureMutation,
-    useGetCourseLectureQuery,
-    useUpdateCourseLectureMutation,
-    useAddCourseQuizMutation,
-    useGetCourseQuizQuery,
-    usePublishCourseMutation,
-    useDeleteCourseSectionMutation,
-    useDeleteCourseLectureMutation,
     useEarningsQuery,
     useStripeConnectMutation,
     useStripeDashboardLinkMutation,
@@ -391,7 +197,6 @@ export const {
     useGetSignatureQuery,
     useUploadSignatureMutation,
     useMyCoursesQuery,
-    useCourseOverviewQuery,
     useCourseAccreditationQuery,
     useCertificateListQuery,
     useOwnerCourseDetailsQuery

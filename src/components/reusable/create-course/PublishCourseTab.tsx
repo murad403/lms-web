@@ -7,8 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCourseOverviewQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
+import { useCourseOverviewQuery } from "@/redux/features/create-course/createCourse.api";
 
 
 type Props = {

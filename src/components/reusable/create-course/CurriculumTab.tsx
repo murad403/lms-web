@@ -25,16 +25,8 @@ import LectureDescriptionModal from "@/components/modal/create-course/LectureDes
 import LectureNotesModal from "@/components/modal/create-course/LectureNotesModal";
 import AttachFileModal from "@/components/modal/create-course/AttachFileModal";
 import AddQuizModal from "@/components/modal/create-course/AddQuizModal";
-import {
-    useAddCourseLectureMutation,
-    useAddCourseQuizMutation,
-    useAddCourseSectionMutation,
-    useDeleteCourseLectureMutation,
-    useDeleteCourseSectionMutation,
-    useUpdateCourseLectureMutation,
-    useUpdateCourseSectionMutation,
-} from "@/redux/features/instructor/instructor.api";
 import { toast } from "sonner";
+import { useAddCourseLectureMutation, useAddCourseQuizMutation, useAddCourseSectionMutation, useDeleteCourseLectureMutation, useDeleteCourseSectionMutation, useUpdateCourseLectureMutation, useUpdateCourseSectionMutation } from "@/redux/features/create-course/createCourse.api";
 
 type Props = {
     sections: TCourseSection[];

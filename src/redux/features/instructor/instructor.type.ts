@@ -76,61 +76,6 @@ export type InstructorCategoryItem = {
 
 export type InstructorCategoryResponse = ApiResponse<InstructorCategoryItem[]>;
 
-export type BasicCourseInfoPayload = {
-	title: string;
-	subtitle?: string;
-	category: number;
-	topic?: string;
-	language: "en" | "es" | "fr" | "de" | "zh";
-	level: "beginner" | "intermediate" | "advanced";
-	price?: number;
-	discount_price?: number;
-	coupon_code?: string;
-	expiry_type?: "1_week" | "1_month" | "3_months" | "lifetime" | "limited";
-};
-
-export type BasicCourseInfoData = BasicCourseInfoPayload & {
-	id: number;
-	status?: string;
-};
-
-export type BasicCourseInfoResponse = ApiResponse<BasicCourseInfoData>;
-
-export type AdvanceCourseInfoItem = {
-	text: string;
-	order: number;
-};
-
-export type AdvanceCourseInfoData = {
-	id: number;
-	description: string;
-	outcomes: AdvanceCourseInfoItem[];
-	requirements: AdvanceCourseInfoItem[];
-	thumbnail?: string;
-	trailer_video?: string;
-};
-
-export type AdvanceCourseInfoResponse = ApiResponse<AdvanceCourseInfoData>;
-
-export type CourseOverviewData = {
-	id: number;
-	title: string;
-	description: string;
-	thumbnail: string | null;
-	thumbnail_video: string | null;
-	category_name: string;
-	language: string;
-	level: "beginner" | "intermediate" | "advanced";
-	price: string;
-	discount_price: string;
-};
-
-export type CourseOverviewResponse = {
-	success: boolean;
-	message: string;
-	data: CourseOverviewData;
-};
-
 export type UpdateInstructorProfilePayload = {
 	title: string;
 	biography: string;
@@ -194,85 +139,7 @@ export type CreateLiveClassRequest = {
 
 export type CreateLiveClassResponse = ApiResponse<InstructorLiveClassSession>;
 
-export type SectionItem = {
-	id: number;
-	name: string;
-	order: number;
-	lectures: LectureItem[];
-};
 
-export type SectionPayload = {
-	name: string;
-};
-
-export type SectionResponse = ApiResponse<SectionItem>;
-
-export type LectureItem = {
-	id: number;
-	name: string;
-	order: number;
-	description?: string;
-	video_file?: string;
-	LectureAttachment?: string;
-	LectureNoteFile?: string;
-	lecture_notes?: string;
-};
-
-export type LectureResponse = ApiResponse<LectureItem>;
-
-export type QuizOptionPayload = {
-	text: string;
-	is_correct: boolean;
-};
-
-export type QuizQuestionPayload = {
-	question_type: "mcq" | "true_false";
-	text: string;
-	options: QuizOptionPayload[];
-};
-
-export type QuizPayload = {
-	title: string;
-	description: string;
-	time_limit_minutes: number;
-	attempts_allowed: number;
-	passing_score: number;
-	shuffle_questions: boolean;
-	questions: QuizQuestionPayload[];
-};
-
-export type QuizOptionItem = {
-	id: number;
-	text: string;
-	is_correct: boolean;
-	order: number;
-};
-
-export type QuizQuestionItem = {
-	id: number;
-	question_type: "mcq" | "true_false";
-	text: string;
-	order: number;
-	options: QuizOptionItem[];
-};
-
-export type QuizItem = {
-	id: number;
-	title: string;
-	description: string;
-	time_limit_minutes: number;
-	attempts_allowed: number;
-	passing_score: number;
-	shuffle_questions: boolean;
-	questions: QuizQuestionItem[];
-};
-
-export type QuizResponse = ApiResponse<QuizItem>;
-
-export type PublishCourseResponse = ApiResponse<{
-	id: number;
-	status: string;
-}>;
 
 export type InstructorEarningsWithdrawalItem = {
 	id: number;
