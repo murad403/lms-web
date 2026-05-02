@@ -1,5 +1,3 @@
-// Message and Conversation Types
-
 export type TParticipant = {
   id: string;
   name: string;
@@ -17,7 +15,7 @@ export type TConversation = {
 };
 
 export type TMessage = {
-  id: number;
+  id: number | string;
   conversation: number;
   sender: string;
   sender_name: string;
@@ -37,4 +35,9 @@ export type TGetMessagesResponse = {
   status: number;
   message: string;
   data: TMessage[];
+};
+
+export type TSendMessageResponse = {
+  success: boolean;
+  data: TMessage;
 };

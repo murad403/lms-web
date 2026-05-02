@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type WebSocketOptions = {
   onMessage?: (data: any) => void;
@@ -9,12 +9,14 @@ type WebSocketOptions = {
   onClose?: () => void;
 };
 
-export const useWebSocket = (url: string | null, options: WebSocketOptions = {}) => {
+export const useWebSocket = (
+  url: string | null,
+  options: WebSocketOptions = {}
+) => {
   const wsRef = useRef<WebSocket | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
   const optionsRef = useRef(options);
+  const [isConnected, setIsConnected] = useState(false);
 
-  // Keep options ref up to date without re-running effect
   useEffect(() => {
     optionsRef.current = options;
   }, [options]);
@@ -37,8 +39,8 @@ export const useWebSocket = (url: string | null, options: WebSocketOptions = {})
       try {
         const data = JSON.parse(event.data);
         optionsRef.current.onMessage?.(data);
-      } catch (err) {
-        console.error("WebSocket message parse error:", err);
+      } catch (error) {
+        console.error("WebSocket parse error:", error);
       }
     };
 
@@ -53,16 +55,18 @@ export const useWebSocket = (url: string | null, options: WebSocketOptions = {})
 
     return () => {
       ws.close();
+      wsRef.current = null;
     };
   }, [url]);
 
-  // ✅ sendMessage function exposed to callers
   const sendMessage = useCallback((data: object) => {
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(data));
-    } else {
-      console.warn("WebSocket is not open. Message not sent.");
+      return true;
     }
+
+    console.warn("WebSocket is not open");
+    return false;
   }, []);
 
   return { isConnected, sendMessage };
