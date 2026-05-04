@@ -1,6 +1,6 @@
 import baseApi1 from "@/redux/api/baseApi";
 import { InstructorCategoryResponse } from "@/redux/features/instructor/instructor.type";
-import { BasicCourseInfoResponse, BasicCourseInfoPayload, AdvanceCourseInfoResponse, SectionResponse, SectionPayload, LectureResponse, QuizResponse, QuizPayload, QuizUpdatePayload, CourseOverviewResponse, PublishCourseResponse } from "@/redux/features/create-course/createCourse.type";
+import { BasicCourseInfoResponse, BasicCourseInfoPayload, AdvanceCourseInfoResponse, SectionResponse, SectionPayload, LectureResponse, QuizResponse, QuizPayload, QuizUpdatePayload, CourseOverviewResponse, PublishCourseResponse, CourseCurriculumResponse } from "@/redux/features/create-course/createCourse.type";
 
 
 
@@ -174,6 +174,20 @@ const createCourseApi = baseApi1.injectEndpoints({
             }),
             invalidatesTags: ["create-course"],
         }),
+        getCourseCurriculum: builder.query<CourseCurriculumResponse, number>({
+            query: (courseId) => ({
+                url: `/courses/courses/${courseId}/sections/`,
+                method: "GET",
+            }),
+            providesTags: ["create-course"],
+        }),
+        deleteCourseQuiz: builder.mutation({
+            query: ({ quizId, sectionId }: { quizId: number; sectionId: number }) => ({
+                url: `/courses/sections/quizzes/${sectionId}/${quizId}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["create-course"],
+        }),
     }),
 });
 
@@ -194,8 +208,10 @@ export const {
     useUpdateCourseLectureMutation,
     useDeleteCourseLectureMutation,
     useAddCourseQuizMutation,
+    useDeleteCourseQuizMutation,
     useUpdateCourseQuizMutation,
     useGetCourseQuizQuery,
     useCourseOverviewQuery,
     usePublishCourseMutation,
+    useGetCourseCurriculumQuery
 } = createCourseApi;

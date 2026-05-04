@@ -1,22 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import {
-    Plus,
-    GripVertical,
-    Pencil,
-    Trash2,
-    ChevronDown,
-    ChevronUp,
-    Video,
-    FileText,
-    File,
-    Menu,
-    StickyNote,
-    AlignLeft,
-    Loader2,
-} from "lucide-react";
+import { Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, Video, FileText, File, Menu, StickyNote, AlignLeft, Loader2} from "lucide-react";
 import { TCourseSection, TCourseLecture } from "@/lib/instructor";
 import EditLectureModal from "@/components/modal/create-course/EditLectureModal";
 import EditSectionModal from "@/components/modal/create-course/EditSectionModal";
@@ -27,6 +12,7 @@ import AttachFileModal from "@/components/modal/create-course/AttachFileModal";
 import AddQuizModal from "@/components/modal/create-course/AddQuizModal";
 import { toast } from "sonner";
 import { useAddCourseLectureMutation, useAddCourseQuizMutation, useAddCourseSectionMutation, useDeleteCourseLectureMutation, useDeleteCourseSectionMutation, useUpdateCourseLectureMutation, useUpdateCourseSectionMutation } from "@/redux/features/create-course/createCourse.api";
+
 
 type Props = {
     sections: TCourseSection[];

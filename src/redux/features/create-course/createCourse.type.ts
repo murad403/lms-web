@@ -143,6 +143,16 @@ export type QuizItem = {
 
 export type QuizResponse = ApiResponse<QuizItem>;
 
+export type CourseCurriculumSectionItem = {
+	id: number;
+	name: string;
+	order: number;
+	lectures: LectureItem[];
+	quizzes: QuizItem[];
+};
+
+export type CourseCurriculumResponse = CourseCurriculumSectionItem[];
+
 // Publish Course Types
 export type PublishCourseResponse = ApiResponse<{
 	id: number;

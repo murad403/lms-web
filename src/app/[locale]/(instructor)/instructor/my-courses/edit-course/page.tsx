@@ -247,6 +247,8 @@ const EditCourseForm = ({ courseId, categories, courseDetails, basicInfo, advanc
 
                     {activeTab === 2 && (
                         <CurriculumTab
+                            courseId={courseId}
+                            onPrev={goPrev}
                         />
                     )}
 
