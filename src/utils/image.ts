@@ -29,6 +29,13 @@ export const resolveImageUrl = (imageUrl?: string | null): string => {
 		// Rebuild URL from public origin to avoid keeping localhost port (e.g. :8002).
 		return `${publicBase.origin}${parsed.pathname}${parsed.search}${parsed.hash}`;
 	} catch {
+		// Handle relative paths by prepending the backend origin
+		if (!imageUrl.includes("://")) {
+			const publicOrigin =
+				process.env.NEXT_PUBLIC_BACKEND_PUBLIC_ORIGIN ||
+				DEFAULT_BACKEND_PUBLIC_ORIGIN;
+			return `${publicOrigin}/media/${imageUrl}`;
+		}
 		return imageUrl;
 	}
 };

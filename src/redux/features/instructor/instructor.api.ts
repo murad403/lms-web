@@ -172,6 +172,14 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
+        getInstructorProfileDetails: builder.query({
+            query: () => {
+                return {
+                    url: `/instructors/instructor/me/`,
+                    method: "GET"
+                }
+            }
+        }),
     }),
 });
 
@@ -199,5 +207,6 @@ export const {
     useMyCoursesQuery,
     useCourseAccreditationQuery,
     useCertificateListQuery,
-    useOwnerCourseDetailsQuery
+    useOwnerCourseDetailsQuery, 
+    useGetInstructorProfileDetailsQuery
 } = instructorApi;

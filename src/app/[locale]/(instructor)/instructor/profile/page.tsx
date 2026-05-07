@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
-import { Mail, Phone, Globe } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
+import { useGetInstructorProfileDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
+import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
+import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
+
+
 
 const InstructorProfilePage = () => {
-    const { data: profileResponse, isLoading } = useGetInstructorProfileQuery();
+    const { data: profileResponse, isLoading } = useGetInstructorProfileDetailsQuery(undefined);
     const t = useTranslations("InstructorProfile");
 
     if (isLoading && !profileResponse) {
@@ -39,7 +44,31 @@ const InstructorProfilePage = () => {
     }
 
     const profile = profileResponse?.data;
-    const avatar = resolveImageUrl(profile?.user?.avatar);
+    const displayName = profile?.user?.name || profile?.name;
+    const email = profile?.user?.email || profile?.email;
+    const phone = profile?.user?.phone || "-";
+    const avatar = resolveImageUrl(profile?.user?.avatar || profile?.avatar);
+
+    // Adapt API data shape for existing components without changing UI
+    const adapterProfile = { firstName: displayName };
+    const publishedCourses = (profile?.courses || []).map((c: any) => ({
+        id: c.id,
+        image: resolveImageUrl(c.thumbnail),
+        title: c.title,
+        category: typeof c.category === "string" ? c.category : String(c.category || ""),
+        price: c.price || "0",
+        rating: c.rating || 0,
+        students: c.total_students || 0,
+    }));
+
+    const publicReviews = (profile?.reviews || []).map((r: any) => ({
+        id: r.id,
+        name: r.student_name,
+        avatar: resolveImageUrl(r.student_avatar),
+        timeAgo: new Date(r.created_at).toLocaleDateString(),
+        rating: r.rating,
+        comment: r.comment,
+    }));
 
     return (
         <div>
@@ -49,8 +78,8 @@ const InstructorProfilePage = () => {
                         <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-md overflow-hidden border border-border-light shadow-md shrink-0 bg-gray-50">
                             {avatar ? (
                                 <Image
-                                    src={avatar}
-                                    alt={profile?.user?.name || "Instructor"}
+                                    src={resolveImageUrl(avatar)}
+                                    alt={displayName || "Instructor"}
                                     fill
                                     className="object-cover"
                                     unoptimized={shouldBypassImageOptimization(avatar)}
@@ -59,40 +88,29 @@ const InstructorProfilePage = () => {
                         </div>
                         <div className="flex-1 text-center sm:text-left">
                             <h1 className="text-2xl sm:text-3xl font-bold text-title">
-                                {profile?.user?.name || "Instructor"}
+                                {displayName || "Instructor"}
                             </h1>
                             <p className="text-sm text-description mt-1">{profile?.title || "Instructor"}</p>
                             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4 text-sm text-description">
                                 <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
                                     <Mail className="w-4 h-4" />
-                                    {profile?.user?.email || "-"}
+                                    {email || "-"}
                                 </span>
                                 <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
                                     <Phone className="w-4 h-4" />
-                                    {profile?.user?.phone || "-"}
+                                    {phone}
                                 </span>
-                                {profile?.website ? (
-                                    <span className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gray-50 border border-border-light">
-                                        <Globe className="w-4 h-4" />
-                                        {profile.website}
-                                    </span>
-                                ) : null}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div className="container mx-auto py-8 space-y-8">
-                <div className="bg-white p-6 rounded-lg border border-border-light">
-                    <h2 className="text-sm font-bold text-title mb-3 uppercase tracking-widest">
-                        {t("aboutMe")}
-                    </h2>
-                    <div className="text-sm text-description leading-relaxed whitespace-pre-line">
-                        {profile?.biography || ""}
-                    </div>
-                </div>
-            </div>
+            <ProfileAbout bio={profile?.biography} />
+            <ProfileTabs
+                profile={adapterProfile as any}
+                publishedCourses={publishedCourses}
+                publicReviews={publicReviews}
+            />
         </div>
     );
 };
