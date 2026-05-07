@@ -65,11 +65,6 @@ const OrganizationSidebar = () => {
               >
                 <Icon className="w-5 h-5 shrink-0" />
                 <span className="truncate">{t(item.labelKey)}</span>
-                {item.labelKey === "message" && (
-                  <span className="ml-auto w-5 h-5 bg-[#4F9BEF] text-white rounded-full flex items-center justify-center text-[10px] font-bold">
-                    3
-                  </span>
-                )}
               </Link>
             );
           })}
