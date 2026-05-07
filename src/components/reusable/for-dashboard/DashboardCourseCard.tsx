@@ -16,8 +16,6 @@ const DashboardCourseCard = ({ course, path }: DashboardCourseCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const t = useTranslations("InstructorMyCourses");
 
-  // console.log(path)
-
   return (
     <div className="bg-white overflow-hidden group relative">
       {/* Image */}

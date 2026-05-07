@@ -18,7 +18,6 @@ import { basicInfoSchema } from "../../../../../../components/reusable/edit-cour
 import { advanceInfoSchema } from "../../../../../../components/reusable/edit-course/EditAdvanceInfoTab";
 
 
-
 const courseFormSchema = basicInfoSchema.merge(advanceInfoSchema);
 type CourseFormData = z.infer<typeof courseFormSchema>;
 
@@ -170,7 +169,7 @@ const EditCourseForm = ({ courseId, categories, courseDetails, basicInfo, advanc
                 return false;
             }
 
-            await updateCourseAdvanceInfo({ advanceInfoId: advanceInfo.id, data: formData }).unwrap();
+            await updateCourseAdvanceInfo({ advanceInfoId: courseId, data: formData }).unwrap();
 
             setActiveTab(2);
             toast.success("Advanced information updated successfully");
