@@ -11,7 +11,7 @@ import PublishCourseTab from "@/components/reusable/create-course/PublishCourseT
 import { TCourseSection } from "@/lib/instructor";
 import CurriculumTab from "../../../../../components/reusable/create-course/CurriculumTab";
 import { useTranslations } from "next-intl";
-import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCourseCategoriesQuery, usePublishCourseMutation, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/instructor/instructor.api";
+import { useAddCourseAdvanceInfoMutation, useAddCourseBasicInfoMutation, useCourseCategoriesQuery, usePublishCourseMutation, useUpdateCourseAdvanceInfoMutation, useUpdateCourseBasicInfoMutation } from "@/redux/features/create-course/createCourse.api";
 import type { BasicCourseInfoPayload } from "@/redux/features/create-course/createCourse.type";
 import { toast } from "sonner";
 

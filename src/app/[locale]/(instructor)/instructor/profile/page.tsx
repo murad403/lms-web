@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Star, Users, BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetInstructorProfileDetailsQuery } from "@/redux/features/instructor/instructor.api";
@@ -103,8 +103,38 @@ const InstructorProfilePage = () => {
                             </div>
                         </div>
                     </div>
+
+                    <div className="flex flex-wrap gap-8 mt-3">
+                        {/* Rating */}
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1">
+                                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                                <span className="text-xl font-bold text-title">{(profile?.average_rating || 0).toFixed(1)}</span>
+                            </div>
+                            <div className="text-sm text-description">
+                                <p className="font-medium">({(profile?.reviews?.length || 0).toLocaleString()} {(profile?.reviews?.length || 0) === 1 ? 'review' : 'reviews'})</p>
+                            </div>
+                        </div>
+
+                        {/* Students */}
+                        <div className="flex items-center gap-3">
+                            <Users className="w-5 h-5 text-main" />
+                            <p className="font-bold text-title text-base">{(profile?.total_students || 0).toLocaleString()}</p>
+                            <p className="text-xs">students</p>
+
+                        </div>
+
+                        {/* Courses */}
+                        <div className="flex items-center gap-3">
+                            <BookOpen className="w-5 h-5 text-main" />
+                            <p className="font-bold text-title text-base">{profile?.total_courses || 0}</p>
+                            <p className="text-xs">courses</p>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <ProfileAbout bio={profile?.biography} />
             <ProfileTabs
                 profile={adapterProfile as any}

@@ -26,6 +26,7 @@ type RoleProfileDropdownProps = {
   triggerClassName?: string;
   contentClassName?: string;
   align?: "start" | "center" | "end";
+  triggerId?: string;
 };
 
 const RoleProfileDropdown = ({
@@ -41,13 +42,17 @@ const RoleProfileDropdown = ({
   triggerClassName = "flex items-center gap-2 hover:opacity-80 transition-opacity outline-none",
   contentClassName = "w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden",
   align = "end",
+  triggerId,
 }: RoleProfileDropdownProps) => {
   const [showLogout, setShowLogout] = useState(false);
+  const stableTriggerId =
+    triggerId ||
+    `role-profile-trigger-${dashboardHref.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild id={stableTriggerId}>
           <button className={triggerClassName}>
             <div className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-blue-600 text-white text-sm font-bold shrink-0">
               {typeof avatarSrc === "string" ? (

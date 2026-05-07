@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Star, Users, ChevronDown, ArrowRight } from "lucide-react";
+import { Star, Users, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { TInstructorProfile, TInstructorCourse } from "@/lib/instructor";
 import { useTranslations } from "next-intl";
-import { resolveImageUrl } from "@/utils/image";
 
 type TReview = {
     id: number;
@@ -24,7 +23,7 @@ type ProfileTabsProps = {
 
 const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState("courses");
-    const [ratingFilter, setRatingFilter] = useState("5 Star Rating");
+    // const [ratingFilter, setRatingFilter] = useState("5 Star Rating");
     const [showAllReviews, setShowAllReviews] = useState(false);
     const visibleReviews = showAllReviews ? publicReviews : publicReviews.slice(0, 4);
     const t = useTranslations("InstructorProfile");
@@ -110,7 +109,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                 <div className="mt-6 space-y-5">
                     <div className="flex items-center justify-between flex-wrap gap-3">
                         <h3 className="text-xl font-bold text-title">{t("studentsFeedback")}</h3>
-                        <div className="relative">
+                        {/* <div className="relative">
                             <select
                                 value={ratingFilter}
                                 onChange={(e) => setRatingFilter(e.target.value)}
@@ -123,7 +122,7 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                                 <option>1 {t("starRating")}</option>
                             </select>
                             <ChevronDown className="w-4 h-4 text-description absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        </div>
+                        </div> */}
                     </div>
                     <div className="space-y-5">
                         {visibleReviews.map((review) => (
