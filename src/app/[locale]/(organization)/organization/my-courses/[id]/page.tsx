@@ -1,13 +1,15 @@
+"use client"
 import CourseDetailPage from '@/components/reusable/for-dashboard/CourseDetailPage'
-import AttendanceTable from '@/components/organization/AttendanceTable'
+import { useParams } from 'next/navigation';
 
-const page = () => {
+const CourseDetails = () => {
+    const { id } = useParams();
     return (
         <div>
-            <CourseDetailPage />
-            <AttendanceTable />
+            <CourseDetailPage courseId={Number(id)}/>
+            {/* <AttendanceTable /> */}
         </div>
     )
 }
 
-export default page
+export default CourseDetails;

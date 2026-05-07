@@ -44,3 +44,64 @@ export type OrganizationDashboardData = {
 };
 
 export type OrganizationDashboardResponse = ApiResponse<OrganizationDashboardData>;
+
+export type OrganizationCourseInstructor = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    get_biography: string | null;
+    avatar: string | null;
+};
+
+export type OrganizationCourseAdvanceInfo = {
+    id: number;
+    thumbnail: string | null;
+    trailer_video: string | null;
+    description: string;
+};
+
+export type OrganizationCourseItem = {
+    id: number;
+    title: string;
+    subtitle: string;
+    Category: string;
+    topic: string;
+    language: string;
+    description: string;
+    level: "beginner" | "intermediate" | "advanced";
+    price: string;
+    rating: number;
+    duration: string;
+    discount_price: string;
+    coupon_code: string;
+    is_wishlisted: boolean;
+    expiry_type: string;
+    reviews_count: number;
+    status: string;
+    modules: number;
+    lectures: number;
+    quizes: number;
+    instructor: OrganizationCourseInstructor;
+    advance_info: OrganizationCourseAdvanceInfo;
+};
+
+export type OrganizationCoursesQueryParams = {
+    page?: number;
+    page_size?: number;
+    search?: string;
+    category?: number;
+};
+
+export type OrganizationCoursesResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+    data: OrganizationCourseItem[];
+};

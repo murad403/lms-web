@@ -97,7 +97,6 @@ const OrganizationTopbar = () => {
                         </button>
 
                         <div>
-                            <p className="text-xs sm:text-sm text-[#6E7485] font-medium">{t("goodMorning")}</p>
                             <h1 className="text-base sm:text-xl font-bold text-title">{getPageTitle()}</h1>
                         </div>
                     </div>

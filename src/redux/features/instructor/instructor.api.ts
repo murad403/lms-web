@@ -185,11 +185,6 @@ const instructorApi = baseApi1.injectEndpoints({
 
 
 
-
-
-
-
-
 export const {
     useDashboardQuery,
     useUpdateInstructorProfileMutation,
