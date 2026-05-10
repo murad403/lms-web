@@ -94,7 +94,7 @@ const instructorApi = baseApi1.injectEndpoints({
             },
             providesTags: ["instructor-earnings"]
         }),
-        stripeConnect: builder.mutation<InstructorStripeConnectResponse, void>({
+        instructorStripeConnect: builder.mutation<InstructorStripeConnectResponse, void>({
             query: () => {
                 return {
                     url: `/payments/stripe/connect/`,
@@ -102,7 +102,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        stripeDashboardLink: builder.mutation<InstructorStripeDashboardResponse, void>({
+        instructorStripeDashboardLink: builder.mutation<InstructorStripeDashboardResponse, void>({
             query: () => {
                 return {
                     url: `/payments/stripe/dashboard-link/`,
@@ -110,7 +110,7 @@ const instructorApi = baseApi1.injectEndpoints({
                 }
             }
         }),
-        withdrawRequest: builder.mutation<InstructorWithdrawRequestResponse, InstructorWithdrawRequestPayload>({
+        instructorWithdrawRequest: builder.mutation<InstructorWithdrawRequestResponse, InstructorWithdrawRequestPayload>({
             query: (data) => {
                 return {
                     url: `/payments/withdraw/request/`,
@@ -193,9 +193,9 @@ export const {
     useCourseInfoQuery,
     useGetLiveClassesDashboardQuery,
     useEarningsQuery,
-    useStripeConnectMutation,
-    useStripeDashboardLinkMutation,
-    useWithdrawRequestMutation,
+    useInstructorStripeConnectMutation: useStripeConnectMutation,
+    useInstructorStripeDashboardLinkMutation: useStripeDashboardLinkMutation,
+    useInstructorWithdrawRequestMutation: useWithdrawRequestMutation,
     useCancelWithdrawRequestMutation,
     useGetSignatureQuery,
     useUploadSignatureMutation,

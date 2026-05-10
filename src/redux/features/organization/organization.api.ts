@@ -1,5 +1,6 @@
 import baseApi from "@/redux/api/baseApi";
 import { OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse } from "./organization.type";
+import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
 
 const organizationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,7 +14,6 @@ const organizationApi = baseApi.injectEndpoints({
         }),
         getOrganizationCourses: builder.query<OrganizationCoursesResponse, OrganizationCoursesQueryParams | void>({
             query: (params) => {
-                // console.log(params)
                 return {
                     url: `/organizations/my-courses/`,
                     method: "GET",
@@ -21,10 +21,50 @@ const organizationApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        organizationEarnings: builder.query({
+            query: () => {
+                return {
+                    url: `/organizations/organization/earnings/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-earnings"]
+        }),
+
+        organizationStripeConnect: builder.mutation<InstructorStripeConnectResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/organization/stripe/connect/`,
+                    method: "POST"
+                }
+            }
+        }),
+        organizationStripeDashboardLink: builder.mutation<InstructorStripeDashboardResponse, void>({
+            query: () => {
+                return {
+                    url: `/payments/organization/stripe/dashboard-link/`,
+                    method: "POST"
+                }
+            }
+        }),
+        organizationWithdrawRequest: builder.mutation<InstructorWithdrawRequestResponse, InstructorWithdrawRequestPayload>({
+            query: (data) => {
+                return {
+                    url: `/payments/organization/withdraw/request/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-earnings"]
+        })
     }),
 });
 
 export const {
     useGetOrganizationDashboardQuery,
-    useGetOrganizationCoursesQuery
+    useGetOrganizationCoursesQuery,
+    useOrganizationEarningsQuery,
+    useOrganizationStripeConnectMutation: useStripeConnectMutation,
+    useOrganizationStripeDashboardLinkMutation: useStripeDashboardLinkMutation,
+    useOrganizationWithdrawRequestMutation: useWithdrawRequestMutation
 } = organizationApi;

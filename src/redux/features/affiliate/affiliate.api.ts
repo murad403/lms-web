@@ -80,7 +80,7 @@ const affiliateApi = baseApi1.injectEndpoints({
 
 
         // withdrawal requests************************************************************************
-        stripeConnect: builder.mutation<StripeConnectResponse, void>({
+        affiliateStripeConnect: builder.mutation<StripeConnectResponse, void>({
             query: () => {
                 return {
                     url: `/payments/affiliate/stripe/connect/`,
@@ -132,7 +132,7 @@ export const {
     useCommissionWalletQuery,
     useGetProfileQuery,
     useUpdateProfileMutation,
-    useStripeConnectMutation,
+    useAffiliateStripeConnectMutation: useStripeConnectMutation,
     useStripeDashboardMutation,
     useWithdrawalRequestMutation,
     useWithdrawalHistoryQuery
