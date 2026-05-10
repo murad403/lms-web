@@ -1,53 +1,58 @@
-"use client"
-import LiveClassModal from '@/components/modal/LiveClassModal';
-import LiveClassPastSessions from '@/components/reusable/for-dashboard/LiveClassPastSessions';
-import LiveClassStats from '@/components/reusable/for-dashboard/LiveClassStats'
-import LiveClassUpcomingAndCalendar from '@/components/reusable/for-dashboard/UpcomingLiveClass';
-import React, { useState } from 'react'
-import { useTranslations } from 'next-intl'
+"use client";
+import { useState } from "react";
+import LiveClassModal from "@/components/modal/LiveClassModal";
+import LiveClassStats from "@/components/reusable/for-dashboard/LiveClassStats";
+import LiveClassPastSessions from "@/components/reusable/for-dashboard/LiveClassPastSessions";
+import { useTranslations } from "next-intl";
+import UpcomingLiveClasses from "@/components/reusable/for-dashboard/UpcomingLiveClass";
+import { useGetLiveClassesDashboardQuery } from "@/redux/features/instructor/instructor.api";
+
 
 const LiveClassPage = () => {
-  const t = useTranslations("InstructorLiveClasses");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isShowDate, setIsShowDate] = useState(true);
+  const t = useTranslations("InstructorLiveClasses");
+  const { data: liveClassStatsResponse, isLoading, isFetching } = useGetLiveClassesDashboardQuery();
+  const liveClassData = liveClassStatsResponse?.data;
+  const isLiveClassLoading = isLoading || isFetching;
 
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <LiveClassStats />
+      <LiveClassStats
+        data={liveClassData}
+        isLoading={isLiveClassLoading}
+      />
 
+      {/* Live Classes Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-lg sm:text-xl font-bold text-title">{t("liveClasses")}</h2>
           <p className="text-sm sm:text-base text-description">{t("attendLiveDesc")}</p>
         </div>
-        <div className='flex flex-col sm:flex-row gap-2 w-full sm:w-auto'>
-          <button
-            onClick={() => {setIsModalOpen(true); setIsShowDate(true);}}
-            className="px-5 py-3 bg-[#FFFFFF] text-main text-sm font-semibold hover:bg-[#FFFFFF]/90 transition-colors w-full sm:w-auto"
-          >
-            {t("scheduleLiveClass")}
-          </button>
-          <button
-            onClick={() => {setIsModalOpen(true); setIsShowDate(false);}}
-            className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto"
-          >
-            {t("hostLiveClass")}
-          </button>
-        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-5 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors w-full sm:w-auto shrink-0 cursor-pointer"
+        >
+          {t("scheduleLiveClass")}
+        </button>
       </div>
 
-      {/* Upcoming + Calendar */}
-      <LiveClassUpcomingAndCalendar />
+      <UpcomingLiveClasses
+        sessions={liveClassData?.upcoming_sessions}
+        isLoading={isLiveClassLoading}
+      />
 
       {/* Past Sessions */}
-      <LiveClassPastSessions />
+      <LiveClassPastSessions
+        sessions={liveClassData?.past_sessions}
+        isLoading={isLiveClassLoading}
+      />
 
       {/* Live Class Modal */}
-      <LiveClassModal isShowDate={isShowDate} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
+      <LiveClassModal isShowDate={false} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
-  )
-}
+  );
+};
 
 export default LiveClassPage;
