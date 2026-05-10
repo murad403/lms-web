@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse } from "./organization.type";
+import { InviteInstructorPayload, InviteInstructorResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse } from "./organization.type";
 import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
 
 const organizationApi = baseApi.injectEndpoints({
@@ -56,7 +56,30 @@ const organizationApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: ["organization-earnings"]
-        })
+        }),
+
+
+
+        organizationInstructorInvitationDashboard: builder.query<OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams | void>({
+            query: (params) => {
+                return {
+                    url: `/organizations/organization/instructors/dashboard/`,
+                    method: "GET",
+                    params: params || undefined
+                }
+            },
+            providesTags: ["organization-instructors"]
+        }),
+        inviteInstructor: builder.mutation<InviteInstructorResponse, InviteInstructorPayload>({
+            query: (data) => {
+                return {
+                    url: `/organizations/invite/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-instructors"]
+        }),
     }),
 });
 
@@ -66,5 +89,7 @@ export const {
     useOrganizationEarningsQuery,
     useOrganizationStripeConnectMutation: useStripeConnectMutation,
     useOrganizationStripeDashboardLinkMutation: useStripeDashboardLinkMutation,
-    useOrganizationWithdrawRequestMutation: useWithdrawRequestMutation
+    useOrganizationWithdrawRequestMutation: useWithdrawRequestMutation,
+    useOrganizationInstructorInvitationDashboardQuery,
+    useInviteInstructorMutation
 } = organizationApi;

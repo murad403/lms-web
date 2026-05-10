@@ -105,3 +105,51 @@ export type OrganizationCoursesResponse = {
     previous: string | null;
     data: OrganizationCourseItem[];
 };
+
+export type OrganizationInstructorDashboardStats = {
+    total_instructors: number;
+    active_instructors: number;
+    pending_invitations: number;
+    total_courses: number;
+};
+
+export type OrganizationInstructorMembership = {
+    id: number;
+    organization_name: string;
+    user: string;
+    user_name: string;
+    user_email: string;
+    user_avatar: string | null;
+    role: string;
+    status: string;
+    last_login: string;
+    joined_at: string;
+};
+
+export type OrganizationInstructorInvitationDashboardData = {
+    stats: OrganizationInstructorDashboardStats;
+    "memberships list": OrganizationInstructorMembership[];
+};
+
+export type OrganizationInstructorInvitationDashboardResponse = ApiResponse<OrganizationInstructorInvitationDashboardData>;
+
+export type OrganizationInstructorInvitationDashboardQueryParams = {
+    search?: string;
+    status?: string;
+};
+
+export type InviteInstructorPayload = {
+    email: string;
+};
+
+export type InviteInstructorResponse = ApiResponse<{
+    id: number;
+    organization: number;
+    invited_by: string;
+    email: string;
+    role: string;
+    token: string;
+    status: string;
+    created_at: string;
+    expires_at: string;
+}>;

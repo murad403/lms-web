@@ -1,28 +1,34 @@
 "use client";
 import { useState } from "react";
-import { MoreVertical, SquarePen, Eye, Trash2, UserRoundX } from "lucide-react";
-import { instructorMembers, TInstructorMember } from "@/lib/organization";
+import { MoreVertical, UserRoundX } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import AddInstructorModal, { AddInstructorForm } from "@/components/modal/AddInstructorModal";
-import EditInstructorRoleModal from "@/components/modal/EditInstructorRoleModal";
-import ViewContractModal from "@/components/modal/ViewContractModal";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { useInviteInstructorMutation, useOrganizationInstructorInvitationDashboardQuery } from "@/redux/features/organization/organization.api";
+import { Skeleton } from "@/components/ui/skeleton";
+import { resolveImageUrl } from "@/utils/image";
 
 const roleBadgeColors: Record<string, string> = {
-  "Lead Instructor": "bg-purple-50 text-purple-700",
-  Instructor: "bg-blue-50 text-blue-700",
-  Assistant: "bg-green-50 text-green-700",
+    instructor: "bg-blue-50 text-blue-700",
+    admin: "bg-purple-50 text-purple-700",
+    manager: "bg-green-50 text-green-700",
 };
 
 const statusColors: Record<string, string> = {
-  Active: "bg-green-50 text-green-700",
-  Pending: "bg-yellow-50 text-yellow-700",
-  Suspended: "bg-red-50 text-red-700",
+    active: "bg-green-50 text-green-700",
+    pending: "bg-yellow-50 text-yellow-700",
+    suspended: "bg-red-50 text-red-700",
 };
 
-type TProps = { 
-    showAddInstructor: boolean; 
+const toTitleCase = (value: string) => {
+    if (!value) return "Unknown";
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+};
+
+type TProps = {
+    showAddInstructor: boolean;
     setShowAddInstructor: (show: boolean) => void;
 }
 
@@ -30,53 +36,101 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
 
     const t = useTranslations("OrganizationInstructors");
 
-    const [openAction, setOpenAction] = useState<string | null>(null);
-    
+    const [openAction, setOpenAction] = useState<number | null>(null);
+
     const [statusFilter, setStatusFilter] = useState("all");
-    const [roleFilter, setRoleFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const [showEditRole, setShowEditRole] = useState(false);
-    const [editingInstructor, setEditingInstructor] = useState<TInstructorMember | null>(null);
-    const [selectedRole, setSelectedRole] = useState("");
-
-    const [showViewContract, setShowViewContract] = useState(false);
-    const [viewingInstructor, setViewingInstructor] = useState<TInstructorMember | null>(null);
-
     const form = useForm<AddInstructorForm>();
-
-    const filteredInstructors = instructorMembers.filter((i) => {
-        const matchStatus = statusFilter === "all" || i.status === statusFilter;
-        const matchRole = roleFilter === "all" || i.role === roleFilter;
-        const matchSearch = searchQuery === "" || i.name.toLowerCase().includes(searchQuery.toLowerCase()) || i.email.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchStatus && matchRole && matchSearch;
+    const [inviteInstructor, { isLoading: isInviting }] = useInviteInstructorMutation();
+    const { data, isLoading, isFetching } = useOrganizationInstructorInvitationDashboardQuery({
+        search: searchQuery || undefined,
+        status: statusFilter === "all" ? undefined : statusFilter,
     });
 
+    const instructors = data?.data?.["memberships list"] ?? [];
 
-    const handleAddInstructor = (data: AddInstructorForm) => {
-        console.log("Add Instructor:", data);
-        setShowAddInstructor(false);
-        form.reset();
+    const skeletonRows = Array.from({ length: 5 }).map((_, idx) => (
+        <tr key={`skeleton-${idx}`} className="border-b border-border-light last:border-0">
+            <td className="py-3 px-4">
+                <div className="flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-full shrink-0" />
+                    <Skeleton className="h-3.5 w-28" />
+                </div>
+            </td>
+            <td className="py-3 px-4"><Skeleton className="h-3.5 w-36" /></td>
+            <td className="py-3 px-4"><Skeleton className="h-5 w-16 rounded-sm" /></td>
+            <td className="py-3 px-4"><Skeleton className="h-3.5 w-20" /></td>
+            <td className="py-3 px-4"><Skeleton className="h-5 w-16 rounded-sm" /></td>
+            <td className="py-3 px-4 flex justify-end">
+                <Skeleton className="h-7 w-7 rounded-full" />
+            </td>
+        </tr>
+    ));
+    const dataRows = instructors.map((instructor) => (
+        <tr key={instructor.id} className="border-b border-border-light last:border-0">
+            <td className="py-3 px-4">
+                <div className="flex items-center gap-3">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                        <Image src={resolveImageUrl(instructor.user_avatar)} alt={instructor.user_name} fill className="object-cover" />
+                    </div>
+                    <span className="text-title font-medium">{instructor.user_name}</span>
+                </div>
+            </td>
+            <td className="py-3 px-4 text-description">{instructor.user_email}</td>
+            <td className="py-3 px-4">
+                <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${roleBadgeColors[instructor.role] || "bg-gray-100 text-gray-700"}`}>
+                    {toTitleCase(instructor.role)}
+                </span>
+            </td>
+            <td className="py-3 px-4 text-description whitespace-nowrap">{instructor.last_login || "-"}</td>
+            <td className="py-3 px-4">
+                <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${statusColors[instructor.status] || "bg-gray-100 text-gray-700"}`}>
+                    {toTitleCase(instructor.status)}
+                </span>
+            </td>
+            <td className="py-3 px-4">
+                <div className="relative">
+                    <button
+                        onClick={() => setOpenAction(openAction === instructor.id ? null : instructor.id)}
+                        className="p-1 hover:bg-gray-100 rounded"
+                    >
+                        <MoreVertical className="w-4 h-4 text-description" />
+                    </button>
+                    {openAction === instructor.id && (
+                        <div className="absolute right-0 top-8 bg-white shadow-lg border border-border-light rounded z-10 w-44">
+                            <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
+                                <UserRoundX className="w-4 h-4 mr-2 inline" />
+                                {instructor.status === "suspended" ? t("activate") : t("suspend")}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </td>
+        </tr>
+    ));
+
+    const rows = (isLoading || isFetching) ? skeletonRows : dataRows;
+
+    const handleAddInstructor = async (values: AddInstructorForm) => {
+        try {
+            const response = await inviteInstructor({ email: values.email }).unwrap();
+            toast.success(response.message || "Invitation sent successfully.");
+            setShowAddInstructor(false);
+            form.reset();
+        } catch (error: unknown) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to send instructor invitation.";
+
+            toast.error(message);
+        }
     };
 
-    const handleEditRole = (instructor: TInstructorMember) => {
-        setEditingInstructor(instructor);
-        setSelectedRole(instructor.role);
-        setOpenAction(null);
-        setShowEditRole(true);
-    };
-
-    const handleViewContract = (instructor: TInstructorMember) => {
-        setViewingInstructor(instructor);
-        setOpenAction(null);
-        setShowViewContract(true);
-    };
-
-    const saveEditRole = () => {
-        console.log("Save role:", editingInstructor?.id, selectedRole);
-        setShowEditRole(false);
-        setEditingInstructor(null);
-    };
     return (
         <div>
             {/* Table */}
@@ -85,26 +139,21 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h3 className="text-lg font-semibold text-title">{t("availableInstructors")}</h3>
                         <div className="flex gap-2 w-full sm:w-auto">
+                            <input
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="px-4 py-2 text-sm border border-border-light text-description bg-white focus:outline-none"
+                                placeholder="Search by name or email"
+                            />
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                                 className="px-4 py-2 text-sm border border-border-light text-description bg-white focus:outline-none"
                             >
                                 <option value="all">{t("allStatus")}</option>
-                                <option value="Active">{t("active")}</option>
-                                <option value="Pending">{t("pending")}</option>
-                                <option value="Suspended">{t("suspended")}</option>
-                            </select>
-                            <select
-                                value={roleFilter}
-                                onChange={(e) => setRoleFilter(e.target.value)}
-                                className="px-4 py-2 text-sm border border-border-light text-description bg-white focus:outline-none"
-                            >
-                                <option value="all">{t("allRoles")}</option>
-                                <option value="Lead Instructor">{t("admin")}</option>
-                                <option value="Instructor">{t("manager")}</option>
-                                <option value="Assistant">{t("reviewer")}</option>
-                                <option value="Assistant">{t("finance")}</option>
+                                <option value="active">{t("active")}</option>
+                                <option value="pending">{t("pending")}</option>
+                                <option value="suspended">{t("suspended")}</option>
                             </select>
                         </div>
                     </div>
@@ -123,63 +172,12 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredInstructors.map((instructor) => (
-                                <tr key={instructor.id} className="border-b border-border-light last:border-0">
-                                    <td className="py-3 px-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                                                <Image src={instructor.avatar} alt={instructor.name} fill className="object-cover" />
-                                            </div>
-                                            <span className="text-title font-medium">{instructor.name}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-4 text-description">{instructor.email}</td>
-                                    <td className="py-3 px-4">
-                                        <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${roleBadgeColors[instructor.role]}`}>
-                                            {instructor.role}
-                                        </span>
-                                    </td>
-                                    <td className="py-3 px-4 text-description whitespace-nowrap">{instructor.lastLogin}</td>
-                                    <td className="py-3 px-4">
-                                        <span className={`px-3 py-1 text-xs font-medium whitespace-nowrap ${statusColors[instructor.status]}`}>
-                                            {instructor.status}
-                                        </span>
-                                    </td>
-                                    <td className="py-3 px-4">
-                                        <div className="relative">
-                                            <button
-                                                onClick={() => setOpenAction(openAction === instructor.id ? null : instructor.id)}
-                                                className="p-1 hover:bg-gray-100 rounded"
-                                            >
-                                                <MoreVertical className="w-4 h-4 text-description" />
-                                            </button>
-                                            {openAction === instructor.id && (
-                                                <div className="absolute right-0 top-8 bg-white shadow-lg border border-border-light rounded z-10 w-44">
-                                                    <button
-                                                        onClick={() => handleEditRole(instructor)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
-                                                        <SquarePen className="w-4 h-4 mr-2 inline" />
-                                                        {t("editRole")}
-                                                        </button>
-                                                    <button
-                                                        onClick={() => handleViewContract(instructor)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
-                                                        <Eye className="w-4 h-4 mr-2 inline" />
-                                                        {t("viewContract")}
-                                                        </button>
-                                                    <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
-                                                        <UserRoundX className="w-4 h-4 mr-2 inline" />
-                                                        {instructor.status === "Suspended" ? t("activate") : t("suspend")}
-                                                    </button>
-                                                    <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-                                                        <Trash2 className="w-4 h-4 mr-2 inline" />
-                                                        {t("removeMember")}</button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </td>
+                            {rows}
+                            {!isLoading && instructors.length === 0 && (
+                                <tr>
+                                    <td colSpan={6} className="py-6 px-4 text-center text-description">No instructors found.</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -190,21 +188,7 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                 onClose={() => setShowAddInstructor(false)}
                 form={form}
                 onSubmit={handleAddInstructor}
-            />
-
-            <EditInstructorRoleModal
-                show={showEditRole}
-                instructor={editingInstructor}
-                selectedRole={selectedRole}
-                onRoleChange={setSelectedRole}
-                onClose={() => { setShowEditRole(false); setEditingInstructor(null); }}
-                onSave={saveEditRole}
-            />
-
-            <ViewContractModal
-                show={showViewContract}
-                instructor={viewingInstructor}
-                onClose={() => { setShowViewContract(false); setViewingInstructor(null); }}
+                isSubmitting={isInviting}
             />
         </div>
     )

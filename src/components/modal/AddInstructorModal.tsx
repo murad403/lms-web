@@ -3,9 +3,7 @@ import { X } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 export type AddInstructorForm = {
-    fullName: string;
     email: string;
-    role: string;
 };
 
 type Props = {
@@ -13,9 +11,10 @@ type Props = {
     onClose: () => void;
     form: UseFormReturn<AddInstructorForm>;
     onSubmit: (data: AddInstructorForm) => void;
+    isSubmitting?: boolean;
 };
 
-const AddInstructorModal = ({ show, onClose, form, onSubmit }: Props) => {
+const AddInstructorModal = ({ show, onClose, form, onSubmit, isSubmitting = false }: Props) => {
     if (!show) return null;
 
     return (
@@ -29,14 +28,6 @@ const AddInstructorModal = ({ show, onClose, form, onSubmit }: Props) => {
                 </div>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-title mb-1">Full Name</label>
-                        <input
-                            {...form.register("fullName", { required: true })}
-                            className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
-                            placeholder="Enter full name"
-                        />
-                    </div>
-                    <div>
                         <label className="block text-sm font-medium text-title mb-1">Email</label>
                         <input
                             {...form.register("email", { required: true })}
@@ -44,19 +35,6 @@ const AddInstructorModal = ({ show, onClose, form, onSubmit }: Props) => {
                             className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main"
                             placeholder="Enter email address"
                         />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-title mb-1">Role</label>
-                        <select
-                            {...form.register("role", { required: true })}
-                            className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main bg-white"
-                        >
-                            <option value="">Select role</option>
-                            <option value="Lead Instructor">Admin</option>
-                            <option value="Instructor">Manager</option>
-                            <option value="Assistant">Reviewer</option>
-                            <option value="Assistant">Finance</option>
-                        </select>
                     </div>
                     <div className="flex gap-3 pt-2">
                         <button
@@ -68,9 +46,10 @@ const AddInstructorModal = ({ show, onClose, form, onSubmit }: Props) => {
                         </button>
                         <button
                             type="submit"
+                            disabled={isSubmitting}
                             className="flex-1 px-4 py-2.5 text-sm bg-main text-white font-medium hover:bg-main/90"
                         >
-                            Add Instructor
+                            {isSubmitting ? "Submitting..." : "Add Instructor"}
                         </button>
                     </div>
                 </form>
