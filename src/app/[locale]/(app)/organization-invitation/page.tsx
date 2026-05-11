@@ -1,18 +1,25 @@
 "use client";
-
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, Building2, UserCircle2, Globe } from 'lucide-react';
 import { toast } from 'sonner';
-
 import { useRouter } from '@/i18n/navigation';
 import { useInstructorInvitationAcceptOrRejectMutation } from '@/redux/features/organization/organization.api';
+import { useSearchParams } from 'next/navigation';
+import React from 'react';
 
 const OrganizationInvitationPage = () => {
+  const searchParams = useSearchParams();
   const t = useTranslations("OrganizationInvitation");
   const router = useRouter();
   const [respondInvitation, { isLoading }] = useInstructorInvitationAcceptOrRejectMutation();
+  const invitationToken = searchParams.get('token');
+
+  React.useEffect(() => {
+    if (invitationToken) {
+      localStorage.setItem('invitation_token', invitationToken);
+    }
+  }, [invitationToken]);
 
   const handleResponse = async (action: 'accept' | 'reject') => {
     const token = localStorage.getItem('invitation_token');
@@ -34,6 +41,7 @@ const OrganizationInvitationPage = () => {
         localStorage.removeItem('invitation_token');
       }
     } catch (error: any) {
+      // console.log(error)
       toast.error(error?.data?.message || "Something went wrong");
       localStorage.removeItem('invitation_token');
     }
