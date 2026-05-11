@@ -1804,6 +1804,10 @@
     "cancelWithdraw": "Auszahlung stornieren"
   },
   "InstructorAccreditation": {
+    "title": "Akkreditierung",
+    "description": "Akkreditierungsanträge und Zertifikate verwalten",
+    "accreditationRequests": "Akkreditierungsanträge",
+    "certificateRules": "Zertifikatsregeln",
     "approvedCourses": "Genehmigte Kurse",
     "accreditedCourses": "Akkreditierte Kurse",
     "pendingReview": "Überprüfung ausstehend",

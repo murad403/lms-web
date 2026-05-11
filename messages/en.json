@@ -1812,6 +1812,10 @@
     "cancelWithdraw": "Cancel Withdraw"
   },
   "InstructorAccreditation": {
+    "title": "Accreditation",
+    "description": "Manage accreditation requests and certificates",
+    "accreditationRequests": "Accreditation Requests",
+    "certificateRules": "Certificate Rules",
     "approvedCourses": "Approved Courses",
     "accreditedCourses": "Accredited courses",
     "pendingReview": "Pending Review",

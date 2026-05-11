@@ -1804,6 +1804,10 @@
     "cancelWithdraw": "Cancelar Retiro"
   },
   "InstructorAccreditation": {
+    "title": "Acreditación",
+    "description": "Gestionar solicitudes de acreditación y certificados",
+    "accreditationRequests": "Solicitudes de Acreditación",
+    "certificateRules": "Reglas de Certificados",
     "approvedCourses": "Cursos Aprobados",
     "accreditedCourses": "Cursos acreditados",
     "pendingReview": "Revisión Pendiente",

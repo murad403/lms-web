@@ -1804,6 +1804,10 @@
     "cancelWithdraw": "Annulla Prelievo"
   },
   "InstructorAccreditation": {
+    "title": "Accreditamento",
+    "description": "Gestisci le richieste di accreditamento e i certificati",
+    "accreditationRequests": "Richieste di Accreditamento",
+    "certificateRules": "Regole dei Certificati",
     "approvedCourses": "Corsi Approvati",
     "accreditedCourses": "Corsi accreditati",
     "pendingReview": "In Attesa di Revisione",

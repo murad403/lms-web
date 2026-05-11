@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import AccreditationStatsCards from "@/app/[locale]/(instructor)/instructor/accreditation/AccreditationStatsCards";
-import SubmissionsTab from "@/app/[locale]/(instructor)/instructor/accreditation/SubmissionsTab";
-import CertificatesTab from "@/app/[locale]/(instructor)/instructor/accreditation/CertificatesTab";
+import AccreditationStatsCards from "@/components/reusable/for-dashboard/AccreditationStatsCards";
+import SubmissionsTab from "@/components/reusable/for-dashboard/SubmissionsTab";
+import CertificatesTab from "@/components/reusable/for-dashboard/CertificatesTab";
 import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
 import SignatureModal from "@/components/modal/SignatureModal";
 import { accreditationGuidelines } from "@/lib/instructor";
@@ -34,11 +34,10 @@ const AccreditationPage = () => {
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                    activeTab === tab.id
-                                        ? "bg-white text-main"
-                                        : "text-description hover:bg-gray-100"
-                                }`}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab.id
+                                    ? "bg-white text-main"
+                                    : "text-description hover:bg-gray-100"
+                                    }`}
                             >
                                 {t(tab.labelKey)}
                             </button>
