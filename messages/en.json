@@ -2293,5 +2293,17 @@
     "profile": "Profile",
     "settings": "Settings",
     "logOut": "Log out"
+  },
+  "OrganizationInvitation": {
+    "title": "Organization Invitation",
+    "description": "You have been invited to join an organization.",
+    "welcomeMessage": "Welcome! You have been invited to join {organizationName} as a {role}.",
+    "accept": "Accept Invitation",
+    "reject": "Decline",
+    "loading": "Processing your request...",
+    "successAccept": "You have successfully joined the organization.",
+    "successReject": "Invitation declined.",
+    "error": "Failed to process invitation. Please try again later.",
+    "expired": "This invitation has expired or is no longer valid."
   }
 }

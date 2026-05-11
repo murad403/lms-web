@@ -2281,5 +2281,17 @@
     "profile": "Profilo",
     "settings": "Impostazioni",
     "logOut": "Esci"
+  },
+  "OrganizationInvitation": {
+    "title": "Invito Organizzazione",
+    "description": "Sei stato invitato a unirti a un'organizzazione.",
+    "welcomeMessage": "Benvenuto! Sei stato invitato a unirti a {organizationName} come {role}.",
+    "accept": "Accetta Invito",
+    "reject": "Rifiuta",
+    "loading": "Elaborazione della richiesta...",
+    "successAccept": "Ti sei unito con successo all'organizzazione.",
+    "successReject": "Invito rifiutato.",
+    "error": "Impossibile elaborare l'invito. Riprova più tardi.",
+    "expired": "Questo invito è scaduto o non è più valido."
   }
 }

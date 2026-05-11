@@ -2281,5 +2281,17 @@
     "profile": "Profil",
     "settings": "Paramètres",
     "logOut": "Se déconnecter"
+  },
+  "OrganizationInvitation": {
+    "title": "Invitation à l'organisation",
+    "description": "Vous avez été invité à rejoindre une organisation.",
+    "welcomeMessage": "Bienvenue ! Vous avez été invité à rejoindre {organizationName} en tant que {role}.",
+    "accept": "Accepter l'invitation",
+    "reject": "Refuser",
+    "loading": "Traitement de votre demande...",
+    "successAccept": "Vous avez rejoint l'organisation avec succès.",
+    "successReject": "Invitation refusée.",
+    "error": "Échec du traitement de l'invitation. Veuillez réessayer plus tard.",
+    "expired": "Cette invitation a expiré ou n'est plus valide."
   }
 }

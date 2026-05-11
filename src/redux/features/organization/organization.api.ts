@@ -80,6 +80,15 @@ const organizationApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["organization-instructors"]
         }),
+        instructorStatusChange: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/organizations/membership/toggle/${id}/`,
+                    method: "PATCH"
+                }
+            },
+            invalidatesTags: ["organization-instructors"]
+        }),
     }),
 });
 
@@ -91,5 +100,6 @@ export const {
     useOrganizationStripeDashboardLinkMutation: useStripeDashboardLinkMutation,
     useOrganizationWithdrawRequestMutation: useWithdrawRequestMutation,
     useOrganizationInstructorInvitationDashboardQuery,
-    useInviteInstructorMutation
+    useInviteInstructorMutation,
+    useInstructorStatusChangeMutation
 } = organizationApi;

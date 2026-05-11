@@ -6,9 +6,10 @@ import { useForm } from "react-hook-form";
 import AddInstructorModal, { AddInstructorForm } from "@/components/modal/AddInstructorModal";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { useInviteInstructorMutation, useOrganizationInstructorInvitationDashboardQuery } from "@/redux/features/organization/organization.api";
+import { useInstructorStatusChangeMutation, useInviteInstructorMutation, useOrganizationInstructorInvitationDashboardQuery } from "@/redux/features/organization/organization.api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveImageUrl } from "@/utils/image";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const roleBadgeColors: Record<string, string> = {
     instructor: "bg-blue-50 text-blue-700",
@@ -36,13 +37,13 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
 
     const t = useTranslations("OrganizationInstructors");
 
-    const [openAction, setOpenAction] = useState<number | null>(null);
 
     const [statusFilter, setStatusFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
 
     const form = useForm<AddInstructorForm>();
     const [inviteInstructor, { isLoading: isInviting }] = useInviteInstructorMutation();
+    const [statusChange, { isLoading: isStatusChanging }] = useInstructorStatusChangeMutation();
     const { data, isLoading, isFetching } = useOrganizationInstructorInvitationDashboardQuery({
         search: searchQuery || undefined,
         status: statusFilter === "all" ? undefined : statusFilter,
@@ -90,21 +91,24 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                 </span>
             </td>
             <td className="py-3 px-4">
-                <div className="relative">
-                    <button
-                        onClick={() => setOpenAction(openAction === instructor.id ? null : instructor.id)}
-                        className="p-1 hover:bg-gray-100 rounded"
-                    >
-                        <MoreVertical className="w-4 h-4 text-description" />
-                    </button>
-                    {openAction === instructor.id && (
-                        <div className="absolute right-0 top-8 bg-white shadow-lg border border-border-light rounded z-10 w-44">
-                            <button className="w-full text-left px-4 py-2 text-sm text-title hover:bg-gray-50">
-                                <UserRoundX className="w-4 h-4 mr-2 inline" />
-                                {instructor.status === "suspended" ? t("activate") : t("suspend")}
+                <div className="flex justify-center">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button className="p-1 hover:bg-gray-100 rounded focus:outline-none">
+                                <MoreVertical className="w-4 h-4 text-description" />
                             </button>
-                        </div>
-                    )}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-44">
+                            <DropdownMenuItem 
+                                disabled={isStatusChanging}
+                                onClick={() => handleStatusChange(instructor.id)}
+                                className="cursor-pointer"
+                            >
+                                <UserRoundX className="w-4 h-4 mr-2" />
+                                {instructor.status === "suspended" ? t("activate") : t("suspend")}
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </td>
         </tr>
@@ -126,6 +130,23 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                     typeof (error as { data?: { message?: string } }).data?.message === "string"
                     ? (error as { data?: { message?: string } }).data?.message
                     : "Failed to send instructor invitation.";
+
+            toast.error(message);
+        }
+    };
+    
+    const handleStatusChange = async (id: number) => {
+        try {
+            const response = await statusChange(id).unwrap();
+            toast.success(response.message || "Status updated successfully.");
+        } catch (error: unknown) {
+            const message =
+                typeof error === "object" &&
+                    error !== null &&
+                    "data" in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === "string"
+                    ? (error as { data?: { message?: string } }).data?.message
+                    : "Failed to update status.";
 
             toast.error(message);
         }
@@ -168,7 +189,7 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
                                 <th className="text-left py-3 px-4 font-medium text-title">{t("role")}</th>
                                 <th className="text-left py-3 px-4 font-medium text-title">{t("lastLogin")}</th>
                                 <th className="text-left py-3 px-4 font-medium text-title">{t("status")}</th>
-                                <th className="text-left py-3 px-4 font-medium text-title">{t("actions")}</th>
+                                <th className="text-center py-3 px-4 font-medium text-title">{t("actions")}</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -2281,5 +2281,17 @@
     "profile": "Profil",
     "settings": "Einstellungen",
     "logOut": "Abmelden"
+  },
+  "OrganizationInvitation": {
+    "title": "Organisationseinladung",
+    "description": "Sie wurden eingeladen, einer Organisation beizutreten.",
+    "welcomeMessage": "Willkommen! Sie wurden eingeladen, {organizationName} als {role} beizutreten.",
+    "accept": "Einladung annehmen",
+    "reject": "Ablehnen",
+    "loading": "Anfrage wird verarbeitet...",
+    "successAccept": "Sie sind der Organisation erfolgreich beigetreten.",
+    "successReject": "Einladung abgelehnt.",
+    "error": "Fehler beim Verarbeiten der Einladung. Bitte versuchen Sie es später erneut.",
+    "expired": "Diese Einladung ist abgelaufen oder nicht mehr gültig."
   }
 }
