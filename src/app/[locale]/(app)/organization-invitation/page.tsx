@@ -8,6 +8,8 @@ import { useInstructorInvitationAcceptOrRejectMutation } from '@/redux/features/
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import { getClientSession } from '@/utils/auth-client';
+
 const OrganizationInvitationPage = () => {
   const searchParams = useSearchParams();
   const t = useTranslations("OrganizationInvitation");
@@ -26,6 +28,13 @@ const OrganizationInvitationPage = () => {
 
     if (!token) {
       toast.error("Invitation token not found. Please use the link from your email.");
+      return;
+    }
+
+    // If user is not logged in, redirect to sign-in
+    const session = getClientSession();
+    if (!session.accessToken) {
+      router.push('/auth/sign-in');
       return;
     }
 
