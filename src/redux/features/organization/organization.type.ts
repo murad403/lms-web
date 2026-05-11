@@ -163,3 +163,84 @@ export type AcceptInvitationResponse = {
     status: number;
     message: string;
 };
+export type OrganizationContractItem = {
+    id: number;
+    organization_name: string;
+    instructor_name: string;
+    course_name: string;
+    revenue_share: number;
+    expiry_date: string;
+    status: string;
+    created_at: string;
+    instructor_avatar: string;
+};
+
+export type OrganizationContractResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+    data: OrganizationContractItem[];
+};
+
+export type OrganizationContractDetailsResponse = ApiResponse<OrganizationContractItem>;
+
+
+export type OrganizationInstructorListItem = {
+    id: number;
+    user_name: string;
+    organization_name: string;
+    role: string;
+    status: string;
+    joined_at: string;
+};
+
+export type OrganizationInstructorListResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    data: OrganizationInstructorListItem[];
+};
+
+export type OrganizationCourseListItem = {
+    id: number;
+    title: string;
+    subtitle: string;
+    organization_name: string;
+};
+
+export type OrganizationCourseListResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    data: OrganizationCourseListItem[];
+};
+
+export type OrganizationMemberAnalyticsData = {
+    summary: {
+        total_members: number;
+        active_members: number;
+        suspended_members: number;
+    };
+};
+
+export type OrganizationMemberAnalyticsResponse = ApiResponse<OrganizationMemberAnalyticsData>;
+
+export type OrganizationContractQueryParams = {
+    page?: number;
+    page_size?: number;
+    search?: string;
+};

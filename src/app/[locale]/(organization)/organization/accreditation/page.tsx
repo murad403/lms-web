@@ -4,9 +4,7 @@ import { Plus } from "lucide-react";
 import AccreditationStatsCards from "@/components/reusable/for-dashboard/AccreditationStatsCards";
 import SubmissionsTab from "@/components/reusable/for-dashboard/SubmissionsTab";
 import CertificatesTab from "@/components/reusable/for-dashboard/CertificatesTab";
-import GuidelinesTab from "@/app/[locale]/(instructor)/instructor/accreditation/GuidelinesTab";
 import SignatureModal from "@/components/modal/SignatureModal";
-import { accreditationGuidelines } from "@/lib/instructor";
 import { useTranslations } from "next-intl";
 import CertificateRules from "./CertificateRules";
 

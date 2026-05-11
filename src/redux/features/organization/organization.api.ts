@@ -1,6 +1,8 @@
 import baseApi from "@/redux/api/baseApi";
-import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse } from "./organization.type";
+import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, OrganizationContractDetailsResponse, OrganizationContractQueryParams, OrganizationContractResponse, OrganizationCourseListResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorListResponse, OrganizationMemberAnalyticsResponse } from "./organization.type";
 import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
+
+
 
 const organizationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -99,6 +101,74 @@ const organizationApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["organization-instructors"]
         }),
+
+        // contracts *******************************************************
+        instructorList: builder.query<OrganizationInstructorListResponse, void>({
+            query: () => {
+                return {
+                    url: `/organizations/organization-instructors-contracts/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-contracts"]
+        }),
+        CourseList: builder.query<OrganizationCourseListResponse, void>({
+            query: () => {
+                return {
+                    url: `/organizations/my-organization-courses/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-contracts"]
+        }),
+        contractList: builder.query<OrganizationContractResponse, OrganizationContractQueryParams | void>({
+            query: (params) => {
+                return {
+                    url: `/organizations/contracts-instructors/`,
+                    method: "GET",
+                    params: params || undefined
+                }
+            },
+            providesTags: ["organization-contracts"]
+        }),
+        contractDetails: builder.query<OrganizationContractDetailsResponse, number | string>({
+            query: (id) => {
+                return {
+                    url: `/organizations/organization-contracts-details/${id}/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-contracts"]
+        }),
+        contractStats: builder.query<OrganizationMemberAnalyticsResponse, void>({
+            query: () => {
+                return {
+                    url: `/organizations/members-analytics/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-contracts"]
+        }),
+        addContract: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/organizations/contracts-instructors/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-contracts"]
+        }),
+        updateContract: builder.mutation<any, { data: any, id: number | string }>({
+            query: ({ data, id }) => {
+                return {
+                    url: `/organizations/contracts-instructors/${id}/`,
+                    method: "PATCH",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-contracts"]
+        }),
     }),
 });
 
@@ -112,5 +182,12 @@ export const {
     useOrganizationInstructorInvitationDashboardQuery,
     useInviteInstructorMutation,
     useInstructorStatusChangeMutation,
-    useInstructorInvitationAcceptOrRejectMutation
+    useInstructorInvitationAcceptOrRejectMutation,
+    useContractListQuery,
+    useContractDetailsQuery,
+    useContractStatsQuery,
+    useInstructorListQuery,
+    useCourseListQuery,
+    useAddContractMutation,
+    useUpdateContractMutation
 } = organizationApi;
