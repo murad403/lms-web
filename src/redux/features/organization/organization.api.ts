@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { InviteInstructorPayload, InviteInstructorResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse } from "./organization.type";
+import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse } from "./organization.type";
 import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
 
 const organizationApi = baseApi.injectEndpoints({
@@ -89,6 +89,16 @@ const organizationApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["organization-instructors"]
         }),
+        instructorInvitationAcceptOrReject: builder.mutation<AcceptInvitationResponse, { data: AcceptInvitationPayload, token: string }>({
+            query: ({ data, token }: { data: any, token: string }) => {
+                return {
+                    url: `/organizations/invitation/respond/${token}/`,
+                    method: "POST",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-instructors"]
+        }),
     }),
 });
 
@@ -101,5 +111,6 @@ export const {
     useOrganizationWithdrawRequestMutation: useWithdrawRequestMutation,
     useOrganizationInstructorInvitationDashboardQuery,
     useInviteInstructorMutation,
-    useInstructorStatusChangeMutation
+    useInstructorStatusChangeMutation,
+    useInstructorInvitationAcceptOrRejectMutation
 } = organizationApi;

@@ -153,3 +153,13 @@ export type InviteInstructorResponse = ApiResponse<{
     created_at: string;
     expires_at: string;
 }>;
+
+export type AcceptInvitationPayload = {
+    action: "accept" | "reject";
+};
+
+export type AcceptInvitationResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+};

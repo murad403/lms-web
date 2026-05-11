@@ -52,13 +52,19 @@ const SignIn = () => {
       });
 
       toast.success(response.message || "Login successful");
-      router.replace(getDashboardPathByRole(response.data.role));
+      
+      const invitationToken = localStorage.getItem('invitation_token');
+      if (invitationToken) {
+        router.replace('/organization-invitation');
+      } else {
+        router.replace(getDashboardPathByRole(response.data.role));
+      }
     } catch (error: unknown) {
       const message =
         typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        typeof (error as { data?: { message?: string } }).data?.message === "string"
+          error !== null &&
+          "data" in error &&
+          typeof (error as { data?: { message?: string } }).data?.message === "string"
           ? (error as { data?: { message?: string } }).data?.message
           : "Invalid email or password";
 

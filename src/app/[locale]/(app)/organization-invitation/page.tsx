@@ -6,16 +6,40 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, Building2, UserCircle2, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useRouter } from '@/i18n/navigation';
+import { useInstructorInvitationAcceptOrRejectMutation } from '@/redux/features/organization/organization.api';
+
 const OrganizationInvitationPage = () => {
   const t = useTranslations("OrganizationInvitation");
+  const router = useRouter();
+  const [respondInvitation, { isLoading }] = useInstructorInvitationAcceptOrRejectMutation();
 
-  const handleAccept = () => {
-    toast.success(t("successAccept"));
+  const handleResponse = async (action: 'accept' | 'reject') => {
+    const token = localStorage.getItem('invitation_token');
+    
+    if (!token) {
+      toast.error("Invitation token not found. Please use the link from your email.");
+      return;
+    }
+
+    try {
+      const response = await respondInvitation({
+        token,
+        data: { action }
+      }).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
+        localStorage.removeItem('invitation_token');
+        router.replace('/instructor/dashboard');
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
   };
 
-  const handleReject = () => {
-    toast.info(t("successReject"));
-  };
+  const handleAccept = () => handleResponse('accept');
+  const handleReject = () => handleResponse('reject');
 
   return (
     <div className="min-h-[85vh] flex flex-col items-center justify-center p-4 bg-gray-50/30 relative">

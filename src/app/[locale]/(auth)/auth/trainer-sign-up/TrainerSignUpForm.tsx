@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
@@ -12,22 +11,43 @@ import { useSignUpMutation } from '@/redux/features/auth/auth.api';
 import { useRouter } from '@/i18n/navigation';
 import { toast } from 'sonner';
 
+
+
+import { useSearchParams } from 'next/navigation';
+
 const TrainerSignUpForm = () => {
     const t = useTranslations('Auth');
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [signUp, { isLoading }] = useSignUpMutation();
+
+    const invitationToken = searchParams.get('token');
+    const invitationEmail = searchParams.get('email');
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         setError,
+        setValue,
     } = useForm<TrainerSignUpFormData>({
         resolver: zodResolver(trainerSignUpSchema),
-        defaultValues: { terms: false },
+        defaultValues: { terms: false, email: invitationEmail || '' },
     });
+
+    React.useEffect(() => {
+        if (invitationToken) {
+            localStorage.setItem('invitation_token', invitationToken);
+        }
+    }, [invitationToken]);
+
+    React.useEffect(() => {
+        if (invitationEmail) {
+            setValue('email', invitationEmail);
+        }
+    }, [invitationEmail, setValue]);
 
     const onSubmit = async (data: TrainerSignUpFormData) => {
         if (!data.terms) {
@@ -52,9 +72,9 @@ const TrainerSignUpForm = () => {
         } catch (error: unknown) {
             const message =
                 typeof error === 'object' &&
-                error !== null &&
-                'data' in error &&
-                typeof (error as { data?: { message?: string } }).data?.message === 'string'
+                    error !== null &&
+                    'data' in error &&
+                    typeof (error as { data?: { message?: string } }).data?.message === 'string'
                     ? (error as { data?: { message?: string } }).data?.message
                     : 'Registration failed';
 
