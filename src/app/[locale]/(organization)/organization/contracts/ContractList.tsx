@@ -31,7 +31,7 @@ const ContractList = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(searchQuery);
-            setCurrentPage(1); // Reset to first page on search
+            setCurrentPage(1);
         }, 500);
         return () => clearTimeout(timer);
     }, [searchQuery]);
