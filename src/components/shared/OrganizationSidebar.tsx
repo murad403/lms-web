@@ -18,7 +18,6 @@ const mainMenuItems: SidebarItem[] = [
   { labelKey: "myCourses", href: "/organization/my-courses", icon: BookOpen },
   { labelKey: "liveClasses", href: "/organization/live-classes", icon: Video },
   { labelKey: "earning", href: "/organization/earnings", icon: Wallet },
-  { labelKey: "teamManagement", href: "/organization/team-management", icon: Users },
   { labelKey: "instructor", href: "/organization/instructors", icon: UserCheck },
   { labelKey: "contracts", href: "/organization/contracts", icon: ReceiptText },
   { labelKey: "reports", href: "/organization/reports", icon: ChartSpline },

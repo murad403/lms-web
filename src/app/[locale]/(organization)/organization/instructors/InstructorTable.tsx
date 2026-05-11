@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { MoreVertical, UserRoundX } from "lucide-react";
+import { MoreVertical, UserRoundX, User } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import AddInstructorModal, { AddInstructorForm } from "@/components/modal/AddInstructorModal";
@@ -72,8 +72,17 @@ const InstructorTable = ({ showAddInstructor, setShowAddInstructor }: TProps) =>
         <tr key={instructor.id} className="border-b border-border-light last:border-0">
             <td className="py-3 px-4">
                 <div className="flex items-center gap-3">
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                        <Image src={resolveImageUrl(instructor.user_avatar)} alt={instructor.user_name} fill className="object-cover" />
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-50 flex items-center justify-center border border-border-light">
+                        {instructor.user_avatar ? (
+                            <Image 
+                                src={resolveImageUrl(instructor.user_avatar)} 
+                                alt={instructor.user_name} 
+                                fill 
+                                className="object-cover" 
+                            />
+                        ) : (
+                            <User className="w-4 h-4 text-gray-400" />
+                        )}
                     </div>
                     <span className="text-title font-medium">{instructor.user_name}</span>
                 </div>
