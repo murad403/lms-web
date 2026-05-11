@@ -22,6 +22,8 @@ const OrganizationInvitationPage = () => {
       return;
     }
 
+    localStorage.removeItem('invitation_token');
+
     try {
       const response = await respondInvitation({
         token,
@@ -30,7 +32,6 @@ const OrganizationInvitationPage = () => {
 
       if (response.success) {
         toast.success(response.message);
-        localStorage.removeItem('invitation_token');
         router.replace('/instructor/dashboard');
       }
     } catch (error: any) {
