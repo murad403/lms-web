@@ -1,10 +1,12 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Bot, Settings, LogOut, Wallet} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, MessageSquare, Bot, Settings, LogOut, Wallet} from "lucide-react";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
+
+
 
 type SidebarItem = {
   labelKey: string;
@@ -12,13 +14,14 @@ type SidebarItem = {
   icon: React.ElementType;
 };
 
+
+
 const mainMenuItems: SidebarItem[] = [
   { labelKey: "dashboard", href: "/mentor/dashboard", icon: LayoutDashboard },
   { labelKey: "myCourses", href: "/mentor/my-courses", icon: BookOpen },
   { labelKey: "liveClasses", href: "/mentor/live-classes", icon: Video },
   { labelKey: "earning", href: "/mentor/earnings", icon: Wallet },
   { labelKey: "message", href: "/mentor/messages", icon: MessageSquare },
-  { labelKey: "accreditation", href: "/mentor/accreditation", icon: Award },
   { labelKey: "aiAssistant", href: "/mentor/ai-assistant", icon: Bot },
   { labelKey: "settings", href: "/mentor/settings", icon: Settings },
 ];

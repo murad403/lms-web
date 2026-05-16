@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useGetWhiteLabelQuery, useUpdateWhiteLabelMutation } from "@/redux/features/organization/organization.api";
 import { toast } from "sonner";
 import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type WhiteLabelForm = {
   name: string;
@@ -118,10 +119,54 @@ const WhiteLabel = () => {
 
   if (isFetching) {
     return (
-      <div className="flex items-center justify-center h-[400px]">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-10 h-10 animate-spin text-main" />
-          <p className="text-sm text-description animate-pulse">Loading white label settings...</p>
+      <div className="space-y-6">
+        {/* Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-48 sm:w-64" />
+            <Skeleton className="h-4 w-64 sm:w-96" />
+          </div>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Skeleton className="h-10 w-full sm:w-28" />
+            <Skeleton className="h-10 w-full sm:w-36" />
+          </div>
+        </div>
+
+        {/* Main Content Skeleton */}
+        <div className="bg-white border border-border-light rounded-sm">
+          <div className="p-6 border-b border-border-light">
+            <Skeleton className="h-6 w-40" />
+          </div>
+
+          <div className="p-6">
+            <div className="space-y-8">
+              {/* Banner Skeleton */}
+              <div className="relative">
+                <Skeleton className="w-full h-48 rounded-none" />
+                {/* Profile Photo Skeleton */}
+                <div className="absolute -bottom-10 left-8">
+                  <Skeleton className="w-24 h-24 rounded-xl border-4 border-white" />
+                </div>
+              </div>
+
+              <div className="pt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Form Fields Skeletons */}
+                <div className="space-y-6">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="space-y-2">
+                      <Skeleton className="h-3 w-32" />
+                      <Skeleton className="h-12 w-full" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-32" />
+                  <Skeleton className="h-[210px] w-full" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
