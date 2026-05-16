@@ -53,5 +53,5 @@ export const getConversationWebSocketUrl = (
         return null;
     }
 
-    return `wss://rs0hfx59-8002.asse.devtunnels.ms/ws/messaging/conversations/${conversationId}/?token=${authToken}`;
+    return `wss://rs0hfx59-8001.asse.devtunnels.ms/ws/messaging/conversations/${conversationId}/?token=${authToken}`;
 };

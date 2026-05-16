@@ -244,3 +244,15 @@ export type OrganizationContractQueryParams = {
     page_size?: number;
     search?: string;
 };
+
+export type IWhiteLabel = {
+    id: number;
+    name: string;
+    bio: string;
+    photo: string | null;
+    banner: string | null;
+    phone: string;
+    username: string;
+};
+
+export type IWhiteLabelResponse = ApiResponse<IWhiteLabel>;

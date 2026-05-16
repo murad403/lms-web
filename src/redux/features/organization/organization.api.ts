@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, OrganizationContractDetailsResponse, OrganizationContractQueryParams, OrganizationContractResponse, OrganizationCourseListResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorListResponse, OrganizationMemberAnalyticsResponse } from "./organization.type";
+import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, IWhiteLabelResponse, OrganizationContractDetailsResponse, OrganizationContractQueryParams, OrganizationContractResponse, OrganizationCourseListResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorListResponse, OrganizationMemberAnalyticsResponse } from "./organization.type";
 import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
 
 
@@ -169,6 +169,25 @@ const organizationApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["organization-contracts"]
         }),
+        getWhiteLabel: builder.query<IWhiteLabelResponse, void>({
+            query: () => {
+                return {
+                    url: `/organizations/organization/profile/`,
+                    method: "GET"
+                }
+            },
+            providesTags: ["organization-white-label"]
+        }),
+        updateWhiteLabel: builder.mutation<IWhiteLabelResponse, FormData>({
+            query: (data) => {
+                return {
+                    url: `/organizations/organization/profile/`,
+                    method: "PATCH",
+                    body: data
+                }
+            },
+            invalidatesTags: ["organization-white-label"]
+        }),
     }),
 });
 
@@ -189,5 +208,7 @@ export const {
     useInstructorListQuery,
     useCourseListQuery,
     useAddContractMutation,
-    useUpdateContractMutation
+    useUpdateContractMutation,
+    useGetWhiteLabelQuery,
+    useUpdateWhiteLabelMutation
 } = organizationApi;
