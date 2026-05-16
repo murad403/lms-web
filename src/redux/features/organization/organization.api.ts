@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, IWhiteLabelResponse, OrganizationContractDetailsResponse, OrganizationContractQueryParams, OrganizationContractResponse, OrganizationCourseListResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorListResponse, OrganizationMemberAnalyticsResponse } from "./organization.type";
+import { AcceptInvitationPayload, AcceptInvitationResponse, InviteInstructorPayload, InviteInstructorResponse, IWhiteLabelResponse, OrganizationContractDetailsResponse, OrganizationContractQueryParams, OrganizationContractResponse, OrganizationCourseAnalyticsResponse, OrganizationCourseListResponse, OrganizationCoursesQueryParams, OrganizationCoursesResponse, OrganizationDailyEarningsResponse, OrganizationDashboardResponse, OrganizationInstructorInvitationDashboardQueryParams, OrganizationInstructorInvitationDashboardResponse, OrganizationInstructorListResponse, OrganizationMemberAnalyticsResponse, OrganizationRatingsBreakdownResponse, OrganizationRecentActivityResponse, OrganizationRevenueTrendsResponse, OrganizationStatisticsResponse, OrganizationTopCoursesResponse } from "./organization.type";
 import { InstructorStripeConnectResponse, InstructorStripeDashboardResponse, InstructorWithdrawRequestPayload, InstructorWithdrawRequestResponse } from "../instructor/instructor.type";
 
 
@@ -188,6 +188,50 @@ const organizationApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["organization-white-label"]
         }),
+        getStatistics: builder.query<OrganizationStatisticsResponse, void>({
+            query: () => ({
+                url: `/organizations/dashboard-statistics/`,
+                method: "GET"
+            })
+        }),
+        getRevenueTrends: builder.query<OrganizationRevenueTrendsResponse, void>({
+            query: () => ({
+                url: `/organizations/revenue-trends/`,
+                method: "GET"
+            })
+        }),
+        getDailyEarnings: builder.query<OrganizationDailyEarningsResponse, { start_date: string; end_date: string }>({
+            query: ({ start_date, end_date }) => ({
+                url: `/organizations/daily-revenue/`,
+                method: "GET",
+                params: { start_date, end_date }
+            })
+        }),
+        getCourseAnalytics: builder.query<OrganizationCourseAnalyticsResponse, { page?: number; page_size?: number }>({
+            query: (params) => ({
+                url: `/organizations/course-analytics/`,
+                method: "GET",
+                params
+            })
+        }),
+        getTopCourses: builder.query<OrganizationTopCoursesResponse, void>({
+            query: () => ({
+                url: `/organizations/top-courses/`,
+                method: "GET"
+            })
+        }),
+        getRecentActivity: builder.query<OrganizationRecentActivityResponse, void>({
+            query: () => ({
+                url: `/organizations/recent-activity/`,
+                method: "GET"
+            })
+        }),
+        getRatingsBreakdown: builder.query<OrganizationRatingsBreakdownResponse, void>({
+            query: () => ({
+                url: `/organizations/ratings-breakdown/`,
+                method: "GET"
+            })
+        }),
     }),
 });
 
@@ -210,5 +254,12 @@ export const {
     useAddContractMutation,
     useUpdateContractMutation,
     useGetWhiteLabelQuery,
-    useUpdateWhiteLabelMutation
+    useUpdateWhiteLabelMutation,
+    useGetStatisticsQuery,
+    useGetRevenueTrendsQuery,
+    useGetDailyEarningsQuery,
+    useGetCourseAnalyticsQuery,
+    useGetTopCoursesQuery,
+    useGetRecentActivityQuery,
+    useGetRatingsBreakdownQuery,
 } = organizationApi;

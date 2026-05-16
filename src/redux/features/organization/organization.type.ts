@@ -256,3 +256,128 @@ export type IWhiteLabel = {
 };
 
 export type IWhiteLabelResponse = ApiResponse<IWhiteLabel>;
+
+export type OrganizationStatisticsData = {
+    total_revenue: string;
+    today_revenue: string;
+    total_courses: number;
+    active_courses: number;
+    total_enrollments: number;
+    total_enrollments_all_time: number;
+    average_rating: number;
+    total_reviews: number;
+    average_course_price: number;
+    course_sales: number;
+};
+
+export type OrganizationStatisticsResponse = ApiResponse<OrganizationStatisticsData>;
+
+export type OrganizationRevenueTrendItem = {
+    month: number;
+    label: string;
+    amount: string;
+};
+
+export type OrganizationRevenueTrendsResponse = ApiResponse<OrganizationRevenueTrendItem[]>;
+
+export type OrganizationDailyEarningItem = {
+    date: string;
+    amount: string;
+};
+
+export type OrganizationDailyEarningsResponse = ApiResponse<OrganizationDailyEarningItem[]>;
+
+export type OrganizationCourseAnalyticItem = {
+    id: number;
+    title: string;
+    price: string;
+    status: string;
+    total_enrollments: number;
+    total_revenue: string;
+};
+
+export type OrganizationCourseAnalyticsResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    total: number;
+    page: number;
+    page_size: number;
+    total_pages: number;
+    next: string | null;
+    previous: string | null;
+    data: OrganizationCourseAnalyticItem[];
+};
+
+export type OrganizationTopCourseItem = {
+    id: number;
+    title: string;
+    price: string;
+    enrollments: number;
+    revenue: string;
+};
+
+export type OrganizationTopCoursesResponse = ApiResponse<OrganizationTopCourseItem[]>;
+
+export type RecentOrderItem = {
+    order_id: string;
+    user_name: string;
+    user_email: string;
+    total_amount: number;
+    courses_count: number;
+    status: string;
+    created_at: string;
+};
+
+export type RecentCommissionItem = {
+    id: number;
+    user_name: string;
+    course_title: string;
+    order_amount: string;
+    commission_amount: string;
+    organization_received: string;
+    platform_fee: number;
+    affiliate_amount: number;
+    created_at: string;
+};
+
+export type RecentCourseItem = {
+    id: number;
+    title: string;
+    price: string;
+    status: string;
+    enrolled_count: number;
+    category_name: string;
+    created_at: string;
+};
+
+export type OrganizationRecentActivityData = {
+    recent_orders: {
+        count: number;
+        data: RecentOrderItem[];
+    };
+    recent_commissions: {
+        count: number;
+        data: RecentCommissionItem[];
+    };
+    recent_courses: {
+        count: number;
+        data: RecentCourseItem[];
+    };
+};
+
+export type OrganizationRecentActivityResponse = ApiResponse<OrganizationRecentActivityData>;
+
+export type RatingBreakdownItem = {
+    stars: number;
+    count: number;
+    percentage: number;
+};
+
+export type OrganizationRatingsBreakdownData = {
+    average_rating: number;
+    total_reviews: number;
+    breakdown: RatingBreakdownItem[];
+};
+
+export type OrganizationRatingsBreakdownResponse = ApiResponse<OrganizationRatingsBreakdownData>;

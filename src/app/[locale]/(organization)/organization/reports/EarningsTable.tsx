@@ -1,116 +1,77 @@
 "use client";
-import { Calendar } from 'lucide-react'
-import { earnings } from '@/lib/organization'
-import { useState, useRef, useEffect } from 'react'
 import { useTranslations } from 'next-intl';
-
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-
-function getMonthRange(year: number, month: number) {
-  const first = new Date(year, month, 1);
-  const last = new Date(year, month + 1, 0);
-  const fmt = (d: Date) =>
-    `${String(d.getDate()).padStart(2, "0")} ${MONTHS[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`;
-  return `${fmt(first)} - ${fmt(last)}`;
-}
+import { useGetRecentActivityQuery } from '@/redux/features/organization/organization.api';
+import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns';
 
 const EarningsTable = () => {
   const t = useTranslations("OrganizationReports");
-  const [selectedYear, setSelectedYear] = useState(2025);
-  const [selectedMonth, setSelectedMonth] = useState(0); // 0 = January
-  const [open, setOpen] = useState(false);
-  const pickerRef = useRef<HTMLDivElement>(null);
+  const { data, isLoading } = useGetRecentActivityQuery();
+  const recentCommissions = data?.data?.recent_commissions?.data || [];
 
-  const dateLabel = getMonthRange(selectedYear, selectedMonth);
-
-  // Close picker on outside click
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-lg border border-border-light p-6 space-y-4">
+        <div className="flex justify-between items-center">
+            <Skeleton className="h-6 w-32" />
+        </div>
+        <div className="space-y-3">
+            {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12 w-full" />)}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white rounded-md">
-      <div className="p-5 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-title">{t("earnings")}</h3>
-
-        {/* Date Range Picker */}
-        <div className="relative" ref={pickerRef}>
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="flex items-center gap-2 text-sm text-description border border-border-light rounded-md px-3 py-2 hover:border-main transition-colors"
-          >
-            <Calendar className="w-4 h-4" />
-            <span>{dateLabel}</span>
-          </button>
-
-          {open && (
-            <div className="absolute right-0 top-full mt-2 z-50 bg-white border border-border-light rounded-lg shadow-lg p-4 w-64">
-              {/* Year selector */}
-              <div className="flex items-center justify-between mb-3">
-                <button
-                  onClick={() => setSelectedYear((y) => y - 1)}
-                  className="text-description hover:text-title px-2 py-1 rounded hover:bg-gray-100 text-sm"
-                >
-                  ‹
-                </button>
-                <span className="font-semibold text-title text-sm">{selectedYear}</span>
-                <button
-                  onClick={() => setSelectedYear((y) => y + 1)}
-                  className="text-description hover:text-title px-2 py-1 rounded hover:bg-gray-100 text-sm"
-                >
-                  ›
-                </button>
-              </div>
-
-              {/* Month grid */}
-              <div className="grid grid-cols-3 gap-1.5">
-                {MONTHS.map((month, i) => (
-                  <button
-                    key={month}
-                    onClick={() => { setSelectedMonth(i); setOpen(false); }}
-                    className={`text-xs py-1.5 rounded-md transition-colors ${
-                      i === selectedMonth
-                        ? "bg-main text-white font-medium"
-                        : "text-description hover:bg-gray-100 hover:text-title"
-                    }`}
-                  >
-                    {month.slice(0, 3)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+    <div className="bg-white rounded-lg border border-border-light">
+      <div className="p-5 flex items-center justify-between border-b border-border-light">
+        <div>
+            <h3 className="text-lg font-bold text-title">{t("earnings")}</h3>
+            <p className="text-xs text-description mt-0.5">Recent payout distributions</p>
         </div>
       </div>
 
-      <div className="px-6 pb-6 overflow-x-auto">
-        <table className="w-full min-w-[600px] text-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border-light">
-              <th className="text-left py-3 font-semibold text-title">{t("orderId")}</th>
-              <th className="text-left py-3 font-semibold text-title">{t("date")}</th>
-              <th className="text-left py-3 font-semibold text-title">{t("course")}</th>
-              <th className="text-left py-3 font-semibold text-title">{t("amount")}</th>
+            <tr className="bg-gray-50/50">
+              <th className="text-left px-6 py-4 font-bold text-description/70 uppercase tracking-wider text-[10px]">{t("orderId")}</th>
+              <th className="text-left px-6 py-4 font-bold text-description/70 uppercase tracking-wider text-[10px]">{t("date")}</th>
+              <th className="text-left px-6 py-4 font-bold text-description/70 uppercase tracking-wider text-[10px]">{t("course")}</th>
+              <th className="text-right px-6 py-4 font-bold text-description/70 uppercase tracking-wider text-[10px]">{t("amount")}</th>
             </tr>
           </thead>
-          <tbody>
-            {earnings.slice(0, 5).map((earning) => (
-              <tr key={earning.orderId} className="border-b border-border-light last:border-0">
-                <td className="py-4 text-[#392C7D] font-medium">{earning.orderId.replace("ORD-", "ORD")}</td>
-                <td className="py-4 text-description">{earning.date}</td>
-                <td className="py-4 text-description">{earning.course}</td>
-                <td className="py-4 text-title font-medium">${earning.amount.toFixed(0)}</td>
-              </tr>
-            ))}
+          <tbody className="divide-y divide-border-light">
+            {recentCommissions.length > 0 ? (
+                recentCommissions.map((commission) => (
+                    <tr key={commission.id} className="hover:bg-gray-50/50 transition-colors group">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="text-main font-bold text-xs bg-main/5 px-2 py-1 rounded">COM-{commission.id}</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-description text-xs font-medium">
+                            {format(new Date(commission.created_at), 'dd MMM yyyy')}
+                        </td>
+                        <td className="px-6 py-4 text-title font-medium">
+                            <div className="flex flex-col">
+                                <span className="truncate max-w-[200px]">{commission.course_title}</span>
+                                <span className="text-[10px] text-description font-normal">Student: {commission.user_name}</span>
+                            </div>
+                        </td>
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
+                            <div className="flex flex-col items-end">
+                                <span className="text-title font-bold">${parseFloat(commission.organization_received).toFixed(2)}</span>
+                                <span className="text-[10px] text-green-500 font-bold uppercase">Success</span>
+                            </div>
+                        </td>
+                    </tr>
+                ))
+            ) : (
+                <tr>
+                    <td colSpan={4} className="px-6 py-10 text-center text-description">
+                        No recent earnings found
+                    </td>
+                </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -118,4 +79,4 @@ const EarningsTable = () => {
   )
 }
 
-export default EarningsTable
+export default EarningsTable;

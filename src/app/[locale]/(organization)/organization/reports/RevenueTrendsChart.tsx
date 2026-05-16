@@ -1,81 +1,109 @@
 "use client";
-import { useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { useState, useMemo } from 'react'
 import { useTranslations } from 'next-intl';
-
-const revenueData = [
-  { day: "Mon", revenue: 19000 },
-  { day: "Tue", revenue: 22000 },
-  { day: "Wed", revenue: 15000 },
-  { day: "Thu", revenue: 28000 },
-  { day: "Fri", revenue: 24000 },
-  { day: "Sat", revenue: 18000 },
-  { day: "Sun", revenue: 14000 },
-];
-
-const yAxisLabels = ["$34K", "$25.5K", "$17K", "$8.5K", "$0k"];
-const maxRevenue = 34000;
+import { useGetRevenueTrendsQuery } from '@/redux/features/organization/organization.api';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const RevenueTrendsChart = () => {
-  const [chartFilter, setChartFilter] = useState("6months");
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const t = useTranslations("OrganizationReports");
+  const { data, isLoading } = useGetRevenueTrendsQuery();
+
+  const chartData = useMemo(() => {
+    return data?.data?.map(item => ({
+      label: item.label,
+      amount: parseFloat(item.amount)
+    })) || [];
+  }, [data]);
+
+  const maxAmount = useMemo(() => {
+    const max = Math.max(...chartData.map(d => d.amount), 0);
+    return max > 0 ? max * 1.2 : 1000; // Give some headroom
+  }, [chartData]);
+
+  const yAxisLabels = useMemo(() => {
+    return [
+      `$${(maxAmount).toFixed(0)}`,
+      `$${(maxAmount * 0.75).toFixed(0)}`,
+      `$${(maxAmount * 0.5).toFixed(0)}`,
+      `$${(maxAmount * 0.25).toFixed(0)}`,
+      "$0"
+    ];
+  }, [maxAmount]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-lg p-6 border border-border-light h-[380px]">
+         <div className="space-y-2 mb-8">
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-4 w-1/2" />
+         </div>
+         <div className="flex gap-4 items-end h-52">
+            <div className="flex flex-col justify-between h-full py-2">
+                {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-3 w-8" />)}
+            </div>
+            <div className="flex-1 flex gap-4 h-full items-end">
+                {[70, 45, 80, 50, 90, 35, 60, 40, 85, 55, 75, 30].map((h, i) => (
+                    <Skeleton key={i} className="flex-1 h-full rounded-t-sm" style={{ height: `${h}%` }} />
+                ))}
+            </div>
+         </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white rounded-md p-5">
+    <div className="bg-white rounded-lg border border-border-light p-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-title">{t("revenueTrends")}</h3>
-          <p className="text-sm text-description mt-0.5">{t("revenueTrendsDesc")}</p>
-        </div>
-        <div className="relative">
-          <select
-            value={chartFilter}
-            onChange={(e) => setChartFilter(e.target.value)}
-            className="appearance-none text-sm text-title pl-4 pr-9 py-2 bg-white border border-border-light rounded-md focus:outline-none focus:border-main cursor-pointer"
-          >
-            <option value="6months">{t("last6Months")}</option>
-            <option value="12months">{t("last12Months")}</option>
-            <option value="year">{t("thisYear")}</option>
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-description pointer-events-none" />
-        </div>
+      <div className="mb-8">
+        <h3 className="text-lg font-bold text-title">{t("revenueTrends")}</h3>
+        <p className="text-sm text-description mt-1">{t("revenueTrendsDesc")}</p>
       </div>
 
       {/* Chart */}
       <div className="flex">
         {/* Y-Axis Labels */}
-        <div className="flex flex-col justify-between h-52 pr-3 text-xs text-description">
+        <div className="flex flex-col justify-between h-56 pr-4 text-[10px] font-bold text-description/50 uppercase tracking-tighter">
           {yAxisLabels.map((label) => (
             <span key={label}>{label}</span>
           ))}
         </div>
 
-        {/* Right side: bars + day labels */}
-        <div className="flex-1 flex flex-col">
-          {/* Bars */}
-          <div className="flex items-end gap-3 sm:gap-6 h-52 border-l border-b border-gray-200 pl-4">
-            {revenueData.map((bar, index) => {
-              const heightPercent = (bar.revenue / maxRevenue) * 100;
+        {/* Right side: bars + month labels */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Bars container */}
+          <div className="relative flex items-end gap-1.5 sm:gap-3 h-56 border-l border-b border-border-light/50 pl-4">
+            {/* Grid Lines */}
+            <div className="absolute inset-0 pl-4 pointer-events-none">
+                {[0.25, 0.5, 0.75].map((tick) => (
+                    <div 
+                        key={tick} 
+                        className="absolute w-full border-t border-gray-100/50" 
+                        style={{ bottom: `${tick * 100}%` }}
+                    />
+                ))}
+            </div>
+
+            {chartData.map((bar, index) => {
+              const heightPercent = (bar.amount / maxAmount) * 100;
               return (
                 <div
-                  key={bar.day}
-                  className="flex-1 flex items-end justify-center"
+                  key={bar.label}
+                  className="flex-1 flex items-end justify-center group"
                   onMouseEnter={() => setHoveredBar(index)}
                   onMouseLeave={() => setHoveredBar(null)}
                 >
-                  <div className="relative w-full flex justify-center h-48">
+                  <div className="relative w-full flex justify-center items-end h-full">
                     {hoveredBar === index && (
-                      <div className="absolute -top-7 bg-[#042F54] text-white px-2 py-1 rounded text-xs whitespace-nowrap z-10">
-                        ${bar.revenue.toLocaleString()}
+                      <div className="absolute -top-10 bg-title text-white px-3 py-1.5 rounded-lg text-[10px] font-bold whitespace-nowrap z-20 shadow-xl animate-in fade-in zoom-in duration-200">
+                        ${bar.amount.toLocaleString()}
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-title" />
                       </div>
                     )}
                     <div
-                      className="w-full max-w-20 rounded-t-md transition-colors cursor-pointer bg-[#042F54] hover:bg-[#042F54]/90"
+                      className={`w-full max-w-[48px] rounded-t-sm transition-all duration-300 cursor-pointer ${hoveredBar === index ? 'bg-main shadow-lg shadow-main/20' : 'bg-main/10 hover:bg-main/30'}`}
                       style={{
-                        height: `${heightPercent}%`,
-                        marginTop: "auto",
+                        height: `${Math.max(heightPercent, 2)}%`, 
                       }}
                     />
                   </div>
@@ -84,11 +112,11 @@ const RevenueTrendsChart = () => {
             })}
           </div>
 
-          {/* Day Labels */}
-          <div className="flex gap-3 sm:gap-6 pl-4 pt-2">
-            {revenueData.map((bar) => (
-              <div key={bar.day} className="flex-1 flex justify-center">
-                <span className="text-xs text-description">{bar.day}</span>
+          {/* Month Labels */}
+          <div className="flex gap-1.5 sm:gap-3 pl-4 pt-4 overflow-x-auto no-scrollbar">
+            {chartData.map((bar) => (
+              <div key={bar.label} className="flex-1 flex justify-center min-w-[20px]">
+                <span className="text-[9px] sm:text-[10px] font-bold text-description/60 uppercase tracking-tighter truncate">{bar.label}</span>
               </div>
             ))}
           </div>
@@ -98,4 +126,4 @@ const RevenueTrendsChart = () => {
   )
 }
 
-export default RevenueTrendsChart
+export default RevenueTrendsChart;
