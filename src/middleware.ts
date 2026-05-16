@@ -66,7 +66,7 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  if (firstSegmentAfterLocale === "instructor") {
+  if (firstSegmentAfterLocale === "instructor" || firstSegmentAfterLocale === "mentor") {
     if (!isAuthenticated) {
       return redirectTo(request, `/${locale}/auth/sign-in`);
     }
