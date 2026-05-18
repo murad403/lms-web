@@ -12,6 +12,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
 import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
 import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery } from "@/redux/features/student/student.api";
 import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
@@ -59,22 +60,50 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     });
     const [removeCart, { isLoading: isRemovingCart }] = useRemoveCartMutation();
 
-    const { data: studentProfile } = useGetStudentProfileQuery(undefined, {
+    const { data: studentProfile, isLoading: isStudentLoading } = useGetStudentProfileQuery(undefined, {
         skip: !session.accessToken || session.rawRole !== "student",
     });
-    const { data: instructorProfile } = useGetInstructorProfileQuery(undefined, {
+    const { data: instructorProfile, isLoading: isInstructorLoading } = useGetInstructorProfileQuery(undefined, {
         skip: !session.accessToken || session.rawRole !== "instructor",
     });
-    const { data: orgProfile } = useGetWhiteLabelQuery(undefined, {
+    const { data: orgProfile, isLoading: isOrgLoading } = useGetWhiteLabelQuery(undefined, {
         skip: !session.accessToken || session.rawRole !== "organization",
     });
-    const { data: affiliateProfile } = useGetAffiliateProfileQuery(undefined, {
+    const { data: affiliateProfile, isLoading: isAffiliateLoading } = useGetAffiliateProfileQuery(undefined, {
         skip: !session.accessToken || session.rawRole !== "affiliate",
     });
 
     const { data: categoriesData } = useCategoriesQuery();
 
-    let userAvatar: string | typeof defaultUserImage = defaultUserImage;
+    const isProfileLoading =
+        (session.rawRole === "student" && isStudentLoading) ||
+        (session.rawRole === "instructor" && isInstructorLoading) ||
+        (session.rawRole === "organization" && isOrgLoading) ||
+        (session.rawRole === "affiliate" && isAffiliateLoading);
+
+    const hasCustomAvatar = Boolean(
+        (session.rawRole === "student" && studentProfile?.data?.user?.avatar) ||
+        (session.rawRole === "instructor" && instructorProfile?.data?.user?.avatar) ||
+        (session.rawRole === "organization" && orgProfile?.data?.photo) ||
+        (session.rawRole === "affiliate" && affiliateProfile?.data?.avatar)
+    );
+
+    let userInitials = "U";
+    if (session.rawRole === "student") {
+        const name = studentProfile?.data?.user?.name || studentProfile?.data?.first_name;
+        userInitials = name ? name.charAt(0).toUpperCase() : "S";
+    } else if (session.rawRole === "instructor") {
+        const name = instructorProfile?.data?.user?.name || instructorProfile?.data?.user?.email;
+        userInitials = name ? name.charAt(0).toUpperCase() : "I";
+    } else if (session.rawRole === "organization") {
+        const name = orgProfile?.data?.name || orgProfile?.data?.username;
+        userInitials = name ? name.charAt(0).toUpperCase() : "O";
+    } else if (session.rawRole === "affiliate") {
+        const name = affiliateProfile?.data?.name || affiliateProfile?.data?.email;
+        userInitials = name ? name.charAt(0).toUpperCase() : "A";
+    }
+
+    let userAvatar = "";
     let userEmail = "";
 
     if (session.rawRole === "student" && studentProfile?.data) {
@@ -416,32 +445,47 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                         {/* Auth Section */}
                         {isLoggedIn ? (
                             <div className="relative" ref={profileRef}>
-                                <button
-                                    onClick={() => setShowProfile(!showProfile)}
-                                    className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors"
-                                >
-                                    <Image
-                                        src={userAvatar}
-                                        alt="User"
-                                        width={40}
-                                        height={40}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </button>
+                                {isProfileLoading ? (
+                                    <Skeleton className="w-9 h-9 md:w-10 md:h-10 rounded-full" />
+                                ) : hasCustomAvatar ? (
+                                    <button
+                                        onClick={() => setShowProfile(!showProfile)}
+                                        className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors flex items-center justify-center shrink-0"
+                                    >
+                                        <Image
+                                            src={userAvatar}
+                                            alt="User"
+                                            width={40}
+                                            height={40}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => setShowProfile(!showProfile)}
+                                        className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main bg-blue-600 text-white text-sm md:text-base font-bold transition-colors flex items-center justify-center shrink-0 uppercase"
+                                    >
+                                        <span>{userInitials}</span>
+                                    </button>
+                                )}
 
                                 {/* Profile Popup */}
                                 {showProfile && (
                                     <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50">
                                         <div className="px-4 py-3 border-b border-gray-200">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden">
-                                                    <Image
-                                                        src={userAvatar}
-                                                        alt="User"
-                                                        width={40}
-                                                        height={40}
-                                                        className="w-full h-full object-cover"
-                                                    />
+                                                <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-blue-600 text-white text-sm md:text-base font-bold shrink-0">
+                                                    {hasCustomAvatar ? (
+                                                        <Image
+                                                            src={userAvatar}
+                                                            alt="User"
+                                                            width={40}
+                                                            height={40}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <span className="uppercase">{userInitials}</span>
+                                                    )}
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-xs sm:text-sm md:text-base text-title">
