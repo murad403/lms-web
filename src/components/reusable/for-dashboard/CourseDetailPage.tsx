@@ -17,7 +17,9 @@ interface CourseDetailPageProps {
 }
 
 const CourseDetailPage = ({ courseId }: CourseDetailPageProps) => {
-    const { data, isLoading } = useOwnerCourseDetailsQuery(courseId);
+    const { data, isLoading } = useOwnerCourseDetailsQuery(courseId, {
+        skip: !courseId,
+    });
     const t = useTranslations("InstructorCourseDetail");
 
     if (isLoading) {

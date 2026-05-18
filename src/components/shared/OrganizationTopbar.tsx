@@ -10,6 +10,7 @@ import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
+import { useOwnerCourseDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -47,10 +48,20 @@ const OrganizationTopbar = () => {
     const orgName = whiteLabelData?.data?.name || "Organization Admin";
     const orgAvatar = whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : null;
 
+    const segments = pathname.split("/").filter(Boolean);
+    const lastSegment = segments[segments.length - 1] || "dashboard";
+    const isNum = !isNaN(Number(lastSegment)) && lastSegment.trim() !== "";
+    
+    const { data: courseDetail } = useOwnerCourseDetailsQuery(Number(lastSegment), {
+        skip: !isNum,
+    });
+
     // Derive page title from pathname
     const getPageTitle = () => {
-        const segments = pathname.split("/").filter(Boolean);
-        const lastSegment = segments[segments.length - 1] || "dashboard";
+        if (isNum && courseDetail?.data?.title) {
+            return courseDetail.data.title;
+        }
+
         const titleKeys: Record<string, string> = {
             dashboard: "dashboard",
             "create-course": "createNewCourse",

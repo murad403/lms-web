@@ -129,7 +129,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                     {/* Course */}
                     <div>
                         <label className="block text-sm font-semibold text-header mb-2">
-                            {t("courseCategory")}
+                            {t("courseName")}
                         </label>
                         {isCourseInfoLoading ? (
                             <Skeleton className="h-12 w-full" />

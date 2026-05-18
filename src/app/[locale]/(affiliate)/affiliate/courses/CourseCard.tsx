@@ -39,7 +39,13 @@ export function CourseCard({
     <div className={`bg-white rounded-sm border border-gray-100 overflow-hidden flex flex-col ${className}`}>
       {/* Thumbnail */}
       <div className="relative w-full h-48 bg-gray-100">
-        <Image src={resolveImageUrl(image)} alt={title} fill className="object-cover" sizes="280px" />
+        <Image 
+          src={resolveImageUrl(image) || "/courses/Course Images.png"} 
+          alt={title} 
+          fill 
+          className="object-cover" 
+          sizes="280px" 
+        />
       </div>
 
       {/* Body */}

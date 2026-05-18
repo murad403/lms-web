@@ -1917,6 +1917,7 @@
     "instructor": "Dozent",
     "instructorPlaceholder": "Name des Dozenten",
     "courseCategory": "Kurskategorie",
+    "courseName": "Kursname",
     "courseSubCategory": "Kurs-Unterkategorie",
     "liveClassTopic": "Live-Kurs Thema",
     "topicPlaceholder": "Was wird hauptsächlich in diesem Live-Kurs unterrichtet?",

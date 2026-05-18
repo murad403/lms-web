@@ -1929,6 +1929,7 @@
     "instructor": "Instructor",
     "instructorPlaceholder": "Instructor name",
     "courseCategory": "Course Category",
+    "courseName": "Course Name",
     "courseSubCategory": "Course Sub-category",
     "liveClassTopic": "Live Class Topic",
     "topicPlaceholder": "What is primarily taught in this live class?",

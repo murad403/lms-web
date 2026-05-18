@@ -1917,6 +1917,7 @@
     "instructor": "Instructeur",
     "instructorPlaceholder": "Nom de l'instructeur",
     "courseCategory": "Catégorie du Cours",
+    "courseName": "Nom du cours",
     "courseSubCategory": "Sous-catégorie du Cours",
     "liveClassTopic": "Sujet du Cours en Direct",
     "topicPlaceholder": "Qu'est-ce qui est principalement enseigné dans ce cours en direct ?",
