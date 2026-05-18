@@ -232,6 +232,12 @@ const organizationApi = baseApi.injectEndpoints({
                 method: "GET"
             })
         }),
+        getOrganizationReviews: builder.query({
+            query: () => ({
+                url: `/courses/organizations/courses/reviews/`,
+                method: "GET"
+            })
+        }),
     }),
 });
 

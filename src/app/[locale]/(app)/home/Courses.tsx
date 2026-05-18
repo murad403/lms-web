@@ -79,7 +79,7 @@ const  Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {isLoading ? renderCourseSkeletons() : trendingCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0 flex flex-col">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -115,7 +115,7 @@ const  Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {isLoading ? renderCourseSkeletons() : featuredCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0 flex flex-col">
                                     <CourseCard course={course} />
                                 </div>
                             ))}
@@ -151,7 +151,7 @@ const  Courses = () => {
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
                         >
                             {isLoading ? renderCourseSkeletons() : mostRequestedCourses.map((course) => (
-                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0">
+                                <div key={course.id} className="w-72 lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] shrink-0 flex flex-col">
                                     <CourseCard course={course} />
                                 </div>
                             ))}

@@ -36,9 +36,9 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
     // console.log(course?.is_wishlisted)
     return (
-        <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full">
+        <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow shrink-0 w-full h-full flex flex-col">
             {/* Image Section */}
-            <div className="relative md:h-70 h-60 w-full">
+            <div className="relative md:h-70 h-60 w-full shrink-0">
                 <Image
                     src={resolveImageUrl(course.image) || COURSE_FALLBACK_IMAGE}
                     alt={course.title}
@@ -56,30 +56,32 @@ const CourseCard = ({ course }: CourseCardProps) => {
             </div>
 
             {/* Content Section */}
-            <div className="p-4">
-                {/* Title */}
-                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-title mb-2 line-clamp-2">
-                    {course.title}
-                </h3>
+            <div className="p-4 flex-1 flex flex-col justify-between">
+                <div className="flex-1 flex flex-col mb-4">
+                    {/* Title */}
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-title mb-2 line-clamp-2">
+                        {course.title}
+                    </h3>
 
-                {/* Category and Rating on same line */}
-                <div className="flex items-center justify-between mb-3">
-                    <p className="text-[10px] sm:text-xs text-description uppercase">
-                        {course.category}
-                    </p>
-                    <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                        <span className="text-xs sm:text-sm font-semibold text-title">
-                            {course.rating}{" "}
-                            <span className="text-gray-400 font-normal">
-                                ({course.reviews})
+                    {/* Category and Rating on same line */}
+                    <div className="flex items-center justify-between mt-auto">
+                        <p className="text-[10px] sm:text-xs text-description uppercase line-clamp-1 mr-2">
+                            {course.category}
+                        </p>
+                        <div className="flex items-center gap-1 shrink-0">
+                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                            <span className="text-xs sm:text-sm font-semibold text-title">
+                                {course.rating}{" "}
+                                <span className="text-gray-400 font-normal">
+                                    ({course.reviews})
+                                </span>
                             </span>
-                        </span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Price and Button */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                     <span className="text-lg sm:text-xl md:text-2xl font-bold text-navy-blue">
                         ${course.price}
                     </span>

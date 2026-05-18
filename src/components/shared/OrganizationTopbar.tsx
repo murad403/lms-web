@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
 import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type SidebarItem = {
     labelKey: string;
@@ -42,9 +43,9 @@ const OrganizationTopbar = () => {
     const pathname = usePathname();
     const t = useTranslations("OrganizationTopbar");
 
-    const { data: whiteLabelData } = useGetWhiteLabelQuery();
+    const { data: whiteLabelData, isLoading: isWhiteLabelLoading } = useGetWhiteLabelQuery();
     const orgName = whiteLabelData?.data?.name || "Organization Admin";
-    const orgAvatar = whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : "/home/user1.png";
+    const orgAvatar = whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : null;
 
     // Derive page title from pathname
     const getPageTitle = () => {
@@ -150,19 +151,29 @@ const OrganizationTopbar = () => {
                         </div>
 
                         {/* Profile */}
-                        <RoleProfileDropdown
-                            name={orgName}
-                            roleLabel="Organization account"
-                            avatarSrc={orgAvatar}
-                            avatarAlt={orgName}
-                            profileHref={getProfilePathByRole("organization")}
-                            dashboardHref={getDashboardPathByRole("organization")}
-                            profileLabel={t("profile")}
-                            dashboardLabel={t("dashboard")}
-                            logoutLabel={t("signOut")}
-                            triggerClassName="flex items-center gap-2 hover:opacity-80 transition-opacity outline-none"
-                            contentClassName="w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
-                        />
+                        {isWhiteLabelLoading ? (
+                            <div className="flex items-center gap-2">
+                                <Skeleton className="h-9 w-9 rounded-full" />
+                                <div className="hidden sm:block space-y-1.5">
+                                    <Skeleton className="h-3.5 w-28" />
+                                    <Skeleton className="h-3 w-20" />
+                                </div>
+                            </div>
+                        ) : (
+                            <RoleProfileDropdown
+                                name={orgName}
+                                roleLabel="Organization account"
+                                avatarSrc={orgAvatar}
+                                avatarAlt={orgName}
+                                profileHref={getProfilePathByRole("organization")}
+                                dashboardHref={getDashboardPathByRole("organization")}
+                                profileLabel={t("profile")}
+                                dashboardLabel={t("dashboard")}
+                                logoutLabel={t("signOut")}
+                                triggerClassName="flex items-center gap-2 hover:opacity-80 transition-opacity outline-none"
+                                contentClassName="w-72 p-0 rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+                            />
+                        )}
                     </div>
                 </div>
 

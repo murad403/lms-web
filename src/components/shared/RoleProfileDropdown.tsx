@@ -16,7 +16,7 @@ import {
 type RoleProfileDropdownProps = {
   name: string;
   roleLabel: string;
-  avatarSrc: string | StaticImageData;
+  avatarSrc?: string | StaticImageData | null;
   avatarAlt: string;
   profileHref: string;
   dashboardHref: string;
@@ -55,10 +55,10 @@ const RoleProfileDropdown = ({
         <DropdownMenuTrigger asChild id={stableTriggerId}>
           <button className={triggerClassName}>
             <div className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-blue-600 text-white text-sm font-bold shrink-0">
-              {typeof avatarSrc === "string" ? (
+              {avatarSrc ? (
                 <Image src={avatarSrc} alt={avatarAlt} width={36} height={36} className="w-full h-full object-cover" />
               ) : (
-                <Image src={avatarSrc} alt={avatarAlt} width={36} height={36} className="w-full h-full object-cover" />
+                <span className="uppercase">{name ? name.charAt(0) : "O"}</span>
               )}
             </div>
             <span className="text-sm font-medium text-gray-800 hidden sm:inline truncate max-w-28">
