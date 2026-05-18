@@ -61,44 +61,44 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const [removeCart, { isLoading: isRemovingCart }] = useRemoveCartMutation();
 
     const { data: studentProfile, isLoading: isStudentLoading } = useGetStudentProfileQuery(undefined, {
-        skip: !session.accessToken || session.rawRole !== "student",
+        skip: !session.accessToken || session.role !== "student",
     });
     const { data: instructorProfile, isLoading: isInstructorLoading } = useGetInstructorProfileQuery(undefined, {
-        skip: !session.accessToken || session.rawRole !== "instructor",
+        skip: !session.accessToken || session.role !== "instructor",
     });
     const { data: orgProfile, isLoading: isOrgLoading } = useGetWhiteLabelQuery(undefined, {
-        skip: !session.accessToken || session.rawRole !== "organization",
+        skip: !session.accessToken || session.role !== "organization",
     });
     const { data: affiliateProfile, isLoading: isAffiliateLoading } = useGetAffiliateProfileQuery(undefined, {
-        skip: !session.accessToken || session.rawRole !== "affiliate",
+        skip: !session.accessToken || session.role !== "affiliate",
     });
 
     const { data: categoriesData } = useCategoriesQuery();
 
     const isProfileLoading =
-        (session.rawRole === "student" && isStudentLoading) ||
-        (session.rawRole === "instructor" && isInstructorLoading) ||
-        (session.rawRole === "organization" && isOrgLoading) ||
-        (session.rawRole === "affiliate" && isAffiliateLoading);
+        (session.role === "student" && isStudentLoading) ||
+        (session.role === "instructor" && isInstructorLoading) ||
+        (session.role === "organization" && isOrgLoading) ||
+        (session.role === "affiliate" && isAffiliateLoading);
 
     const hasCustomAvatar = Boolean(
-        (session.rawRole === "student" && studentProfile?.data?.user?.avatar) ||
-        (session.rawRole === "instructor" && instructorProfile?.data?.user?.avatar) ||
-        (session.rawRole === "organization" && orgProfile?.data?.photo) ||
-        (session.rawRole === "affiliate" && affiliateProfile?.data?.avatar)
+        (session.role === "student" && studentProfile?.data?.user?.avatar) ||
+        (session.role === "instructor" && instructorProfile?.data?.user?.avatar) ||
+        (session.role === "organization" && orgProfile?.data?.photo) ||
+        (session.role === "affiliate" && affiliateProfile?.data?.avatar)
     );
 
     let userInitials = "U";
-    if (session.rawRole === "student") {
+    if (session.role === "student") {
         const name = studentProfile?.data?.user?.name || studentProfile?.data?.first_name;
         userInitials = name ? name.charAt(0).toUpperCase() : "S";
-    } else if (session.rawRole === "instructor") {
+    } else if (session.role === "instructor") {
         const name = instructorProfile?.data?.user?.name || instructorProfile?.data?.user?.email;
         userInitials = name ? name.charAt(0).toUpperCase() : "I";
-    } else if (session.rawRole === "organization") {
+    } else if (session.role === "organization") {
         const name = orgProfile?.data?.name || orgProfile?.data?.username;
         userInitials = name ? name.charAt(0).toUpperCase() : "O";
-    } else if (session.rawRole === "affiliate") {
+    } else if (session.role === "affiliate") {
         const name = affiliateProfile?.data?.name || affiliateProfile?.data?.email;
         userInitials = name ? name.charAt(0).toUpperCase() : "A";
     }
@@ -106,22 +106,22 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     let userAvatar = "";
     let userEmail = "";
 
-    if (session.rawRole === "student" && studentProfile?.data) {
+    if (session.role === "student" && studentProfile?.data) {
         if (studentProfile.data.user?.avatar) {
             userAvatar = resolveImageUrl(studentProfile.data.user.avatar);
         }
         userEmail = studentProfile.data.user?.email || "";
-    } else if (session.rawRole === "instructor" && instructorProfile?.data) {
+    } else if (session.role === "instructor" && instructorProfile?.data) {
         if (instructorProfile.data.user?.avatar) {
             userAvatar = resolveImageUrl(instructorProfile.data.user.avatar);
         }
         userEmail = instructorProfile.data.user?.email || "";
-    } else if (session.rawRole === "organization" && orgProfile?.data) {
+    } else if (session.role === "organization" && orgProfile?.data) {
         if (orgProfile.data.photo) {
             userAvatar = resolveImageUrl(orgProfile.data.photo);
         }
         userEmail = orgProfile.data.username || "";
-    } else if (session.rawRole === "affiliate" && affiliateProfile?.data) {
+    } else if (session.role === "affiliate" && affiliateProfile?.data) {
         if (affiliateProfile.data.avatar) {
             userAvatar = resolveImageUrl(affiliateProfile.data.avatar);
         }
