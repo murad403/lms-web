@@ -193,26 +193,44 @@ const Page = () => {
               <div className="flex flex-wrap items-center gap-4 pt-1">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  <span className="text-sm font-semibold text-title">
-                    {(reviewsData?.average_rating || 5.0).toFixed(1)}
-                  </span>
-                  <span className="text-sm text-description">
-                    ({reviewsData?.total_reviews || 0} {t("review")})
-                  </span>
+                  {isReviewsLoading ? (
+                    <Skeleton className="h-4 w-16" />
+                  ) : (
+                    <>
+                      <span className="text-sm font-semibold text-title">
+                        {(reviewsData?.average_rating || 5.0).toFixed(1)}
+                      </span>
+                      <span className="text-sm text-description">
+                        ({reviewsData?.total_reviews || 0} {t("review")})
+                      </span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-4 h-4 text-description" />
-                  <span className="text-sm font-bold text-title">
-                    {reviewsData?.total_enrolled_students || 0}
-                  </span>
-                  <span className="text-sm text-description">{t("students")}</span>
+                  {isReviewsLoading ? (
+                    <Skeleton className="h-4 w-16" />
+                  ) : (
+                    <>
+                      <span className="text-sm font-bold text-title">
+                        {reviewsData?.total_enrolled_students || 0}
+                      </span>
+                      <span className="text-sm text-description">{t("students")}</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CirclePlay className="w-4 h-4 text-main" />
-                  <span className="text-sm font-bold text-title">
-                    {coursesData?.total || 0}
-                  </span>
-                  <span className="text-sm text-description">{t("courses")}</span>
+                  {isCoursesLoading ? (
+                    <Skeleton className="h-4 w-16" />
+                  ) : (
+                    <>
+                      <span className="text-sm font-bold text-title">
+                        {coursesData?.total || 0}
+                      </span>
+                      <span className="text-sm text-description">{t("courses")}</span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -230,6 +248,8 @@ const Page = () => {
           currentPage={currentPage}
           totalPages={reviewsData?.total_pages || 1}
           onPageChange={(page) => setCurrentPage(page)}
+          isCoursesLoading={isCoursesLoading}
+          isReviewsLoading={isReviewsLoading}
         />
       </div>
     </div>
