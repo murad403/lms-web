@@ -59,19 +59,28 @@ const Page = () => {
     if (file) setAvatarSrc(URL.createObjectURL(file));
   };
 
-  // Parse course data returned from API to match ProfileTabs expectations
+  // Parse course data returned from API to match ProfileTabs expectations (synchronized with my-courses page schema)
   const publishedCourses = (coursesData?.data || [])
-    .map((course: any) => ({
-      id: course.id,
-      title: course.title,
-      image: course.thumbnail ? resolveImageUrl(course.thumbnail) : "",
-      category: course.advance_info?.category_name || "General",
-      rating: course.advance_info?.average_rating || 5.0,
-      reviews: String(course.reviews_count || 0),
-      students: String(course.advance_info?.enrolled_students || 0),
-      price: Number(course.price || 0),
-      status: course.status as "Published" | "Draft" | "Under Review",
-    }))
+    .map((course: any) => {
+      const status: "Published" | "Draft" | "Under Review" =
+        course.status === "published" || course.status === "accepted"
+          ? "Published"
+          : course.status === "draft"
+            ? "Draft"
+            : "Under Review";
+
+      return {
+        id: course.id,
+        title: course.title,
+        image: resolveImageUrl(course.advance_info?.thumbnail) || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
+        category: course.Category || "N/A",
+        rating: Number(course.rating) || 0,
+        reviews: String(course.reviews_count || 0),
+        students: String(course.reviews_count || 0),
+        price: Number(course.price) || 0,
+        status,
+      };
+    })
     .filter((c: any) => c.status === "Published");
 
   // Parse review data returned from API to match ProfileTabs expectations
