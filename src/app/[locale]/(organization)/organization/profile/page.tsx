@@ -59,28 +59,6 @@ const Page = () => {
     if (file) setAvatarSrc(URL.createObjectURL(file));
   };
 
-  // Render a clean animated skeleton block when initial white-label data is pending
-  if (isWhiteLabelLoading) {
-    return (
-      <div className="container mx-auto space-y-8 p-4">
-        {/* Banner Skeleton */}
-        <Skeleton className="w-full h-64 sm:h-80 lg:h-[380px] rounded-lg" />
-        <div className="px-4 sm:px-6 space-y-4">
-          {/* Avatar Skeleton */}
-          <Skeleton className="w-28 h-28 sm:w-32 sm:h-32 rounded-full -mt-14 sm:-mt-16 border-4 border-white" />
-          {/* Name & Bio Skeletons */}
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-4 w-96 max-w-full" />
-          <div className="flex gap-4">
-            <Skeleton className="h-5 w-20" />
-            <Skeleton className="h-5 w-20" />
-            <Skeleton className="h-5 w-20" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // Parse course data returned from API to match ProfileTabs expectations
   const publishedCourses = (coursesData?.data || [])
     .map((course: any) => ({
@@ -134,13 +112,17 @@ const Page = () => {
         <div>
           {/* Banner with premium, taller height configuration */}
           <div className="relative w-full h-64 sm:h-80 lg:h-[380px] rounded-none overflow-hidden bg-gray-100">
-            <Image
-              src={bannerSrc}
-              alt="Organization Banner"
-              fill
-              className="object-cover"
-              priority
-            />
+            {isWhiteLabelLoading ? (
+              <Skeleton className="w-full h-full" />
+            ) : (
+              <Image
+                src={bannerSrc}
+                alt="Organization Banner"
+                fill
+                className="object-cover"
+                priority
+              />
+            )}
             <input
               ref={bannerInputRef}
               type="file"
@@ -164,12 +146,16 @@ const Page = () => {
               className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md -mt-14 sm:-mt-16 cursor-pointer group bg-white"
               onClick={() => avatarInputRef.current?.click()}
             >
-              <Image
-                src={avatarSrc}
-                alt="Organization Avatar"
-                fill
-                className="object-cover"
-              />
+              {isWhiteLabelLoading ? (
+                <Skeleton className="w-full h-full" />
+              ) : (
+                <Image
+                  src={avatarSrc}
+                  alt="Organization Avatar"
+                  fill
+                  className="object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Upload className="w-5 h-5 text-white" />
               </div>
@@ -184,16 +170,28 @@ const Page = () => {
 
             {/* Name, bio, stats */}
             <div className="mt-4 space-y-2">
-              <h1 className="text-2xl font-bold text-title">{profile?.name || t("schoolName")}</h1>
-              {profile?.bio && (
+              <h1 className="text-2xl font-bold text-title">
+                {isWhiteLabelLoading ? (
+                  <Skeleton className="h-8 w-64" />
+                ) : (
+                  profile?.name || t("schoolName")
+                )}
+              </h1>
+              {isWhiteLabelLoading ? (
+                <div className="space-y-1.5 py-1">
+                  <Skeleton className="h-4 w-96 max-w-full" />
+                  <Skeleton className="h-4 w-72 max-w-full" />
+                </div>
+              ) : profile?.bio ? (
                 <p className="text-sm text-description max-w-md leading-relaxed">
                   {profile.bio.slice(0, 140)}
                 </p>
-              )}
+              ) : null}
+              
               <div className="flex flex-wrap items-center gap-4 pt-1">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  {isReviewsLoading ? (
+                  {isWhiteLabelLoading || isReviewsLoading ? (
                     <Skeleton className="h-4 w-16" />
                   ) : (
                     <>
@@ -208,7 +206,7 @@ const Page = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-4 h-4 text-description" />
-                  {isReviewsLoading ? (
+                  {isWhiteLabelLoading || isReviewsLoading ? (
                     <Skeleton className="h-4 w-16" />
                   ) : (
                     <>
@@ -221,7 +219,7 @@ const Page = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CirclePlay className="w-4 h-4 text-main" />
-                  {isCoursesLoading ? (
+                  {isWhiteLabelLoading || isCoursesLoading ? (
                     <Skeleton className="h-4 w-16" />
                   ) : (
                     <>
@@ -238,7 +236,7 @@ const Page = () => {
         </div>
 
         {/* Profile Biography Block */}
-        <ProfileAbout bio={profile?.bio} />
+        <ProfileAbout bio={isWhiteLabelLoading ? undefined : profile?.bio} />
 
         {/* Profile Tabs (Courses & Reviews) with pagination enabled */}
         <ProfileTabs
@@ -248,8 +246,8 @@ const Page = () => {
           currentPage={currentPage}
           totalPages={reviewsData?.total_pages || 1}
           onPageChange={(page) => setCurrentPage(page)}
-          isCoursesLoading={isCoursesLoading}
-          isReviewsLoading={isReviewsLoading}
+          isCoursesLoading={isWhiteLabelLoading || isCoursesLoading}
+          isReviewsLoading={isWhiteLabelLoading || isReviewsLoading}
         />
       </div>
     </div>
