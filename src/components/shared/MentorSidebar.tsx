@@ -6,15 +6,11 @@ import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 
-
-
 type SidebarItem = {
   labelKey: string;
   href: string;
   icon: React.ElementType;
 };
-
-
 
 const mainMenuItems: SidebarItem[] = [
   { labelKey: "dashboard", href: "/mentor/dashboard", icon: LayoutDashboard },
@@ -23,7 +19,7 @@ const mainMenuItems: SidebarItem[] = [
   { labelKey: "earning", href: "/mentor/earnings", icon: Wallet },
   { labelKey: "message", href: "/mentor/messages", icon: MessageSquare },
   { labelKey: "aiAssistant", href: "/mentor/ai-assistant", icon: Bot },
-  { labelKey: "settings", href: "/mentor/settings", icon: Settings },
+  { labelKey: "settings", href: "/mentor/settings", icon: Settings }
 ];
 
 const MentorSidebar = () => {

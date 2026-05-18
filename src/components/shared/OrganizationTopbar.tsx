@@ -9,6 +9,8 @@ import RoleProfileDropdown from "./RoleProfileDropdown";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
+import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
+import { resolveImageUrl } from "@/utils/image";
 
 type SidebarItem = {
     labelKey: string;
@@ -39,6 +41,10 @@ const OrganizationTopbar = () => {
     const notificationRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const t = useTranslations("OrganizationTopbar");
+
+    const { data: whiteLabelData } = useGetWhiteLabelQuery();
+    const orgName = whiteLabelData?.data?.name || "Organization Admin";
+    const orgAvatar = whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : "/home/user1.png";
 
     // Derive page title from pathname
     const getPageTitle = () => {
@@ -145,10 +151,10 @@ const OrganizationTopbar = () => {
 
                         {/* Profile */}
                         <RoleProfileDropdown
-                            name="Organization Admin"
+                            name={orgName}
                             roleLabel="Organization account"
-                            avatarSrc="/home/user1.png"
-                            avatarAlt="Organization Admin"
+                            avatarSrc={orgAvatar}
+                            avatarAlt={orgName}
                             profileHref={getProfilePathByRole("organization")}
                             dashboardHref={getDashboardPathByRole("organization")}
                             profileLabel={t("profile")}

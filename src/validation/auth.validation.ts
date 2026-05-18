@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 
 // Sign In Schema
 export const signInSchema = z.object({
@@ -144,15 +144,9 @@ export const photoAndBannerSchema = z.object({
 
 export const accountSettingsSchema = z.object({
   schoolName: z.string().min(2, "School name must be at least 2 characters"),
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
-  phoneCode: z.string().min(1, "Country code is required"),
   phone: z
     .string()
     .min(6, "Phone number must be at least 6 digits")
-    .regex(/^[0-9]+$/, "Phone number must contain only digits"),
-  title: z.string().max(50, "Title must be 50 characters or less").optional(),
+    .regex(/^\+?[0-9]+$/, "Phone number must contain only digits (optionally starting with +)"),
   biography: z.string().optional(),
 });

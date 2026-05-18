@@ -1,50 +1,87 @@
 "use client";
-import React, { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChevronDown } from "lucide-react";
 import { accountSettingsSchema } from "@/validation/auth.validation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { useGetWhiteLabelQuery, useUpdateWhiteLabelMutation } from "@/redux/features/organization/organization.api";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type AccountSettingsFormData = z.infer<typeof accountSettingsSchema>;
 
-const countryCodes = [
-    { code: "+880", country: "BD" },
-    { code: "+1", country: "US" },
-    { code: "+44", country: "GB" },
-    { code: "+91", country: "IN" },
-    { code: "+61", country: "AU" },
-    { code: "+49", country: "DE" },
-    { code: "+33", country: "FR" },
-];
-
 const AccountSettings = () => {
-    const [showCodeDropdown, setShowCodeDropdown] = useState(false);
-    const [titleLength, setTitleLength] = useState(0);
     const t = useTranslations("OrganizationSettings");
+
+    const { data: whiteLabelData, isLoading } = useGetWhiteLabelQuery();
+    const [updateWhiteLabel, { isLoading: isUpdating }] = useUpdateWhiteLabelMutation();
 
     const {
         register,
         handleSubmit,
-        setValue,
-        control,
+        reset,
         formState: { errors, isSubmitting },
     } = useForm<AccountSettingsFormData>({
         resolver: zodResolver(accountSettingsSchema),
         defaultValues: {
-            phoneCode: "+880",
-            title: "",
+            phone: "",
             biography: "",
         },
     });
 
-    const selectedCode = useWatch({ control, name: "phoneCode" });
+    useEffect(() => {
+        if (whiteLabelData?.data) {
+            const profile = whiteLabelData.data;
+
+            reset({
+                schoolName: profile.name || "",
+                phone: profile.phone || "",
+                biography: profile.bio || "",
+            });
+        }
+    }, [whiteLabelData, reset]);
 
     const onSubmit = async (data: AccountSettingsFormData) => {
-        // TODO: connect to API
-        console.log("Account settings saved:", data);
+        try {
+            const formData = new FormData();
+            formData.append("name", data.schoolName);
+            formData.append("phone", data.phone);
+            if (whiteLabelData?.data?.username) {
+                formData.append("username", whiteLabelData.data.username);
+            }
+            if (data.biography !== undefined) {
+                formData.append("bio", data.biography || "");
+            }
+            const res = await updateWhiteLabel(formData).unwrap();
+            toast.success(res.message || "Account settings updated successfully!");
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to update account settings");
+        }
     };
+
+    if (isLoading) {
+        return (
+            <div className="bg-white border border-border-light p-6 mt-4 rounded-md space-y-6">
+                <Skeleton className="h-6 w-48 mb-6" />
+                <div className="space-y-5">
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-28 w-full" />
+                    </div>
+                    <Skeleton className="h-10 w-32" />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-white border border-border-light p-6 mt-4 rounded-md">
@@ -64,83 +101,17 @@ const AccountSettings = () => {
                     )}
                 </div>
 
-                {/* Username */}
-                <div>
-                    <label className="block text-sm text-description mb-1.5">{t("username")}</label>
-                    <input
-                        {...register("username")}
-                        placeholder={t("usernamePlaceholder")}
-                        className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
-                    />
-                    {errors.username && (
-                        <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>
-                    )}
-                </div>
-
                 {/* Phone Number */}
                 <div>
                     <label className="block text-sm text-description mb-1.5">{t("phoneNumber")}</label>
-                    <div className="flex items-stretch border border-border-light focus-within:border-main overflow-visible">
-                        {/* Country code selector */}
-                        <div className="relative">
-                            <button
-                                type="button"
-                                onClick={() => setShowCodeDropdown(!showCodeDropdown)}
-                                className="flex items-center gap-1 px-3 py-2.5 text-sm text-main font-medium border-r border-border-light bg-gray-50-md h-full"
-                            >
-                                {selectedCode}
-                                <ChevronDown className="w-3.5 h-3.5" />
-                            </button>
-                            {showCodeDropdown && (
-                                <div className="absolute left-0 top-full mt-1 bg-white border border-border-light shadow-lg z-20 w-32">
-                                    {countryCodes.map((c) => (
-                                        <button
-                                            key={c.code}
-                                            type="button"
-                                            onClick={() => {
-                                                setValue("phoneCode", c.code);
-                                                setShowCodeDropdown(false);
-                                            }}
-                                            className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${selectedCode === c.code ? "text-main font-medium" : "text-title"
-                                                }`}
-                                        >
-                                            {c.code} <span className="text-description">{c.country}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                        {/* Phone input */}
-                        <input
-                            {...register("phone")}
-                            type="tel"
-                            placeholder={t("phonePlaceholder")}
-                            className="flex-1 px-4 py-2.5 text-sm focus:outline-none text-title placeholder:text-description bg-transparent"
-                        />
-                    </div>
+                    <input
+                        {...register("phone")}
+                        type="tel"
+                        placeholder={t("phonePlaceholder")}
+                        className="w-full px-4 py-2.5 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
+                    />
                     {errors.phone && (
                         <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>
-                    )}
-                </div>
-
-                {/* Title */}
-                <div>
-                    <label className="block text-sm text-description mb-1.5">{t("title")}</label>
-                    <div className="relative">
-                        <input
-                            {...register("title", {
-                                onChange: (e) => setTitleLength(e.target.value.length),
-                            })}
-                            maxLength={50}
-                            placeholder={t("titlePlaceholder")}
-                            className="w-full px-4 py-2.5 pr-14 text-sm border border-border-light focus:outline-none focus:border-main text-title placeholder:text-description"
-                        />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-description">
-                            {titleLength}/50
-                        </span>
-                    </div>
-                    {errors.title && (
-                        <p className="text-xs text-red-500 mt-1">{errors.title.message}</p>
                     )}
                 </div>
 
@@ -159,10 +130,10 @@ const AccountSettings = () => {
                 <div>
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isUpdating}
                         className="px-6 py-2.5 bg-main text-white text-sm font-semibold hover:bg-main/90 transition-colors disabled:opacity-60"
                     >
-                        {isSubmitting ? t("saving") : t("saveChanges")}
+                        {(isSubmitting || isUpdating) ? t("saving") : t("saveChanges")}
                     </button>
                 </div>
             </form>
