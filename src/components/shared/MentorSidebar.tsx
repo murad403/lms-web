@@ -1,6 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LayoutDashboard, BookOpen, Video, MessageSquare, Bot, Settings, LogOut, Wallet} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, Bot, LogOut, Wallet, CircleUserRound} from "lucide-react";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
@@ -17,9 +17,8 @@ const mainMenuItems: SidebarItem[] = [
   { labelKey: "myCourses", href: "/mentor/my-courses", icon: BookOpen },
   { labelKey: "liveClasses", href: "/mentor/live-classes", icon: Video },
   { labelKey: "earning", href: "/mentor/earnings", icon: Wallet },
-  { labelKey: "message", href: "/mentor/messages", icon: MessageSquare },
   { labelKey: "aiAssistant", href: "/mentor/ai-assistant", icon: Bot },
-  { labelKey: "settings", href: "/mentor/settings", icon: Settings }
+  { labelKey: "myDashboard", href: "/instructor/dashboard", icon: CircleUserRound }
 ];
 
 const MentorSidebar = () => {
