@@ -10,6 +10,7 @@ import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import { useGetInstructorProfileQuery, useOwnerCourseDetailsQuery } from "@/redux/features/instructor/instructor.api";
+import { useGetMentorCoursesQuery } from "@/redux/features/mentor/mentor.api";
 import { resolveImageUrl } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -43,15 +44,25 @@ const InstructorTopbar = () => {
     const segments = pathname.split("/").filter(Boolean);
     const lastSegment = segments[segments.length - 1] || "dashboard";
     const isNum = !isNaN(Number(lastSegment)) && lastSegment.trim() !== "";
+    const isMentor = pathname.includes("/mentor/");
     
     const { data: courseDetail } = useOwnerCourseDetailsQuery(Number(lastSegment), {
-        skip: !isNum,
+        skip: !isNum || isMentor,
+    });
+
+    const { data: mentorCourses } = useGetMentorCoursesQuery(undefined, {
+        skip: !isNum || !isMentor,
     });
 
     // Derive page title from pathname
     const getPageTitle = () => {
-        if (isNum && courseDetail?.data?.title) {
-            return courseDetail.data.title;
+        if (isNum) {
+            if (isMentor && mentorCourses?.data) {
+                const matched = mentorCourses.data.find((c: any) => c.course_id === Number(lastSegment));
+                if (matched?.course_title) return matched.course_title;
+            } else if (courseDetail?.data?.title) {
+                return courseDetail.data.title;
+            }
         }
 
         const titleKeys: Record<string, string> = {
