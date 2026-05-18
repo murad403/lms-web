@@ -1,9 +1,9 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
 import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
 import Image from "next/image";
-import { Star, Upload, Users, CirclePlay } from "lucide-react";
+import { Star, Users, CirclePlay } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   useGetWhiteLabelQuery,
@@ -31,9 +31,6 @@ const Page = () => {
 
   const [bannerSrc, setBannerSrc] = useState("/home/user1.png");
   const [avatarSrc, setAvatarSrc] = useState("/home/user1.png");
-  
-  const bannerInputRef = useRef<HTMLInputElement>(null);
-  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize and update local preview state with API data
   useEffect(() => {
@@ -48,16 +45,6 @@ const Page = () => {
       setAvatarSrc("/home/user1.png");
     }
   }, [profile]);
-
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setBannerSrc(URL.createObjectURL(file));
-  };
-
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setAvatarSrc(URL.createObjectURL(file));
-  };
 
   // Parse course data returned from API to match ProfileTabs expectations (synchronized with my-courses page schema)
   const publishedCourses = (coursesData?.data || [])
@@ -131,29 +118,12 @@ const Page = () => {
                 priority
               />
             )}
-            <input
-              ref={bannerInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleBannerChange}
-            />
-            <button
-              onClick={() => bannerInputRef.current?.click()}
-              className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 hover:bg-white text-sm font-medium text-title px-4 py-2 rounded shadow transition-colors"
-            >
-              <Upload className="w-4 h-4" />
-              {t("uploadBanner")}
-            </button>
           </div>
 
           {/* Avatar + Info */}
           <div className="px-4 sm:px-6">
             {/* Avatar overlapping banner */}
-            <div
-              className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md -mt-14 sm:-mt-16 cursor-pointer group bg-white"
-              onClick={() => avatarInputRef.current?.click()}
-            >
+            <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md -mt-14 sm:-mt-16 bg-white">
               {isWhiteLabelLoading ? (
                 <Skeleton className="w-full h-full" />
               ) : (
@@ -164,16 +134,6 @@ const Page = () => {
                   className="object-cover"
                 />
               )}
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Upload className="w-5 h-5 text-white" />
-              </div>
-              <input
-                ref={avatarInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarChange}
-              />
             </div>
 
             {/* Name, bio, stats */}
