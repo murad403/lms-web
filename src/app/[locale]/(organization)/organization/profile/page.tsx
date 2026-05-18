@@ -80,8 +80,7 @@ const Page = () => {
         price: Number(course.price) || 0,
         status,
       };
-    })
-    .filter((c: any) => c.status === "Published");
+    });
 
   // Parse review data returned from API to match ProfileTabs expectations
   const formattedReviews = (reviewsData?.data || []).map((review: any) => {
