@@ -1,10 +1,10 @@
-"use client";
 import { useState } from "react";
 import Image from "next/image";
 import { Star, Users, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { TInstructorProfile, TInstructorCourse } from "@/lib/instructor";
 import { useTranslations } from "next-intl";
+import Pagination from "@/components/reusable/Pagination";
 
 type TReview = {
     id: number;
@@ -19,13 +19,25 @@ type ProfileTabsProps = {
     profile: TInstructorProfile;
     publishedCourses: TInstructorCourse[];
     publicReviews: TReview[];
+    currentPage?: number;
+    totalPages?: number;
+    onPageChange?: (page: number) => void;
 };
 
-const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsProps) => {
+const ProfileTabs = ({
+    profile,
+    publishedCourses,
+    publicReviews,
+    currentPage,
+    totalPages,
+    onPageChange,
+}: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState("courses");
     // const [ratingFilter, setRatingFilter] = useState("5 Star Rating");
     const [showAllReviews, setShowAllReviews] = useState(false);
-    const visibleReviews = showAllReviews ? publicReviews : publicReviews.slice(0, 4);
+    const visibleReviews = (totalPages && totalPages > 1) 
+        ? publicReviews 
+        : (showAllReviews ? publicReviews : publicReviews.slice(0, 4));
     const t = useTranslations("InstructorProfile");
 
     return (
@@ -109,20 +121,6 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                 <div className="mt-6 space-y-5">
                     <div className="flex items-center justify-between flex-wrap gap-3">
                         <h3 className="text-xl font-bold text-title">{t("studentsFeedback")}</h3>
-                        {/* <div className="relative">
-                            <select
-                                value={ratingFilter}
-                                onChange={(e) => setRatingFilter(e.target.value)}
-                                className="appearance-none border border-border-light rounded text-sm text-description px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-main bg-white"
-                            >
-                                <option>5 {t("starRating")}</option>
-                                <option>4 {t("starRating")}</option>
-                                <option>3 {t("starRating")}</option>
-                                <option>2 {t("starRating")}</option>
-                                <option>1 {t("starRating")}</option>
-                            </select>
-                            <ChevronDown className="w-4 h-4 text-description absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        </div> */}
                     </div>
                     <div className="space-y-5">
                         {visibleReviews.map((review) => (
@@ -131,10 +129,8 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                                     {review.avatar ? (
                                         <Image src={review.avatar} alt={review.name} fill className="object-cover" />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                            </svg>
+                                        <div className="w-full h-full flex items-center justify-center text-gray-400 bg-[#EBEBFF] text-main font-bold">
+                                            <span className="uppercase text-sm">{review.name.charAt(0)}</span>
                                         </div>
                                     )}
                                 </div>
@@ -161,21 +157,31 @@ const ProfileTabs = ({ profile, publishedCourses, publicReviews }: ProfileTabsPr
                             </div>
                         ))}
                     </div>
-                    {!showAllReviews && publicReviews.length > 4 && (
-                        <div className="flex justify-center pt-2">
-                            <button
-                                onClick={() => setShowAllReviews(true)}
-                                className="flex items-center gap-2 px-5 py-2.5 border border-border-light rounded text-sm font-medium text-title hover:bg-gray-50 transition-colors"
-                            >
-                                {t("loadMore")}
-                                <ArrowRight className="w-4 h-4" />
-                            </button>
+                    {totalPages && totalPages > 1 && onPageChange ? (
+                        <div className="pt-4">
+                            <Pagination
+                                currentPage={currentPage || 1}
+                                totalPages={totalPages}
+                                onPageChange={onPageChange}
+                            />
                         </div>
+                    ) : (
+                        !showAllReviews && publicReviews.length > 4 && (
+                            <div className="flex justify-center pt-2">
+                                <button
+                                    onClick={() => setShowAllReviews(true)}
+                                    className="flex items-center gap-2 px-5 py-2.5 border border-border-light rounded text-sm font-medium text-title hover:bg-gray-50 transition-colors"
+                                >
+                                    {t("loadMore")}
+                                    <ArrowRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        )
                     )}
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default ProfileTabs
+export default ProfileTabs;

@@ -1,77 +1,53 @@
 "use client";
-import { useRef, useState } from 'react'
-import ProfileAbout from '@/components/reusable/for-dashboard/ProfileAbout'
-import ProfileTabs from '@/components/reusable/for-dashboard/ProfileTabs'
-import { instructorProfile, instructorCourses } from '@/lib/instructor'
-import Image from 'next/image'
-import { Star, Upload, Users, CirclePlay } from 'lucide-react'
-import { useTranslations } from 'next-intl';
-
-const publicReviews = [
-  {
-    id: 1,
-    name: "Guy Hawkins",
-    avatar: "/home/user1.png",
-    timeAgo: "1 week ago",
-    rating: 5,
-    comment:
-      "I appreciate the precise short videos (10 mins or less each) because overly long videos tend to make me lose focus. The instructor is very knowledgeable in Web Design and it shows as he shares his knowledge. These were my best 6 months of training. Thanks, Vako.",
-  },
-  {
-    id: 2,
-    name: "Dianna Russell",
-    avatar: "/home/user1.png",
-    timeAgo: "30 mins ago",
-    rating: 5,
-    comment:
-      "This course is just amazing! has great course content, the best practices, and a lot of real-world knowledge. I love the way of giving examples, the best tips by the instructor which are pretty interesting, fun and knowledgeable.",
-  },
-  {
-    id: 3,
-    name: "Bessie Cooper",
-    avatar: "/home/user1.png",
-    timeAgo: "2 hours ago",
-    rating: 5,
-    comment:
-      "Webflow course was good, it covers design section, and to build responsive web pages, blog, and some more tricks and tips about webflow. I enjoyed the course and it helped me. Thank you Vako.",
-  },
-  {
-    id: 4,
-    name: "Eleanor Pena",
-    avatar: "/home/user1.png",
-    timeAgo: "1 day ago",
-    rating: 5,
-    comment:
-      "I appreciate the precise short videos because overly long videos tend to make me lose focus. The instructor is very knowledgeable in Web Design. These were my best 6 months of training. Thanks, Vako.",
-  },
-  {
-    id: 5,
-    name: "Ralph Edwards",
-    avatar: "/home/user1.png",
-    timeAgo: "2 days ago",
-    rating: 5,
-    comment:
-      "GREAT Course! Instructor was very descriptive and professional. I learned a TON that is going to apply immediately to real life work. Thanks so much, cant wait for the next one!",
-  },
-  {
-    id: 6,
-    name: "Arlene McCoy",
-    avatar: "/home/user1.png",
-    timeAgo: "1 week ago",
-    rating: 5,
-    comment:
-      "This should be one of the best courses I ever made about UX/UI in Udemy. Highly recommend to those who is new to UX/UI and want to become UX/UI freelancer!",
-  },
-];
+import { useRef, useState, useEffect } from "react";
+import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
+import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
+import Image from "next/image";
+import { Star, Upload, Users, CirclePlay } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  useGetWhiteLabelQuery,
+  useGetOrganizationCoursesQuery,
+  useGetOrganizationReviewsQuery,
+} from "@/redux/features/organization/organization.api";
+import { resolveImageUrl } from "@/utils/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Page = () => {
-  const profile = instructorProfile;
-  const publishedCourses = instructorCourses.filter((c) => c.status === "Published");
+  const t = useTranslations("OrganizationProfile");
+  
+  // Pagination & Review state
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Queries
+  const { data: whiteLabelData, isLoading: isWhiteLabelLoading } = useGetWhiteLabelQuery();
+  const profile = whiteLabelData?.data;
+
+  const { data: coursesData, isLoading: isCoursesLoading } = useGetOrganizationCoursesQuery();
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetOrganizationReviewsQuery({
+    page: currentPage,
+    page_size: 5,
+  });
+
   const [bannerSrc, setBannerSrc] = useState("/home/user1.png");
-  const [avatarSrc, setAvatarSrc] = useState(profile.avatar);
+  const [avatarSrc, setAvatarSrc] = useState("/home/user1.png");
+  
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
-  const t = useTranslations("OrganizationProfile");
+
+  // Initialize and update local preview state with API data
+  useEffect(() => {
+    if (profile?.banner) {
+      setBannerSrc(resolveImageUrl(profile.banner));
+    } else {
+      setBannerSrc("/home/user1.png");
+    }
+    if (profile?.photo) {
+      setAvatarSrc(resolveImageUrl(profile.photo));
+    } else {
+      setAvatarSrc("/home/user1.png");
+    }
+  }, [profile]);
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -83,18 +59,87 @@ const Page = () => {
     if (file) setAvatarSrc(URL.createObjectURL(file));
   };
 
+  // Render a clean animated skeleton block when initial white-label data is pending
+  if (isWhiteLabelLoading) {
+    return (
+      <div className="container mx-auto space-y-8 p-4">
+        {/* Banner Skeleton */}
+        <Skeleton className="w-full h-64 sm:h-80 lg:h-[380px] rounded-lg" />
+        <div className="px-4 sm:px-6 space-y-4">
+          {/* Avatar Skeleton */}
+          <Skeleton className="w-28 h-28 sm:w-32 sm:h-32 rounded-full -mt-14 sm:-mt-16 border-4 border-white" />
+          {/* Name & Bio Skeletons */}
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-96 max-w-full" />
+          <div className="flex gap-4">
+            <Skeleton className="h-5 w-20" />
+            <Skeleton className="h-5 w-20" />
+            <Skeleton className="h-5 w-20" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Parse course data returned from API to match ProfileTabs expectations
+  const publishedCourses = (coursesData?.data || [])
+    .map((course: any) => ({
+      id: course.id,
+      title: course.title,
+      image: course.thumbnail ? resolveImageUrl(course.thumbnail) : "",
+      category: course.advance_info?.category_name || "General",
+      rating: course.advance_info?.average_rating || 5.0,
+      reviews: String(course.reviews_count || 0),
+      students: String(course.advance_info?.enrolled_students || 0),
+      price: Number(course.price || 0),
+      status: course.status as "Published" | "Draft" | "Under Review",
+    }))
+    .filter((c: any) => c.status === "Published");
+
+  // Parse review data returned from API to match ProfileTabs expectations
+  const formattedReviews = (reviewsData?.data || []).map((review: any) => {
+    const date = new Date(review.created_at);
+    const timeAgo = isNaN(date.getTime()) ? "recently" : date.toLocaleDateString();
+    return {
+      id: review.id,
+      name: review.reviewer_name || "Anonymous",
+      avatar: "", // Will render solid colored initials badge inside ProfileTabs
+      timeAgo: timeAgo,
+      rating: review.rating || 5,
+      comment: review.comment || "",
+    };
+  });
+
+  // Map the organization profile properties to feed ProfileTabs component
+  const instructorMappedProfile = {
+    id: String(profile?.id || ""),
+    firstName: profile?.name || t("schoolName"),
+    lastName: "",
+    title: "Organization Profile",
+    bio: profile?.bio || "",
+    avatar: avatarSrc,
+    rating: reviewsData?.average_rating || 5.0,
+    reviewCount: reviewsData?.total_reviews || 0,
+    studentCount: reviewsData?.total_enrolled_students || 0,
+    courseCount: coursesData?.total || 0,
+    email: "",
+    phone: profile?.phone || "",
+    socialLinks: {},
+  };
+
   return (
     <div>
       <div className="container mx-auto space-y-8">
         {/* Profile Header */}
         <div>
-          {/* Banner */}
-          <div className="relative w-full h-52 sm:h-64 rounded-none overflow-hidden">
+          {/* Banner with premium, taller height configuration */}
+          <div className="relative w-full h-64 sm:h-80 lg:h-[380px] rounded-none overflow-hidden bg-gray-100">
             <Image
               src={bannerSrc}
               alt="Organization Banner"
               fill
               className="object-cover"
+              priority
             />
             <input
               ref={bannerInputRef}
@@ -116,7 +161,7 @@ const Page = () => {
           <div className="px-4 sm:px-6">
             {/* Avatar overlapping banner */}
             <div
-              className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md -mt-14 sm:-mt-16 cursor-pointer group"
+              className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-md -mt-14 sm:-mt-16 cursor-pointer group bg-white"
               onClick={() => avatarInputRef.current?.click()}
             >
               <Image
@@ -139,24 +184,34 @@ const Page = () => {
 
             {/* Name, bio, stats */}
             <div className="mt-4 space-y-2">
-              <h1 className="text-2xl font-bold text-title">{t("schoolName")}</h1>
-              <p className="text-sm text-description max-w-md leading-relaxed">
-                {profile.bio.slice(0, 140)}
-              </p>
+              <h1 className="text-2xl font-bold text-title">{profile?.name || t("schoolName")}</h1>
+              {profile?.bio && (
+                <p className="text-sm text-description max-w-md leading-relaxed">
+                  {profile.bio.slice(0, 140)}
+                </p>
+              )}
               <div className="flex flex-wrap items-center gap-4 pt-1">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  <span className="text-sm font-semibold text-title">5.0</span>
-                  <span className="text-sm text-description">(500 {t("review")})</span>
+                  <span className="text-sm font-semibold text-title">
+                    {(reviewsData?.average_rating || 5.0).toFixed(1)}
+                  </span>
+                  <span className="text-sm text-description">
+                    ({reviewsData?.total_reviews || 0} {t("review")})
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-4 h-4 text-description" />
-                  <span className="text-sm font-bold text-title">500</span>
+                  <span className="text-sm font-bold text-title">
+                    {reviewsData?.total_enrolled_students || 0}
+                  </span>
                   <span className="text-sm text-description">{t("students")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CirclePlay className="w-4 h-4 text-main" />
-                  <span className="text-sm font-bold text-title">10</span>
+                  <span className="text-sm font-bold text-title">
+                    {coursesData?.total || 0}
+                  </span>
                   <span className="text-sm text-description">{t("courses")}</span>
                 </div>
               </div>
@@ -164,13 +219,21 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Profile Biography Block */}
+        <ProfileAbout bio={profile?.bio} />
 
-
-        <ProfileAbout />
-        <ProfileTabs profile={profile} publishedCourses={publishedCourses} publicReviews={publicReviews} />
+        {/* Profile Tabs (Courses & Reviews) with pagination enabled */}
+        <ProfileTabs
+          profile={instructorMappedProfile}
+          publishedCourses={publishedCourses}
+          publicReviews={formattedReviews}
+          currentPage={currentPage}
+          totalPages={reviewsData?.total_pages || 1}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
