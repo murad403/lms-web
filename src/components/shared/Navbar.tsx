@@ -14,6 +14,9 @@ import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
 import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery } from "@/redux/features/student/student.api";
+import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
+import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
+import { useGetProfileQuery as useGetAffiliateProfileQuery } from "@/redux/features/affiliate/affiliate.api";
 import { useCategoriesQuery } from "@/redux/features/landing/landing.api";
 import { resolveImageUrl } from "@/utils/image";
 import { toast } from "sonner";
@@ -56,12 +59,45 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     });
     const [removeCart, { isLoading: isRemovingCart }] = useRemoveCartMutation();
 
-    const { data: profileData } = useGetStudentProfileQuery(undefined, {
-        skip: !session.accessToken,
+    const { data: studentProfile } = useGetStudentProfileQuery(undefined, {
+        skip: !session.accessToken || session.rawRole !== "student",
     });
+    const { data: instructorProfile } = useGetInstructorProfileQuery(undefined, {
+        skip: !session.accessToken || session.rawRole !== "instructor",
+    });
+    const { data: orgProfile } = useGetWhiteLabelQuery(undefined, {
+        skip: !session.accessToken || session.rawRole !== "organization",
+    });
+    const { data: affiliateProfile } = useGetAffiliateProfileQuery(undefined, {
+        skip: !session.accessToken || session.rawRole !== "affiliate",
+    });
+
     const { data: categoriesData } = useCategoriesQuery();
-    const userAvatar = profileData?.data?.user?.avatar ? resolveImageUrl(profileData.data.user.avatar) : defaultUserImage;
-    const userEmail = profileData?.data?.user?.email || "";
+
+    let userAvatar: string | typeof defaultUserImage = defaultUserImage;
+    let userEmail = "";
+
+    if (session.rawRole === "student" && studentProfile?.data) {
+        if (studentProfile.data.user?.avatar) {
+            userAvatar = resolveImageUrl(studentProfile.data.user.avatar);
+        }
+        userEmail = studentProfile.data.user?.email || "";
+    } else if (session.rawRole === "instructor" && instructorProfile?.data) {
+        if (instructorProfile.data.user?.avatar) {
+            userAvatar = resolveImageUrl(instructorProfile.data.user.avatar);
+        }
+        userEmail = instructorProfile.data.user?.email || "";
+    } else if (session.rawRole === "organization" && orgProfile?.data) {
+        if (orgProfile.data.photo) {
+            userAvatar = resolveImageUrl(orgProfile.data.photo);
+        }
+        userEmail = orgProfile.data.username || "";
+    } else if (session.rawRole === "affiliate" && affiliateProfile?.data) {
+        if (affiliateProfile.data.avatar) {
+            userAvatar = resolveImageUrl(affiliateProfile.data.avatar);
+        }
+        userEmail = affiliateProfile.data.email || "";
+    }
     const cartItems = cartData?.data?.items || [];
     const cartSubtotal = cartData?.data?.subtotal || "0.00";
 
