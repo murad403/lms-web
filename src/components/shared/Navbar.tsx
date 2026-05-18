@@ -471,7 +471,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
 
                                 {/* Profile Popup */}
                                 {showProfile && (
-                                    <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50">
+                                    <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50">
                                         <div className="px-4 py-3 border-b border-gray-200">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-blue-600 text-white text-sm md:text-base font-bold shrink-0">
@@ -487,11 +487,11 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                         <span className="uppercase">{userInitials}</span>
                                                     )}
                                                 </div>
-                                                <div>
-                                                    <p className="font-semibold text-xs sm:text-sm md:text-base text-title">
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="font-semibold text-xs sm:text-sm md:text-base text-title truncate" title={userEmail}>
                                                         {userEmail}
                                                     </p>
-                                                    <p className="text-[10px] sm:text-xs text-description">
+                                                    <p className="text-[10px] sm:text-xs text-description truncate">
                                                         {session.role ? `${session.role} account` : "Account"}
                                                     </p>
                                                 </div>

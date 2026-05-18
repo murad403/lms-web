@@ -1,6 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle, Wallet} from "lucide-react";
+import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Bot, Settings, LogOut, PlusCircle, Wallet, Building2} from "lucide-react";
 import { useState } from "react";
 import LogoutModal from "./LogoutModal";
 import { PiGraduationCap } from "react-icons/pi";
@@ -21,6 +21,7 @@ const mainMenuItems: SidebarItem[] = [
   { labelKey: "message", href: "/instructor/messages", icon: MessageSquare },
   { labelKey: "accreditation", href: "/instructor/accreditation", icon: Award },
   { labelKey: "aiAssistant", href: "/instructor/ai-assistant", icon: Bot },
+  { labelKey: "organizations", href: "/instructor/organizations", icon: Building2 },
   { labelKey: "settings", href: "/instructor/settings", icon: Settings },
 ];
 

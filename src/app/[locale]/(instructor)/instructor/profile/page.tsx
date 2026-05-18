@@ -14,6 +14,7 @@ import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
 const InstructorProfilePage = () => {
     const { data: profileResponse, isLoading } = useGetInstructorProfileDetailsQuery(undefined);
     const t = useTranslations("InstructorProfile");
+    console.log(profileResponse?.biography)
 
     if (isLoading && !profileResponse) {
         return (

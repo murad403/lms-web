@@ -178,6 +178,15 @@ const instructorApi = baseApi1.injectEndpoints({
                     url: `/instructors/instructor/me/`,
                     method: "GET"
                 }
+            },
+            providesTags: ["instructor-profile"]
+        }),
+        getOrganizationList: builder.query({
+            query: () => {
+                return {
+                    url: `/organizations/instructor/organizations/`,
+                    method: "GET"
+                }
             }
         }),
     }),
@@ -202,6 +211,7 @@ export const {
     useMyCoursesQuery,
     useCourseAccreditationQuery,
     useCertificateListQuery,
-    useOwnerCourseDetailsQuery, 
-    useGetInstructorProfileDetailsQuery
+    useOwnerCourseDetailsQuery,
+    useGetInstructorProfileDetailsQuery,
+    useGetOrganizationListQuery
 } = instructorApi;

@@ -443,3 +443,22 @@ export type OwnerCourseDetailsData = {
 };
 
 export type OwnerCourseDetailsResponse = ApiResponse<OwnerCourseDetailsData>;
+
+// Instructor Organizations Types
+export type InstructorOrganization = {
+    membership_id: number;
+    organization_id: number;
+    organization_name: string;
+    organization_photo: string | null;
+    banner: string | null;
+    role: string;
+    status: string;
+    joined_at: string;
+};
+
+export type InstructorOrganizationResponse = {
+    success: boolean;
+    status: number;
+    message: string;
+    data: InstructorOrganization[];
+};
