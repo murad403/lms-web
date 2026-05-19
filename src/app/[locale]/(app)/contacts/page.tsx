@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import FooterNavigationBanner from '@/components/reusable/FooterNavigationBanner';
 import { contactFormSchema, ContactFormData } from '@/validation/auth.validation';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { useSendMessageMutation } from '@/redux/features/landing/landing.api';
+import { useSendContactMessageMutation } from '@/redux/features/landing/landing.api';
 import { toast } from 'sonner';
 
 const ContactPage = () => {
@@ -19,11 +19,11 @@ const ContactPage = () => {
         resolver: zodResolver(contactFormSchema),
     });
 
-    const [sendMessage, { isLoading }] = useSendMessageMutation();
+    const [sendContactMessage, { isLoading }] = useSendContactMessageMutation();
 
     const onSubmit = async (data: ContactFormData) => {
         try {
-            const res = await sendMessage({
+            const res = await sendContactMessage({
                 name: data.fullName,
                 email: data.email,
                 subject: data.subject,

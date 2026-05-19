@@ -108,8 +108,8 @@ const WhiteLabel = () => {
   const handleCancel = () => {
     setIsEditing(false);
     if (whiteLabelData?.data) {
-      const { name, username, phone, bio, photo, banner } = whiteLabelData.data;
-      reset({ name, username, phone, bio });
+      const { name, phone, bio, photo, banner } = whiteLabelData.data;
+      reset({ name, phone, bio });
       setPhotoPreview(photo ? resolveImageUrl(photo) : null);
       setBannerPreview(banner ? resolveImageUrl(banner) : null);
     }
@@ -284,19 +284,6 @@ const WhiteLabel = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-description/70 uppercase tracking-widest mb-2">Username</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-description/40 text-sm font-bold">@</span>
-                    <input
-                      {...register("username")}
-                      disabled={!isEditing}
-                      className="w-full px-4 py-3 pl-9 text-sm border border-border-light focus:outline-none focus:border-main disabled:bg-gray-50/50 disabled:text-description/70 transition-all font-medium text-title"
-                      placeholder="username"
-                    />
-                  </div>
-                </div>
-
-                <div>
                   <label className="block text-xs font-bold text-description/70 uppercase tracking-widest mb-2">Phone Number</label>
                   <div className="relative">
                     <input
@@ -354,7 +341,6 @@ const WhiteLabel = () => {
         organizationName={watchedValues.name ?? ""}
         biography={watchedValues.bio ?? ""}
         phone={watchedValues.phone ?? ""}
-        username={watchedValues.username ?? ""}
       />
     </div>
   );

@@ -51,7 +51,15 @@ const landingApi = baseApi.injectEndpoints({
                 }
             }
         }),
-        sendMessage: builder.mutation<any, { name: string; email: string; subject: string; message: string }>({
+        markAsRead: builder.query({
+            query: (id) => {
+                return {
+                    url: `/notifications/notifications/${id}/`,
+                    method: "GET",
+                }
+            }
+        }),
+        sendContactMessage: builder.mutation<any, { name: string; email: string; subject: string; message: string }>({
             query: (data) => {
                 return {
                     url: `/organizations/sent/messages/contractus/`,
@@ -65,4 +73,4 @@ const landingApi = baseApi.injectEndpoints({
 
 
 
-export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery, useGetNotificationsQuery, useSendMessageMutation } = landingApi;
+export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery, useGetNotificationsQuery, useSendContactMessageMutation } = landingApi;

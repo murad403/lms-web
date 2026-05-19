@@ -10,10 +10,9 @@ type Props = {
     organizationName: string;
     biography: string;
     phone: string;
-    username: string;
 };
 
-const WhiteLabelPreviewModal = ({ show, onClose, logoPreview, bannerPreview, organizationName, biography, phone, username }: Props) => {
+const WhiteLabelPreviewModal = ({ show, onClose, logoPreview, bannerPreview, organizationName, biography, phone }: Props) => {
     if (!show) return null;
 
     return (
@@ -58,7 +57,6 @@ const WhiteLabelPreviewModal = ({ show, onClose, logoPreview, bannerPreview, org
                     <div className="p-8 pt-12">
                         <div className="mb-6">
                             <h3 className="text-xl font-bold text-title">{organizationName || "Organization Name"}</h3>
-                            <p className="text-sm text-description mt-1">@{username || "username"}</p>
                         </div>
 
                         <div className="space-y-6">
