@@ -1,8 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Bell, CreditCard, Menu as MenuIcon, X } from "lucide-react";
+import { Bell, Menu as MenuIcon, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
-import { notifications, TNotification } from "@/lib/header";
 import { LayoutDashboard, BookOpen, Video, MessageSquare, Award, Settings, LogOut, PlusCircle, Wallet, Users, UserCheck, ReceiptText, ChartSpline, NotebookPen } from "lucide-react";
 import LogoutModal from "./LogoutModal";
 import RoleProfileDropdown from "./RoleProfileDropdown";
@@ -13,6 +12,12 @@ import { useGetWhiteLabelQuery } from "@/redux/features/organization/organizatio
 import { useOwnerCourseDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { landingApi, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
+import { ACCESS_TOKEN_COOKIE } from "@/utils/auth-shared";
+import { getCookie } from "@/utils/auth-client";
+import { formatNotificationTime, getNotificationIcon } from "./notification-utils";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks";
 
 type SidebarItem = {
     labelKey: string;
@@ -40,9 +45,19 @@ const OrganizationTopbar = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showLogout, setShowLogout] = useState(false);
+    const dispatch = useAppDispatch();
     const notificationRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const t = useTranslations("OrganizationTopbar");
+    const hasAccessToken = Boolean(getCookie(ACCESS_TOKEN_COOKIE));
+    const {
+        data: notificationsResponse,
+        refetch: refetchNotifications,
+    } = useGetNotificationsQuery(undefined, {
+        skip: !hasAccessToken,
+    });
+    const fetchedNotifications = notificationsResponse?.data || [];
+    const unreadCount = fetchedNotifications.filter((notification) => !notification.is_read).length;
 
     const { data: whiteLabelData, isLoading: isWhiteLabelLoading } = useGetWhiteLabelQuery();
     const orgName = whiteLabelData?.data?.name || "Organization Admin";
@@ -84,6 +99,15 @@ const OrganizationTopbar = () => {
 
     const isActive = (href: string) => {
         return pathname === href || pathname.startsWith(href + "/");
+    };
+
+    const handleMarkAsRead = async (id: number) => {
+        try {
+            await dispatch(landingApi.endpoints.markAsRead.initiate(id)).unwrap();
+            await refetchNotifications();
+        } catch {
+            toast.error("Failed to update notification.");
+        }
     };
 
     useEffect(() => {
@@ -128,34 +152,50 @@ const OrganizationTopbar = () => {
                                 className="p-2 hover:bg-gray-100 rounded-lg relative"
                             >
                                 <Bell className="size-6 text-gray-700" />
+                                {unreadCount > 0 && (
+                                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white" />
+                                )}
                             </button>
 
                             {showNotifications && (
                                 <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[80vh] overflow-hidden">
                                     <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                                         <h3 className="text-lg font-bold text-title">{t("notifications")}</h3>
-                                        <div className="flex gap-2">
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("all")}</button>
-                                            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">{t("unread")}</button>
-                                        </div>
+                                        {/* Showing all notifications by default */}
                                     </div>
                                     <div className="max-h-96 overflow-y-auto">
-                                        {notifications.map((notification: TNotification) => (
-                                            <div key={notification.id} className="p-4 hover:bg-gray-50 border-b border-gray-100 flex gap-3">
-                                                <div className={`w-10 h-10 ${notification.iconBg} rounded-lg flex items-center justify-center shrink-0`}>
-                                                    {notification.icon === "bell" ? (
-                                                        <Bell className="w-5 h-5 text-blue-600" />
-                                                    ) : (
-                                                        <CreditCard className="w-5 h-5 text-green-600" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <h4 className="font-semibold text-title text-sm">{notification.title}</h4>
-                                                    <p className="text-xs text-description mt-0.5">{notification.description}</p>
-                                                    <p className="text-[10px] text-gray-400 mt-1">{notification.time}</p>
-                                                </div>
+                                        {fetchedNotifications.length > 0 ? (
+                                            fetchedNotifications.map((notification) => {
+                                                const { bg, text, icon: Icon } = getNotificationIcon(notification.type);
+                                                return (
+                                                    <div key={notification.id} className={`p-4 hover:bg-gray-50 border-b border-gray-100 flex gap-3 ${!notification.is_read ? "bg-blue-50/20" : ""}`}>
+                                                        <div className={`w-10 h-10 ${bg} rounded-lg flex items-center justify-center shrink-0`}>
+                                                            <Icon className={`w-5 h-5 ${text}`} />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="font-semibold text-title text-sm">{notification.title}</h4>
+                                                            <p className="text-xs text-description mt-0.5">{notification.body}</p>
+                                                            <div className="mt-1 flex items-center gap-3">
+                                                                <p className="text-[10px] text-gray-400">{formatNotificationTime(notification.created_at)}</p>
+                                                                {!notification.is_read && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleMarkAsRead(notification.id)}
+                                                                        className="text-[10px] font-semibold text-main hover:text-main/80 transition-colors"
+                                                                    >
+                                                                        Mark as read
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })
+                                        ) : (
+                                            <div className="py-8 text-center text-description text-sm">
+                                                No notifications found
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
                                 </div>
                             )}

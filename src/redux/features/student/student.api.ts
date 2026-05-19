@@ -68,7 +68,7 @@ const studentApi = baseApi.injectEndpoints({
         joinLiveClass: builder.mutation<JoinLiveClassResponse, number>({
             query: (id) => {
                 return {
-                    url: `/students/join-live-class/${id}/`,
+                    url: `/students/joint-live-class/${id}/`,
                     method: "POST"
                 }
             }

@@ -16,6 +16,7 @@ const UpcomingLiveClasses = ({ classes, isLoading = false }: UpcomingLiveClasses
     const handleJoinNow = async (liveClassId: number) => {
         try {
             const res = await joinLiveClass(liveClassId).unwrap();
+            // console.log(res)
             const link = res?.data?.class_link;
             if (link) {
                 window.open(link, "_blank", "noopener,noreferrer");

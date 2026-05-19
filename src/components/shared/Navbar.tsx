@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import {
-    Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard,
+    Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star,
 } from "lucide-react";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
@@ -16,10 +17,12 @@ import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery, use
 import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
 import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
 import { useGetProfileQuery as useGetAffiliateProfileQuery } from "@/redux/features/affiliate/affiliate.api";
-import { useCategoriesQuery, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
+import { landingApi, useCategoriesQuery, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
 import { resolveImageUrl } from "@/utils/image";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
+import { formatNotificationTime, getNotificationIcon } from "./notification-utils";
+import { useAppDispatch } from "@/redux/hooks";
 
 type NavbarProps = {
     initialSession: AuthSessionSnapshot;
@@ -38,6 +41,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const t = useTranslations("Navbar");
     const tMenu = useTranslations("Menu");
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const [showBrowse, setShowBrowse] = useState(false);
@@ -76,64 +80,14 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     });
 
     const { data: categoriesData } = useCategoriesQuery();
-    const { data: notificationsResponse } = useGetNotificationsQuery(undefined, {
+    const {
+        data: notificationsResponse,
+        refetch: refetchNotifications,
+    } = useGetNotificationsQuery(undefined, {
         skip: !session.accessToken,
     });
     const fetchedNotifications = notificationsResponse?.data || [];
-    const unreadCount = React.useMemo(() => {
-        return fetchedNotifications.filter((n: any) => !n.is_read).length;
-    }, [fetchedNotifications]);
-
-    const getNotificationIcon = (type: string) => {
-        switch (type) {
-            case "course_updated":
-                return {
-                    bg: "bg-blue-50",
-                    text: "text-blue-600",
-                    icon: Bell,
-                };
-            case "payment":
-            case "purchase":
-                return {
-                    bg: "bg-emerald-50",
-                    text: "text-emerald-600",
-                    icon: CreditCard,
-                };
-            default:
-                return {
-                    bg: "bg-gray-50",
-                    text: "text-gray-600",
-                    icon: Bell,
-                };
-        }
-    };
-
-    const formatNotificationTime = (dateStr: string) => {
-        try {
-            const date = new Date(dateStr);
-            const now = new Date();
-            const diffMs = now.getTime() - date.getTime();
-            if (diffMs < 0) return "Just now";
-
-            const diffMins = Math.floor(diffMs / 60000);
-            if (diffMins < 1) return "Just now";
-            if (diffMins < 60) return `${diffMins}m ago`;
-
-            const diffHours = Math.floor(diffMins / 60);
-            if (diffHours < 24) return `${diffHours}h ago`;
-
-            const diffDays = Math.floor(diffHours / 24);
-            if (diffDays === 1) return "Yesterday";
-            if (diffDays < 7) return `${diffDays}d ago`;
-
-            return new Intl.DateTimeFormat("en-US", {
-                month: "short",
-                day: "numeric",
-            }).format(date);
-        } catch {
-            return "";
-        }
-    };
+    const unreadCount = fetchedNotifications.filter((n: any) => !n.is_read).length;
 
     const isProfileLoading =
         (session.role === "student" && isStudentLoading) ||
@@ -247,6 +201,15 @@ const Navbar = ({ initialSession }: NavbarProps) => {
         }
 
         router.push(`/courses?search=${encodeURIComponent(value)}`);
+    };
+
+    const handleMarkAsRead = async (id: number) => {
+        try {
+            await dispatch(landingApi.endpoints.markAsRead.initiate(id)).unwrap();
+            await refetchNotifications();
+        } catch {
+            toast.error("Failed to update notification.");
+        }
     };
 
     // Close dropdowns when clicking outside
@@ -409,7 +372,18 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                             <p className="text-xs sm:text-sm text-description mb-1">
                                                                 {notification.body}
                                                             </p>
-                                                            <p className="text-[10px] sm:text-xs text-gray-400">{formatNotificationTime(notification.created_at)}</p>
+                                                            <div className="mt-2 flex items-center gap-3">
+                                                                <p className="text-[10px] sm:text-xs text-gray-400">{formatNotificationTime(notification.created_at)}</p>
+                                                                {!notification.is_read && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleMarkAsRead(notification.id)}
+                                                                        className="text-[10px] sm:text-xs font-semibold text-main hover:text-main/80 transition-colors"
+                                                                    >
+                                                                        Mark as read
+                                                                    </button>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 );

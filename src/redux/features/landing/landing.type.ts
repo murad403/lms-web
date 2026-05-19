@@ -151,3 +151,14 @@ export type CourseDetailsData = LandingCourse & {
 export type CourseDetailsResponse = ApiResponse<CourseDetailsData>;
 export type CoursesResponse = PaginatedApiResponse<LandingCourse>;
 export type CategoriesResponse = ApiResponse<LandingCategory[]>;
+
+export type LandingNotificationItem = {
+	id: number;
+	type: string;
+	title: string;
+	body: string;
+	is_read: boolean;
+	created_at: string;
+};
+
+export type LandingNotificationsResponse = ApiResponse<LandingNotificationItem[]>;

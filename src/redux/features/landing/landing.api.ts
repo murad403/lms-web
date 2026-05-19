@@ -1,9 +1,11 @@
 import baseApi from "@/redux/api/baseApi";
 import {
+    ApiResponse,
     CategoriesResponse,
     CourseDetailsResponse,
     CoursesQueryParams,
     CoursesResponse,
+    LandingNotificationsResponse,
     HomeCoursesResponse,
 } from "./landing.type";
 
@@ -43,23 +45,27 @@ const landingApi = baseApi.injectEndpoints({
                 }
             }
         }),
-        getNotifications: builder.query({
+        getNotifications: builder.query<LandingNotificationsResponse, void>({
             query: () => {
                 return {
                     url: `/notifications/notifications/`,
                     method: "GET",
                 }
             }
+            ,
+            providesTags: ["notifications"],
         }),
-        markAsRead: builder.query({
+        markAsRead: builder.query<LandingNotificationsResponse, number>({
             query: (id) => {
                 return {
                     url: `/notifications/notifications/${id}/`,
                     method: "GET",
                 }
             }
+            ,
+            providesTags: ["notifications"],
         }),
-        sendContactMessage: builder.mutation<any, { name: string; email: string; subject: string; message: string }>({
+        sendContactMessage: builder.mutation<ApiResponse<unknown>, { name: string; email: string; subject: string; message: string }>({
             query: (data) => {
                 return {
                     url: `/organizations/sent/messages/contractus/`,
@@ -72,5 +78,6 @@ const landingApi = baseApi.injectEndpoints({
 });
 
 
+export { landingApi };
 
-export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery, useGetNotificationsQuery, useSendContactMessageMutation } = landingApi;
+export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery, useGetNotificationsQuery, useMarkAsReadQuery, useSendContactMessageMutation } = landingApi;
