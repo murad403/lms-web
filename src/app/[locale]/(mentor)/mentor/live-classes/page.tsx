@@ -60,7 +60,7 @@ const LiveClassPage = () => {
       />
 
       {/* Live Class Modal */}
-      <LiveClassModal isShowDate={false} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <LiveClassModal isShowDate={false} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} role="mentor" />
     </div>
   );
 };

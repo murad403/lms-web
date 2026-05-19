@@ -41,9 +41,9 @@ const TrainersSlider = ({ instructors }: TInstructors) => {
             className="pb-12!"
         >
             {instructors.map((instructor) => (
-                <SwiperSlide key={instructor.id}>
-                    <div className="bg-white rounded-md border border-border-light overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full">
-                        <div className="relative h-60 sm:h-64 w-full">
+                <SwiperSlide key={instructor.id} className="!h-auto flex">
+                    <div className="bg-white rounded-md border border-border-light overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col w-full">
+                        <div className="relative h-60 sm:h-64 w-full shrink-0">
                             <Image
                                 src={resolveImageUrl(instructor.avatar) || INSTRUCTOR_FALLBACK_IMAGE}
                                 alt={instructor.Instructor_name}
@@ -51,16 +51,20 @@ const TrainersSlider = ({ instructors }: TInstructors) => {
                                 className="object-cover object-top"
                             />
                         </div>
-                        <div className="p-4 md:p-5 text-center">
+                        <div className="p-4 md:p-5 text-center flex-1 flex flex-col justify-start">
                             <h3 className="text-base md:text-lg font-bold text-header mb-1">
                                 {instructor.Instructor_name}
                             </h3>
-                            <p className="text-main font-medium text-sm mb-2">
-                                {instructor.title}
-                            </p>
-                            <p className="text-description text-sm leading-relaxed">
-                                {instructor.biography}
-                            </p>
+                            {instructor.title && (
+                                <p className="text-main font-medium text-sm mb-2">
+                                    {instructor.title}
+                                </p>
+                            )}
+                            {instructor.biography && (
+                                <p className="text-description text-sm leading-relaxed line-clamp-4 mt-2">
+                                    {instructor.biography}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </SwiperSlide>

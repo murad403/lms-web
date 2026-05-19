@@ -7,6 +7,7 @@ import { Video, Tag, Calendar as CalendarIcon, Clock, Link as LinkIcon, ChevronD
 import { liveClassSchema, LiveClassFormData } from "@/validation/liveClass.validation";
 import { useTranslations } from "next-intl";
 import { useCourseInfoQuery, useCreateLiveClassMutation } from "@/redux/features/instructor/instructor.api";
+import { useGetMentorCourseListQuery, useCreateMentorLiveClassMutation } from "@/redux/features/mentor/mentor.api";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -14,12 +15,25 @@ type LiveClassModalProps = {
     isOpen: boolean;
     onClose: () => void;
     isShowDate: boolean;
+    role?: "mentor" | "instructor";
 };
 
-const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) => {
+const LiveClassModal = ({ isOpen, onClose, isShowDate, role = "instructor" }: LiveClassModalProps) => {
     const t = useTranslations("InstructorLiveClassModal");
-    const { data: courseInfoResponse, isLoading: isCourseInfoLoading } = useCourseInfoQuery();
+    
+    const isMentor = role === "mentor";
+
+    // Instructor hooks
+    const { data: courseInfoResponse, isLoading: isCourseInfoLoading } = useCourseInfoQuery(undefined, {
+        skip: isMentor
+    });
     const [createLiveClass, { isLoading: isCreateLiveClassLoading }] = useCreateLiveClassMutation();
+
+    // Mentor hooks
+    const { data: mentorCourseListResponse, isLoading: isMentorCourseInfoLoading } = useGetMentorCourseListQuery(undefined, {
+        skip: !isMentor
+    });
+    const [createMentorLiveClass, { isLoading: isCreateMentorLiveClassLoading }] = useCreateMentorLiveClassMutation();
 
     const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<LiveClassFormData>({
         resolver: zodResolver(liveClassSchema),
@@ -58,10 +72,15 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                 is_recorded: true,
             };
 
-            const response = await createLiveClass({
-                courseId: Number(data.course_id),
-                data: payload,
-            }).unwrap();
+            const response = isMentor
+                ? await createMentorLiveClass({
+                    courseId: Number(data.course_id),
+                    data: payload,
+                }).unwrap()
+                : await createLiveClass({
+                    courseId: Number(data.course_id),
+                    data: payload,
+                }).unwrap();
 
             toast.success(response.message || "Live class scheduled successfully.");
             reset();
@@ -131,7 +150,7 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         <label className="block text-sm font-semibold text-header mb-2">
                             {t("courseName")}
                         </label>
-                        {isCourseInfoLoading ? (
+                        {(isMentor ? isMentorCourseInfoLoading : isCourseInfoLoading) ? (
                             <Skeleton className="h-12 w-full" />
                         ) : (
                             <div className="relative">
@@ -140,11 +159,18 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                                     className="w-full appearance-none px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition bg-white"
                                 >
                                     <option value={0}>Select course</option>
-                                    {courseInfoResponse?.data?.map((course) => (
-                                        <option key={course.id} value={course.id}>
-                                            {course.title}
-                                        </option>
-                                    ))}
+                                    {isMentor
+                                        ? mentorCourseListResponse?.data?.map((course) => (
+                                            <option key={course.id} value={course.course_id}>
+                                                {course.course_title}
+                                            </option>
+                                          ))
+                                        : courseInfoResponse?.data?.map((course) => (
+                                            <option key={course.id} value={course.id}>
+                                                {course.title}
+                                            </option>
+                                          ))
+                                    }
                                 </select>
                                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
                             </div>
@@ -308,10 +334,10 @@ const LiveClassModal = ({ isOpen, onClose, isShowDate }: LiveClassModalProps) =>
                         </button>
                         <button
                             type="submit"
-                            disabled={isSubmitting || isCreateLiveClassLoading}
+                            disabled={isSubmitting || (isMentor ? isCreateMentorLiveClassLoading : isCreateLiveClassLoading)}
                             className="px-6 py-3 bg-main text-white text-sm font-semibold hover:bg-main/90 transition disabled:opacity-50 cursor-pointer"
                         >
-                            {isSubmitting || isCreateLiveClassLoading ? t("saving") : t("createLiveClass")}
+                            {isSubmitting || (isMentor ? isCreateMentorLiveClassLoading : isCreateLiveClassLoading) ? t("saving") : t("createLiveClass")}
                         </button>
                     </div>
                 </form>
