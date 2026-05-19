@@ -1,13 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import {
-    ApiResponse,
-    CategoriesResponse,
-    CourseDetailsResponse,
-    CoursesQueryParams,
-    CoursesResponse,
-    LandingNotificationsResponse,
-    HomeCoursesResponse,
-} from "./landing.type";
+import { ApiResponse, CategoriesResponse, CourseDetailsResponse, CoursesQueryParams, CoursesResponse, LandingNotificationsResponse, HomeCoursesResponse } from "./landing.type";
 
 
 const landingApi = baseApi.injectEndpoints({

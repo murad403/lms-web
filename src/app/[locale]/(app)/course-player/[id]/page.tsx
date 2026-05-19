@@ -27,12 +27,11 @@ const CoursePlayerPage = () => {
 
   // API Hooks
   const { data: courseData, isLoading: isCourseLoading } = useStartCourseQuery(courseId);
-  // console.log(courseData?.data)
   const [completeLecture] = useCompletedLectureMutation();
   const [submitQuizzes] = useSubmitQuizzesMutation();
   const [addReview] = useAddReviewMutation();
 
-  // State with lazy initialization
+  // State
   const [currentLecture, setCurrentLecture] = useState<CourseLecture | null>(null);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
   const [expandedSections, setExpandedSections] = useState<number[]>(() =>
@@ -43,6 +42,7 @@ const CoursePlayerPage = () => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
+  const [videoKey, setVideoKey] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const currentVideoUrl = currentLecture?.video_file ? resolveImageUrl(currentLecture.video_file) : "";
@@ -53,7 +53,7 @@ const CoursePlayerPage = () => {
       const lecture = courseData.data.current_lecture ?? courseData.data.contents?.[0]?.lectures?.[0];
       if (lecture) {
         setCurrentLecture(lecture);
-        setHasAutoPlayed(false); // Reset auto-play flag when lecture is set
+        setHasAutoPlayed(false);
       }
     }
   }, [courseData?.data, currentLecture]);
@@ -65,12 +65,33 @@ const CoursePlayerPage = () => {
       setHasAutoPlayed(true);
       setTimeout(() => {
         videoRef.current?.play().catch(() => {
-          // Autoplay might be blocked by browser policy
           console.log("Autoplay was prevented by browser");
         });
       }, 500);
     }
   }, [courseData?.data, hasAutoPlayed, currentLecture, currentVideoUrl]);
+
+  // Global keyboard handler for arrow key seeking
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      const tag = (e.target as HTMLElement).tagName.toLowerCase();
+      if (tag === "input" || tag === "textarea") return;
+
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        video.currentTime = Math.min(video.currentTime + 5, video.duration);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        video.currentTime = Math.max(video.currentTime - 5, 0);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Fetch quiz data
   const { data: quizData } = useGetQuizzesQuery(
@@ -103,9 +124,7 @@ const CoursePlayerPage = () => {
     setCurrentLecture(lecture);
     setIsPlaying(true);
     setShowMobileSidebar(false);
-    setTimeout(() => {
-      videoRef.current?.play();
-    }, 100);
+    setVideoKey(prev => prev + 1);
   };
 
   const canSelectLecture = (lecture: CourseLecture) => {
@@ -116,21 +135,13 @@ const CoursePlayerPage = () => {
     if (!currentLecture || currentIndex < 0) return;
 
     try {
-      // 1. Call completedLecture for current lecture
       await completeLecture(currentLecture.id).unwrap();
 
-      // 2. Move to next lecture
       if (currentIndex < allLectures.length - 1) {
         const nextLecture = allLectures[currentIndex + 1];
         setCurrentLecture(nextLecture);
+        setVideoKey(prev => prev + 1);
         setIsPlaying(true);
-        // Pause the previous video and play the next one
-        if (videoRef.current) {
-          videoRef.current.pause();
-          setTimeout(() => {
-            videoRef.current?.play();
-          }, 100);
-        }
       }
     } catch (error) {
       console.error("Error completing lecture:", error);
@@ -150,7 +161,6 @@ const CoursePlayerPage = () => {
       toast.success(response?.message || "Review submitted successfully");
       setIsReviewOpen(false);
     } catch (error: any) {
-      // console.error("Error submitting review:", error);
       toast.error(error?.data?.message || "Error submitting review");
     }
   };
@@ -163,7 +173,7 @@ const CoursePlayerPage = () => {
         quizId: selectedQuizId,
         data: { answers },
       }).unwrap();
-      // console.log(response)
+
       if (currentLecture) {
         await completeLecture(currentLecture.id).unwrap();
       }
@@ -184,7 +194,6 @@ const CoursePlayerPage = () => {
   if (isCourseLoading) {
     return (
       <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
-        {/* Header Skeleton */}
         <div className="border-b border-border-light bg-white sticky top-0 z-30">
           <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
             <div className="flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-4">
@@ -198,10 +207,8 @@ const CoursePlayerPage = () => {
           </div>
         </div>
 
-        {/* Main Content Skeleton */}
         <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0 py-4 sm:py-6">
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
-            {/* Video Player Skeleton */}
             <div className="flex-1 min-w-0">
               <Skeleton className="w-full aspect-video rounded-lg mb-4" />
               <div className="space-y-3">
@@ -210,7 +217,6 @@ const CoursePlayerPage = () => {
               </div>
             </div>
 
-            {/* Sidebar Skeleton */}
             <div className="hidden lg:block w-full lg:w-110 shrink-0">
               <div className="border border-border-light rounded-lg overflow-hidden">
                 <Skeleton className="h-16 w-full" />
@@ -244,11 +250,10 @@ const CoursePlayerPage = () => {
 
   return (
     <div className="sm:min-h-screen bg-white px-4 md:px-5 lg:px-6 xl:px-0 2xl:px-0">
-      {/* Top Header Bar - Fully Responsive */}
+      {/* Top Header Bar */}
       <div className="border-b border-border-light bg-white sticky top-0 z-30">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-0">
           <div className="flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-4">
-            {/* Left: Back + Course Info */}
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0 flex-1">
               <button
                 onClick={() => router.back()}
@@ -262,7 +267,6 @@ const CoursePlayerPage = () => {
                   {courseData.data.course_title}
                 </h1>
 
-                {/* Desktop Stats - Hidden on mobile */}
                 <div className="hidden md:flex items-center gap-3 lg:gap-4 mt-1 text-xs md:text-sm text-description">
                   <span className="flex items-center gap-1">
                     <Layers className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#4F9BEF]" />
@@ -274,7 +278,6 @@ const CoursePlayerPage = () => {
                   </span>
                 </div>
 
-                {/* Mobile Stats - Simplified */}
                 <div className="flex md:hidden items-center gap-2 mt-1 text-xs text-description">
                   <span>{contents.length} {t("sections")}</span>
                   <span>•</span>
@@ -283,9 +286,7 @@ const CoursePlayerPage = () => {
               </div>
             </div>
 
-            {/* Right: Actions */}
             <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 shrink-0">
-              {/* Mobile Menu Button - Shows sidebar */}
               <button
                 onClick={() => setShowMobileSidebar(true)}
                 className="lg:hidden p-1.5 sm:p-2 hover:bg-gray-100 rounded-md transition-colors cursor-pointer"
@@ -293,7 +294,6 @@ const CoursePlayerPage = () => {
                 <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-title" />
               </button>
 
-              {/* Write Review - Hidden on small mobile */}
               <button
                 onClick={() => setIsReviewOpen(true)}
                 className="hidden sm:flex items-center gap-1.5 md:gap-2 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 border border-border-light rounded-md text-xs sm:text-sm font-semibold text-title hover:bg-gray-50 transition-colors cursor-pointer"
@@ -302,7 +302,6 @@ const CoursePlayerPage = () => {
                 <span className="md:hidden">{t("review")}</span>
               </button>
 
-              {/* Next Lecture */}
               <button
                 onClick={handleNextLecture}
                 disabled={currentIndex >= allLectures.length - 1}
@@ -326,12 +325,19 @@ const CoursePlayerPage = () => {
                 <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
                   {currentVideoUrl ? (
                     <video
+                      key={videoKey}
                       ref={videoRef}
                       src={currentVideoUrl}
                       className="w-full h-full object-contain"
                       controls
+                      preload="metadata"
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
+                      onLoadedMetadata={() => {
+                        if (isPlaying && videoRef.current) {
+                          videoRef.current.play().catch(console.log);
+                        }
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-sm text-gray-300">
@@ -356,9 +362,10 @@ const CoursePlayerPage = () => {
               </div>
             )}
           </div>
+
+          {/* Desktop Sidebar */}
           <div className="hidden lg:block w-full lg:w-110 shrink-0">
             <div className="border border-border-light rounded-lg overflow-hidden lg:sticky lg:top-20">
-              {/* Sidebar Header */}
               <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
                 <h3 className="text-lg xl:text-xl font-medium text-title">
                   {t("courseContents")}
@@ -368,7 +375,6 @@ const CoursePlayerPage = () => {
                 </span>
               </div>
 
-              {/* Sections List */}
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide bg-white">
                 {contents.map((section) => {
                   const isExpanded = expandedSections.includes(section.id);
@@ -381,7 +387,6 @@ const CoursePlayerPage = () => {
                       key={section.id}
                       className="border-b border-border-light last:border-b-0"
                     >
-                      {/* Section Header */}
                       <button
                         onClick={() => toggleSection(section.id)}
                         className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -409,7 +414,6 @@ const CoursePlayerPage = () => {
                         </div>
                       </button>
 
-                      {/* Lectures List */}
                       {isExpanded && (
                         <div className="bg-white">
                           {section.lectures.map((lecture, idx) => {
@@ -421,8 +425,7 @@ const CoursePlayerPage = () => {
                                 key={lecture.id}
                                 onClick={() => isSelectable && handlePlayLecture(lecture)}
                                 disabled={!isSelectable}
-                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""
-                                  }`}
+                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""}`}
                               >
                                 <div className="shrink-0">
                                   {lecture.is_completed ? (
@@ -432,12 +435,7 @@ const CoursePlayerPage = () => {
                                   )}
                                 </div>
 
-                                <span
-                                  className={`flex-1 text-sm truncate ${isActive
-                                    ? "text-main font-medium"
-                                    : "text-title"
-                                    }`}
-                                >
+                                <span className={`flex-1 text-sm truncate ${isActive ? "text-main font-medium" : "text-title"}`}>
                                   {idx + 1}. {lecture.name}
                                 </span>
 
@@ -456,9 +454,7 @@ const CoursePlayerPage = () => {
                               const isQuizCompleted = Boolean(quiz.is_completed);
 
                               return (
-                                <div
-                                  className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}
-                                >
+                                <div className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}>
                                   <div className="shrink-0">
                                     {isQuizCompleted ? (
                                       <CheckSquare className="size-4 text-main fill-main" />
@@ -501,15 +497,12 @@ const CoursePlayerPage = () => {
       {/* Mobile Sidebar Overlay */}
       {showMobileSidebar && (
         <div className="lg:hidden fixed inset-0 z-50">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/50"
             onClick={() => setShowMobileSidebar(false)}
           />
 
-          {/* Sidebar */}
           <div className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white shadow-xl overflow-hidden flex flex-col">
-            {/* Sidebar Header */}
             <div className="flex items-center justify-between p-4 bg-white border-b border-border-light">
               <h3 className="text-lg font-medium text-title">
                 {t("courseContents")}
@@ -527,7 +520,6 @@ const CoursePlayerPage = () => {
               </div>
             </div>
 
-            {/* Sections List */}
             <div className="flex-1 overflow-y-auto">
               {contents.map((section) => {
                 const isExpanded = expandedSections.includes(section.id);
@@ -570,8 +562,7 @@ const CoursePlayerPage = () => {
                               key={lecture.id}
                               onClick={() => isSelectable && handlePlayLecture(lecture)}
                               disabled={!isSelectable}
-                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""
-                                }`}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${isSelectable ? "hover:bg-main/5 cursor-pointer" : "cursor-not-allowed opacity-60"} ${isActive ? "bg-main/10" : ""}`}
                             >
                               <div className="shrink-0">
                                 {lecture.is_completed ? (
@@ -581,10 +572,7 @@ const CoursePlayerPage = () => {
                                 )}
                               </div>
 
-                              <span
-                                className={`flex-1 text-sm truncate ${isActive ? "text-main font-medium" : "text-title"
-                                  }`}
-                              >
+                              <span className={`flex-1 text-sm truncate ${isActive ? "text-main font-medium" : "text-title"}`}>
                                 {idx + 1}. {lecture.name}
                               </span>
                             </button>
@@ -597,9 +585,7 @@ const CoursePlayerPage = () => {
                             const isQuizCompleted = Boolean(quiz.is_completed);
 
                             return (
-                              <div
-                                className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}
-                              >
+                              <div className={`flex items-center gap-3 px-4 py-2.5 ${isQuizCompleted ? "bg-main/5" : ""}`}>
                                 <div className="shrink-0">
                                   {isQuizCompleted ? (
                                     <CheckSquare className="size-4 text-main fill-main" />
@@ -643,7 +629,6 @@ const CoursePlayerPage = () => {
       {(() => {
         if (!selectedQuizId || !quizData?.data) return null;
 
-        // Convert API quiz data to TQuizData format
         const convertedQuizData: TQuizData = {
           id: String(selectedQuizId),
           title: quizData.data.title,
@@ -653,7 +638,7 @@ const CoursePlayerPage = () => {
             question: q.text,
             optionIds: q.options.map((opt) => opt.id),
             options: q.options.map(opt => opt.text),
-            correctAnswer: 0, // API doesn't provide correct answer in get endpoint
+            correctAnswer: 0,
           } as TQuizQuestion))
         };
 
