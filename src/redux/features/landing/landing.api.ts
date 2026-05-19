@@ -43,9 +43,26 @@ const landingApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        getNotifications: builder.query({
+            query: () => {
+                return {
+                    url: `/notifications/notifications/`,
+                    method: "GET",
+                }
+            }
+        }),
+        sendMessage: builder.mutation<any, { name: string; email: string; subject: string; message: string }>({
+            query: (data) => {
+                return {
+                    url: `/organizations/sent/messages/contractus/`,
+                    method: "POST",
+                    body: data,
+                }
+            }
+        }),
     }),
 });
 
 
 
-export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery } = landingApi;
+export const { useHomeCoursesQuery, useCourseDetailsQuery, useCoursesQuery, useCategoriesQuery, useGetNotificationsQuery, useSendMessageMutation } = landingApi;

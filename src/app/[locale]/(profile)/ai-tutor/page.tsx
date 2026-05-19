@@ -32,16 +32,27 @@ const AITutorPage = () => {
     ];
 
     const [messages, setMessages] = useState<Message[]>(initialMessages);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const { register, handleSubmit, reset } = useForm<ChatForm>();
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const scrollToBottom = (behavior: "smooth" | "auto" = "smooth") => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTo({
+                top: chatContainerRef.current.scrollHeight,
+                behavior,
+            });
+        }
     };
 
     useEffect(() => {
-        scrollToBottom();
+        scrollToBottom("auto");
+    }, []);
+
+    useEffect(() => {
+        if (messages.length > initialMessages.length) {
+            scrollToBottom("smooth");
+        }
     }, [messages]);
 
     const onSubmit = (data: ChatForm) => {
@@ -87,7 +98,7 @@ const AITutorPage = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div className="text-center">
                     <span className="text-xs text-description bg-gray-100 px-3 py-2 rounded-md">
                         {t("today")}
@@ -133,7 +144,6 @@ const AITutorPage = () => {
                         </div>
                     </div>
                 ))}
-                <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}

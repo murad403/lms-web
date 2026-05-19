@@ -1,12 +1,12 @@
 'use client';
-
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FooterNavigationBanner from '@/components/reusable/FooterNavigationBanner';
 import { contactFormSchema, ContactFormData } from '@/validation/auth.validation';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useSendMessageMutation } from '@/redux/features/landing/landing.api';
+import { toast } from 'sonner';
 
 const ContactPage = () => {
     const t = useTranslations("Contact");
@@ -19,10 +19,26 @@ const ContactPage = () => {
         resolver: zodResolver(contactFormSchema),
     });
 
-    const onSubmit = (data: ContactFormData) => {
-        console.log('Contact Form Data:', data);
-        // Handle form submission
-        reset();
+    const [sendMessage, { isLoading }] = useSendMessageMutation();
+
+    const onSubmit = async (data: ContactFormData) => {
+        try {
+            const res = await sendMessage({
+                name: data.fullName,
+                email: data.email,
+                subject: data.subject,
+                message: data.message
+            }).unwrap();
+
+            if (res.success) {
+                toast.success(res.message || "Message sent successfully.");
+                reset();
+            } else {
+                toast.error(res.message || "Failed to send message.");
+            }
+        } catch (error: any) {
+            toast.error(error.data?.message || "An error occurred while sending the message.");
+        }
     };
 
     return (
@@ -155,9 +171,10 @@ const ContactPage = () => {
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full bg-main text-white py-3 rounded-md font-semibold hover:bg-main/90 transition"
+                                disabled={isLoading}
+                                className="w-full bg-main text-white py-3 rounded-md font-semibold hover:bg-main/90 transition disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                {t("submitButton")}
+                                {isLoading ? "Sending..." : t("submitButton")}
                             </button>
                         </form>
                     </div>

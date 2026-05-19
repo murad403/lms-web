@@ -159,7 +159,7 @@ const ChatBox = ({
   const [showUserList, setShowUserList] = useState(true);
   const [localMessages, setLocalMessages] = useState<TMessage[]>([]);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const t = useTranslations("MessagesPage");
 
@@ -257,8 +257,23 @@ const ChatBox = ({
 
   const [sendMessageMutation] = useSendMessageMutation();
 
+  const scrollToBottom = (behavior: "smooth" | "auto" = "smooth") => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior,
+      });
+    }
+  };
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollToBottom("auto");
+  }, []);
+
+  useEffect(() => {
+    if (localMessages.length > 0) {
+      scrollToBottom("smooth");
+    }
   }, [localMessages]);
 
   const getOtherParticipant = (conversationId: number | null) => {
@@ -518,7 +533,7 @@ const ChatBox = ({
             </div>
           )}
 
-          <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-3 sm:space-y-4">
+          <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-3 sm:space-y-4">
             {isMessagesLoading ? (
               <MessagesSkeleton />
             ) : localMessages.length === 0 ? (
@@ -597,8 +612,6 @@ const ChatBox = ({
                 })}
               </>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
           {isMessagesLoading ? (

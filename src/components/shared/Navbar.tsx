@@ -1,24 +1,22 @@
 "use client";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     Bell, Heart, ShoppingCart, Search, ChevronDown, User, LayoutDashboard, LogOut, Menu as MenuIcon, X, Star, CreditCard,
 } from "lucide-react";
-import { notifications, TNotification } from "@/lib/header";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
-import defaultUserImage from "@/assets/partnership/user2.png"
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { AuthSessionSnapshot } from "@/utils/auth-server";
-import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery } from "@/redux/features/student/student.api";
+import { useGetStudentProfileQuery, useRemoveCartMutation, useViewCartQuery, useViewWishlistQuery } from "@/redux/features/student/student.api";
 import { useGetInstructorProfileQuery } from "@/redux/features/instructor/instructor.api";
 import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
 import { useGetProfileQuery as useGetAffiliateProfileQuery } from "@/redux/features/affiliate/affiliate.api";
-import { useCategoriesQuery } from "@/redux/features/landing/landing.api";
+import { useCategoriesQuery, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
 import { resolveImageUrl } from "@/utils/image";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
@@ -58,6 +56,10 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const { data: cartData } = useViewCartQuery(undefined, {
         skip: !session.accessToken,
     });
+    const { data: wishlistData } = useViewWishlistQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const wishlistCount = wishlistData?.data?.items?.length || 0;
     const [removeCart, { isLoading: isRemovingCart }] = useRemoveCartMutation();
 
     const { data: studentProfile, isLoading: isStudentLoading } = useGetStudentProfileQuery(undefined, {
@@ -74,6 +76,64 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     });
 
     const { data: categoriesData } = useCategoriesQuery();
+    const { data: notificationsResponse } = useGetNotificationsQuery(undefined, {
+        skip: !session.accessToken,
+    });
+    const fetchedNotifications = notificationsResponse?.data || [];
+    const unreadCount = React.useMemo(() => {
+        return fetchedNotifications.filter((n: any) => !n.is_read).length;
+    }, [fetchedNotifications]);
+
+    const getNotificationIcon = (type: string) => {
+        switch (type) {
+            case "course_updated":
+                return {
+                    bg: "bg-blue-50",
+                    text: "text-blue-600",
+                    icon: Bell,
+                };
+            case "payment":
+            case "purchase":
+                return {
+                    bg: "bg-emerald-50",
+                    text: "text-emerald-600",
+                    icon: CreditCard,
+                };
+            default:
+                return {
+                    bg: "bg-gray-50",
+                    text: "text-gray-600",
+                    icon: Bell,
+                };
+        }
+    };
+
+    const formatNotificationTime = (dateStr: string) => {
+        try {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            if (diffMs < 0) return "Just now";
+
+            const diffMins = Math.floor(diffMs / 60000);
+            if (diffMins < 1) return "Just now";
+            if (diffMins < 60) return `${diffMins}m ago`;
+
+            const diffHours = Math.floor(diffMins / 60);
+            if (diffHours < 24) return `${diffHours}h ago`;
+
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffDays === 1) return "Yesterday";
+            if (diffDays < 7) return `${diffDays}d ago`;
+
+            return new Intl.DateTimeFormat("en-US", {
+                month: "short",
+                day: "numeric",
+            }).format(date);
+        } catch {
+            return "";
+        }
+    };
 
     const isProfileLoading =
         (session.role === "student" && isStudentLoading) ||
@@ -312,73 +372,80 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                 className="p-2 hover:bg-gray-100 rounded-lg relative"
                             >
                                 <Bell className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
+                                {unreadCount > 0 && (
+                                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white" />
+                                )}
                             </button>
 
                             {/* Notification Popup */}
                             {showNotifications && (
                                 <div className="absolute left-0 right-0 mx-4 sm:left-auto sm:mx-0 sm:right-0 top-full mt-2 sm:w-96 md:w-112.5 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[80vh] overflow-hidden">
                                     {/* Header */}
-                                    <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                                    <div className="p-4 border-b border-gray-200">
                                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-header">
                                             {t("notifications")}
                                         </h3>
-                                        <div className="flex gap-2">
-                                            <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                {t("all")}
-                                            </button>
-                                            <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                {t("unread")}
-                                            </button>
-                                            <button className="px-3 py-1 text-xs sm:text-sm text-gray-600 hover:bg-gray-100 rounded">
-                                                {t("read")}
-                                            </button>
-                                        </div>
                                     </div>
 
                                     {/* Notifications List */}
                                     <div className="max-h-125 overflow-y-auto">
-                                        {notifications.map((notification: TNotification) => (
-                                            <div
-                                                key={notification.id}
-                                                className="p-4 hover:bg-gray-50 border-b border-gray-100 flex gap-4"
-                                            >
-                                                <div
-                                                    className={`w-12 h-12 ${notification.iconBg} rounded-lg flex items-center justify-center shrink-0`}
-                                                >
-                                                    {notification.icon === "bell" ? (
-                                                        <Bell className="w-6 h-6 text-blue-600" />
-                                                    ) : (
-                                                        <CreditCard className="w-6 h-6 text-green-600" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <h4 className="font-semibold text-title text-xs sm:text-sm md:text-base mb-1">
-                                                        {notification.title}
-                                                    </h4>
-                                                    <p className="text-xs sm:text-sm text-description mb-1">
-                                                        {notification.description}
-                                                    </p>
-                                                    <p className="text-[10px] sm:text-xs text-gray-400">{notification.time}</p>
-                                                </div>
+                                        {fetchedNotifications.length > 0 ? (
+                                            fetchedNotifications.map((notification: any) => {
+                                                const { bg, text, icon: Icon } = getNotificationIcon(notification.type);
+                                                return (
+                                                    <div
+                                                        key={notification.id}
+                                                        className={`p-4 hover:bg-gray-50 border-b border-gray-100 flex gap-4 transition-colors ${!notification.is_read ? "bg-blue-50/20" : ""}`}
+                                                    >
+                                                        <div
+                                                            className={`w-12 h-12 ${bg} rounded-lg flex items-center justify-center shrink-0`}
+                                                        >
+                                                            <Icon className={`w-6 h-6 ${text}`} />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h4 className={`font-semibold text-title text-xs sm:text-sm md:text-base mb-1 ${!notification.is_read ? "font-bold text-black" : ""}`}>
+                                                                {notification.title}
+                                                            </h4>
+                                                            <p className="text-xs sm:text-sm text-description mb-1">
+                                                                {notification.body}
+                                                            </p>
+                                                            <p className="text-[10px] sm:text-xs text-gray-400">{formatNotificationTime(notification.created_at)}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })
+                                        ) : (
+                                            <div className="py-12 text-center text-description text-sm">
+                                                No notifications found
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
                                 </div>
                             )}
                         </div>
 
                         {/* Wishlist Icon */}
-                        <Link href="/wishlist" className="p-2 hover:bg-gray-100 rounded-lg">
+                        <Link href="/wishlist" className="p-2 hover:bg-gray-100 rounded-lg relative">
                             <Heart className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
+                            {wishlistCount > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
+                                    {wishlistCount}
+                                </span>
+                            )}
                         </Link>
 
                         {/* Cart Icon */}
                         <div className="static sm:relative" ref={cartRef}>
                             <button
                                 onClick={() => setShowCart(!showCart)}
-                                className="p-2 hover:bg-gray-100 rounded-lg"
+                                className="p-2 hover:bg-gray-100 rounded-lg relative"
                             >
                                 <ShoppingCart className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
+                                {cartItems.length > 0 && (
+                                    <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
+                                        {cartItems.length}
+                                    </span>
+                                )}
                             </button>
 
                             {/* Cart Popup */}
@@ -393,7 +460,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                     <div className="flex-1">
                                                         <div className="flex items-start justify-between gap-3">
                                                             <div className="flex items-center gap-4">
-                                                                <Image src={resolveImageUrl(item?.thumbnail)} alt={item.course_title} width={100} height={100} />
+                                                                <Image src={resolveImageUrl(item?.thumbnail) || "/courses/Course Images.png"} alt={item.course_title} width={100} height={100} />
                                                                 <div>
                                                                     <p className="text-title flex items-center gap-1"><Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />{item?.rating} <span className="text-description">({item?.reviews_count} reviews)</span></p>
                                                                     <h4 className="text-xs sm:text-sm md:text-base font-semibold text-title mb-2">
@@ -453,7 +520,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                         className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors flex items-center justify-center shrink-0"
                                     >
                                         <Image
-                                            src={userAvatar}
+                                            src={userAvatar || "/courses/Course Images.png"}
                                             alt="User"
                                             width={40}
                                             height={40}
@@ -477,7 +544,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                                 <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-blue-600 text-white text-sm md:text-base font-bold shrink-0">
                                                     {hasCustomAvatar ? (
                                                         <Image
-                                                            src={userAvatar}
+                                                            src={userAvatar || "/courses/Course Images.png"}
                                                             alt="User"
                                                             width={40}
                                                             height={40}
