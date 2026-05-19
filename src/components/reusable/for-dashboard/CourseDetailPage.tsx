@@ -14,9 +14,10 @@ import { resolveImageUrl } from "@/utils/image";
 
 interface CourseDetailPageProps {
     courseId: number;
+    path: string;
 }
 
-const CourseDetailPage = ({ courseId }: CourseDetailPageProps) => {
+const CourseDetailPage = ({ courseId, path }: CourseDetailPageProps) => {
     const { data, isLoading } = useOwnerCourseDetailsQuery(courseId, {
         skip: !courseId,
     });
@@ -122,7 +123,7 @@ const CourseDetailPage = ({ courseId }: CourseDetailPageProps) => {
         <div className="space-y-6">
             {/* Breadcrumb */}
             <div className="text-sm text-description">
-                <Link href="/instructor/my-courses" className="hover:text-main">
+                <Link href={path} className="hover:text-main">
                     {t("myCoursesLink")}
                 </Link>
                 {" > "}

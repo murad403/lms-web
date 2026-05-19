@@ -6,7 +6,7 @@ const CourseDetails = () => {
   const { id } = useParams();
   return (
     <div>
-      <CourseDetailPage courseId={Number(id)} />
+      <CourseDetailPage courseId={Number(id)} path="/instructor/my-courses" />
     </div>
   )
 }
