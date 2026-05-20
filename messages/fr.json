@@ -1324,7 +1324,9 @@
     "you": "Vous",
     "today": "Aujourd'hui",
     "typePlaceholder": "Tapez votre message",
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "selectCourse": "Sélectionner le cours",
+    "noCourses": "Aucun cours inscrit"
   },
   "LogoutModal": {
     "title": "Déconnexion",

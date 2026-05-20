@@ -1331,7 +1331,9 @@
     "you": "You",
     "today": "Today",
     "typePlaceholder": "Type your message",
-    "send": "Send"
+    "send": "Send",
+    "selectCourse": "Select Course",
+    "noCourses": "No Enrolled Courses"
   },
   "LogoutModal": {
     "title": "Logout",

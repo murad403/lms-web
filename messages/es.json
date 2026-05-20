@@ -1324,7 +1324,9 @@
     "you": "Tú",
     "today": "Hoy",
     "typePlaceholder": "Escribe tu mensaje",
-    "send": "Enviar"
+    "send": "Enviar",
+    "selectCourse": "Seleccionar curso",
+    "noCourses": "Sin cursos inscritos"
   },
   "LogoutModal": {
     "title": "Cerrar Sesión",
