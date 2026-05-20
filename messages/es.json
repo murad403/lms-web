@@ -1882,6 +1882,10 @@
     "studentsCount": "estudiantes"
   },
   "InstructorAIAssistant": {
+    "selectCourse": "Seleccionar Curso",
+    "selectLectureOrQuiz": "Seleccionar Lección o Quiz",
+    "lectures": "Lecciones",
+    "quizzes": "Quizzes",
     "aiTeachingAssistant": "Asistente de Enseñanza AI",
     "poweredByAI": "Impulsado por AI avanzada",
     "clearChat": "Limpiar chat",
