@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/purity */
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Bot, Send, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { useGetEnrolledCoursesQuery } from "@/redux/features/student/student.api";
 import { useSendMessageToAiMutation, useAiConversationListQuery } from "@/redux/features/ai/ai.api";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getClientSession } from "@/utils/auth-client";
 
 type ChatForm = {
     message: string;
@@ -20,9 +21,38 @@ type Message = {
     sender: string;
 };
 
+const getUserIdFromToken = (): string | undefined => {
+    try {
+        const session = getClientSession();
+        if (!session.accessToken) return undefined;
+
+        const parts = session.accessToken.split(".");
+        if (parts.length !== 3) return undefined;
+
+        const payload = parts[1];
+        const padded = payload + "=".repeat((4 - (payload.length % 4)) % 4);
+        const decoded = JSON.parse(atob(padded));
+
+        const raw = decoded.sub ?? decoded.user_id ?? decoded.id;
+        return raw !== undefined ? String(raw).toLowerCase() : undefined;
+    } catch (error) {
+        console.error("Failed to decode JWT token:", error);
+        return undefined;
+    }
+};
+
+const isSameUser = (
+    a: string | number | undefined | null,
+    b: string | undefined
+): boolean => {
+    if (!a || !b) return false;
+    return String(a).toLowerCase() === String(b).toLowerCase();
+};
+
 const AITutorPage = () => {
     const t = useTranslations("AITutor");
     const tCommon = useTranslations("Common");
+    const currentUserId = useMemo(() => getUserIdFromToken(), []);
 
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const { register, handleSubmit, reset } = useForm<ChatForm>();
@@ -68,18 +98,26 @@ const AITutorPage = () => {
         if (conversationData?.data) {
             const apiMsgs = [...conversationData.data]
                 .sort((a, b) => a.id - b.id)
-                .map((msg) => ({
-                    id: msg.id.toString(),
-                    text: msg.body,
-                    isOwn: msg.sender === "user",
-                    time: new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-                    sender: msg.sender === "user" ? t("you") : msg.sender_name || t("title"),
-                }));
+                .map((msg) => {
+                    const isOwn = isSameUser(msg.sender, currentUserId) || 
+                                  (msg.sender_name !== "AI Assistant" && 
+                                   msg.sender_name !== t("title") && 
+                                   msg.sender !== "assistant" && 
+                                   msg.sender !== "ai" && 
+                                   msg.sender !== "bot");
+                    return {
+                        id: msg.id.toString(),
+                        text: msg.body,
+                        isOwn,
+                        time: new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                        sender: isOwn ? t("you") : msg.sender_name || t("title"),
+                    };
+                });
             setLocalMessages(apiMsgs);
         } else {
             setLocalMessages([]);
         }
-    }, [conversationData, t]);
+    }, [conversationData, currentUserId, t]);
 
     // 6. Scroll to bottom
     const scrollToBottom = (behavior: "smooth" | "auto" = "smooth") => {

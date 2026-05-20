@@ -4,6 +4,14 @@ import { SendMessageToAiPayload, SendMessageToAiResponse, AiConversationListResp
 
 const aiApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getCourseListForAi: builder.query({
+            query: () => {
+                return {
+                    url: `/analytics/ai/courses/`,
+                    method: "GET"
+                }
+            }
+        }),
         sendMessageToAi: builder.mutation<SendMessageToAiResponse, SendMessageToAiPayload>({
             query: (data) => {
                 return {
