@@ -14,7 +14,7 @@ const CourseSortDropdown = ({ sortBy, onSortChange }: CourseSortDropdownProps) =
     const sortOptions = [
         { label: t('relevance'), value: 'relevance' },
         { label: t('trending'), value: 'trending' },
-        { label: t('highRated'), value: 'high-rated' },
+        { label: t('highRated'), value: 'high_rated' },
         { label: t('newest'), value: 'newest' },
     ];
     const [isOpen, setIsOpen] = React.useState(false);

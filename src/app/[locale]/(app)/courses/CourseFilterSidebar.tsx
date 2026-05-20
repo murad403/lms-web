@@ -228,32 +228,6 @@ const CourseFilterSidebar = ({ filters, onFilterChange, categoryOptions = [] }: 
                                 />
                             </div>
                         </div>
-
-                        {/* Paid / Free */}
-                        <div className="space-y-1">
-                            {(['paid'] as const).map((type) => {
-                                const isActive = filters.priceType === type;
-                                return (
-                                    <button
-                                        type="button"
-                                        key={type}
-                                        onClick={() => handleSelect('priceType', type)}
-                                        className={`flex items-center justify-between w-full text-xs sm:text-sm py-1.5 px-2 rounded-md transition-colors ${isActive
-                                                ? 'bg-main/10 text-main font-semibold'
-                                                : 'text-description hover:text-header hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <SquareCheck checked={isActive} />
-                                            <span className="capitalize">{type}</span>
-                                        </div>
-                                        <span className="text-xs sm:text-sm text-gray-400 shrink-0">
-                                            {type === 'paid' ? '1044' : '356'}
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                        </div>
                     </div>
                 )}
             </div>

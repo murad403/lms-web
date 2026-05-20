@@ -60,7 +60,7 @@ export const getProfilePathByRole = (rawRole?: string | null): string => {
   }
 
   if (role === "affiliate") {
-    return "/affiliate/profile";
+    return "/affiliate/account-setting";
   }
 
   return "/profile";

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import CourseCard from '@/components/card/CourseCard';
 import Pagination from '@/components/reusable/Pagination';
@@ -23,11 +23,20 @@ const defaultFilters: FilterState = {
     duration: '',
 };
 
-const SORT_TO_ORDERING: Record<string, string | undefined> = {
-    relevance: undefined,
-    trending: '-rating',
-    'high-rated': '-rating',
-    newest: '-id',
+const DURATION_MAP: Record<string, { min_duration?: string; max_duration?: string }> = {
+    '6-12-months': { min_duration: '6 months', max_duration: '12 months' },
+    '3-6-months': { min_duration: '3 months', max_duration: '6 months' },
+    '1-3-months': { min_duration: '1 month', max_duration: '3 months' },
+    '1-4-weeks': { min_duration: '1 week', max_duration: '4 weeks' },
+    '1-7-days': { min_duration: '1 day', max_duration: '7 days' },
+};
+
+const SORT_MAP: Record<string, string | undefined> = {
+    relevance: 'relevance',
+    trending: 'trending',
+    'high-rated': 'high_rated',
+    high_rated: 'high_rated',
+    newest: 'newest',
 };
 
 const getAreaOrder = (name: string) => {
@@ -41,6 +50,7 @@ const getAreaOrder = (name: string) => {
 
 const CoursesPage = () => {
     const t = useTranslations("Courses");
+    const tCommon = useTranslations("Common");
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -55,23 +65,47 @@ const CoursesPage = () => {
         duration: searchParams.get('duration') || '',
     }));
     const [searchValue, setSearchValue] = useState(() => searchParams.get('search') || '');
-    const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'relevance');
+    const [sortBy, setSortBy] = useState(() => {
+        const val = searchParams.get('sortBy') || 'newest';
+        return val === 'high-rated' ? 'high_rated' : val;
+    });
+
+    useEffect(() => {
+        setFilters({
+            category: searchParams.get('category') || '',
+            rating: searchParams.get('rating') || '',
+            courseLevel: searchParams.get('level') || '',
+            priceMin: searchParams.get('min_price') || '',
+            priceMax: searchParams.get('max_price') || '',
+            priceType: searchParams.get('price_type') || '',
+            duration: searchParams.get('duration') || '',
+        });
+        setSearchValue(searchParams.get('search') || '');
+        const val = searchParams.get('sortBy') || 'newest';
+        setSortBy(val === 'high-rated' ? 'high_rated' : val);
+    }, [searchParams]);
 
     const pageFromQuery = Math.max(1, Number(searchParams.get('page') || '1') || 1);
-    const querySortBy = searchParams.get('sortBy') || 'relevance';
+    const querySortByRaw = searchParams.get('sortBy') || 'newest';
+    const querySortBy = querySortByRaw === 'high-rated' ? 'high_rated' : querySortByRaw;
+
+    const selectedDuration = searchParams.get('duration');
+    const { min_duration, max_duration } = selectedDuration ? (DURATION_MAP[selectedDuration] || {}) : {};
 
     const { data: coursesData, isFetching: isCoursesLoading } = useCoursesQuery({
         page: pageFromQuery,
         page_size: COURSES_PER_PAGE,
         search: searchParams.get('search') || undefined,
         category: searchParams.get('category') || undefined,
-        rating: searchParams.get('rating') || undefined,
-        level: searchParams.get('level') || undefined,
+        ratings: searchParams.get('rating') || undefined,
+        level: (searchParams.get('level') && searchParams.get('level') !== 'all') ? searchParams.get('level') || undefined : undefined,
         min_price: searchParams.get('min_price') || undefined,
         max_price: searchParams.get('max_price') || undefined,
         price_type: searchParams.get('price_type') || undefined,
-        duration: searchParams.get('duration') || undefined,
-        ordering: SORT_TO_ORDERING[querySortBy],
+        min_duration,
+        max_duration,
+        sort: SORT_MAP[querySortBy] || undefined,
+        ordering: SORT_MAP[querySortBy] || undefined,
     });
 
     const { data: categoriesData } = useCategoriesQuery();
@@ -126,7 +160,7 @@ const CoursesPage = () => {
     const handleClearFilters = () => {
         setFilters(defaultFilters);
         setSearchValue('');
-        setSortBy('relevance');
+        setSortBy('newest');
         router.push(pathname);
     };
 
@@ -134,7 +168,7 @@ const CoursesPage = () => {
         updateQuery({
             page: '1',
             search: searchValue || undefined,
-            sortBy: sortBy === 'relevance' ? undefined : sortBy,
+            sortBy: sortBy === 'newest' ? undefined : sortBy,
             category: filters.category || undefined,
             rating: filters.rating || undefined,
             level: filters.courseLevel || undefined,
@@ -154,7 +188,7 @@ const CoursesPage = () => {
         setSortBy(nextSort);
         updateQuery({
             page: '1',
-            sortBy: nextSort === 'relevance' ? undefined : nextSort,
+            sortBy: nextSort === 'newest' ? undefined : nextSort,
         });
     };
 
@@ -181,32 +215,41 @@ const CoursesPage = () => {
                     </button>
 
                     {/* Search Bar */}
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder={t("searchPlaceholder")}
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleApplyFilters();
-                                }
-                            }}
-                            className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400"
-                        />
-                        {searchValue && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSearchValue('');
-                                    updateQuery({ page: '1', search: undefined });
+                    <div className="flex items-center gap-2 flex-1 max-w-md">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder={t("searchPlaceholder")}
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleApplyFilters();
+                                    }
                                 }}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                            >
-                                <X className="size-4" />
-                            </button>
-                        )}
+                                className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main transition placeholder:text-gray-400 bg-white"
+                            />
+                            {searchValue && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSearchValue('');
+                                        updateQuery({ page: '1', search: undefined });
+                                    }}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    <X className="size-4" />
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleApplyFilters}
+                            className="px-4 py-2.5 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition shrink-0 cursor-pointer"
+                        >
+                            {tCommon("search")}
+                        </button>
                     </div>
 
                     <div className="flex items-center gap-3 ml-auto">

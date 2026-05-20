@@ -129,12 +129,16 @@ export type CoursesQueryParams = {
 	search?: string;
 	category?: string;
 	rating?: string;
+	ratings?: string;
 	level?: string;
 	min_price?: string;
 	max_price?: string;
 	price_type?: string;
 	duration?: string;
+	min_duration?: string;
+	max_duration?: string;
 	ordering?: string;
+	sort?: string;
 };
 
 export type CourseDetailsData = LandingCourse & {
