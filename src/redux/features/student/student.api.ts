@@ -311,9 +311,20 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+
+        // complete course***************************************
+        completeCourse: builder.mutation({
+            query: (courseId) => {
+                return {
+                    url: `/students/course-completed/${courseId}/`,
+                    method: "POST"
+                }
+            },
+            invalidatesTags: ["student", "student-course-videos"]
+        }),
     }),
 });
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCheckoutMutation, useMakePaymentMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCheckoutMutation, useMakePaymentMutation, useCompleteCourseMutation } = studentApi;

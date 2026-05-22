@@ -1347,7 +1347,9 @@
   },
   "EnrolledCourseCard": {
     "viewCourse": "View Course",
-    "completed": "Completed"
+    "completed": "Completed",
+    "completeCourse": "Complete Course",
+    "alreadyCompleted": "You are already complete this course"
   },
   "WishlistCard": {
     "courseBy": "Course by",
@@ -1437,7 +1439,10 @@
     "nextLecture": "Next Lecture",
     "next": "Next",
     "start": "Start",
-    "startQuiz": "Start Quiz"
+    "startQuiz": "Start Quiz",
+    "completeCourse": "Complete Course",
+    "courseCompleted": "Course Completed!",
+    "alreadyCompleted": "You have already completed this course"
   },
   "Auth": {
     "backToAccountType": "← Back to account type",

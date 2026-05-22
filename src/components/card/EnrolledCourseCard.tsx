@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Star, Heart, ChevronRight } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { EnrolledCourse } from "@/redux/features/student/student.type";
@@ -24,9 +24,6 @@ const EnrolledCourseCard = ({ course }: EnrolledCourseCardProps) => {
                     fill
                     className="object-cover"
                 />
-                <button className="absolute top-2 right-2 w-8 h-8 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors">
-                    <Heart className="w-4 h-4 text-gray-600" />
-                </button>
             </div>
 
             {/* Content */}

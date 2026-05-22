@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, BookOpen, Layers, Menu } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery, useSubmitQuizzesMutation } from "@/redux/features/student/student.api";
+import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCompleteCourseMutation } from "@/redux/features/student/student.api";
 import { CourseLecture } from "@/redux/features/student/student.type";
 import { Skeleton } from "@/components/ui/skeleton";
 import QuizModal from "@/components/modal/QuizModal";
@@ -30,7 +30,8 @@ const CoursePlayerPage = () => {
   const [completeLecture] = useCompletedLectureMutation();
   const [submitQuizzes] = useSubmitQuizzesMutation();
   const [addReview] = useAddReviewMutation();
-
+  const [completeCourse] = useCompleteCourseMutation();
+  // console.log(courseData)
   // State
   const [currentLecture, setCurrentLecture] = useState<CourseLecture | null>(null);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
@@ -112,6 +113,52 @@ const CoursePlayerPage = () => {
     [allLectures, currentLecture?.id]
   );
 
+  const allQuizzes = useMemo(() => {
+    return (courseData?.data?.contents ?? []).flatMap((s) => s.quizzes ?? []);
+  }, [courseData?.data?.contents]);
+
+  const lastQuiz = useMemo(() => allQuizzes[allQuizzes.length - 1] || null, [allQuizzes]);
+
+  const isLastLecture = currentIndex === allLectures.length - 1;
+  // console.log(courseData?.data)
+
+  const isCourseCompleted = useMemo(() => {
+    return Boolean(courseData?.data?.is_completed) || Math.round(Number(progressPercent)) >= 100;
+  }, [courseData?.data?.is_completed, progressPercent]);
+
+  const handleCompleteCourse = async () => {
+    if (!currentLecture) return;
+    try {
+      await completeLecture(currentLecture.id).unwrap();
+      await completeCourse(courseId).unwrap();
+      toast.success(t("courseCompleted") || "Course Completed!");
+    } catch (error: any) {
+      console.error("Error completing course:", error);
+      toast.error(error?.data?.message || "Failed to complete course");
+    }
+  };
+
+  const handleVideoEnded = async () => {
+    if (!currentLecture || currentIndex < 0) return;
+
+    try {
+      await completeLecture(currentLecture.id).unwrap();
+
+      if (isLastLecture) {
+        await completeCourse(courseId).unwrap();
+        toast.success(t("courseCompleted") || "Course Completed!");
+      } else {
+        const nextLecture = allLectures[currentIndex + 1];
+        setCurrentLecture(nextLecture);
+        setVideoKey(prev => prev + 1);
+        setIsPlaying(true);
+      }
+    } catch (error: any) {
+      console.error("Error on video ended:", error);
+      toast.error(error?.data?.message || "Error completing lecture");
+    }
+  };
+
   const toggleSection = (sectionId: number) => {
     setExpandedSections((prev) =>
       prev.includes(sectionId)
@@ -178,7 +225,13 @@ const CoursePlayerPage = () => {
         await completeLecture(currentLecture.id).unwrap();
       }
 
-      toast.success("Quiz submitted successfully");
+      if (lastQuiz && selectedQuizId === lastQuiz.id) {
+        await completeCourse(courseId).unwrap();
+        toast.success(t("courseCompleted") || "Course Completed!");
+      } else {
+        toast.success("Quiz submitted successfully");
+      }
+
       return response.data;
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to submit quiz");
@@ -333,6 +386,7 @@ const CoursePlayerPage = () => {
                       preload="metadata"
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
+                      onEnded={handleVideoEnded}
                       onLoadedMetadata={() => {
                         if (isPlaying && videoRef.current) {
                           videoRef.current.play().catch(console.log);
@@ -489,6 +543,23 @@ const CoursePlayerPage = () => {
                   );
                 })}
               </div>
+
+              {/* Complete Course Button at the bottom of the Desktop Sidebar */}
+              <div className="p-4 border-t border-border-light bg-gray-50 flex justify-center">
+                <button
+                  onClick={handleCompleteCourse}
+                  disabled={isCourseCompleted}
+                  className={`w-full py-2.5 px-4 rounded-md text-sm font-semibold transition-colors text-center flex items-center justify-center gap-2 ${
+                    isCourseCompleted
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
+                      : "bg-success text-white hover:bg-success/90 cursor-pointer"
+                  }`}
+                >
+                  {isCourseCompleted
+                    ? t("alreadyCompleted") || "You have already completed this course"
+                    : t("completeCourse") || "Complete Course"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -620,6 +691,26 @@ const CoursePlayerPage = () => {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Complete Course Button at the bottom of the Mobile Sidebar */}
+            <div className="p-4 border-t border-border-light bg-gray-50 flex justify-center shrink-0">
+              <button
+                onClick={() => {
+                  handleCompleteCourse();
+                  setShowMobileSidebar(false);
+                }}
+                disabled={isCourseCompleted}
+                className={`w-full py-2.5 px-4 rounded-md text-sm font-semibold transition-colors text-center flex items-center justify-center gap-2 ${
+                  isCourseCompleted
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
+                    : "bg-success text-white hover:bg-success/90 cursor-pointer"
+                }`}
+              >
+                {isCourseCompleted
+                  ? t("alreadyCompleted") || "You have already completed this course"
+                  : t("completeCourse") || "Complete Course"}
+              </button>
             </div>
           </div>
         </div>

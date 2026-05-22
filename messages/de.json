@@ -1340,7 +1340,9 @@
   },
   "EnrolledCourseCard": {
     "viewCourse": "Kurs Ansehen",
-    "completed": "Abgeschlossen"
+    "completed": "Abgeschlossen",
+    "completeCourse": "Kurs abschließen",
+    "alreadyCompleted": "Sie haben diesen Kurs bereits abgeschlossen"
   },
   "WishlistCard": {
     "courseBy": "Kurs von",
@@ -1430,7 +1432,10 @@
     "nextLecture": "Nächste Vorlesung",
     "next": "Weiter",
     "start": "Start",
-    "startQuiz": "Quiz starten"
+    "startQuiz": "Quiz starten",
+    "completeCourse": "Kurs abschließen",
+    "courseCompleted": "Kurs abgeschlossen!",
+    "alreadyCompleted": "Sie haben diesen Kurs bereits abgeschlossen"
   },
   "Auth": {
     "backToAccountType": "← Zurück zur Kontotypauswahl",

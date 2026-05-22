@@ -390,6 +390,7 @@ export type StartCourseData = {
         name: string;
     };
     contents: CourseSection[];
+    is_completed?: boolean;
 };
 
 export type StartCourseResponse = ApiResponse<StartCourseData>;
