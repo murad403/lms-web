@@ -31,6 +31,15 @@ const affiliateApi = baseApi1.injectEndpoints({
                 method: "POST",
             }),
         }),
+        trackReferralClick: builder.mutation({
+            query: (data) => ({
+                url: `/affiliates/track-referral-click/`,
+                method: "POST",
+                body: data
+            })
+        }),
+
+
 
         // sales history*********************************************************************************
         salesHistory: builder.query<AffiliateDashboardResponse, AffiliateDashboardQueryParams | void>({
@@ -135,5 +144,6 @@ export const {
     useAffiliateStripeConnectMutation: useStripeConnectMutation,
     useStripeDashboardMutation,
     useWithdrawalRequestMutation,
-    useWithdrawalHistoryQuery
+    useWithdrawalHistoryQuery,
+    useTrackReferralClickMutation
 } = affiliateApi;
