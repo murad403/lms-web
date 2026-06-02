@@ -54,7 +54,7 @@ const RoleProfileDropdown = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild id={stableTriggerId}>
           <button className={triggerClassName}>
-            <div className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-blue-600 text-white text-sm font-bold shrink-0">
+            <div className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-gray-300 border-2 border-gray-500 text-white text-sm font-bold shrink-0">
               {avatarSrc ? (
                 <Image src={avatarSrc} alt={avatarAlt} width={36} height={36} className="w-full h-full object-cover" />
               ) : (

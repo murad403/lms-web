@@ -16,7 +16,7 @@ const TITLE_MAX = 50;
 const accountSettingsSchema = z.object({
     name: z.string().min(1, "Full name is required"),
     email: z.string().email("Email must be valid"),
-    phone: z.string().min(6, "Phone number must be at least 6 characters"),
+    phone: z.string().optional(),
     title: z.string().max(TITLE_MAX, `Title must be ${TITLE_MAX} characters or less`).optional(),
     biography: z.string().optional(),
 });
@@ -79,7 +79,7 @@ const AccountSettings = () => {
             formData.append("title", data.title ?? "");
             formData.append("biography", data.biography ?? "");
             formData.append("user.name", data.name);
-            formData.append("user.phone", data.phone);
+            formData.append("user.phone", data.phone ?? "");
 
             if (selectedFile) {
                 formData.append("user.avatar", selectedFile);

@@ -11,6 +11,7 @@ import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-share
 import { useGetInstructorProfileQuery, useOwnerCourseDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { useGetMentorCoursesQuery } from "@/redux/features/mentor/mentor.api";
 import { resolveImageUrl } from "@/utils/image";
+import userImage from "@/assets/user/user.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import { landingApi, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
 import { ACCESS_TOKEN_COOKIE } from "@/utils/auth-shared";
@@ -18,7 +19,7 @@ import { getCookie } from "@/utils/auth-client";
 import { formatNotificationTime, getNotificationIcon } from "./notification-utils";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
-
+    
 type SidebarItem = {
     labelKey: string;
     href: string;
@@ -212,7 +213,7 @@ const InstructorTopbar = () => {
                             <RoleProfileDropdown
                                 name={profileResponse?.data?.user?.name || "Instructor"}
                                 roleLabel={profileResponse?.data?.title || "Instructor"}
-                                avatarSrc={resolveImageUrl(profileResponse?.data?.user?.avatar) || "/home/user1.png"}
+                                avatarSrc={resolveImageUrl(profileResponse?.data?.user?.avatar) || userImage}
                                 avatarAlt={profileResponse?.data?.user?.name || "Instructor"}
                                 profileHref={getProfilePathByRole("instructor")}
                                 dashboardHref={getDashboardPathByRole("instructor")}

@@ -11,6 +11,7 @@ import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-share
 import { useGetWhiteLabelQuery } from "@/redux/features/organization/organization.api";
 import { useOwnerCourseDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl } from "@/utils/image";
+import userImage from "@/assets/user/user.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import { landingApi, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
 import { ACCESS_TOKEN_COOKIE } from "@/utils/auth-shared";
@@ -61,7 +62,7 @@ const OrganizationTopbar = () => {
 
     const { data: whiteLabelData, isLoading: isWhiteLabelLoading } = useGetWhiteLabelQuery();
     const orgName = whiteLabelData?.data?.name || "Organization Admin";
-    const orgAvatar = whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : null;
+    const orgAvatar = (whiteLabelData?.data?.photo ? resolveImageUrl(whiteLabelData.data.photo) : null) || userImage;
 
     const segments = pathname.split("/").filter(Boolean);
     const lastSegment = segments[segments.length - 1] || "dashboard";

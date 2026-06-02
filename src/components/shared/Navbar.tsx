@@ -20,6 +20,7 @@ import { useGetWhiteLabelQuery } from "@/redux/features/organization/organizatio
 import { useGetProfileQuery as useGetAffiliateProfileQuery } from "@/redux/features/affiliate/affiliate.api";
 import { landingApi, useCategoriesQuery, useGetNotificationsQuery } from "@/redux/features/landing/landing.api";
 import { resolveImageUrl } from "@/utils/image";
+import userImage from "@/assets/user/user.png";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { formatNotificationTime, getNotificationIcon } from "./notification-utils";
@@ -494,25 +495,18 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                             <div className="relative" ref={profileRef}>
                                 {isProfileLoading ? (
                                     <Skeleton className="w-9 h-9 md:w-10 md:h-10 rounded-full" />
-                                ) : hasCustomAvatar ? (
+                                ) : (
                                     <button
                                         onClick={() => setShowProfile(!showProfile)}
-                                        className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main transition-colors flex items-center justify-center shrink-0"
+                                        className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-500 hover:border-main transition-colors flex items-center justify-center shrink-0"
                                     >
                                         <Image
-                                            src={userAvatar || "/courses/Course Images.png"}
+                                            src={userAvatar || userImage}
                                             alt="User"
                                             width={40}
                                             height={40}
                                             className="w-full h-full object-cover"
                                         />
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={() => setShowProfile(!showProfile)}
-                                        className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-main bg-blue-600 text-white text-sm md:text-base font-bold transition-colors flex items-center justify-center shrink-0 uppercase"
-                                    >
-                                        <span>{userInitials}</span>
                                     </button>
                                 )}
 
@@ -521,18 +515,14 @@ const Navbar = ({ initialSession }: NavbarProps) => {
                                     <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50">
                                         <div className="px-4 py-3 border-b border-gray-200">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-blue-600 text-white text-sm md:text-base font-bold shrink-0">
-                                                    {hasCustomAvatar ? (
-                                                        <Image
-                                                            src={userAvatar || "/courses/Course Images.png"}
-                                                            alt="User"
-                                                            width={40}
-                                                            height={40}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                    ) : (
-                                                        <span className="uppercase">{userInitials}</span>
-                                                    )}
+                                                <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-gray-500">
+                                                    <Image
+                                                        src={userAvatar || userImage}
+                                                        alt="User"
+                                                        width={40}
+                                                        height={40}
+                                                        className="w-full h-full object-cover"
+                                                    />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="font-semibold text-xs sm:text-sm md:text-base text-title truncate" title={userEmail}>

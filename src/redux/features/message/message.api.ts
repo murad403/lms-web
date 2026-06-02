@@ -53,5 +53,18 @@ export const getConversationWebSocketUrl = (
         return null;
     }
 
-    return `wss://rs0hfx59-8001.asse.devtunnels.ms/ws/messaging/conversations/${conversationId}/?token=${authToken}`;
+    const publicOrigin =
+        process.env.NEXT_PUBLIC_BACKEND_PUBLIC_ORIGIN ||
+        process.env.NEXT_PUBLIC_BASE_URL ||
+        "https://rs0hfx59-8001.asse.devtunnels.ms";
+
+    try {
+        const url = new URL(publicOrigin);
+        const wsProtocol = url.protocol === "https:" ? "wss:" : "ws:";
+        return `${wsProtocol}//${url.host}/ws/messaging/conversations/${conversationId}/?token=${authToken}`;
+    } catch {
+        const host = publicOrigin.replace(/^https?:\/\//, "").split("/")[0];
+        const wsProtocol = publicOrigin.startsWith("https:") ? "wss://" : "ws://";
+        return `${wsProtocol}${host}/ws/messaging/conversations/${conversationId}/?token=${authToken}`;
+    }
 };

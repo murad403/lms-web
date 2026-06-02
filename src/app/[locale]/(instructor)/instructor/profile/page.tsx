@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetInstructorProfileDetailsQuery } from "@/redux/features/instructor/instructor.api";
 import { resolveImageUrl, shouldBypassImageOptimization } from "@/utils/image";
+import userImage from "@/assets/user/user.png";
 import ProfileAbout from "@/components/reusable/for-dashboard/ProfileAbout";
 import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
 
@@ -14,7 +15,7 @@ import ProfileTabs from "@/components/reusable/for-dashboard/ProfileTabs";
 const InstructorProfilePage = () => {
     const { data: profileResponse, isLoading } = useGetInstructorProfileDetailsQuery(undefined);
     const t = useTranslations("InstructorProfile");
-    console.log(profileResponse?.biography)
+    // console.log(profileResponse?.biography)
 
     if (isLoading && !profileResponse) {
         return (
@@ -77,15 +78,13 @@ const InstructorProfilePage = () => {
                 <div className="mx-auto px-4 py-10">
                     <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                         <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-md overflow-hidden border border-border-light shadow-md shrink-0 bg-gray-50">
-                            {avatar ? (
-                                <Image
-                                    src={resolveImageUrl(avatar)}
-                                    alt={displayName || "Instructor"}
-                                    fill
-                                    className="object-cover"
-                                    unoptimized={shouldBypassImageOptimization(avatar)}
-                                />
-                            ) : null}
+                            <Image
+                                src={avatar || userImage}
+                                alt={displayName || "Instructor"}
+                                fill
+                                className="object-cover"
+                                unoptimized={avatar ? shouldBypassImageOptimization(avatar) : false}
+                            />
                         </div>
                         <div className="flex-1 text-center sm:text-left">
                             <h1 className="text-2xl sm:text-3xl font-bold text-title">

@@ -22,39 +22,57 @@ export const useWebSocket = (
   }, [options]);
 
   useEffect(() => {
-    if (!url) {
-      setIsConnected(false);
-      return;
-    }
+    let reconnectTimeout: NodeJS.Timeout;
+    let isMounted = true;
 
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
-
-    ws.onopen = () => {
-      setIsConnected(true);
-      optionsRef.current.onOpen?.();
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        optionsRef.current.onMessage?.(data);
-      } catch (error) {
-        console.error("WebSocket parse error:", error);
+    const connect = () => {
+      if (!url) {
+        setIsConnected(false);
+        return;
       }
+
+      const ws = new WebSocket(url);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        if (!isMounted) return;
+        setIsConnected(true);
+        optionsRef.current.onOpen?.();
+      };
+
+      ws.onmessage = (event) => {
+        if (!isMounted) return;
+        try {
+          const data = JSON.parse(event.data);
+          optionsRef.current.onMessage?.(data);
+        } catch (error) {
+          console.error("WebSocket parse error:", error);
+        }
+      };
+
+      ws.onerror = (error) => {
+        if (!isMounted) return;
+        optionsRef.current.onError?.(error);
+      };
+
+      ws.onclose = () => {
+        if (!isMounted) return;
+        setIsConnected(false);
+        optionsRef.current.onClose?.();
+        // Reconnect after 3 seconds
+        reconnectTimeout = setTimeout(connect, 3000);
+      };
     };
 
-    ws.onerror = (error) => {
-      optionsRef.current.onError?.(error);
-    };
-
-    ws.onclose = () => {
-      setIsConnected(false);
-      optionsRef.current.onClose?.();
-    };
+    connect();
 
     return () => {
-      ws.close();
+      isMounted = false;
+      clearTimeout(reconnectTimeout);
+      if (wsRef.current) {
+        wsRef.current.onclose = null;
+        wsRef.current.close();
+      }
       wsRef.current = null;
     };
   }, [url]);

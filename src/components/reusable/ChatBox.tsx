@@ -6,12 +6,13 @@ import { Search, Send, ArrowLeft, Wifi, WifiOff } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { useGetConversationsQuery, useGetMessagesQuery, useSendMessageMutation, getConversationWebSocketUrl } from "@/redux/features/message/message.api";
+import { useGetConversationsQuery, useGetMessagesQuery, getConversationWebSocketUrl } from "@/redux/features/message/message.api";
 import { TMessage } from "@/redux/features/message/message.type";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { resolveImageUrl } from "@/utils/image";
 import { getClientSession } from "@/utils/auth-client";
 import { Skeleton } from "@/components/ui/skeleton";
+import userImage from "@/assets/user/user.png";
 
 type MessageForm = {
   message: string;
@@ -255,8 +256,6 @@ const ChatBox = ({
       onError: (error) => console.error("WS error:", error),
     });
 
-  const [sendMessageMutation] = useSendMessageMutation();
-
   const scrollToBottom = (behavior: "smooth" | "auto" = "smooth") => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTo({
@@ -320,31 +319,14 @@ const ChatBox = ({
     reset();
 
     try {
-      if (isWsConnected) {
-        const sent = sendWsMessage({
-          type: "message",
-          conversation: selectedConversationId,
-          body: messageText,
-        });
-
-        if (!sent) {
-          throw new Error("WebSocket send failed");
-        }
-
-        return;
-      }
-
-      const response = await sendMessageMutation({
-        conversationId: selectedConversationId,
+      const sent = sendWsMessage({
+        type: "message",
+        conversation: selectedConversationId,
         body: messageText,
-      }).unwrap();
+      });
 
-      if (response?.data) {
-        setLocalMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === optimisticId ? response.data : msg
-          )
-        );
+      if (!sent) {
+        throw new Error("WebSocket send failed");
       }
     } catch (error) {
       console.error("Message send failed:", error);
@@ -427,13 +409,13 @@ const ChatBox = ({
                   >
                     <div className="relative w-10 h-10 rounded-full">
                       <Image
-                        src={resolveImageUrl(participant.avatar)}
+                        src={resolveImageUrl(participant.avatar) || userImage}
                         alt={participant.name}
                         fill
                         className="object-cover rounded-full"
                       />
 
-                      <span className="absolute z-10 bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" />
+                      {/* <span className="absolute z-10 bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full" /> */}
                     </div>
 
                     <div className="flex-1 min-w-0">
@@ -487,7 +469,7 @@ const ChatBox = ({
                   <div className="relative shrink-0">
                     <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden">
                       <Image
-                        src={resolveImageUrl(otherParticipant.avatar)}
+                        src={resolveImageUrl(otherParticipant.avatar) || userImage}
                         alt={otherParticipant.name}
                         fill
                         className="object-cover"
@@ -573,7 +555,7 @@ const ChatBox = ({
                         {!isOwn && (
                           <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full mb-4">
                             <Image
-                              src={resolveImageUrl(otherParticipant?.avatar)}
+                              src={resolveImageUrl(otherParticipant?.avatar) || userImage}
                               alt={msg.sender_name || "User"}
                               fill
                               className="rounded-full object-cover"
