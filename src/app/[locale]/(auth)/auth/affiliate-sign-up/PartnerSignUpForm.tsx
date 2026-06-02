@@ -77,12 +77,13 @@ const PartnerSignUpForm = () => {
     return (
         <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 md:py-0">
             <div className="w-full px-6 md:px-8 lg:px-12 xl:px-16 max-w-xl">
-                <Link
-                    href="/auth/sign-up"
-                    className="text-sm text-description hover:text-main transition inline-flex items-center gap-1 mb-4"
+                <button
+                    type="button"
+                    onClick={() => router.back()}
+                    className="text-sm text-description hover:text-main transition inline-flex items-center gap-1 mb-4 cursor-pointer"
                 >
                     {t('backToAccountType')}
-                </Link>
+                </button>
 
                 <Link href="/" className="flex items-center gap-2 mb-6">
                     <PiGraduationCap className="size-10 text-main" />
