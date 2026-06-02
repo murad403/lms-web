@@ -283,6 +283,14 @@ const studentApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        retakeQuizzes: builder.query<GetQuizzesResponse, number>({
+            query: (quizId) => {
+                return {
+                    url: `/students/quizzes/${quizId}/random/`,
+                    method: "GET"
+                }
+            }
+        }),
         submitQuizzes: builder.mutation<SubmitQuizResponse, { quizId: number; data: SubmitQuizPayload }>({
             query: ({ quizId, data }) => {
                 return {
@@ -327,4 +335,4 @@ const studentApi = baseApi.injectEndpoints({
 
 
 
-export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCheckoutMutation, useMakePaymentMutation, useCompleteCourseMutation } = studentApi;
+export const { useGetStudentDashboardQuery, useGetStudentProfileQuery, useUpdateStudentProfileMutation, useGetEnrolledCoursesQuery, useUpcomingLiveClassQuery, useJoinLiveClassMutation, useReviewListQuery, useEditReviewMutation, useDeleteReviewMutation, usePurchaseHistoryQuery, useAddWishlistMutation, useViewWishlistQuery, useRemoveWishlistMutation, useViewCartQuery, useRemoveCartMutation, useAddCartMutation, useCertificatesQuery, useQuizAttemptsQuery, useDeleteAccountMutation, useCompletedLectureMutation, useNextLectureQuery, useAddReviewMutation, useStartCourseQuery, useLearningProgressQuery, useLessonTrackingQuery, useGetCommentsQuery, useAddCommentMutation, useReplyCommentMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCheckoutMutation, useMakePaymentMutation, useCompleteCourseMutation, useRetakeQuizzesQuery, useLazyRetakeQuizzesQuery } = studentApi;

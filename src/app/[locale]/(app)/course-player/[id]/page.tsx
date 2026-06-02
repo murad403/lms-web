@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown, ChevronUp, Play, Pause, CheckSquare, Square, ArrowLeft, BookOpen, Layers, Menu } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCompleteCourseMutation } from "@/redux/features/student/student.api";
+import { useStartCourseQuery, useCompletedLectureMutation, useAddReviewMutation, useGetQuizzesQuery, useSubmitQuizzesMutation, useCompleteCourseMutation, useLazyRetakeQuizzesQuery } from "@/redux/features/student/student.api";
 import { CourseLecture } from "@/redux/features/student/student.type";
 import { Skeleton } from "@/components/ui/skeleton";
 import QuizModal from "@/components/modal/QuizModal";
@@ -96,11 +96,19 @@ const CoursePlayerPage = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const [isRetake, setIsRetake] = useState(false);
+
   // Fetch quiz data
-  const { data: quizData } = useGetQuizzesQuery(
+  const { data: quizData, isFetching: isFetchingQuiz } = useGetQuizzesQuery(
     selectedQuizId ?? 0,
     { skip: !selectedQuizId }
   );
+
+  // Fetch retake quiz data
+  const [triggerRetake, { data: retakeQuizData, isFetching: isFetchingRetake }] = useLazyRetakeQuizzesQuery();
+
+  const activeQuizData = isRetake ? (retakeQuizData || quizData) : quizData;
+  const isLoadingQuiz = isRetake ? isFetchingRetake : isFetchingQuiz;
 
   // Calculate overall progress
   const progressPercent = courseData?.data?.course_progress_percentage ?? 0;
@@ -720,12 +728,12 @@ const CoursePlayerPage = () => {
 
       {/* Quiz Modal */}
       {(() => {
-        if (!selectedQuizId || !quizData?.data) return null;
+        if (!selectedQuizId || !activeQuizData?.data) return null;
 
         const convertedQuizData: TQuizData = {
           id: String(selectedQuizId),
-          title: quizData.data.title,
-          questions: quizData.data.questions.map((q) => ({
+          title: activeQuizData.data.title,
+          questions: activeQuizData.data.questions.map((q) => ({
             id: String(q.id),
             questionId: q.id,
             question: q.text,
@@ -741,9 +749,15 @@ const CoursePlayerPage = () => {
             onClose={() => {
               setIsQuizOpen(false);
               setSelectedQuizId(null);
+              setIsRetake(false);
             }}
             quizData={convertedQuizData}
             onSubmitQuiz={handleSubmitQuiz}
+            onRetake={() => {
+              setIsRetake(true);
+              triggerRetake(selectedQuizId ?? 0);
+            }}
+            isLoading={isLoadingQuiz}
           />
         );
       })()}

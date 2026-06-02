@@ -12,11 +12,13 @@ type QuizModalProps = {
     onClose: () => void;
     quizData: TQuizData;
     onSubmitQuiz?: (answers: { q_id: number; o_id: number }[]) => Promise<SubmitQuizData | null | void>;
+    onRetake?: () => void;
+    isLoading?: boolean;
 };
 
 type QuizState = "taking" | "result";
 
-const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) => {
+const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz, onRetake, isLoading }: QuizModalProps) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
     const [quizState, setQuizState] = useState<QuizState>("taking");
@@ -94,7 +96,10 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
         setSelectedAnswers({});
         setSubmitResult(null);
         setQuizState("taking");
-    }, []);
+        if (onRetake) {
+            onRetake();
+        }
+    }, [onRetake]);
 
     const handleClose = useCallback(() => {
         setCurrentQuestion(0);
@@ -108,7 +113,12 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz }: QuizModalProps) 
         <Dialog open={isOpen} onOpenChange={handleClose}>
             <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden [&>button]:hidden">
                 <DialogTitle className="sr-only">{t("title")}</DialogTitle>
-                {quizState === "taking" ? (
+                {isLoading ? (
+                    <div className="p-6 flex flex-col items-center justify-center min-h-[300px] space-y-4">
+                        <div className="w-10 h-10 border-4 border-main border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-sm text-description">Loading quiz questions...</p>
+                    </div>
+                ) : quizState === "taking" ? (
                     /* Quiz Taking View */
                     <div className="p-6">
                         {/* Header */}
