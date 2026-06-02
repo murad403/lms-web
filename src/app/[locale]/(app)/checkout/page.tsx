@@ -16,25 +16,18 @@ const CheckoutPage = () => {
   const [checkout, { isLoading: isCheckoutLoading }] = useCheckoutMutation();
   const [makePayment, { isLoading: isPaymentLoading }] = useMakePaymentMutation();
 
-  const { register, handleSubmit } = useForm<CheckoutFormData>();
-
   const cartItems = cartResponse?.data?.items || [];
   const courseAmount = Number(cartItems[0]?.course_amount) || 0;
+  const coursePrice = Number(cartItems[0]?.course_price) || 0;
   const courseDiscountPrice = Number(cartItems[0]?.course_discount_price) || 0;
-  const convertDiscountPrice = Number(courseAmount - courseDiscountPrice);
+  const discountAmount = Math.max(0, coursePrice - courseDiscountPrice);
 
-  const onSubmit = async (data: CheckoutFormData) => {
-    try {
-      await checkout({ coupon_code: data.couponCode }).unwrap();
-      toast.success("Coupon applied successfully!");
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to apply coupon.");
-    }
-  };
+  const { register, watch } = useForm<CheckoutFormData>();
+  const couponCodeValue = watch("couponCode") || "";
 
   const handleCompletePayment = async () => {
     try {
-      const checkoutResponse = await checkout({ coupon_code: "" }).unwrap();
+      const checkoutResponse = await checkout({ coupon_code: couponCodeValue }).unwrap();
       const paymentResponse = await makePayment(checkoutResponse?.data?.order_id).unwrap();
       if (paymentResponse.data.checkout_url) {
         window.location.href = paymentResponse.data.checkout_url;
@@ -53,28 +46,8 @@ const CheckoutPage = () => {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Payment Form */}
-        <div className="flex-1">
-          <Image src={stripe} alt="Stripe" width={500} height={500} className="mx-auto object-cover" />
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="pt-4 border-t border-gray-100">
-              <p className="text-xs font-medium text-title mb-2">
-                Have a Coupon?
-              </p>
-              <div className="flex gap-2">
-                <input
-                  {...register("couponCode")}
-                  placeholder="COUPON CODE"
-                  className="flex-1 px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main uppercase"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-3 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  Apply Code
-                </button>
-              </div>
-            </div>
-          </form>
+        <div className="flex-1 flex flex-col justify-center items-center">
+          <Image src={stripe} alt="Stripe" width={500} height={500} className="object-cover" />
         </div>
 
         {/* Order Summary */}
@@ -109,11 +82,11 @@ const CheckoutPage = () => {
                         <span className="text-sm md:text-base font-bold text-main">
                           ${Number.parseFloat(item.course_amount || item.course_price || "0").toFixed(2)}
                         </span>
-                        {item.course_discount_price && item.course_discount_price !== item.course_price && (
+                        {/* {item.course_discount_price && item.course_discount_price !== item.course_price && (
                           <span className="text-xs text-description line-through">
                             ${Number.parseFloat(item.course_discount_price).toFixed(2)}
                           </span>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -134,14 +107,24 @@ const CheckoutPage = () => {
                   ${courseAmount}
                 </span>
               </div>
-              <div className="flex justify-between text-xs text-description">
-                <span>Discount Price:</span>
-                <span>${convertDiscountPrice}</span>
-              </div>
               <div className="flex justify-between text-xl font-bold text-title pt-2 border-t border-gray-100">
                 <span>Total:</span>
-                <span className="text-xl">${courseAmount - convertDiscountPrice}</span>
+                <span className="text-xl">${courseAmount}</span>
               </div>
+            </div>
+
+            {/* Coupon Code Input */}
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              {discountAmount > 0 && (
+                <p className="text-xs text-main mb-2 font-medium">
+                  If you use this coupon, you get a discount of ${discountAmount.toFixed(2)}
+                </p>
+              )}
+              <input
+                {...register("couponCode")}
+                placeholder="COUPON CODE"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-main"
+              />
             </div>
 
             <button

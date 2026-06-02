@@ -117,9 +117,9 @@ const CreateCoursePage = () => {
             setCourseId(response.data.id);
             setActiveTab(1);
             return true;
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to save basic info:", error);
-            toast.error("Failed to save basic information");
+            toast.error(error?.data?.message);
             return false;
         }
     };

@@ -17,9 +17,15 @@ export const basicInfoSchema = z.object({
     topic: z.string().min(1, "Topic is required"),
     language: z.string().min(1, "Language is required"),
     level: z.string().min(1, "Level is required"),
-    price: z.string().min(1, "Price is required"),
+    price: z.string().min(1, "Price is required").refine(
+        (val) => !isNaN(Number(val)) && Number(val) >= 0,
+        { message: "Price cannot be negative" }
+    ),
     couponCode: z.string().optional(),
-    discountPrice: z.string().optional(),
+    discountPrice: z.string().optional().refine(
+        (val) => !val || (!isNaN(Number(val)) && Number(val) >= 0),
+        { message: "Discount price cannot be negative" }
+    ),
     expiryPeriod: z.string().optional(),
 });
 
@@ -212,6 +218,7 @@ const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
                         {...register("price")}
                         placeholder={t("pricePlaceholder")}
                         type="number"
+                        min="0"
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     />
                     {errors.price && (
@@ -236,8 +243,12 @@ const BasicInfoTab = ({ onNext, onCancel, categories }: Props) => {
                         {...register("discountPrice")}
                         placeholder={t("pricePlaceholder")}
                         type="number"
+                        min="0"
                         className="w-full border border-border-light rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-main"
                     />
+                    {errors.discountPrice && (
+                        <p className="text-xs text-red-500 mt-1">{errors.discountPrice.message}</p>
+                    )}
                 </div>
                 <div>
                     <label className="text-sm font-medium text-title mb-1.5 block">
