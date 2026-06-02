@@ -35,7 +35,7 @@ export default function RootLayout({
         <ReduxWrapper>
           <AffiliateTracker />
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster position="top-right" richColors duration={1000} />
         </ReduxWrapper>
       </body>
     </html>

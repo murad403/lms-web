@@ -316,6 +316,7 @@ export type StudentCertificateItem = {
     date: string;
     marks: number;
     out_of: number;
+    signature?: string;
 };
 
 export type StudentCertificatesResponse = ApiResponse<StudentCertificateItem[]> & {

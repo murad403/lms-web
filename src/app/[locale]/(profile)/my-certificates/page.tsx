@@ -7,6 +7,7 @@ import jsPDF from "jspdf";
 import { useTranslations } from "next-intl";
 import { useCertificatesQuery } from "@/redux/features/student/student.api";
 import { Skeleton } from "@/components/ui/skeleton";
+import { resolveImageUrl } from "@/utils/image";
 
 type CertificateViewItem = {
     id: string;
@@ -15,6 +16,7 @@ type CertificateViewItem = {
     date: string;
     marks: number;
     outOf: number;
+    signature?: string;
 };
 
 const MyCertificatesPage = () => {
@@ -32,6 +34,7 @@ const MyCertificatesPage = () => {
         date: cert.date,
         marks: cert.marks,
         outOf: cert.out_of,
+        signature: cert.signature,
     }));
 
     const totalPages = certificatesData?.total_pages || 1;
@@ -40,7 +43,7 @@ const MyCertificatesPage = () => {
     const selectedCert = certificates.find((c) => c.id === viewCert);
 
     // PDF Download Function
-    const handleDownloadCertificate = (cert: CertificateViewItem) => {
+    const handleDownloadCertificate = async (cert: CertificateViewItem) => {
         const pdf = new jsPDF({
             orientation: 'landscape',
             unit: 'mm',
@@ -118,15 +121,41 @@ const MyCertificatesPage = () => {
         pdf.setLineWidth(0.3);
         pdf.setDrawColor(100, 100, 100);
         
-        // Left signature line
+        // Left date line
         pdf.line(40, 160, 90, 160);
+        pdf.setFontSize(12);
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(cert.date, 65, 155, { align: 'center' });
+
         pdf.setFontSize(10);
         pdf.setTextColor(100, 100, 100);
-        pdf.text('Instructor Signature', 65, 167, { align: 'center' });
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Date', 65, 167, { align: 'center' });
 
         // Right signature line
         pdf.line(pageWidth - 90, 160, pageWidth - 40, 160);
-        pdf.text('Director Signature', pageWidth - 65, 167, { align: 'center' });
+
+        // Add signature image if available
+        if (cert.signature) {
+            try {
+                const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+                    const image = new Image();
+                    image.crossOrigin = 'anonymous';
+                    image.onload = () => resolve(image);
+                    image.onerror = (err) => reject(err);
+                    image.src = resolveImageUrl(cert.signature);
+                });
+                pdf.addImage(img, 'PNG', pageWidth - 65 - 20, 143, 40, 15);
+            } catch (error) {
+                console.error("Failed to load signature image:", error);
+            }
+        }
+
+        pdf.setFontSize(10);
+        pdf.setTextColor(100, 100, 100);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Instructor Signature', pageWidth - 65, 167, { align: 'center' });
 
         // Save PDF
         pdf.save(`Certificate_${cert.courseName.replace(/\s+/g, '_')}_${cert.id}.pdf`);
@@ -233,48 +262,93 @@ const MyCertificatesPage = () => {
 
             {/* View Certificate Dialog */}
             <Dialog open={!!viewCert} onOpenChange={() => setViewCert(null)}>
-                <DialogContent className="max-w-lg">
+                <DialogContent className="max-w-3xl">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-title">
                             {t("certificatePreview")}
                         </DialogTitle>
                     </DialogHeader>
                     {selectedCert && (
-                        <div className="border border-border-light rounded-lg p-6 text-center space-y-4">
-                            <div className="w-16 h-16 mx-auto bg-main/10 rounded-full flex items-center justify-center">
-                                <svg
-                                    className="w-8 h-8 text-main"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
+                        <div className="space-y-6">
+                            {/* Certificate Layout */}
+                            <div className="bg-white border-[6px] border-main p-2 sm:p-4 rounded-sm relative text-center shadow-md select-none">
+                                <div className="border border-main/30 p-4 sm:p-8 rounded-sm space-y-4">
+                                    {/* Title */}
+                                    <h3 className="text-2xl sm:text-3xl font-extrabold text-main tracking-wide">
+                                        Certificate of Completion
+                                    </h3>
+                                    <div className="w-24 h-px bg-main mx-auto -mt-2"></div>
+
+                                    <div className="space-y-1">
+                                        <p className="text-xs sm:text-sm text-gray-500 font-medium">
+                                            This certifies that
+                                        </p>
+                                        <p className="text-xl sm:text-2xl font-bold text-gray-900 font-serif">
+                                            {selectedCert.studentName}
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <p className="text-xs sm:text-sm text-gray-500">
+                                            has successfully completed the course
+                                        </p>
+                                        <p className="text-lg sm:text-xl font-bold text-main">
+                                            {selectedCert.courseName}
+                                        </p>
+                                    </div>
+
+                                    <p className="text-xs sm:text-sm text-gray-500">
+                                        Score: {selectedCert.marks}/{selectedCert.outOf} • Date: {selectedCert.date}
+                                    </p>
+
+                                    <p className="text-[10px] sm:text-xs text-gray-400 font-mono">
+                                        Certificate ID: {selectedCert.id}
+                                    </p>
+
+                                    {/* Footer Section */}
+                                    <div className="grid grid-cols-2 pt-6 items-end">
+                                        {/* Left Side: Date */}
+                                        <div className="flex flex-col items-center">
+                                            <p className="text-sm font-bold text-gray-800 min-h-5">
+                                                {selectedCert.date}
+                                            </p>
+                                            <div className="w-28 sm:w-36 h-px bg-gray-300 my-1"></div>
+                                            <p className="text-[10px] sm:text-xs text-gray-500">
+                                                Date
+                                            </p>
+                                        </div>
+
+                                        {/* Right Side: Instructor Signature */}
+                                        <div className="flex flex-col items-center">
+                                            <div className="h-10 sm:h-12 flex items-end justify-center mb-1">
+                                                {selectedCert.signature ? (
+                                                    <img
+                                                        src={resolveImageUrl(selectedCert.signature)}
+                                                        alt="Instructor Signature"
+                                                        className="h-full object-contain"
+                                                    />
+                                                ) : (
+                                                    <div className="h-full w-28 bg-gray-50 rounded" />
+                                                )}
+                                            </div>
+                                            <div className="w-28 sm:w-36 h-px bg-gray-300 my-1"></div>
+                                            <p className="text-[10px] sm:text-xs text-gray-500">
+                                                Instructor Signature
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 className="text-lg font-bold text-title">
-                                {t("certificateOfCompletion")}
-                            </h3>
-                            <p className="text-sm text-description">
-                                {t("certifiesUserCompleted")}
-                            </p>
-                            <p className="text-base font-bold text-main">
-                                {selectedCert.courseName}
-                            </p>
-                            <p className="text-sm text-description">
-                                {t("score")}: {selectedCert.marks}/{selectedCert.outOf} • {t("date")}:{" "}
-                                {selectedCert.date}
-                            </p>
-                            <button 
-                                onClick={() => handleDownloadCertificate(selectedCert)}
-                                className="mt-4 px-6 py-2 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
-                            >
-                                {t("downloadPDF")}
-                            </button>
+
+                            {/* Download Action */}
+                            <div className="flex justify-end">
+                                <button 
+                                    onClick={() => handleDownloadCertificate(selectedCert)}
+                                    className="px-6 py-2 bg-main text-white rounded-md text-sm font-semibold hover:bg-main/90 transition-colors"
+                                >
+                                    {t("downloadPDF")}
+                                </button>
+                            </div>
                         </div>
                     )}
                 </DialogContent>

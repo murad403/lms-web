@@ -19,6 +19,8 @@ import type { SubmitQuizData } from "@/redux/features/student/student.type";
 
 
 
+
+
 const CoursePlayerPage = () => {
   const params = useParams();
   const courseId = Array.isArray(params.id) ? parseInt(params.id[0]) : parseInt(params.id as string);
