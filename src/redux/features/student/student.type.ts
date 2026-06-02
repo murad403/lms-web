@@ -17,6 +17,7 @@ export type StudentDashboardCourse = {
 export type StudentDashboardInvoice = {
     id: number;
     name: string;
+    course_title: string;
     invoice_id: string;
     payment_method: string;
     amount: string;

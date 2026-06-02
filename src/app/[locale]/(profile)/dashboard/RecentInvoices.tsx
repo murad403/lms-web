@@ -12,58 +12,155 @@ const handleDownload = (invoice: StudentDashboardInvoice) => {
     import('jspdf').then(({ jsPDF }) => {
         const doc = new jsPDF();
 
-        // Header background
-        doc.setFillColor(86, 37, 232);
-        doc.rect(0, 0, 210, 35, 'F');
+        // Colors
+        const primaryColor = [86, 37, 232];
+        const darkColor = [31, 41, 55];
+        const greyColor = [107, 114, 128];
+        const lightGreyColor = [243, 244, 246];
 
-        // Header text
-        doc.setTextColor(255, 255, 255);
+        // Margins
+        const marginX = 20;
+
+        // --- HEADER ---
+        // Brand Title
+        doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
         doc.setFontSize(22);
         doc.setFont('helvetica', 'bold');
-        doc.text('INVOICE', 14, 22);
-
-        doc.setFontSize(11);
+        doc.text('LEARN HUB', marginX, 25);
+        
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.text(invoice.invoice_id, 196, 22, { align: 'right' });
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('Online Education Platform', marginX, 30);
 
-        // Reset text color
-        doc.setTextColor(30, 30, 30);
-
-        // Invoice details section
-        const startY = 50;
-        const lineH = 10;
-
-        doc.setFontSize(11);
+        // Invoice title
+        doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+        doc.setFontSize(24);
         doc.setFont('helvetica', 'bold');
-        doc.text('Course / Title', 14, startY);
+        doc.text('INVOICE', 190, 25, { align: 'right' });
+
+        // Invoice ID
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.text(invoice.name, 14, startY + lineH);
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text(invoice.invoice_id, 190, 30, { align: 'right' });
 
         // Divider
-        doc.setDrawColor(220, 220, 220);
-        doc.line(14, startY + lineH + 5, 196, startY + lineH + 5);
+        doc.setDrawColor(229, 231, 235); // Gray 200
+        doc.setLineWidth(0.5);
+        doc.line(marginX, 38, 190, 38);
 
-        // Amount & Status row
-        const detailY = startY + lineH + 16;
-        doc.setFont('helvetica', 'bold');
-        doc.text('Amount', 14, detailY);
-        doc.text('Status', 110, detailY);
-
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(86, 37, 232);
-        doc.text(`$${invoice.amount}`, 14, detailY + lineH);
-
-        // Status badge
-        doc.setFillColor(34, 197, 94);
-        doc.roundedRect(108, detailY + lineH - 6, 28, 9, 2, 2, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(10);
-        doc.text(invoice.status.toUpperCase(), 122, detailY + lineH, { align: 'center' });
-
-        // Footer
-        doc.setTextColor(160, 160, 160);
+        // --- BILLING / INFO GRID ---
+        const startY = 48;
+        
+        // Billed To (Left)
         doc.setFontSize(9);
-        doc.text(`Generated on ${new Date().toLocaleDateString()}`, 14, 285);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('BILLED TO:', marginX, startY);
+
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+        doc.text(invoice.name, marginX, startY + 6);
+        
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('Student Dashboard User', marginX, startY + 11);
+
+        // Invoice Details (Right)
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('INVOICE DETAILS:', 130, startY);
+
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Invoice Date: ${invoice.invoice_date}`, 130, startY + 6);
+        doc.text(`Payment: ${invoice.payment_method.toUpperCase()}`, 130, startY + 11);
+
+        // Status with pill background
+        doc.text('Status:', 130, startY + 16);
+        const isPaid = invoice.status.toLowerCase() === 'paid';
+        if (isPaid) {
+            doc.setFillColor(240, 253, 244); // light green bg
+            doc.setTextColor(21, 128, 61); // green-700 text
+        } else {
+            doc.setFillColor(254, 242, 242); // light red bg
+            doc.setTextColor(185, 28, 28); // red-700 text
+        }
+        // status pill
+        doc.roundedRect(143, startY + 12.5, 18, 5, 1, 1, 'F');
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'bold');
+        doc.text(invoice.status.toUpperCase(), 152, startY + 16, { align: 'center' });
+
+        // --- TABLE ---
+        const tableY = startY + 28;
+        
+        // Table Header
+        doc.setFillColor(lightGreyColor[0], lightGreyColor[1], lightGreyColor[2]);
+        doc.rect(marginX, tableY, 170, 9, 'F');
+
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('ITEM DESCRIPTION', marginX + 3, tableY + 6);
+        doc.text('PAYMENT', 110, tableY + 6);
+        doc.text('AMOUNT', 190, tableY + 6, { align: 'right' });
+
+        // Table Row (Course item)
+        const rowY = tableY + 9;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+
+        const splitTitle = doc.splitTextToSize(invoice.course_title || '', 80);
+        doc.text(splitTitle, marginX + 3, rowY + 7);
+        doc.text(invoice.payment_method.toUpperCase(), 110, rowY + 7);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`$${invoice.amount}`, 190, rowY + 7, { align: 'right' });
+
+        const rowHeight = Math.max(12, splitTitle.length * 5 + 4);
+        
+        // Border under row
+        doc.setDrawColor(243, 244, 246);
+        doc.setLineWidth(0.5);
+        doc.line(marginX, rowY + rowHeight, 190, rowY + rowHeight);
+
+        // --- TOTALS ---
+        const totalY = rowY + rowHeight + 12;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('Subtotal:', 140, totalY);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+        doc.text(`$${invoice.amount}`, 190, totalY, { align: 'right' });
+
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+        doc.text('Total Amount:', 140, totalY + 8);
+        doc.text(`$${invoice.amount}`, 190, totalY + 8, { align: 'right' });
+
+        // --- FOOTER ---
+        const footerY = 250;
+        doc.setDrawColor(229, 231, 235);
+        doc.setLineWidth(0.5);
+        doc.line(marginX, footerY, 190, footerY);
+
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+        doc.text('Thank you for choosing Learn Hub!', 105, footerY + 10, { align: 'center' });
+
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(greyColor[0], greyColor[1], greyColor[2]);
+        doc.text('If you have any questions about this invoice, please contact support@learnhub.com', 105, footerY + 16, { align: 'center' });
+        doc.text(`Generated on ${new Date().toLocaleString()} • Learn Hub Inc.`, 105, footerY + 22, { align: 'center' });
 
         doc.save(`${invoice.invoice_id}.pdf`);
     });
@@ -109,7 +206,7 @@ const RecentInvoices = ({ invoices, isLoading = false }: RecentInvoicesProps) =>
                     >
                         <div className="min-w-0 flex-1">
                             <h4 className="text-base font-semibold text-title truncate">
-                                {invoice.name}
+                                {invoice.course_title}
                             </h4>
                             <p className="text-sm text-description">
                                 {invoice.invoice_id} • {t("amount")} :{" "}

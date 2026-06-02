@@ -114,7 +114,7 @@ const QuizModal = ({ isOpen, onClose, quizData, onSubmitQuiz, onRetake, isLoadin
             <DialogContent className="max-w-lg p-0 gap-0 overflow-hidden [&>button]:hidden">
                 <DialogTitle className="sr-only">{t("title")}</DialogTitle>
                 {isLoading ? (
-                    <div className="p-6 flex flex-col items-center justify-center min-h-[300px] space-y-4">
+                    <div className="p-6 flex flex-col items-center justify-center min-h-75 space-y-4">
                         <div className="w-10 h-10 border-4 border-main border-t-transparent rounded-full animate-spin"></div>
                         <p className="text-sm text-description">Loading quiz questions...</p>
                     </div>
