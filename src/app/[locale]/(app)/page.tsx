@@ -14,7 +14,7 @@ const page = () => {
       <Banner />
       <HomeLandingDataProvider>
         <Courses />
-        <LearningMode />
+        {/* <LearningMode /> */}
         <Certificate />
         <AboutInstructor />
       </HomeLandingDataProvider>

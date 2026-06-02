@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Link } from '@/i18n/navigation';
-import { Star, Lock, Clock, FileText, Award, Globe, Smartphone, ChevronDown, ChevronRight, FolderOpen } from 'lucide-react';
+import { Link, useRouter } from '@/i18n/navigation';
+import { Star, Lock, Clock, FileText, Award, Globe, Smartphone, ChevronDown, ChevronRight, FolderOpen, ArrowLeft } from 'lucide-react';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { MdSlowMotionVideo } from 'react-icons/md';
 import { useTranslations } from 'next-intl';
@@ -13,10 +13,13 @@ import Image from 'next/image';
 import { useAddCartMutation, useViewCartQuery } from '@/redux/features/student/student.api';
 import { toast } from 'sonner';
 
+
+
 const CourseDetails = () => {
     const params = useParams<{ id: string }>();
     const courseId = Number(params?.id);
     const session = getClientSession();
+    const router = useRouter();
     const { data } = useCourseDetailsQuery(courseId, { skip: !courseId || Number.isNaN(courseId) });
     const [addCart] = useAddCartMutation();
     const { data: cartData } = useViewCartQuery(undefined, {
@@ -26,6 +29,7 @@ const CourseDetails = () => {
 
 
     const t = useTranslations("CourseDetail");
+    const tCommon = useTranslations("Common");
     const [expandedSections, setExpandedSections] = useState<number[]>([1]);
     const [showFullDescription, setShowFullDescription] = useState(false);
     const apiCourse = data?.data;
@@ -96,6 +100,13 @@ const CourseDetails = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-0 mt-4 sm:mt-6 lg:mt-8">
+            <button
+                onClick={() => router.back()}
+                className="inline-flex items-center gap-2 text-description hover:text-main text-sm font-semibold transition-colors mb-4 sm:mb-6 cursor-pointer"
+            >
+                <ArrowLeft className="size-4" />
+                <span>{tCommon("back")}</span>
+            </button>
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
                 {/* Main Content */}
                 <div className="flex-1">

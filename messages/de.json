@@ -1129,6 +1129,7 @@
     "browserNotSupported": "Ihr Browser unterstützt das Video-Tag nicht."
   },
   "Common": {
+    "back": "Zurück",
     "readMore": "Mehr Lesen",
     "learnMore": "Mehr Erfahren",
     "getStarted": "Loslegen",

@@ -1129,6 +1129,7 @@
     "browserNotSupported": "Tu navegador no soporta la etiqueta de video."
   },
   "Common": {
+    "back": "Volver",
     "readMore": "Leer Más",
     "learnMore": "Saber Más",
     "getStarted": "Comenzar",

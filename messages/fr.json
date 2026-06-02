@@ -1129,6 +1129,7 @@
     "browserNotSupported": "Votre navigateur ne prend pas en charge la balise vidéo."
   },
   "Common": {
+    "back": "Retour",
     "readMore": "Lire Plus",
     "learnMore": "En Savoir Plus",
     "getStarted": "Commencer",
