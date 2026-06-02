@@ -8,11 +8,19 @@ export const signInSchema = z.object({
 
 export type SignInFormData = z.infer<typeof signInSchema>;
 
+// Strong Password Validation
+const strongPassword = z.string()
+  .min(8, "Password must be at least 8 characters")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/[0-9]/, "Password must contain at least one number")
+  .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character");
+
 // Learner Sign Up Schema
 const learnerFields = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: strongPassword,
   confirmPassword: z.string().min(1, "Please confirm your password"),
   terms: z.boolean(),
 });
@@ -28,7 +36,7 @@ export type LearnerSignUpFormData = z.infer<typeof learnerFields>;
 const trainerFields = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: strongPassword,
   confirmPassword: z.string().min(1, "Please confirm your password"),
   terms: z.boolean(),
 });
@@ -45,7 +53,7 @@ const organizationFields = z.object({
   contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
   organizationName: z.string().min(2, "Organization name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: strongPassword,
   confirmPassword: z.string().min(1, "Please confirm your password"),
   terms: z.boolean(),
 });
@@ -62,7 +70,7 @@ const partnerFields = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   organizationName: z.string().min(2, "Organization name must be at least 2 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: strongPassword,
   confirmPassword: z.string().min(1, "Please confirm your password"),
   affiliateType: z.string().min(1, "Please select an affiliate type"),
   taxId: z.string().optional(),

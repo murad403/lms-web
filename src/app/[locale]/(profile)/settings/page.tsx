@@ -75,9 +75,10 @@ const SettingsPage = () => {
             formData.append("last_name", data.lastName);
             formData.append("bio", data.bio);
             formData.append("title", data.title);
+            formData.append("user.phone", data.phoneNumber);
 
             if (selectedFile) {
-                formData.append("user.image", selectedFile);
+                formData.append("user.avatar", selectedFile);
             }
 
             const response = await updateStudentProfile(formData).unwrap();

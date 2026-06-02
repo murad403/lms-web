@@ -5,10 +5,10 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const socialIcons = [
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Linkedin, href: "https://github.com/murad403", label: "LinkedIn" },
+    { icon: Facebook, href: "https://github.com/murad403", label: "Facebook" },
+    { icon: Instagram, href: "https://github.com/murad403", label: "Instagram" },
+    { icon: Twitter, href: "https://github.com/murad403", label: "Twitter" },
 ];
 
 const Footer = () => {
@@ -85,6 +85,7 @@ const Footer = () => {
                                 href={social.href}
                                 className="w-10 h-10 bg-main rounded-lg flex items-center justify-center hover:bg-main/90 transition-colors"
                                 aria-label={social.label}
+                                target="_blank"
                             >
                                 <social.icon className="w-5 h-5 text-white" />
                             </a>

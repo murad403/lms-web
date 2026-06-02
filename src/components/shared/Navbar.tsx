@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { PiGraduationCap } from "react-icons/pi";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LogoutModal from "./LogoutModal";
 import { getDashboardPathByRole, getProfilePathByRole } from "@/utils/auth-shared";
@@ -41,6 +42,7 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const t = useTranslations("Navbar");
     const tMenu = useTranslations("Menu");
     const router = useRouter();
+    const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCart, setShowCart] = useState(false);
@@ -48,6 +50,10 @@ const Navbar = ({ initialSession }: NavbarProps) => {
     const [showProfile, setShowProfile] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+        setSearchQuery(searchParams.get("search") || "");
+    }, [searchParams]);
 
     const notificationRef = useRef<HTMLDivElement>(null);
     const cartRef = useRef<HTMLDivElement>(null);
