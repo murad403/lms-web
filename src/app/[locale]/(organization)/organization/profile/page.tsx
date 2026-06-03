@@ -106,7 +106,7 @@ const Page = () => {
         {/* Profile Header */}
         <div>
           {/* Banner with premium, taller height configuration */}
-          <div className="relative w-full h-64 sm:h-80 lg:h-[380px] rounded-none overflow-hidden bg-gray-100">
+          <div className="relative w-full h-64 sm:h-80 lg:h-95 rounded-none overflow-hidden bg-gray-100">
             {isWhiteLabelLoading ? (
               <Skeleton className="w-full h-full" />
             ) : (

@@ -180,13 +180,13 @@ const CreateCoursePage = () => {
             setActiveTab(2);
             toast.success("Advanced information saved successfully");
             return true;
-        } catch (error) {
-            console.error("Failed to save advance info:", error);
+        } catch (error: any) {
+            // console.error("Failed to save advance info:", error);
             const status = getErrorStatus(error);
             if (status === 413 || status === "FETCH_ERROR") {
                 toast.error("Upload failed. File is too large or server error response is blocked by CORS.");
             } else {
-                toast.error("Failed to save advanced information");
+                toast.error(error?.data?.message);
             }
             return false;
         }
@@ -227,11 +227,11 @@ const CreateCoursePage = () => {
 
         try {
             await publishCourse(courseId).unwrap();
-            toast.success("Course submitted for review successfully");
+            toast.success("Course submitted for admin approval!");
             return true;
-        } catch (error) {
-            console.error("Error submitting course for review:", error);
-            toast.error("Failed to submit course for review");
+        } catch (error: any) {
+            // console.error("Error submitting course for review:", error);
+            toast.error(error?.data?.message);
             return false;
         }
     };

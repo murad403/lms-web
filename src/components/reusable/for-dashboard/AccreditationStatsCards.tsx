@@ -15,7 +15,7 @@ const AccreditationStatsCards = () => {
 
     const stats = accreditationData?.data?.stats || {
         approved_courses: 0,
-        published_courses: 0,
+        ratings_people: 0,
         pending_review_courses: 0,
         certificates_issued: 0,
     };
@@ -48,13 +48,13 @@ const AccreditationStatsCards = () => {
             bg: "bg-blue-50",
         },
         {
-            labelKey: "activeCertificates",
-            value: stats.published_courses,
+            labelKey: "ratingPeople",
+            value: stats.ratings_people,
             icon: SlBadge,
             color: "purple-600",
             border: "border-purple-600",
             bg: "bg-purple-50",
-            titleKey: "validCertificates"
+            titleKey: "ratingPeople"
         },
     ];
 
