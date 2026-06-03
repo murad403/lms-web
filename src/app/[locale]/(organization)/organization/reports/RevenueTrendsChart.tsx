@@ -4,6 +4,8 @@ import { useTranslations } from 'next-intl';
 import { useGetRevenueTrendsQuery } from '@/redux/features/organization/organization.api';
 import { Skeleton } from '@/components/ui/skeleton';
 
+
+
 const RevenueTrendsChart = () => {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const t = useTranslations("OrganizationReports");
@@ -89,7 +91,7 @@ const RevenueTrendsChart = () => {
               return (
                 <div
                   key={bar.label}
-                  className="flex-1 flex items-end justify-center group"
+                  className="flex-1 h-full flex items-end justify-center group"
                   onMouseEnter={() => setHoveredBar(index)}
                   onMouseLeave={() => setHoveredBar(null)}
                 >
@@ -101,7 +103,7 @@ const RevenueTrendsChart = () => {
                       </div>
                     )}
                     <div
-                      className={`w-full max-w-12 rounded-t-sm transition-all duration-300 cursor-pointer ${hoveredBar === index ? 'bg-main shadow-lg shadow-main/20' : 'bg-main/10 hover:bg-main/30'}`}
+                      className={`w-full max-w-12 rounded-t-sm transition-all duration-300 cursor-pointer ${hoveredBar === index ? 'bg-main shadow-lg shadow-main/20' : 'bg-main'}`}
                       style={{
                         height: `${Math.max(heightPercent, 2)}%`, 
                       }}

@@ -4,8 +4,7 @@ import "./globals.css";
 import ReduxWrapper from "@/components/wrapper/ReduxWrapper";
 import { Toaster } from "sonner";
 import AffiliateTracker from "@/utils/AffiliateTracker";
-
-
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +32,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
       >
         <ReduxWrapper>
-          <AffiliateTracker />
+          <Suspense fallback={null}>
+            <AffiliateTracker />
+          </Suspense>
           {children}
           <Toaster position="top-right" richColors duration={1000} />
         </ReduxWrapper>
