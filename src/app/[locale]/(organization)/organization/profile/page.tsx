@@ -12,6 +12,7 @@ import {
 } from "@/redux/features/organization/organization.api";
 import { resolveImageUrl } from "@/utils/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import userAvatar from "@/assets/user/user.png";
 
 const Page = () => {
   const t = useTranslations("OrganizationProfile");
@@ -30,7 +31,7 @@ const Page = () => {
   });
 
   const [bannerSrc, setBannerSrc] = useState("/home/user1.png");
-  const [avatarSrc, setAvatarSrc] = useState("/home/user1.png");
+  const [avatarSrc, setAvatarSrc] = useState<any>(userAvatar);
 
   // Initialize and update local preview state with API data
   useEffect(() => {
@@ -42,7 +43,7 @@ const Page = () => {
     if (profile?.photo) {
       setAvatarSrc(resolveImageUrl(profile.photo));
     } else {
-      setAvatarSrc("/home/user1.png");
+      setAvatarSrc(userAvatar);
     }
   }, [profile]);
 

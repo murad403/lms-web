@@ -46,7 +46,7 @@ const AccountSettings = () => {
         try {
             const formData = new FormData();
             formData.append("name", data.schoolName);
-            formData.append("phone", data.phone);
+            formData.append("phone", data?.phone || "");
             if (whiteLabelData?.data?.username) {
                 formData.append("username", whiteLabelData.data.username);
             }

@@ -33,7 +33,7 @@ const RevenueTrendsChart = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg p-6 border border-border-light h-[380px]">
+      <div className="bg-white rounded-lg p-6 border border-border-light h-95">
          <div className="space-y-2 mb-8">
             <Skeleton className="h-6 w-1/4" />
             <Skeleton className="h-4 w-1/2" />
@@ -101,7 +101,7 @@ const RevenueTrendsChart = () => {
                       </div>
                     )}
                     <div
-                      className={`w-full max-w-[48px] rounded-t-sm transition-all duration-300 cursor-pointer ${hoveredBar === index ? 'bg-main shadow-lg shadow-main/20' : 'bg-main/10 hover:bg-main/30'}`}
+                      className={`w-full max-w-12 rounded-t-sm transition-all duration-300 cursor-pointer ${hoveredBar === index ? 'bg-main shadow-lg shadow-main/20' : 'bg-main/10 hover:bg-main/30'}`}
                       style={{
                         height: `${Math.max(heightPercent, 2)}%`, 
                       }}
@@ -115,7 +115,7 @@ const RevenueTrendsChart = () => {
           {/* Month Labels */}
           <div className="flex gap-1.5 sm:gap-3 pl-4 pt-4 overflow-x-auto no-scrollbar">
             {chartData.map((bar) => (
-              <div key={bar.label} className="flex-1 flex justify-center min-w-[20px]">
+              <div key={bar.label} className="flex-1 flex justify-center min-w-5">
                 <span className="text-[9px] sm:text-[10px] font-bold text-description/60 uppercase tracking-tighter truncate">{bar.label}</span>
               </div>
             ))}

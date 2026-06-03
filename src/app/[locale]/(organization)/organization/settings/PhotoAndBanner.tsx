@@ -11,12 +11,13 @@ import { toast } from "sonner";
 import { resolveImageUrl } from "@/utils/image";
 import { useGetWhiteLabelQuery, useUpdateWhiteLabelMutation } from "@/redux/features/organization/organization.api";
 import { Skeleton } from "@/components/ui/skeleton";
+import userAvatar from "@/assets/user/user.png";
 
 type PhotoAndBannerFormData = z.infer<typeof photoAndBannerSchema>;
 
 const PhotoAndBanner = () => {
-  const [photoPreview, setPhotoPreview] = useState<string>("/home/user1.png");
-  const [bannerPreview, setBannerPreview] = useState<string>("/home/user1.png");
+  const [photoPreview, setPhotoPreview] = useState<any>(userAvatar);
+  const [bannerPreview, setBannerPreview] = useState<any>(userAvatar);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
 
@@ -39,6 +40,8 @@ const PhotoAndBanner = () => {
     if (whiteLabelData?.data) {
       if (whiteLabelData.data.photo) {
         setPhotoPreview(resolveImageUrl(whiteLabelData.data.photo));
+      } else {
+        setPhotoPreview(userAvatar);
       }
       if (whiteLabelData.data.banner) {
         setBannerPreview(resolveImageUrl(whiteLabelData.data.banner));
@@ -73,7 +76,7 @@ const PhotoAndBanner = () => {
       if (whiteLabelData?.data?.photo) {
         setPhotoPreview(resolveImageUrl(whiteLabelData.data.photo));
       } else {
-        setPhotoPreview("/home/user1.png");
+        setPhotoPreview(userAvatar);
       }
     } finally {
       setIsUploadingPhoto(false);
@@ -123,8 +126,8 @@ const PhotoAndBanner = () => {
     return (
       <div className="bg-white p-4">
         <div className="flex flex-col sm:flex-row gap-3 overflow-hidden border border-border-light bg-white">
-          <Skeleton className="w-full sm:w-50 h-[200px] shrink-0" />
-          <Skeleton className="flex-1 h-[230px]" />
+          <Skeleton className="w-full sm:w-50 h-50 shrink-0" />
+          <Skeleton className="flex-1 h-57.5" />
         </div>
       </div>
     );

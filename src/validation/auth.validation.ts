@@ -153,8 +153,8 @@ export const photoAndBannerSchema = z.object({
 export const accountSettingsSchema = z.object({
   schoolName: z.string().min(2, "School name must be at least 2 characters"),
   phone: z
-    .string()
-    .min(6, "Phone number must be at least 6 digits")
-    .regex(/^\+?[0-9]+$/, "Phone number must contain only digits (optionally starting with +)"),
+    .string().optional(),
+    // .min(6, "Phone number must be at least 6 digits")
+    // .regex(/^\+?[0-9]+$/, "Phone number must contain only digits (optionally starting with +)"),
   biography: z.string().optional(),
 });
