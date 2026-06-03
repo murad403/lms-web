@@ -11,6 +11,7 @@ interface AffiliateStatCardProps {
   iconClassName?: string;
   iconBgClassName?: string;
   className?: string;
+  currency?: string;
 }
 
 export function AffiliateStatCard({
@@ -23,6 +24,7 @@ export function AffiliateStatCard({
   iconClassName = "text-blue-500",
   iconBgClassName = "bg-blue-50",
   className = "",
+  currency,
 }: AffiliateStatCardProps) {
   const hasTrendLabel = typeof trendLabel === "string";
   const isPositive = hasTrendLabel
@@ -46,7 +48,13 @@ export function AffiliateStatCard({
 
       {/* Value */}
       <p className="mt-1 text-[2rem] font-bold text-gray-900 tracking-tight leading-none">
-        {typeof value === "number" ? value.toLocaleString() : value}
+        {currency}
+        {typeof value === "number"
+          ? value.toLocaleString("en-US", {
+              minimumFractionDigits: currency ? 2 : 0,
+              maximumFractionDigits: currency ? 2 : 0,
+            })
+          : value}
       </p>
 
       {/* Change */}

@@ -26,11 +26,11 @@ export function ReferralModal({
 
     if (!isOpen) return null;
 
-    const handleCopyCode = async () => {
-        await navigator.clipboard.writeText(referralCode);
-        setCopiedCode(true);
-        setTimeout(() => setCopiedCode(false), 2000);
-    };
+    // const handleCopyCode = async () => {
+    //     await navigator.clipboard.writeText(referralCode);
+    //     setCopiedCode(true);
+    //     setTimeout(() => setCopiedCode(false), 2000);
+    // };
 
     const handleCopyUrl = async () => {
         await navigator.clipboard.writeText(referralUrl);
@@ -62,7 +62,7 @@ export function ReferralModal({
                 <div className="border-t border-gray-100" />
 
                 {/* Referral Code */}
-                <div className="flex flex-col gap-1.5">
+                {/* <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         {t("referralCode")}
                     </label>
@@ -76,7 +76,7 @@ export function ReferralModal({
                             {copiedCode ? t("copied") : t("copy")}
                         </button>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Referral URL */}
                 <div className="flex flex-col gap-1.5">

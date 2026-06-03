@@ -102,6 +102,7 @@ const Page = () => {
       icon: BookOpen,
       iconClassName: "text-blue-500",
       iconBgClassName: "bg-blue-50",
+      currency: "$",
     },
     {
       title: t("totalEarned"),
@@ -110,6 +111,7 @@ const Page = () => {
       icon: CircleDollarSign,
       iconClassName: "text-green-500",
       iconBgClassName: "bg-green-50",
+      currency: "$",
     },
     {
       title: t("pendingCommissions"),
@@ -118,6 +120,7 @@ const Page = () => {
       icon: CreditCard,
       iconClassName: "text-purple-500",
       iconBgClassName: "bg-purple-50",
+      currency: "$",
     },
   ];
 
@@ -134,6 +137,7 @@ const Page = () => {
               className="w-full"
               iconClassName={item.iconClassName}
               iconBgClassName={item.iconBgClassName}
+              currency={item.currency}
             />
           </div>
         ))}
